@@ -1,0 +1,19 @@
+# Node
+node_modules/
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
+
+# Build
+dist/
+build/
+
+# Client (private documents — tracked manually)
+# _client/ is intentionally included
