@@ -245,25 +245,7 @@
     }
     .mobile-cta a { display: block; text-align: center; }
 
-    /* ── Animaciones de entrada (móvil + desktop) ── */
-    .zia-reveal {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-    .zia-reveal.zia-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .zia-reveal[data-delay="1"] { transition-delay: 0.08s; }
-    .zia-reveal[data-delay="2"] { transition-delay: 0.16s; }
-    .zia-reveal[data-delay="3"] { transition-delay: 0.24s; }
-    .zia-reveal[data-delay="4"] { transition-delay: 0.32s; }
-    .zia-reveal[data-delay="5"] { transition-delay: 0.40s; }
-    .zia-reveal[data-delay="6"] { transition-delay: 0.48s; }
-    .zia-reveal[data-delay="7"] { transition-delay: 0.56s; }
-
-    @media (max-width: 768px) {
+@media (max-width: 768px) {
       .mobile-cta { display: block; }
       .zia-hero-title { font-size: 28px; }
       .zia-hero-sub   { font-size: 14px; }
@@ -1077,62 +1059,6 @@
   <!-- Local: main.js del template Bexon -->
   <script src="assets/js/meanmenu.js"></script>
   <script src="assets/js/main.js"></script>
-
-  <!-- ── Animaciones de entrada con IntersectionObserver ── -->
-  <script>
-  (function () {
-    var SELECTORS = [
-      '.sec-heading',
-      '.choose-box',
-      '.zia-risk-card',
-      '.zia-hero-stat',
-      '.zia-process-step',
-      '.zia-timeline__item',
-      '.zia-reg-badge',
-      '.testimonial-item',
-      '.footer-widget',
-      '.cta-content',
-      '.zia-diag-card'
-    ].join(', ');
-
-    function init() {
-      var els = document.querySelectorAll(SELECTORS);
-      if (!els.length || !('IntersectionObserver' in window)) return;
-
-      // Asignar clase base y delay escalonado dentro de cada padre
-      els.forEach(function (el) {
-        el.classList.add('zia-reveal');
-      });
-
-      // Escalonar cards que comparten padre (filas de grids)
-      document.querySelectorAll(
-        '.row, .zia-process, .zia-timeline__items, .zia-regulators, .countup-wrap'
-      ).forEach(function (parent) {
-        var children = parent.querySelectorAll('.zia-reveal');
-        children.forEach(function (child, i) {
-          child.setAttribute('data-delay', Math.min(i + 1, 7));
-        });
-      });
-
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('zia-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.05, rootMargin: '0px 0px 0px 0px' });
-
-      els.forEach(function (el) { observer.observe(el); });
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
-    } else {
-      init();
-    }
-  }());
-  </script>
 
   <!-- Diagnóstico interactivo -->
   <script>
