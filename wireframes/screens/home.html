@@ -745,10 +745,10 @@
        NAVBAR
   ══════════════════════════════ -->
   <nav class="navbar">
-    <div class="navbar__logo">
+    <a href="home.html" class="navbar__logo">
       <div class="navbar__logo-box">ZIA</div>
       <span class="navbar__logo-text">ZIA Integración</span>
-    </div>
+    </a>
     <button class="navbar__hamburger" id="nav-toggle" aria-label="Menú">
       <span></span><span></span><span></span>
     </button>
@@ -800,6 +800,34 @@
   </div>
 
   <!-- ══════════════════════════════
+       RIESGOS — consecuencias
+  ══════════════════════════════ -->
+  <section>
+    <div class="section-header">
+      <h2>Las consecuencias de no cumplir</h2>
+      <p>Los organismos reguladores no esperan. Una inspección sorpresa puede paralizar su operación en horas.</p>
+    </div>
+    <div class="risks-grid">
+      <div class="risk-card">
+        <div class="risk-card__org">SAT</div>
+        <div class="risk-card__title">Multas y embargo fiscal</div>
+        <p class="risk-card__desc">El incumplimiento en control volumétrico puede derivar en multas millonarias, auditorías fiscales y embargo de instalaciones por parte del SAT.</p>
+      </div>
+      <div class="risk-card">
+        <div class="risk-card__org">ASEA</div>
+        <div class="risk-card__title">Clausura inmediata</div>
+        <p class="risk-card__desc">Sin SASISOPA o Cédula de Operación Anual vigente, ASEA puede clausurar la estación sin previo aviso hasta regularizar la situación completa.</p>
+      </div>
+      <div class="risk-card">
+        <div class="risk-card__org">CRE</div>
+        <div class="risk-card__title">Pérdida de permiso</div>
+        <p class="risk-card__desc">El incumplimiento en reportes y obligaciones ante CRE pone en riesgo el permiso de operación — sin él, no puede vender combustible legalmente.</p>
+      </div>
+    </div>
+    <p class="risks-footnote">ZIA identifica y resuelve estos riesgos antes de que lleguen las autoridades.</p>
+  </section>
+
+  <!-- ══════════════════════════════
        PROPUESTA DE VALOR — 3 pilares
   ══════════════════════════════ -->
   <section>
@@ -824,6 +852,66 @@
         <div class="pillar__title">Tranquilidad legal</div>
         <p class="pillar__desc">Defensoría jurídica especializada ante SAT, CRE, ASEA, IMSS e INFONAVIT.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       DIAGNÓSTICO INTERACTIVO
+  ══════════════════════════════ -->
+  <section>
+    <div class="section-header">
+      <h2>¿Está su gasolinera en regla?</h2>
+      <p>Responda 3 preguntas y descubra su nivel de riesgo regulatorio en este momento.</p>
+    </div>
+    <div class="diag-wrap">
+
+      <div class="diag-progress"><div class="diag-progress__bar" id="diag-bar"></div></div>
+
+      <div id="diag-questions">
+
+        <div id="dq-1">
+          <div class="diag-question__step">Pregunta 1 de 3 — SAT</div>
+          <div class="diag-question__text">¿Su control volumétrico está activo y reportando correctamente al SAT?</div>
+          <p class="diag-question__hint">Miscelánea Fiscal, Anexo 30 y envío de archivos JSON/XML certificados.</p>
+          <div class="diag-actions">
+            <button class="diag-btn" data-q="1" data-ans="yes">Sí, está activo</button>
+            <button class="diag-btn" data-q="1" data-ans="no">No / No estoy seguro</button>
+          </div>
+        </div>
+
+        <div id="dq-2" style="display:none">
+          <div class="diag-question__step">Pregunta 2 de 3 — CRE</div>
+          <div class="diag-question__text">¿Su permiso CRE está vigente y sin observaciones pendientes?</div>
+          <p class="diag-question__hint">Reportes anuales, diarios y trimestrales presentados al corriente.</p>
+          <div class="diag-actions">
+            <button class="diag-btn" data-q="2" data-ans="yes">Sí, al corriente</button>
+            <button class="diag-btn" data-q="2" data-ans="no">No / No estoy seguro</button>
+          </div>
+        </div>
+
+        <div id="dq-3" style="display:none">
+          <div class="diag-question__step">Pregunta 3 de 3 — ASEA</div>
+          <div class="diag-question__text">¿Cuenta con SASISOPA implementado y Cédula de Operación Anual vigente?</div>
+          <p class="diag-question__hint">Sistema de Administración de Seguridad Industrial y Protección Ambiental ante ASEA.</p>
+          <div class="diag-actions">
+            <button class="diag-btn" data-q="3" data-ans="yes">Sí, implementado</button>
+            <button class="diag-btn" data-q="3" data-ans="no">No / No estoy seguro</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="diag-result" style="display:none">
+        <div class="diag-result__icon" id="diag-icon"></div>
+        <div class="diag-result__title" id="diag-title"></div>
+        <p class="diag-result__desc" id="diag-desc"></p>
+        <div class="diag-result__services" id="diag-services"></div>
+        <div class="diag-result__actions">
+          <a href="contacto.html" class="btn">Hablar con un especialista</a>
+          <button class="diag-restart" id="diag-restart">Reiniciar diagnóstico</button>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -883,54 +971,51 @@
         <div class="service-card__ico">□</div>
         <div class="service-card__title">Auditoría de Cumplimiento Normativo</div>
         <p class="service-card__desc">Revisión física, documental y ponderación de riesgos como primera línea de defensa.</p>
-        <a href="servicios.html" class="service-card__link">Ver más →</a>
+        <a href="servicios.html#auditoria" class="service-card__link">Ver más →</a>
       </div>
 
       <div class="service-card">
         <div class="service-card__ico">□</div>
         <div class="service-card__title">Gestoría CRE / ASEA</div>
         <p class="service-card__desc">Trámites, permisos, reportes y obligaciones ante CRE y ASEA de principio a fin.</p>
-        <a href="servicios.html" class="service-card__link">Ver más →</a>
+        <a href="servicios.html#gestoria" class="service-card__link">Ver más →</a>
       </div>
 
       <div class="service-card">
         <div class="service-card__ico">□</div>
         <div class="service-card__title">Servicios Fiscales SAT</div>
         <p class="service-card__desc">Control volumétrico, Miscelánea Fiscal, Anexo 30 y resoluciones fiscales.</p>
-        <a href="servicios.html" class="service-card__link">Ver más →</a>
+        <a href="servicios.html#sat" class="service-card__link">Ver más →</a>
       </div>
 
       <div class="service-card">
         <div class="service-card__ico">□</div>
         <div class="service-card__title">Diagnóstico e Infraestructura</div>
         <p class="service-card__desc">Pruebas de tanques, calidad, hermeticidad y mantenimiento preventivo especializado.</p>
-        <a href="servicios.html" class="service-card__link">Ver más →</a>
+        <a href="servicios.html#diagnostico" class="service-card__link">Ver más →</a>
       </div>
 
       <div class="service-card">
         <div class="service-card__ico">□</div>
         <div class="service-card__title">Seguridad e Higiene Laboral</div>
         <p class="service-card__desc">Cumplimiento STPS y Protección Civil, seguridad de empleados y normas clave.</p>
-        <a href="servicios.html" class="service-card__link">Ver más →</a>
+        <a href="servicios.html#seguridad" class="service-card__link">Ver más →</a>
       </div>
 
       <div class="service-card">
         <div class="service-card__ico">□</div>
         <div class="service-card__title">Equipo Tecnológico</div>
         <p class="service-card__desc">Dispensarios, consolas de telemedición, videovigilancia y sistemas de control C4.</p>
-        <a href="servicios.html" class="service-card__link">Ver más →</a>
+        <a href="servicios.html#equipo" class="service-card__link">Ver más →</a>
       </div>
 
       <div class="service-card">
         <div class="service-card__ico">□</div>
         <div class="service-card__title">Defensoría Jurídica</div>
         <p class="service-card__desc">Amparo y litigio contencioso ante SAT, CRE, ASEA, IMSS e INFONAVIT.</p>
-        <a href="servicios.html" class="service-card__link">Ver más →</a>
+        <a href="servicios.html#defensoria" class="service-card__link">Ver más →</a>
       </div>
 
-      <div class="service-card service-card--more">
-        <a href="servicios.html">Ver todos los servicios →</a>
-      </div>
 
     </div>
   </section>
@@ -1111,6 +1196,7 @@
     </div>
   </footer>
 
+  <a href="https://wa.me/526641594369" class="whatsapp-sticky" title="Escribir por WhatsApp">WA</a>
   <script src="wireframe.js"></script>
 </body>
 </html>
