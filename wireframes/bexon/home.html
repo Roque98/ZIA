@@ -237,17 +237,6 @@
     }
     .whatsapp-sticky:hover { background: var(--tj-color-theme-dark); }
 
-    /* ── Fullpage scroll: solo desktop ── */
-    @media (min-width: 992px) {
-      #smooth-content main > section,
-      #smooth-content footer.tj-footer-section {
-        min-height: 100svh; /* svh evita el bug de iOS con la barra del browser */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-      .zia-hero-section { justify-content: center; }
-    }
 
     /* ── Mobile floating CTA ── */
     .mobile-cta {
@@ -1142,67 +1131,6 @@
     } else {
       init();
     }
-  }());
-  </script>
-
-  <!-- ── Fullpage scroll ── -->
-  <script>
-  (function () {
-    var sections = [];
-    var current  = 0;
-    var busy     = false;
-    var LOCK     = 950;
-    var DESKTOP  = 992; // px — mismo breakpoint que el CSS
-
-    function isDesktop() { return window.innerWidth >= DESKTOP; }
-
-    function init() {
-      if (!isDesktop()) return; // en móvil/tablet: scroll nativo, sin interceptar
-
-      var main   = document.querySelector('#smooth-content main');
-      var footer = document.querySelector('#smooth-content footer');
-      if (!main) return;
-
-      sections = Array.from(main.querySelectorAll(':scope > section'));
-      if (footer) sections.push(footer);
-      if (!sections.length) return;
-
-      window.addEventListener('wheel', onWheel, { passive: false });
-
-      document.addEventListener('keydown', function (e) {
-        if (!isDesktop()) return;
-        if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); go(1); }
-        if (e.key === 'ArrowUp'   || e.key === 'PageUp')   { e.preventDefault(); go(-1); }
-      });
-    }
-
-    function go(dir) {
-      if (!isDesktop()) return;
-      var next = current + dir;
-      if (busy || next < 0 || next >= sections.length) return;
-      busy    = true;
-      current = next;
-      snapTo(sections[current]);
-      setTimeout(function () { busy = false; }, LOCK);
-    }
-
-    function snapTo(el) {
-      var smoother = (typeof ScrollSmoother !== 'undefined') ? ScrollSmoother.get() : null;
-      if (smoother) { smoother.scrollTo(el, true); return; }
-      if (typeof gsap !== 'undefined') {
-        gsap.to(window, { scrollTo: { y: el, offsetY: 0 }, duration: 0.85, ease: 'power2.inOut', overwrite: true });
-        return;
-      }
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function onWheel(e) {
-      if (!isDesktop()) return;
-      e.preventDefault();
-      if (!busy) go(e.deltaY > 0 ? 1 : -1);
-    }
-
-    window.addEventListener('load', init);
   }());
   </script>
 
