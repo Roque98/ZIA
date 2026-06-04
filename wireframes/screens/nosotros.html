@@ -13,18 +13,22 @@
       <div class="navbar__logo-box">ZIA</div>
       <span class="navbar__logo-text">ZIA Integración</span>
     </div>
-    <ul class="navbar__links">
+    <button class="navbar__hamburger" id="nav-toggle" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navbar__links" id="nav-menu">
       <li><a href="home.html">Inicio</a></li>
       <li><a href="servicios.html">Servicios</a></li>
       <li><a href="nosotros.html" class="active">Nosotros</a></li>
       <li><a href="contacto.html">Contacto</a></li>
     </ul>
-    <a href="contacto.html" class="btn">Solicitar auditoría</a>
+    <a href="contacto.html" class="btn navbar__cta">Solicitar auditoría</a>
   </nav>
+  <div class="nav-overlay" id="nav-overlay"></div>
 
   <!-- HERO -->
   <div class="page-hero">
-    <span class="label">Quiénes somos</span>
+
     <h1>Dos décadas transformando el sector gasolinero</h1>
     <p>Desde 2000, ZIA Integración acompaña a propietarios y administradores de gasolineras en México, simplificando la complejidad regulatoria para que puedan enfocarse en su negocio.</p>
   </div>
@@ -32,7 +36,7 @@
   <!-- MISIÓN Y VISIÓN -->
   <section>
     <div class="section-header">
-      <span class="label">Identidad</span>
+
       <h2>Misión y Visión</h2>
     </div>
     <div class="grid-2 max-w-m">
@@ -52,7 +56,7 @@
   <!-- TRAYECTORIA -->
   <section>
     <div class="section-header">
-      <span class="label">Trayectoria (PDF p.5)</span>
+
       <h2>Más de 20 años al servicio del sector</h2>
       <p>Crecimiento constante y especialización progresiva desde el año 2000.</p>
     </div>
@@ -61,33 +65,43 @@
       <div class="timeline__items">
         <div class="timeline__item">
           <div class="timeline__dot"></div>
-          <div class="timeline__year">2000</div>
-          <div class="timeline__event">Orígenes en TI</div>
-          <p class="timeline__detail">Soporte y asesoría en sistemas de información y redes</p>
+          <div class="timeline__content">
+            <div class="timeline__year">2000</div>
+            <div class="timeline__event">Orígenes en TI</div>
+            <p class="timeline__detail">Soporte y asesoría en sistemas de información y redes</p>
+          </div>
         </div>
         <div class="timeline__item">
           <div class="timeline__dot"></div>
-          <div class="timeline__year">2004</div>
-          <div class="timeline__event">Especialización en Hidrocarburos</div>
-          <p class="timeline__detail">Controles volumétricos para gasolineras, sentando las bases en el sector</p>
+          <div class="timeline__content">
+            <div class="timeline__year">2004</div>
+            <div class="timeline__event">Especialización en Hidrocarburos</div>
+            <p class="timeline__detail">Controles volumétricos para gasolineras, sentando las bases en el sector</p>
+          </div>
         </div>
         <div class="timeline__item">
           <div class="timeline__dot"></div>
-          <div class="timeline__year">2010</div>
-          <div class="timeline__event">Diversificación en Seguridad</div>
-          <p class="timeline__detail">Consultoría en seguridad e higiene, Protección Civil y STPS</p>
+          <div class="timeline__content">
+            <div class="timeline__year">2010</div>
+            <div class="timeline__event">Diversificación en Seguridad</div>
+            <p class="timeline__detail">Consultoría en seguridad e higiene, Protección Civil y STPS</p>
+          </div>
         </div>
         <div class="timeline__item">
           <div class="timeline__dot"></div>
-          <div class="timeline__year">2015</div>
-          <div class="timeline__event">Adaptación Regulatoria</div>
-          <p class="timeline__detail">Ampliación del catálogo para CRE y ASEA conforme a nuevas regulaciones</p>
+          <div class="timeline__content">
+            <div class="timeline__year">2015</div>
+            <div class="timeline__event">Adaptación Regulatoria</div>
+            <p class="timeline__detail">Ampliación del catálogo para CRE y ASEA conforme a nuevas regulaciones</p>
+          </div>
         </div>
         <div class="timeline__item">
           <div class="timeline__dot"></div>
-          <div class="timeline__year">Hoy</div>
-          <div class="timeline__event">Liderazgo Integral</div>
-          <p class="timeline__detail">Auditorías, gestoría, supervisión técnica y defensoría jurídica</p>
+          <div class="timeline__content">
+            <div class="timeline__year">Hoy</div>
+            <div class="timeline__event">Liderazgo Integral</div>
+            <p class="timeline__detail">Auditorías, gestoría, supervisión técnica y defensoría jurídica</p>
+          </div>
         </div>
       </div>
     </div>
@@ -96,7 +110,7 @@
   <!-- VALORES -->
   <section>
     <div class="section-header">
-      <span class="label">Valores</span>
+
       <h2>Lo que nos define</h2>
       <p>Los principios que guían cada servicio y cada relación con nuestros clientes.</p>
     </div>
@@ -137,7 +151,7 @@
   <!-- EQUIPO -->
   <section>
     <div class="section-header">
-      <span class="label">Equipo (PDF pp. 13–14)</span>
+
       <h2>Nuestros especialistas</h2>
       <p>Un equipo multidisciplinario con experiencia comprobada en cada área del sector.</p>
     </div>
@@ -165,10 +179,14 @@
 
   <!-- CTA -->
   <div class="cta-banner">
-    <span class="label" style="background:#333;border-color:#555;color:#999;">CTA</span>
+
     <h2>¿Listo para operar con total tranquilidad?</h2>
     <p>Contáctenos hoy y descubra cómo podemos transformar la operación de su gasolinera.</p>
     <a href="contacto.html" class="btn btn-light">Solicitar consulta gratuita</a>
+  </div>
+
+  <div class="mobile-cta">
+    <a href="contacto.html" class="btn">Solicitar auditoría gratuita</a>
   </div>
 
   <footer>
@@ -214,5 +232,6 @@
     </div>
   </footer>
 
+  <script src="wireframe.js"></script>
 </body>
 </html>

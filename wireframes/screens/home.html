@@ -156,6 +156,7 @@
       inset: 0;
       background: #888;
       opacity: .15;
+      pointer-events: none;
     }
     .hero__tag {
       font-size: 11px;
@@ -505,12 +506,236 @@
       margin: 0 auto;
     }
 
-    /* ── Annotation sidebar ── */
-    .annotation {
+    /* ── PROCESS STEPS (¿Cómo funciona?) ── */
+    .process-steps {
+      display: flex;
+      align-items: flex-start;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .process-step {
+      flex: 1;
+      text-align: center;
+      padding: 0 16px;
       position: relative;
     }
-    .annotation-note {
-      display: none; /* ocultas en vista normal; ver modo anotaciones */
+    .process-step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -10px;
+      top: 11px;
+      font-size: 20px;
+      color: var(--border);
+      font-weight: 700;
+    }
+    .process-step__num {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--darker);
+      color: #fff;
+      font-size: 13px; font-weight: 900;
+      margin: 0 auto 14px;
+      display: flex; align-items: center; justify-content: center;
+      border: 3px solid var(--bg);
+      outline: 2px solid var(--darker);
+    }
+    section:nth-child(even) .process-step__num { border-color: var(--surface); }
+    .process-step__title { font-size: 13px; font-weight: 800; color: var(--darker); margin-bottom: 8px; }
+    .process-step__desc  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* ── SOCIAL PROOF ── */
+    .social-proof {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .testimonial-card {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      padding: 24px 20px;
+    }
+    section:nth-child(even) .testimonial-card { background: var(--surface); }
+    .testimonial__quote {
+      font-size: 13px;
+      color: var(--dark);
+      line-height: 1.6;
+      font-style: italic;
+      margin-bottom: 16px;
+      padding-left: 12px;
+      border-left: 3px solid var(--border);
+    }
+    .testimonial__author {
+      font-size: 11px; font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    /* ── Annotation sidebar ── */
+    .annotation { position: relative; }
+    .annotation-note { display: none; }
+
+    /* ════════════════════════════════════════
+       HAMBURGER — base (oculto en desktop)
+    ════════════════════════════════════════ */
+    .navbar__hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 28px; height: 20px;
+      background: transparent; border: none;
+      cursor: pointer; padding: 0; z-index: 110;
+    }
+    .navbar__hamburger span {
+      display: block; height: 2px;
+      background: var(--darker); border-radius: 2px;
+      transition: transform .25s, opacity .25s;
+    }
+    .navbar__hamburger.is-open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+    .navbar__hamburger.is-open span:nth-child(2) { opacity: 0; }
+    .navbar__hamburger.is-open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+    .nav-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.35); z-index: 98;
+    }
+    .nav-overlay.is-open { display: block; }
+    .mobile-cta { display: none; }
+
+    /* ════════════════════════════════════════
+       RESPONSIVE — 768 px
+    ════════════════════════════════════════ */
+    @media (max-width: 768px) {
+
+      /* Navbar */
+      .navbar { padding: 0 20px; }
+      .navbar__hamburger { display: flex; }
+      .navbar__cta { display: none; }
+      .navbar__links {
+        position: fixed; top: 0; right: 0;
+        width: 260px; height: 100vh;
+        background: var(--surface); border-left: 2px solid var(--border);
+        flex-direction: column; gap: 0;
+        padding: 72px 0 24px; z-index: 99;
+        transform: translateX(100%);
+        transition: transform .28s cubic-bezier(.4,0,.2,1);
+        overflow-y: auto;
+      }
+      .navbar__links.is-open { transform: translateX(0); }
+      .navbar__links li { border-bottom: 1px solid var(--border); }
+      .navbar__links a { display: block; padding: 16px 24px; font-size: 15px; font-weight: 700; border-bottom: none; }
+      .navbar__links a.active { background: var(--accent-bg); border-left: 3px solid var(--darker); padding-left: 21px; }
+
+      /* Secciones */
+      section { padding: 40px 20px; }
+      .section-header { margin-bottom: 32px; }
+      .section-header h2 { font-size: 22px; }
+
+      /* Hero */
+      .hero { height: auto; min-height: 500px; padding: 40px 20px 32px; }
+      .hero__title { font-size: 26px; }
+      .hero__sub { font-size: 14px; }
+      .hero__ctas { flex-direction: column; align-items: center; gap: 10px; }
+      .hero__ctas .btn { width: 100%; max-width: 320px; text-align: center; }
+      .hero__stats {
+        width: 100%;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+      }
+      .hero__stat { flex: 1; padding: 12px 6px; }
+      .hero__stat-num { font-size: 18px; }
+      .hero__stat-txt { font-size: 9px; }
+
+      /* Pilares */
+      .pillars { grid-template-columns: 1fr; }
+
+      /* Process steps → vertical */
+      .process-steps { flex-direction: column; gap: 0; }
+      .process-step {
+        display: flex; flex: none; width: 100%;
+        text-align: left; padding: 0 0 28px 0; position: relative;
+      }
+      .process-step::before {
+        content: ''; position: absolute;
+        left: 18px; top: 40px; bottom: 0;
+        width: 2px; background: var(--border); z-index: 0;
+      }
+      .process-step:last-child::before { display: none; }
+      .process-step:not(:last-child)::after { display: none; }
+      .process-step__num {
+        width: 36px; height: 36px; flex-shrink: 0;
+        margin: 0 16px 0 0; font-size: 12px;
+        position: relative; z-index: 1; border-color: var(--bg);
+      }
+      .process-step__content { flex: 1; display: flex; flex-direction: column; }
+      .process-step__title, .process-step__desc { text-align: left; }
+
+      /* ── Regulators ── */
+      .regulators {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px; max-width: 100%;
+      }
+      .regulator-badge { min-width: 0; padding: 12px 16px; }
+      .regulator-badge:last-child { grid-column: 1 / -1; max-width: 50%; margin: 0 auto; width: 100%; }
+
+      /* Services grid */
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+
+      /* Timeline → vertical */
+      .timeline__track { display: none; }
+      .timeline__items { flex-direction: column; gap: 0; }
+      .timeline__item {
+        display: flex; flex: none; width: 100%;
+        text-align: left; padding: 0 0 28px 0; position: relative;
+      }
+      .timeline__item::before {
+        content: ''; position: absolute;
+        left: 7px; top: 16px; bottom: 0;
+        width: 2px; background: var(--border); z-index: 0;
+      }
+      .timeline__item:last-child::before { display: none; }
+      .timeline__dot {
+        flex-shrink: 0; margin: 2px 16px 0 0 !important;
+        position: relative; z-index: 1;
+      }
+      .timeline__content { flex: 1; display: flex; flex-direction: column; }
+      .timeline__year, .timeline__event, .timeline__detail { text-align: left; }
+
+      /* Regulators */
+      .regulators { gap: 12px; }
+      .regulator-badge { min-width: 100px; padding: 12px 16px; }
+
+      /* Social proof */
+      .social-proof { grid-template-columns: 1fr; }
+
+      /* CTA banner */
+      .cta-banner { padding: 48px 20px; }
+      .cta-banner h2 { font-size: 24px; }
+
+      /* Footer */
+      footer { padding: 32px 20px; }
+      .footer__grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+
+      /* Floating CTA */
+      .mobile-cta {
+        display: block; position: fixed;
+        bottom: 0; left: 0; right: 0;
+        padding: 12px 16px 16px;
+        background: var(--surface); border-top: 2px solid var(--border);
+        z-index: 89; box-shadow: 0 -4px 16px rgba(0,0,0,.08);
+      }
+      .mobile-cta .btn { display: block; width: 100%; text-align: center; padding: 14px 22px; font-size: 14px; }
+      body { padding-bottom: 72px; }
+    }
+
+    @media (max-width: 480px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .footer__grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -524,13 +749,18 @@
       <div class="navbar__logo-box">ZIA</div>
       <span class="navbar__logo-text">ZIA Integración</span>
     </div>
-    <ul class="navbar__links">
-      <li><a href="#servicios">Servicios</a></li>
-      <li><a href="#nosotros">Nosotros</a></li>
-      <li><a href="#contacto">Contacto</a></li>
+    <button class="navbar__hamburger" id="nav-toggle" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navbar__links" id="nav-menu">
+      <li><a href="home.html" class="active">Inicio</a></li>
+      <li><a href="servicios.html">Servicios</a></li>
+      <li><a href="nosotros.html">Nosotros</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
     </ul>
-    <a href="#contacto" class="btn">Solicitar auditoría</a>
+    <a href="contacto.html" class="btn navbar__cta">Solicitar auditoría</a>
   </nav>
+  <div class="nav-overlay" id="nav-overlay"></div>
 
   <!-- ══════════════════════════════
        HERO
@@ -549,8 +779,8 @@
     </p>
 
     <div class="hero__ctas">
-      <a href="#contacto" class="btn">Solicitar auditoría gratuita</a>
-      <a href="#servicios" class="btn btn-outline">Conocer servicios</a>
+      <a href="contacto.html" class="btn">Solicitar auditoría gratuita</a>
+      <a href="servicios.html" class="btn btn-outline">Conocer servicios</a>
     </div>
 
     <div class="hero__stats">
@@ -574,7 +804,7 @@
   ══════════════════════════════ -->
   <section>
     <div class="section-header">
-      <span class="label">3 pilares de valor</span>
+
       <h2>Todo lo que su gasolinera necesita</h2>
       <p>Desde la auditoría inicial hasta la defensa jurídica, acompañamos cada etapa de su operación.</p>
     </div>
@@ -598,11 +828,52 @@
   </section>
 
   <!-- ══════════════════════════════
+       PROCESO — ¿Cómo funciona?
+  ══════════════════════════════ -->
+  <section>
+    <div class="section-header">
+
+      <h2>¿Cómo empezamos a trabajar juntos?</h2>
+      <p>Cuatro pasos desde el primer contacto hasta la resolución completa de sus obligaciones regulatorias.</p>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="process-step__num">01</div>
+        <div class="process-step__content">
+          <div class="process-step__title">Auditoría inicial</div>
+          <p class="process-step__desc">Evaluamos el estado real de su gasolinera ante los 5 reguladores. Sin costo y sin compromiso.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="process-step__num">02</div>
+        <div class="process-step__content">
+          <div class="process-step__title">Estrategia personalizada</div>
+          <p class="process-step__desc">Diseñamos un plan priorizado según sus riesgos, plazos y el grado de exposición ante cada autoridad.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="process-step__num">03</div>
+        <div class="process-step__content">
+          <div class="process-step__title">Ejecución y gestoría</div>
+          <p class="process-step__desc">Tramitamos, auditamos y supervisamos todo el proceso. Usted opera; nosotros gestionamos.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="process-step__num">04</div>
+        <div class="process-step__content">
+          <div class="process-step__title">Seguimiento continuo</div>
+          <p class="process-step__desc">Monitoreamos obligaciones periódicas, vencimientos y cambios normativos de forma permanente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
        SERVICIOS — 7 cards
   ══════════════════════════════ -->
   <section id="servicios">
     <div class="section-header">
-      <span class="label">7 servicios (PDF pp. 6–12)</span>
+
       <h2>Nuestros servicios</h2>
       <p>Un portafolio completo para operar dentro del marco legal y con la máxima eficiencia.</p>
     </div>
@@ -612,53 +883,53 @@
         <div class="service-card__ico">□</div>
         <div class="service-card__title">Auditoría de Cumplimiento Normativo</div>
         <p class="service-card__desc">Revisión física, documental y ponderación de riesgos como primera línea de defensa.</p>
-        <a href="#" class="service-card__link">Ver más →</a>
+        <a href="servicios.html" class="service-card__link">Ver más →</a>
       </div>
 
       <div class="service-card">
         <div class="service-card__ico">□</div>
         <div class="service-card__title">Gestoría CRE / ASEA</div>
         <p class="service-card__desc">Trámites, permisos, reportes y obligaciones ante CRE y ASEA de principio a fin.</p>
-        <a href="#" class="service-card__link">Ver más →</a>
+        <a href="servicios.html" class="service-card__link">Ver más →</a>
       </div>
 
       <div class="service-card">
         <div class="service-card__ico">□</div>
         <div class="service-card__title">Servicios Fiscales SAT</div>
         <p class="service-card__desc">Control volumétrico, Miscelánea Fiscal, Anexo 30 y resoluciones fiscales.</p>
-        <a href="#" class="service-card__link">Ver más →</a>
+        <a href="servicios.html" class="service-card__link">Ver más →</a>
       </div>
 
       <div class="service-card">
         <div class="service-card__ico">□</div>
         <div class="service-card__title">Diagnóstico e Infraestructura</div>
         <p class="service-card__desc">Pruebas de tanques, calidad, hermeticidad y mantenimiento preventivo especializado.</p>
-        <a href="#" class="service-card__link">Ver más →</a>
+        <a href="servicios.html" class="service-card__link">Ver más →</a>
       </div>
 
       <div class="service-card">
         <div class="service-card__ico">□</div>
         <div class="service-card__title">Seguridad e Higiene Laboral</div>
         <p class="service-card__desc">Cumplimiento STPS y Protección Civil, seguridad de empleados y normas clave.</p>
-        <a href="#" class="service-card__link">Ver más →</a>
+        <a href="servicios.html" class="service-card__link">Ver más →</a>
       </div>
 
       <div class="service-card">
         <div class="service-card__ico">□</div>
         <div class="service-card__title">Equipo Tecnológico</div>
         <p class="service-card__desc">Dispensarios, consolas de telemedición, videovigilancia y sistemas de control C4.</p>
-        <a href="#" class="service-card__link">Ver más →</a>
+        <a href="servicios.html" class="service-card__link">Ver más →</a>
       </div>
 
       <div class="service-card">
         <div class="service-card__ico">□</div>
         <div class="service-card__title">Defensoría Jurídica</div>
         <p class="service-card__desc">Amparo y litigio contencioso ante SAT, CRE, ASEA, IMSS e INFONAVIT.</p>
-        <a href="#" class="service-card__link">Ver más →</a>
+        <a href="servicios.html" class="service-card__link">Ver más →</a>
       </div>
 
       <div class="service-card service-card--more">
-        <a href="#">Ver todos los servicios →</a>
+        <a href="servicios.html">Ver todos los servicios →</a>
       </div>
 
     </div>
@@ -669,7 +940,7 @@
   ══════════════════════════════ -->
   <section id="nosotros">
     <div class="section-header">
-      <span class="label">Trayectoria (PDF p.5)</span>
+
       <h2>Más de 20 años al servicio del sector</h2>
       <p>Creciendo y especializándonos desde el año 2000 para adaptarnos al sector de hidrocarburos.</p>
     </div>
@@ -678,33 +949,43 @@
       <div class="timeline__items">
         <div class="timeline__item">
           <div class="timeline__dot"></div>
-          <div class="timeline__year">2000</div>
-          <div class="timeline__event">Orígenes en TI</div>
-          <p class="timeline__detail">Soporte y asesoría en sistemas de información y redes</p>
+          <div class="timeline__content">
+            <div class="timeline__year">2000</div>
+            <div class="timeline__event">Orígenes en TI</div>
+            <p class="timeline__detail">Soporte y asesoría en sistemas de información y redes</p>
+          </div>
         </div>
         <div class="timeline__item">
           <div class="timeline__dot"></div>
-          <div class="timeline__year">2004</div>
-          <div class="timeline__event">Especialización en Hidrocarburos</div>
-          <p class="timeline__detail">Controles volumétricos para gasolineras</p>
+          <div class="timeline__content">
+            <div class="timeline__year">2004</div>
+            <div class="timeline__event">Especialización en Hidrocarburos</div>
+            <p class="timeline__detail">Controles volumétricos para gasolineras</p>
+          </div>
         </div>
         <div class="timeline__item">
           <div class="timeline__dot"></div>
-          <div class="timeline__year">2010</div>
-          <div class="timeline__event">Diversificación en Seguridad</div>
-          <p class="timeline__detail">Protección Civil y STPS</p>
+          <div class="timeline__content">
+            <div class="timeline__year">2010</div>
+            <div class="timeline__event">Diversificación en Seguridad</div>
+            <p class="timeline__detail">Protección Civil y STPS</p>
+          </div>
         </div>
         <div class="timeline__item">
           <div class="timeline__dot"></div>
-          <div class="timeline__year">2015</div>
-          <div class="timeline__event">Adaptación Regulatoria</div>
-          <p class="timeline__detail">Ampliación de catálogo para CRE y ASEA</p>
+          <div class="timeline__content">
+            <div class="timeline__year">2015</div>
+            <div class="timeline__event">Adaptación Regulatoria</div>
+            <p class="timeline__detail">Ampliación de catálogo para CRE y ASEA</p>
+          </div>
         </div>
         <div class="timeline__item">
           <div class="timeline__dot"></div>
-          <div class="timeline__year">Hoy</div>
-          <div class="timeline__event">Liderazgo Integral</div>
-          <p class="timeline__detail">Auditorías, gestoría, supervisión y defensoría</p>
+          <div class="timeline__content">
+            <div class="timeline__year">Hoy</div>
+            <div class="timeline__event">Liderazgo Integral</div>
+            <p class="timeline__detail">Auditorías, gestoría, supervisión y defensoría</p>
+          </div>
         </div>
       </div>
     </div>
@@ -715,7 +996,7 @@
   ══════════════════════════════ -->
   <section>
     <div class="section-header">
-      <span class="label">5 ejes normativos (PDF p.7)</span>
+
       <h2>Operamos ante los principales organismos reguladores</h2>
     </div>
     <div class="regulators">
@@ -743,13 +1024,45 @@
   </section>
 
   <!-- ══════════════════════════════
+       PRUEBA SOCIAL — testimoniales
+  ══════════════════════════════ -->
+  <section>
+    <div class="section-header">
+
+      <h2>Gasolineras en todo México confían en ZIA</h2>
+      <p>Más de dos décadas acompañando a propietarios y administradores ante los reguladores más exigentes del sector.</p>
+    </div>
+    <div class="social-proof">
+      <div class="testimonial-card">
+        <p class="testimonial__quote">"ZIA nos sacó de una sanción pendiente con el SAT en tiempo récord. Su conocimiento del Anexo 30 es inigualable."</p>
+        <div class="testimonial__author">Propietario — Gasolinera en Sonora</div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial__quote">"Llevamos tres años con ZIA y nunca hemos tenido una clausura. Ellos manejan todo lo regulatorio; nosotros nos enfocamos en operar."</p>
+        <div class="testimonial__author">Administrador — Gasolinera en CDMX</div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial__quote">"El proceso de obtención del CURR ante ASEA fue complejo, pero ZIA lo resolvió sin contratiempos. Los recomiendo ampliamente."</p>
+        <div class="testimonial__author">Director — Grupo gasolinero en Jalisco</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
        CTA FINAL
   ══════════════════════════════ -->
   <div class="cta-banner" id="contacto">
-    <span class="label" style="background:#333;border-color:#555;color:#999;">CTA final</span>
+
     <h2>¿Su gasolinera está en regla?</h2>
     <p>Solicite una auditoría inicial sin costo. Identifique sus riesgos antes de que lo hagan las autoridades.</p>
-    <a href="#" class="btn btn-light">Contactar a un especialista</a>
+    <a href="contacto.html" class="btn btn-light">Contactar a un especialista</a>
+  </div>
+
+  <!-- ══════════════════════════════
+       FLOATING CTA (solo móvil)
+  ══════════════════════════════ -->
+  <div class="mobile-cta">
+    <a href="contacto.html" class="btn">Solicitar auditoría gratuita</a>
   </div>
 
   <!-- ══════════════════════════════
@@ -767,29 +1080,29 @@
       <div class="footer__col">
         <h4>Servicios</h4>
         <ul>
-          <li><a href="#">Auditoría Normativa</a></li>
-          <li><a href="#">Gestoría CRE/ASEA</a></li>
-          <li><a href="#">Fiscal SAT</a></li>
-          <li><a href="#">Defensoría Jurídica</a></li>
-          <li><a href="#">Equipo Tecnológico</a></li>
+          <li><a href="servicios.html">Auditoría Normativa</a></li>
+          <li><a href="servicios.html">Gestoría CRE/ASEA</a></li>
+          <li><a href="servicios.html">Fiscal SAT</a></li>
+          <li><a href="servicios.html">Defensoría Jurídica</a></li>
+          <li><a href="servicios.html">Equipo Tecnológico</a></li>
         </ul>
       </div>
       <div class="footer__col">
         <h4>Nosotros</h4>
         <ul>
-          <li><a href="#">Misión</a></li>
-          <li><a href="#">Trayectoria</a></li>
-          <li><a href="#">Equipo</a></li>
+          <li><a href="nosotros.html">Misión</a></li>
+          <li><a href="nosotros.html">Trayectoria</a></li>
+          <li><a href="nosotros.html">Equipo</a></li>
         </ul>
       </div>
       <div class="footer__col">
         <h4>Oficinas</h4>
         <ul>
-          <li><a href="#">Tijuana</a></li>
-          <li><a href="#">Morelia</a></li>
-          <li><a href="#">Chihuahua</a></li>
-          <li><a href="#">Orizaba</a></li>
-          <li><a href="#">Culiacán</a></li>
+          <li><a href="contacto.html">Tijuana</a></li>
+          <li><a href="contacto.html">Morelia</a></li>
+          <li><a href="contacto.html">Chihuahua</a></li>
+          <li><a href="contacto.html">Orizaba</a></li>
+          <li><a href="contacto.html">Culiacán</a></li>
         </ul>
       </div>
     </div>
@@ -798,5 +1111,6 @@
     </div>
   </footer>
 
+  <script src="wireframe.js"></script>
 </body>
 </html>

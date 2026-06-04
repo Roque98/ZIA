@@ -32,18 +32,22 @@
       <div class="navbar__logo-box">ZIA</div>
       <span class="navbar__logo-text">ZIA Integración</span>
     </div>
-    <ul class="navbar__links">
+    <button class="navbar__hamburger" id="nav-toggle" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navbar__links" id="nav-menu">
       <li><a href="home.html">Inicio</a></li>
       <li><a href="servicios.html">Servicios</a></li>
       <li><a href="nosotros.html">Nosotros</a></li>
       <li><a href="contacto.html" class="active">Contacto</a></li>
     </ul>
-    <a href="#formulario" class="btn">Solicitar auditoría</a>
+    <a href="#formulario" class="btn navbar__cta">Solicitar auditoría</a>
   </nav>
+  <div class="nav-overlay" id="nav-overlay"></div>
 
   <!-- HERO -->
   <div class="page-hero">
-    <span class="label">Contacto</span>
+
     <h1>Hablemos sobre su gasolinera</h1>
     <p>Contamos con 5 oficinas en puntos estratégicos del país para dar atención cercana, oportuna y especializada a cada cliente.</p>
   </div>
@@ -51,7 +55,7 @@
   <!-- FORMULARIO + INFO -->
   <section id="formulario">
     <div class="section-header">
-      <span class="label">Atención directa</span>
+
       <h2>Escríbanos o llámenos</h2>
       <p>Un especialista le responderá en menos de 24 horas hábiles.</p>
     </div>
@@ -60,7 +64,7 @@
 
       <!-- Formulario -->
       <div class="card">
-        <span class="label">Formulario de contacto</span>
+
         <form style="margin-top:12px">
           <div class="form-group">
             <label>Nombre completo</label>
@@ -115,7 +119,7 @@
 
       <!-- Info directa -->
       <div class="card">
-        <span class="label">Información directa</span>
+
         <h3 style="font-size:16px;font-weight:800;color:var(--darker);margin:12px 0 8px">Atención personalizada</h3>
         <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px">
           Cada cliente cuenta con un especialista asignado que conoce su situación particular y le da seguimiento continuo a sus trámites.
@@ -137,7 +141,7 @@
         </p>
 
         <hr class="divider" style="margin-top:16px" />
-        <span class="label" style="margin-top:16px;display:inline-block">Cobertura nacional</span>
+
         <div style="margin-top:8px">
           <span class="tag">Tijuana</span>
           <span class="tag">Morelia</span>
@@ -153,7 +157,7 @@
   <!-- OFICINAS -->
   <section>
     <div class="section-header">
-      <span class="label">Datos reales (PDF pp.13–14)</span>
+
       <h2>Nuestras oficinas</h2>
       <p>Atención presencial y a distancia en los principales estados de la República.</p>
     </div>
@@ -206,7 +210,7 @@
   <!-- MAPA -->
   <section>
     <div class="section-header">
-      <span class="label">Cobertura nacional</span>
+
       <h2>Presencia en todo México</h2>
     </div>
     <div class="img-placeholder" style="height:320px;max-width:900px;margin:0 auto;border-radius:6px;font-size:14px;">
@@ -217,10 +221,14 @@
 
   <!-- CTA -->
   <div class="cta-banner">
-    <span class="label" style="background:#333;border-color:#555;color:#999;">CTA</span>
+
     <h2>Su aliado estratégico a nivel nacional</h2>
     <p>Más de 20 años resolviendo los retos regulatorios del sector gasolinero en México.</p>
     <a href="#formulario" class="btn btn-light">Solicitar auditoría gratuita</a>
+  </div>
+
+  <div class="mobile-cta">
+    <a href="#formulario" class="btn">Ir al formulario →</a>
   </div>
 
   <footer>
@@ -266,5 +274,6 @@
     </div>
   </footer>
 
+  <script src="wireframe.js"></script>
 </body>
 </html>
