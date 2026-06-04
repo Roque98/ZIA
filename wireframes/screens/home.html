@@ -802,7 +802,7 @@
   <!-- ══════════════════════════════
        RIESGOS — consecuencias
   ══════════════════════════════ -->
-  <section>
+  <section class="section--dark">
     <div class="section-header">
       <h2>Las consecuencias de no cumplir</h2>
       <p>Los organismos reguladores no esperan. Una inspección sorpresa puede paralizar su operación en horas.</p>
@@ -865,7 +865,22 @@
     </div>
     <div class="diag-wrap">
 
-      <div class="diag-progress"><div class="diag-progress__bar" id="diag-bar"></div></div>
+      <div class="diag-stepper">
+        <div class="diag-step is-active" id="ds-1">
+          <div class="diag-step__dot">1</div>
+          <div class="diag-step__label">SAT</div>
+        </div>
+        <div class="diag-step__line"></div>
+        <div class="diag-step" id="ds-2">
+          <div class="diag-step__dot">2</div>
+          <div class="diag-step__label">CRE</div>
+        </div>
+        <div class="diag-step__line"></div>
+        <div class="diag-step" id="ds-3">
+          <div class="diag-step__dot">3</div>
+          <div class="diag-step__label">ASEA</div>
+        </div>
+      </div>
 
       <div id="diag-questions">
 
@@ -874,8 +889,8 @@
           <div class="diag-question__text">¿Su control volumétrico está activo y reportando correctamente al SAT?</div>
           <p class="diag-question__hint">Miscelánea Fiscal, Anexo 30 y envío de archivos JSON/XML certificados.</p>
           <div class="diag-actions">
-            <button class="diag-btn" data-q="1" data-ans="yes">Sí, está activo</button>
-            <button class="diag-btn" data-q="1" data-ans="no">No / No estoy seguro</button>
+            <button class="diag-btn diag-btn--yes" data-q="1" data-ans="yes">Sí, está activo</button>
+            <button class="diag-btn diag-btn--no" data-q="1" data-ans="no">No / No estoy seguro</button>
           </div>
         </div>
 
@@ -884,8 +899,8 @@
           <div class="diag-question__text">¿Su permiso CRE está vigente y sin observaciones pendientes?</div>
           <p class="diag-question__hint">Reportes anuales, diarios y trimestrales presentados al corriente.</p>
           <div class="diag-actions">
-            <button class="diag-btn" data-q="2" data-ans="yes">Sí, al corriente</button>
-            <button class="diag-btn" data-q="2" data-ans="no">No / No estoy seguro</button>
+            <button class="diag-btn diag-btn--yes" data-q="2" data-ans="yes">Sí, al corriente</button>
+            <button class="diag-btn diag-btn--no" data-q="2" data-ans="no">No / No estoy seguro</button>
           </div>
         </div>
 
@@ -894,8 +909,8 @@
           <div class="diag-question__text">¿Cuenta con SASISOPA implementado y Cédula de Operación Anual vigente?</div>
           <p class="diag-question__hint">Sistema de Administración de Seguridad Industrial y Protección Ambiental ante ASEA.</p>
           <div class="diag-actions">
-            <button class="diag-btn" data-q="3" data-ans="yes">Sí, implementado</button>
-            <button class="diag-btn" data-q="3" data-ans="no">No / No estoy seguro</button>
+            <button class="diag-btn diag-btn--yes" data-q="3" data-ans="yes">Sí, implementado</button>
+            <button class="diag-btn diag-btn--no" data-q="3" data-ans="no">No / No estoy seguro</button>
           </div>
         </div>
 

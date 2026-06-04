@@ -39,8 +39,14 @@
     for (var i = 1; i <= 3; i++) {
       var el = document.getElementById('dq-' + i);
       if (el) el.style.display = (i === n) ? 'block' : 'none';
+      var ds = document.getElementById('ds-' + i);
+      if (ds) {
+        ds.classList.toggle('is-active', i === n);
+        ds.classList.toggle('is-done', i < n);
+        var dot = ds.querySelector('.diag-step__dot');
+        if (dot) dot.textContent = i < n ? '✓' : String(i);
+      }
     }
-    diagBar(n - 1);
   }
 
   function diagResult() {
@@ -48,7 +54,15 @@
     var rWrap  = document.getElementById('diag-result');
     if (!qWrap || !rWrap) return;
 
-    diagBar(3);
+    for (var i = 1; i <= 3; i++) {
+      var ds = document.getElementById('ds-' + i);
+      if (ds) {
+        ds.classList.remove('is-active');
+        ds.classList.add('is-done');
+        var dot = ds.querySelector('.diag-step__dot');
+        if (dot) dot.textContent = '✓';
+      }
+    }
     qWrap.style.display = 'none';
     rWrap.style.display = 'block';
 
