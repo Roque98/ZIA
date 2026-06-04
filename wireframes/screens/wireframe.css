@@ -13,13 +13,22 @@ body {
   --bg:          #f0f0f0;
   --surface:     #ffffff;
   --border:      #bbb;
-  --muted:       #888;
+  --muted:       #6b6b6b;
   --dark:        #444;
   --darker:      #222;
   --accent-bg:   #ddd;
   --placeholder: #ccc;
   --tag-bg:      #e8e8e8;
   --label:       #999;
+
+  /* Escala tipográfica (Major Third ~1.25) */
+  --text-xs:   11px;
+  --text-sm:   13px;
+  --text-base: 15px;
+  --text-lg:   18px;
+  --text-xl:   24px;
+  --text-2xl:  32px;
+  --text-hero: 42px;
 }
 
 /* ── Label / annotation chip ── */
@@ -310,7 +319,7 @@ section:nth-child(even) .service-accordion { background: var(--bg); }
   border-radius: 6px;
   display: flex; align-items: center; justify-content: center;
   font-size: 14px; font-weight: 900;
-  color: rgba(255,255,255,.35);
+  color: rgba(255,255,255,.60);
   margin-bottom: 20px;
 }
 
@@ -330,13 +339,13 @@ section:nth-child(even) .service-accordion { background: var(--bg); }
 }
 
 .risk-card__desc {
-  font-size: 13px; color: rgba(255,255,255,.45); line-height: 1.75; margin-bottom: 20px;
+  font-size: 13px; color: rgba(255,255,255,.70); line-height: 1.75; margin-bottom: 20px;
 }
 
 .risk-card__impact {
   display: flex; align-items: center; gap: 8px;
   font-size: 11px; font-weight: 700;
-  color: rgba(255,255,255,.3); letter-spacing: .06em;
+  color: rgba(255,255,255,.55); letter-spacing: .06em;
   padding-top: 16px; border-top: 1px solid rgba(255,255,255,.08);
 }
 
@@ -443,6 +452,128 @@ section:nth-child(even) .diag-wrap { background: #fff; }
 }
 .diag-restart:hover { border-color: var(--darker); color: var(--darker); }
 
+/* Progress bar */
+.diag-progress {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+.diag-progress__bar {
+  height: 100%;
+  background: var(--darker);
+  border-radius: 2px;
+  width: 0%;
+  transition: width .45s cubic-bezier(.4,0,.2,1);
+}
+
+/* Question slide transitions */
+@keyframes diagSlideIn {
+  from { opacity: 0; transform: translateX(18px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.diag-question-entering {
+  animation: diagSlideIn .26s ease-out forwards;
+}
+.diag-question-leaving {
+  opacity: 0;
+  transform: translateX(-14px);
+  transition: opacity .18s ease, transform .18s ease;
+  pointer-events: none;
+}
+
+/* Risk level badge (semáforo) */
+.diag-risk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 14px 5px 10px;
+  border-radius: 999px;
+  font-size: 11px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .09em;
+  margin-bottom: 18px;
+}
+.diag-risk-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.diag-risk-badge--low      { background: #d1fae5; color: #065f46; }
+.diag-risk-badge--medium   { background: #fef9c3; color: #713f12; }
+.diag-risk-badge--high     { background: #ffedd5; color: #9a3412; }
+.diag-risk-badge--critical { background: #fee2e2; color: #991b1b; }
+.diag-risk-badge--low      .diag-risk-dot { background: #059669; }
+.diag-risk-badge--medium   .diag-risk-dot { background: #ca8a04; }
+.diag-risk-badge--high     .diag-risk-dot { background: #ea580c; }
+.diag-risk-badge--critical .diag-risk-dot { background: #dc2626; }
+
+/* Result icon variants por nivel */
+.diag-result__icon--ok       { background: #d1fae5 !important; border-color: #a7f3d0 !important; color: #059669 !important; }
+.diag-result__icon--medium   { background: #fef9c3 !important; border-color: #fde047 !important; color: #ca8a04 !important; }
+.diag-result__icon--high     { background: #ffedd5 !important; border-color: #fed7aa !important; color: #ea580c !important; }
+.diag-result__icon--critical { background: #fee2e2 !important; border-color: #fca5a5 !important; color: #dc2626 !important; }
+
+/* Per-regulator rows (Reporte de Riesgo) */
+.diag-reg-rows {
+  display: flex; flex-direction: column;
+  gap: 8px; margin-bottom: 28px; text-align: left;
+}
+.diag-reg-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 13px 16px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: var(--bg);
+}
+.diag-reg-row__status-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 900; flex-shrink: 0;
+}
+.diag-reg-row--ok   { border-color: #a7f3d0; }
+.diag-reg-row--risk { border-color: #fca5a5; }
+.diag-reg-row--ok   .diag-reg-row__status-dot { background: #d1fae5; color: #059669; }
+.diag-reg-row--risk .diag-reg-row__status-dot { background: #fee2e2; color: #dc2626; }
+.diag-reg-row__label { flex: 1; }
+.diag-reg-row__org {
+  font-size: 10px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .09em;
+  color: var(--muted); margin-bottom: 2px;
+}
+.diag-reg-row__detail { font-size: 13px; font-weight: 700; color: var(--darker); }
+.diag-reg-row__link {
+  font-size: 11px; font-weight: 700; color: var(--dark);
+  text-decoration: none; border-bottom: 1px dashed var(--border);
+  white-space: nowrap; flex-shrink: 0;
+}
+.diag-reg-row__link:hover { border-color: var(--darker); color: var(--darker); }
+
+/* ── SOCIAL PROOF ── */
+.social-proof {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.testimonial-card {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 24px 20px;
+}
+section:nth-child(even) .testimonial-card { background: var(--surface); }
+.testimonial__quote {
+  font-size: 13px;
+  color: var(--dark);
+  line-height: 1.6;
+  font-style: italic;
+  margin-bottom: 16px;
+  padding-left: 12px;
+  border-left: 3px solid var(--border);
+}
+.testimonial__author {
+  font-size: 11px; font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
 /* ── WHATSAPP STICKY ── */
 .whatsapp-sticky {
   position: fixed;
@@ -470,6 +601,9 @@ section:nth-child(even) .diag-wrap { background: #fff; }
   .diag-question__text { font-size: 18px; }
   .diag-actions { flex-direction: column; }
   .diag-result__actions { flex-direction: column; align-items: stretch; }
+  .diag-reg-row { padding: 11px 12px; gap: 10px; }
+  .diag-reg-row__detail { font-size: 12px; }
+  .diag-reg-row__status-dot { width: 24px; height: 24px; font-size: 11px; }
   .whatsapp-sticky { bottom: 80px; right: 14px; width: 46px; height: 46px; font-size: 10px; }
 }
 
@@ -612,6 +746,9 @@ section:nth-child(even) .diag-wrap { background: #fff; }
   /* ── Coverage matrix ── */
   .coverage-matrix th, .coverage-matrix td { padding: 10px 8px; }
   .coverage-matrix th:first-child { min-width: 150px; }
+
+  /* ── Social proof ── */
+  .social-proof { grid-template-columns: 1fr; }
 
   /* ── CTA banner ── */
   .cta-banner { padding: 48px 20px; }
