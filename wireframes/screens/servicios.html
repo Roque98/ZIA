@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Servicios — ZIA Integración</title>
+  <link rel="stylesheet" href="wireframe.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════
+       NAVBAR
+  ══════════════════════════════ -->
+  <nav class="navbar">
+    <div class="navbar__logo">
+      <div class="navbar__logo-box">ZIA</div>
+      <span class="navbar__logo-text">ZIA Integración</span>
+    </div>
+    <ul class="navbar__links">
+      <li><a href="home.html">Inicio</a></li>
+      <li><a href="servicios.html" class="active">Servicios</a></li>
+      <li><a href="nosotros.html">Nosotros</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <a href="contacto.html" class="btn">Solicitar auditoría</a>
+  </nav>
+
+  <!-- ══════════════════════════════
+       1. PAGE HERO
+  ══════════════════════════════ -->
+  <section class="page-hero">
+    <span class="label">Portafolio de servicios</span>
+    <h1>Todo lo que su gasolinera necesita en un solo lugar</h1>
+    <p>Un portafolio integral que cubre cada obligación regulatoria: desde la auditoría inicial y la gestoría ante organismos hasta la defensa jurídica, el diagnóstico de infraestructura y el equipamiento tecnológico.</p>
+  </section>
+
+  <!-- ══════════════════════════════
+       2. INTRO GRID — 3 stat boxes
+  ══════════════════════════════ -->
+  <section>
+    <div class="max-w">
+      <div style="display:flex;gap:24px;justify-content:center;margin-bottom:40px">
+
+        <div class="card" style="text-align:center;min-width:200px">
+          <div style="font-size:32px;font-weight:900;color:#222;margin-bottom:6px">7 servicios</div>
+          <div style="font-size:12px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.06em">Portafolio completo</div>
+        </div>
+
+        <div class="card" style="text-align:center;min-width:200px">
+          <div style="font-size:32px;font-weight:900;color:#222;margin-bottom:6px">5 organismos</div>
+          <div style="font-size:12px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.06em">Cobertura regulatoria</div>
+        </div>
+
+        <div class="card" style="text-align:center;min-width:200px">
+          <div style="font-size:32px;font-weight:900;color:#222;margin-bottom:6px">20+ años</div>
+          <div style="font-size:12px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.06em">Experiencia especializada</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       3. SERVICIOS GRID — 7 cards
+  ══════════════════════════════ -->
+  <section id="servicios">
+    <div class="section-header">
+      <h2>Nuestros servicios</h2>
+      <p>Cada servicio está diseñado para reducir su exposición al riesgo regulatorio y mantener su operación sin interrupciones.</p>
+    </div>
+    <div class="max-w">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+
+        <!-- 1. Auditoría de Cumplimiento Normativo -->
+        <div class="card">
+          <div class="card__ico">☐</div>
+          <div class="card__title">Auditoría de Cumplimiento Normativo</div>
+          <p class="card__desc">Revisión física, documental y ponderación de riesgos como primera línea de defensa ante las autoridades reguladoras.</p>
+          <ul class="list-check" style="margin-bottom:14px">
+            <li>Revisión física y técnica</li>
+            <li>Análisis documental exhaustivo</li>
+            <li>Ponderación de riesgos</li>
+          </ul>
+          <a href="#" class="card__link">Ver detalle →</a>
+        </div>
+
+        <!-- 2. Gestoría CRE / ASEA -->
+        <div class="card">
+          <div class="card__ico">☐</div>
+          <div class="card__title">Gestoría CRE / ASEA</div>
+          <p class="card__desc">Gestión integral de trámites, permisos y reportes ante la Comisión Reguladora de Energía y la Agencia de Seguridad, Energía y Ambiente.</p>
+          <ul class="list-check" style="margin-bottom:14px">
+            <li>Altas y permisos CRE</li>
+            <li>CURR y SASISOPA ASEA</li>
+            <li>Cédula de Operación Anual</li>
+          </ul>
+          <a href="#" class="card__link">Ver detalle →</a>
+        </div>
+
+        <!-- 3. Servicios Fiscales SAT -->
+        <div class="card">
+          <div class="card__ico">☐</div>
+          <div class="card__title">Servicios Fiscales SAT</div>
+          <p class="card__desc">Control volumétrico conforme a la Miscelánea Fiscal, cumplimiento del Anexo 30 y gestión de resoluciones y certificados ante el SAT.</p>
+          <ul class="list-check" style="margin-bottom:14px">
+            <li>Control volumétrico Miscelánea Fiscal</li>
+            <li>Seguridad perimetral Anexo 30</li>
+            <li>Resoluciones y certificados</li>
+          </ul>
+          <a href="#" class="card__link">Ver detalle →</a>
+        </div>
+
+        <!-- 4. Diagnóstico e Infraestructura -->
+        <div class="card">
+          <div class="card__ico">☐</div>
+          <div class="card__title">Diagnóstico e Infraestructura</div>
+          <p class="card__desc">Evaluación técnica de tanques, calidad del combustible y pruebas de hermeticidad para garantizar la integridad de su instalación.</p>
+          <ul class="list-check" style="margin-bottom:14px">
+            <li>Integridad de tanques</li>
+            <li>Pruebas no destructivas</li>
+            <li>Laboratorios NOM-016-CRE</li>
+          </ul>
+          <a href="#" class="card__link">Ver detalle →</a>
+        </div>
+
+        <!-- 5. Seguridad e Higiene Laboral -->
+        <div class="card">
+          <div class="card__ico">☐</div>
+          <div class="card__title">Seguridad e Higiene Laboral</div>
+          <p class="card__desc">Cumplimiento de las normas STPS y Protección Civil para proteger a sus trabajadores y mantener las licencias de operación vigentes.</p>
+          <ul class="list-check" style="margin-bottom:14px">
+            <li>Cumplimiento STPS</li>
+            <li>Protección Civil</li>
+            <li>Estudios de iluminación y ruido</li>
+          </ul>
+          <a href="#" class="card__link">Ver detalle →</a>
+        </div>
+
+        <!-- 6. Equipo Tecnológico -->
+        <div class="card">
+          <div class="card__ico">☐</div>
+          <div class="card__title">Equipo Tecnológico</div>
+          <p class="card__desc">Suministro, instalación y certificación de dispensarios, consolas de telemedición y sistemas de videovigilancia conformes a la normativa vigente.</p>
+          <ul class="list-check" style="margin-bottom:14px">
+            <li>Dispensarios NOM-005-SCFI-2017</li>
+            <li>Consolas de telemedición</li>
+            <li>Videovigilancia tipo C4</li>
+          </ul>
+          <a href="#" class="card__link">Ver detalle →</a>
+        </div>
+
+        <!-- 7. Defensoría Jurídica -->
+        <div class="card">
+          <div class="card__ico">☐</div>
+          <div class="card__title">Defensoría Jurídica</div>
+          <p class="card__desc">Representación legal especializada en amparo, litigio contencioso administrativo y recursos de revisión ante las autoridades del sector.</p>
+          <ul class="list-check" style="margin-bottom:14px">
+            <li>Juicios Contenciosos Administrativos</li>
+            <li>Recursos de Revisión y Amparos</li>
+            <li>Ante SAT, CRE, ASEA, IMSS</li>
+          </ul>
+          <a href="#" class="card__link">Ver detalle →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       4. REGULADORES
+  ══════════════════════════════ -->
+  <section>
+    <div class="section-header">
+      <h2>Operamos ante los principales organismos reguladores</h2>
+    </div>
+    <div class="regulators">
+      <div class="regulator-badge">
+        <div class="regulator-badge__name">ASEA</div>
+        <p class="regulator-badge__full">Agencia de Seguridad, Energía y Ambiente</p>
+      </div>
+      <div class="regulator-badge">
+        <div class="regulator-badge__name">CRE</div>
+        <p class="regulator-badge__full">Comisión Reguladora de Energía</p>
+      </div>
+      <div class="regulator-badge">
+        <div class="regulator-badge__name">SAT</div>
+        <p class="regulator-badge__full">Sistema de Administración Tributaria</p>
+      </div>
+      <div class="regulator-badge">
+        <div class="regulator-badge__name">STPS</div>
+        <p class="regulator-badge__full">Secretaría del Trabajo y Previsión Social</p>
+      </div>
+      <div class="regulator-badge">
+        <div class="regulator-badge__name">PC</div>
+        <p class="regulator-badge__full">Protección Civil</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       5. CTA BANNER
+  ══════════════════════════════ -->
+  <section class="cta-banner">
+    <h2>¿Por dónde empezar?</h2>
+    <p>La auditoría inicial es el primer paso. Identifique sus riesgos hoy.</p>
+    <a href="#" class="btn btn-light">Solicitar auditoría gratuita</a>
+  </section>
+
+  <footer>
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand-logo">
+          <div class="footer__brand-box">ZIA</div>
+          <span class="footer__brand-name">ZIA Integración</span>
+        </div>
+        <p class="footer__tagline">Su aliado estratégico en el sector gasolinero. Más de 20 años simplificando el cumplimiento normativo.</p>
+      </div>
+      <div class="footer__col">
+        <h4>Servicios</h4>
+        <ul>
+          <li><a href="#">Auditoría Normativa</a></li>
+          <li><a href="#">Gestoría CRE/ASEA</a></li>
+          <li><a href="#">Fiscal SAT</a></li>
+          <li><a href="#">Defensoría Jurídica</a></li>
+          <li><a href="#">Equipo Tecnológico</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Nosotros</h4>
+        <ul>
+          <li><a href="nosotros.html">Misión</a></li>
+          <li><a href="nosotros.html">Trayectoria</a></li>
+          <li><a href="nosotros.html">Equipo</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Oficinas</h4>
+        <ul>
+          <li><a href="contacto.html">Tijuana</a></li>
+          <li><a href="contacto.html">Morelia</a></li>
+          <li><a href="contacto.html">Chihuahua</a></li>
+          <li><a href="contacto.html">Orizaba</a></li>
+          <li><a href="contacto.html">Culiacán</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      © 2026 ZIA Integración · www.ziaintegracion.com · Su aliado estratégico en el sector gasolinero
+    </div>
+  </footer>
+
+</body>
+</html>
