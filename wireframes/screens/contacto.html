@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wireframe — Contacto · ZIA Integración</title>
+  <link rel="stylesheet" href="wireframe.css" />
+  <style>
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .offices-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .office-card { display: flex; flex-direction: column; gap: 4px; }
+    .office-card .card__ico { font-size: 18px; }
+    .office-meta { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar__logo">
+      <div class="navbar__logo-box">ZIA</div>
+      <span class="navbar__logo-text">ZIA Integración</span>
+    </div>
+    <ul class="navbar__links">
+      <li><a href="home.html">Inicio</a></li>
+      <li><a href="servicios.html">Servicios</a></li>
+      <li><a href="nosotros.html">Nosotros</a></li>
+      <li><a href="contacto.html" class="active">Contacto</a></li>
+    </ul>
+    <a href="#formulario" class="btn">Solicitar auditoría</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <span class="label">Contacto</span>
+    <h1>Hablemos sobre su gasolinera</h1>
+    <p>Contamos con 5 oficinas en puntos estratégicos del país para dar atención cercana, oportuna y especializada a cada cliente.</p>
+  </div>
+
+  <!-- FORMULARIO + INFO -->
+  <section id="formulario">
+    <div class="section-header">
+      <span class="label">Atención directa</span>
+      <h2>Escríbanos o llámenos</h2>
+      <p>Un especialista le responderá en menos de 24 horas hábiles.</p>
+    </div>
+
+    <div class="contact-layout">
+
+      <!-- Formulario -->
+      <div class="card">
+        <span class="label">Formulario de contacto</span>
+        <form style="margin-top:12px">
+          <div class="form-group">
+            <label>Nombre completo</label>
+            <input type="text" placeholder="Ej. Juan Ramírez García" />
+          </div>
+          <div class="form-group">
+            <label>Empresa / Gasolinera</label>
+            <input type="text" placeholder="Nombre o razón social" />
+          </div>
+          <div class="grid-2" style="gap:16px">
+            <div class="form-group">
+              <label>Teléfono</label>
+              <input type="tel" placeholder="10 dígitos" />
+            </div>
+            <div class="form-group">
+              <label>Correo electrónico</label>
+              <input type="email" placeholder="correo@empresa.com" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Oficina más cercana</label>
+            <select>
+              <option value="">— Seleccionar —</option>
+              <option>Tijuana</option>
+              <option>Morelia / Centro</option>
+              <option>Orizaba / Oriente</option>
+              <option>Chihuahua / Norte</option>
+              <option>Culiacán / Sinaloa</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Servicio de interés</label>
+            <select>
+              <option value="">— Seleccionar —</option>
+              <option>Auditoría de Cumplimiento Normativo</option>
+              <option>Gestoría CRE / ASEA</option>
+              <option>Servicios Fiscales SAT</option>
+              <option>Diagnóstico e Infraestructura</option>
+              <option>Seguridad e Higiene Laboral</option>
+              <option>Equipo Tecnológico</option>
+              <option>Defensoría Jurídica</option>
+              <option>No lo sé — requiero orientación</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Mensaje</label>
+            <textarea placeholder="Describa brevemente su situación o la consulta que desea realizar..."></textarea>
+          </div>
+          <button class="btn" style="width:100%">Enviar solicitud</button>
+        </form>
+      </div>
+
+      <!-- Info directa -->
+      <div class="card">
+        <span class="label">Información directa</span>
+        <h3 style="font-size:16px;font-weight:800;color:var(--darker);margin:12px 0 8px">Atención personalizada</h3>
+        <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px">
+          Cada cliente cuenta con un especialista asignado que conoce su situación particular y le da seguimiento continuo a sus trámites.
+        </p>
+
+        <hr class="divider" />
+        <p style="font-size:13px;margin:12px 0"><strong>Sitio web</strong><br>
+          <span style="color:var(--muted)">www.ziaintegracion.com</span>
+        </p>
+
+        <hr class="divider" />
+        <p style="font-size:13px;margin:12px 0"><strong>Horario de atención</strong><br>
+          <span style="color:var(--muted)">Lunes a Viernes, 9:00 – 18:00 hrs</span>
+        </p>
+
+        <hr class="divider" />
+        <p style="font-size:13px;margin:12px 0"><strong>Director general</strong><br>
+          <span style="color:var(--muted)">Ing. Daniel Ponce</span>
+        </p>
+
+        <hr class="divider" style="margin-top:16px" />
+        <span class="label" style="margin-top:16px;display:inline-block">Cobertura nacional</span>
+        <div style="margin-top:8px">
+          <span class="tag">Tijuana</span>
+          <span class="tag">Morelia</span>
+          <span class="tag">Orizaba</span>
+          <span class="tag">Chihuahua</span>
+          <span class="tag">Culiacán</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- OFICINAS -->
+  <section>
+    <div class="section-header">
+      <span class="label">Datos reales (PDF pp.13–14)</span>
+      <h2>Nuestras oficinas</h2>
+      <p>Atención presencial y a distancia en los principales estados de la República.</p>
+    </div>
+
+    <div class="offices-grid">
+
+      <div class="card office-card">
+        <div class="card__ico">📍</div>
+        <div class="card__title">Tijuana — Oficina Centro</div>
+        <p class="card__desc">Mtra. Alma Estrella Domínguez</p>
+        <p class="office-meta">☎ 664 159 4369</p>
+        <p class="office-meta">✉ estrella.d@ziaintegracion.com</p>
+      </div>
+
+      <div class="card office-card">
+        <div class="card__ico">📍</div>
+        <div class="card__title">Morelia — Oficina Centro</div>
+        <p class="card__desc">Ing. Edilberto Brito</p>
+        <p class="office-meta">☎ 443 328 0991</p>
+        <p class="office-meta">✉ ebrito@ziaintegracion.com</p>
+      </div>
+
+      <div class="card office-card">
+        <div class="card__ico">📍</div>
+        <div class="card__title">Orizaba — Oficina Oriente</div>
+        <p class="card__desc">Ing. Francisco Santos</p>
+        <p class="office-meta">☎ 272 215 8160</p>
+        <p class="office-meta">✉ fco.santos@ziaintegracion.com</p>
+      </div>
+
+      <div class="card office-card">
+        <div class="card__ico">📍</div>
+        <div class="card__title">Chihuahua — Oficina Norte</div>
+        <p class="card__desc">Ing. Alejandro Vela</p>
+        <p class="office-meta">☎ 614 471 8727</p>
+        <p class="office-meta">✉ a.vela@ziaintegracion.com</p>
+      </div>
+
+      <div class="card office-card">
+        <div class="card__ico">📍</div>
+        <div class="card__title">Culiacán — Oficina Sinaloa</div>
+        <p class="card__desc">Ing. Jaziel Cienfuegos</p>
+        <p class="office-meta" style="color:var(--border)">☎ Pendiente confirmar</p>
+        <p class="office-meta" style="color:var(--border)">✉ Pendiente confirmar</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MAPA -->
+  <section>
+    <div class="section-header">
+      <span class="label">Cobertura nacional</span>
+      <h2>Presencia en todo México</h2>
+    </div>
+    <div class="img-placeholder" style="height:320px;max-width:900px;margin:0 auto;border-radius:6px;font-size:14px;">
+      [ Mapa interactivo de cobertura — México ]<br>
+      <span style="font-size:11px;margin-top:8px;display:block;opacity:.7">Tijuana · Morelia · Orizaba · Chihuahua · Culiacán</span>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-banner">
+    <span class="label" style="background:#333;border-color:#555;color:#999;">CTA</span>
+    <h2>Su aliado estratégico a nivel nacional</h2>
+    <p>Más de 20 años resolviendo los retos regulatorios del sector gasolinero en México.</p>
+    <a href="#formulario" class="btn btn-light">Solicitar auditoría gratuita</a>
+  </div>
+
+  <footer>
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand-logo">
+          <div class="footer__brand-box">ZIA</div>
+          <span class="footer__brand-name">ZIA Integración</span>
+        </div>
+        <p class="footer__tagline">Su aliado estratégico en el sector gasolinero. Más de 20 años simplificando el cumplimiento normativo.</p>
+      </div>
+      <div class="footer__col">
+        <h4>Servicios</h4>
+        <ul>
+          <li><a href="servicios.html">Auditoría Normativa</a></li>
+          <li><a href="servicios.html">Gestoría CRE/ASEA</a></li>
+          <li><a href="servicios.html">Fiscal SAT</a></li>
+          <li><a href="servicios.html">Defensoría Jurídica</a></li>
+          <li><a href="servicios.html">Equipo Tecnológico</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Nosotros</h4>
+        <ul>
+          <li><a href="nosotros.html">Misión</a></li>
+          <li><a href="nosotros.html">Trayectoria</a></li>
+          <li><a href="nosotros.html">Equipo</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Oficinas</h4>
+        <ul>
+          <li><a href="#">Tijuana</a></li>
+          <li><a href="#">Morelia</a></li>
+          <li><a href="#">Chihuahua</a></li>
+          <li><a href="#">Orizaba</a></li>
+          <li><a href="#">Culiacán</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      © 2026 ZIA Integración · www.ziaintegracion.com · Su aliado estratégico en el sector gasolinero
+    </div>
+  </footer>
+
+</body>
+</html>
