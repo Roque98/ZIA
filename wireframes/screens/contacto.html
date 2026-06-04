@@ -7,85 +7,160 @@
   <link rel="stylesheet" href="wireframe.css" />
   <style>
 
-    /* ── Canales directos ── */
-    .contact-channels {
+    /* ── Layout principal: 2 columnas ── */
+    .contact-layout {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      max-width: 900px;
+      grid-template-columns: 360px 1fr;
+      gap: 40px;
+      max-width: 1100px;
       margin: 0 auto;
+      align-items: start;
     }
+    .contact-left__header { margin-bottom: 24px; }
+    .contact-left__header h2 { font-size: 26px; font-weight: 900; color: var(--darker); margin-bottom: 8px; }
+    .contact-left__header p  { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* Canales: siempre en fila (columna izquierda) */
+    .contact-channels { display: flex; flex-direction: column; gap: 12px; }
     .channel-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 32px 24px;
-      background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: 6px;
-      text-decoration: none;
-      color: var(--darker);
+      display: flex; flex-direction: row;
+      align-items: center; gap: 16px;
+      padding: 16px 20px;
+      background: var(--surface); border: 2px solid var(--border);
+      border-radius: 6px; text-decoration: none; color: var(--darker);
     }
     section:nth-child(even) .channel-card { background: var(--bg); }
     .channel-card:hover { border-color: var(--darker); }
     .channel-card--primary { border-color: var(--darker); border-width: 3px; }
     .channel-card__ico {
-      width: 56px; height: 56px; font-size: 24px;
+      width: 48px; height: 48px; font-size: 20px; flex-shrink: 0;
       background: var(--accent-bg); border: 2px solid var(--border);
-      border-radius: 50%; margin-bottom: 14px;
-      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    }
+    .channel-card__body  { display: flex; flex-direction: column; flex: 1; }
+    .channel-card__title  { font-size: 14px; font-weight: 900; color: var(--darker); margin-bottom: 4px; }
+    .channel-card__detail { font-size: 12px; color: var(--muted); line-height: 1.4; margin-bottom: 8px; }
+    .channel-card__action { font-size: 12px; font-weight: 700; color: var(--dark); border-bottom: 1px solid var(--border); align-self: flex-start; }
+
+    /* Header dentro del formulario */
+    .form-header { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .form-header h3 { font-size: 16px; font-weight: 900; color: var(--darker); margin-bottom: 4px; }
+    .form-header p  { font-size: 12px; color: var(--muted); }
+
+    /* ── Widget de oficinas (mapa + panel) ── */
+    .offices-layout {
+      display: grid;
+      grid-template-columns: 1fr 290px;
+      align-items: stretch;
+      max-width: 1100px;
+      margin: 0 auto;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .offices-map {
+      background: #e8eaed;
+      border-right: 1px solid var(--border);
+    }
+    #mexico-map {
+      position: relative;
+      height: 100%;
+      min-height: 280px;
+      overflow: hidden;
+      background: #e8eaed;
+    }
+    #mexico-map svg { display: block; width: 100%; height: 100%; }
+    #mexico-map svg path {
+      fill: #d6d8db; stroke: #fff; stroke-width: 0.6; transition: fill .12s;
+    }
+    #mexico-map svg .map-state--office  { fill: #aaa; cursor: pointer; }
+    #mexico-map svg .map-state--pending { fill: #c4c4c4; stroke-dasharray: 3 2; }
+    #mexico-map svg .map-state--office:hover,
+    #mexico-map svg .map-state--office.map-state--active { fill: var(--darker); }
+
+    /* Tooltip */
+    .map-tooltip {
+      position: absolute;
+      background: var(--surface);
+      border: 2px solid var(--darker);
+      border-radius: 4px;
+      padding: 12px 16px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .1s;
+      z-index: 20;
+      min-width: 200px;
+      transform: translate(14px, -50%);
+    }
+    .map-tooltip.is-visible { opacity: 1; }
+    .map-tooltip__city    { font-size: 14px; font-weight: 900; color: var(--darker); margin-bottom: 2px; }
+    .map-tooltip__region  { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 8px; }
+    .map-tooltip__name    { font-size: 11px; color: var(--dark); margin-bottom: 4px; }
+    .map-tooltip__phone   { font-size: 13px; font-weight: 800; color: var(--darker); }
+    .map-tooltip__pending { font-size: 11px; color: var(--muted); font-style: italic; }
+
+    /* Panel derecho */
+    .offices-panel {
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+    }
+    section:nth-child(even) .offices-panel { background: var(--bg); }
+    .offices-panel__header {
+      padding: 20px 20px 16px;
+      border-bottom: 2px solid var(--border);
       flex-shrink: 0;
     }
-    .channel-card__body { display: flex; flex-direction: column; align-items: center; }
-    .channel-card__title { font-size: 15px; font-weight: 900; color: var(--darker); margin-bottom: 6px; }
-    .channel-card__detail { font-size: 12px; color: var(--muted); line-height: 1.4; margin-bottom: 14px; }
-    .channel-card__action { font-size: 12px; font-weight: 700; color: var(--dark); border-bottom: 1px solid var(--border); }
+    .offices-panel__header h2 { font-size: 18px; font-weight: 900; color: var(--darker); margin-bottom: 4px; }
+    .offices-panel__header p  { font-size: 11px; color: var(--muted); line-height: 1.4; }
 
-    /* ── Formulario centrado ── */
-    .contact-form-wrap {
-      max-width: 540px;
-      margin: 0 auto;
+    /* Filas compactas de oficina */
+    .office-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0 20px;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      flex: 1;
+      min-height: 44px;
+      transition: background .12s;
     }
-
-    /* ── Oficinas ── */
-    .offices-list {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .office-item {
-      display: flex; flex-direction: column; gap: 2px;
-      padding: 20px; background: var(--surface);
-      border: 2px solid var(--border); border-radius: 6px;
-      text-decoration: none; color: inherit;
-    }
-    section:nth-child(even) .office-item { background: var(--bg); }
-    .office-item:hover { border-color: var(--darker); }
-    .office-item__city   { font-size: 14px; font-weight: 900; color: var(--darker); }
-    .office-item__region { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
-    .office-item__name   { font-size: 12px; color: var(--dark); margin-bottom: 10px; }
-    .office-item__phone  { font-size: 14px; font-weight: 800; color: var(--darker); }
-    .office-item__email  { font-size: 11px; color: var(--muted); }
-    .office-item--pending .office-item__phone { color: var(--border); font-weight: 600; font-size: 12px; }
+    .office-row:last-child { border-bottom: none; }
+    .office-row:hover,
+    .office-row.is-active  { background: var(--accent-bg); border-left: 3px solid var(--darker); padding-left: 17px; }
+    section:nth-child(even) .office-row:hover,
+    section:nth-child(even) .office-row.is-active { background: var(--surface); }
+    .office-row--pending   { cursor: default; }
+    .office-row__city      { display: block; font-size: 13px; font-weight: 800; color: var(--darker); line-height: 1.2; }
+    .office-row__region    { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+    .office-row__phone     { font-size: 12px; font-weight: 700; color: var(--dark); white-space: nowrap; flex-shrink: 0; }
+    .office-row--pending .office-row__phone { color: var(--muted); font-weight: 400; font-style: italic; font-size: 11px; }
 
     /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .offices-layout { grid-template-columns: 1fr 260px; }
+    }
+
     @media (max-width: 768px) {
 
-      .contact-channels { grid-template-columns: 1fr; max-width: 100%; }
+      /* Apila: mapa arriba, panel (2 cols) abajo */
+      .offices-layout { grid-template-columns: 1fr; }
+      .offices-map { border-right: none; border-bottom: 1px solid var(--border); }
+      #mexico-map { height: auto; min-height: 0; aspect-ratio: 792 / 497; }
+      .offices-panel { display: grid; grid-template-columns: 1fr 1fr; }
+      .offices-panel__header { grid-column: 1 / -1; border-bottom: 1px solid var(--border); }
+      .office-row { flex: none; min-height: 58px; border-bottom: 1px solid var(--border); }
+      .office-row:nth-last-child(-n+2) { border-bottom: none; }
+      .map-tooltip { display: none !important; }
+    }
 
-      .channel-card {
-        flex-direction: row; text-align: left;
-        padding: 18px 20px; gap: 16px; align-items: center;
-      }
-      .channel-card--primary { border-width: 2px; border-color: var(--darker); }
-      .channel-card__ico { margin-bottom: 0; width: 48px; height: 48px; font-size: 20px; }
-      .channel-card__body { flex: 1; align-items: flex-start; }
-      .channel-card__detail { margin-bottom: 8px; }
-
-      .offices-list { grid-template-columns: 1fr; }
+    @media (max-width: 480px) {
+      .offices-panel { grid-template-columns: 1fr; }
+      .office-row:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
+      .office-row:last-child { border-bottom: none; }
     }
   </style>
 </head>
@@ -110,91 +185,93 @@
   <div class="nav-overlay" id="nav-overlay"></div>
   <div class="breadcrumb"><a href="home.html">Inicio</a> <span>›</span> Contacto</div>
 
-  <!-- HERO -->
-  <div class="page-hero">
-    <h1>Contáctenos hoy</h1>
-    <p>Elija el canal que prefiera. Un especialista le responde en menos de 2 horas en horario hábil.</p>
-  </div>
-
   <!-- ══════════════════════════════
-       CANALES DIRECTOS
+       CONTACTO — layout principal
   ══════════════════════════════ -->
   <section id="canales">
-    <div class="section-header">
-      <h2>¿Cómo prefiere que lo contactemos?</h2>
-    </div>
-    <div class="contact-channels">
+    <div class="contact-layout">
 
-      <a href="https://wa.me/526641594369" class="channel-card channel-card--primary">
-        <div class="channel-card__ico">💬</div>
-        <div class="channel-card__body">
-          <div class="channel-card__title">WhatsApp</div>
-          <div class="channel-card__detail">664 159 4369<br>Respuesta inmediata</div>
-          <span class="channel-card__action">Abrir chat →</span>
+      <!-- Columna izquierda: título + canales directos -->
+      <div class="contact-left">
+        <div class="contact-left__header">
+          <h2>Contáctenos hoy</h2>
+          <p>Un especialista le responde en menos de 2 horas en horario hábil. Elija el canal que prefiera o déjenos sus datos.</p>
         </div>
-      </a>
+        <div class="contact-channels">
 
-      <a href="tel:+526641594369" class="channel-card">
-        <div class="channel-card__ico">📞</div>
-        <div class="channel-card__body">
-          <div class="channel-card__title">Llamar</div>
-          <div class="channel-card__detail">664 159 4369<br>Lun–Vie 9:00–18:00</div>
-          <span class="channel-card__action">Marcar →</span>
+          <a href="https://wa.me/526641594369" class="channel-card channel-card--primary">
+            <div class="channel-card__ico">💬</div>
+            <div class="channel-card__body">
+              <div class="channel-card__title">WhatsApp</div>
+              <div class="channel-card__detail">664 159 4369 · Respuesta inmediata</div>
+              <span class="channel-card__action">Abrir chat →</span>
+            </div>
+          </a>
+
+          <a href="tel:+526641594369" class="channel-card">
+            <div class="channel-card__ico">📞</div>
+            <div class="channel-card__body">
+              <div class="channel-card__title">Llamar</div>
+              <div class="channel-card__detail">664 159 4369 · Lun–Vie 9:00–18:00</div>
+              <span class="channel-card__action">Marcar →</span>
+            </div>
+          </a>
+
+          <a href="mailto:estrella.d@ziaintegracion.com" class="channel-card">
+            <div class="channel-card__ico">✉</div>
+            <div class="channel-card__body">
+              <div class="channel-card__title">Correo electrónico</div>
+              <div class="channel-card__detail">estrella.d@ziaintegracion.com</div>
+              <span class="channel-card__action">Enviar correo →</span>
+            </div>
+          </a>
+
         </div>
-      </a>
-
-      <a href="mailto:estrella.d@ziaintegracion.com" class="channel-card">
-        <div class="channel-card__ico">✉</div>
-        <div class="channel-card__body">
-          <div class="channel-card__title">Correo</div>
-          <div class="channel-card__detail">estrella.d@ziaintegracion.com<br>Respuesta en 24 hrs</div>
-          <span class="channel-card__action">Enviar correo →</span>
-        </div>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════
-       FORMULARIO
-  ══════════════════════════════ -->
-  <section id="formulario">
-    <div class="section-header">
-      <h2>O déjenos sus datos</h2>
-      <p>Lo contactamos nosotros. Sin compromiso.</p>
-    </div>
-    <div class="contact-form-wrap">
-      <div class="card">
-        <form>
-          <div class="form-group">
-            <label>Nombre y empresa</label>
-            <input type="text" placeholder="Ej. Juan Ramírez — Gasolinera Las Torres" />
-          </div>
-          <div class="form-group">
-            <label>Teléfono / WhatsApp</label>
-            <input type="tel" placeholder="10 dígitos" />
-          </div>
-          <div class="form-group">
-            <label>Servicio de interés</label>
-            <select>
-              <option value="">— Seleccionar —</option>
-              <option>Auditoría de Cumplimiento Normativo</option>
-              <option>Gestoría CRE / ASEA</option>
-              <option>Servicios Fiscales SAT</option>
-              <option>Diagnóstico e Infraestructura</option>
-              <option>Seguridad e Higiene Laboral</option>
-              <option>Equipo Tecnológico</option>
-              <option>Defensoría Jurídica</option>
-              <option>No lo sé — requiero orientación</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>¿En qué le podemos ayudar?</label>
-            <textarea placeholder="Descríbanos brevemente su situación…"></textarea>
-          </div>
-          <button class="btn" style="width:100%">Enviar solicitud</button>
-        </form>
       </div>
+
+      <!-- Columna derecha: formulario -->
+      <div class="contact-right">
+        <div class="card">
+          <div class="form-header">
+            <h3>Déjenos sus datos</h3>
+            <p>Lo contactamos nosotros. Sin compromiso.</p>
+          </div>
+          <form id="contact-form" novalidate>
+            <div class="form-group">
+              <label for="cf-nombre">Nombre</label>
+              <input id="cf-nombre" type="text" placeholder="Ej. Juan Ramírez" required />
+            </div>
+            <div class="form-group">
+              <label for="cf-empresa">Empresa / Gasolinera</label>
+              <input id="cf-empresa" type="text" placeholder="Ej. Gasolinera Las Torres" />
+            </div>
+            <div class="form-group">
+              <label for="cf-tel">Teléfono / WhatsApp</label>
+              <input id="cf-tel" type="tel" placeholder="10 dígitos" required />
+            </div>
+            <div class="form-group">
+              <label for="cf-servicio">Servicio de interés</label>
+              <select id="cf-servicio">
+                <option value="">— Seleccionar —</option>
+                <option>Auditoría de Cumplimiento Normativo</option>
+                <option>Gestoría CRE / ASEA</option>
+                <option>Servicios Fiscales SAT</option>
+                <option>Diagnóstico e Infraestructura</option>
+                <option>Seguridad e Higiene Laboral</option>
+                <option>Equipo Tecnológico</option>
+                <option>Defensoría Jurídica</option>
+                <option>No lo sé — requiero orientación</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cf-mensaje">¿En qué le podemos ayudar?</label>
+              <textarea id="cf-mensaje" placeholder="Descríbanos brevemente su situación…"></textarea>
+            </div>
+            <button type="submit" class="btn" style="width:100%">Enviar solicitud</button>
+          </form>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -202,49 +279,61 @@
        OFICINAS
   ══════════════════════════════ -->
   <section>
-    <div class="section-header">
-      <h2>Nuestras oficinas</h2>
-      <p>Presencia en todo México. Toque el número para llamar directamente.</p>
-    </div>
-    <div class="offices-list">
+    <div class="offices-layout">
 
-      <a href="tel:+526641594369" class="office-item">
-        <div class="office-item__city">Tijuana</div>
-        <div class="office-item__region">Oficina Centro</div>
-        <div class="office-item__name">Mtra. Alma Estrella Domínguez</div>
-        <div class="office-item__phone">664 159 4369</div>
-        <div class="office-item__email">estrella.d@ziaintegracion.com</div>
-      </a>
+      <!-- Mapa interactivo -->
+      <div class="offices-map">
+        <div id="mexico-map">
+          <div class="map-tooltip" id="map-tooltip"></div>
+        </div>
+      </div>
 
-      <a href="tel:+524433280991" class="office-item">
-        <div class="office-item__city">Morelia</div>
-        <div class="office-item__region">Oficina Centro</div>
-        <div class="office-item__name">Ing. Edilberto Brito</div>
-        <div class="office-item__phone">443 328 0991</div>
-        <div class="office-item__email">ebrito@ziaintegracion.com</div>
-      </a>
+      <!-- Panel: título + filas compactas -->
+      <div class="offices-panel">
+        <div class="offices-panel__header">
+          <h2>Nuestras oficinas</h2>
+          <p class="offices-panel__instruction">Pase el cursor sobre un estado para ver los datos de contacto.</p>
+        </div>
 
-      <a href="tel:+522722158160" class="office-item">
-        <div class="office-item__city">Orizaba</div>
-        <div class="office-item__region">Oficina Oriente</div>
-        <div class="office-item__name">Ing. Francisco Santos</div>
-        <div class="office-item__phone">272 215 8160</div>
-        <div class="office-item__email">fco.santos@ziaintegracion.com</div>
-      </a>
+        <a href="tel:+526641594369" class="office-row" data-office="tijuana">
+          <div class="office-row__info">
+            <span class="office-row__city">Tijuana</span>
+            <span class="office-row__region">Noroeste</span>
+          </div>
+          <span class="office-row__phone">664 159 4369</span>
+        </a>
 
-      <a href="tel:+526144718727" class="office-item">
-        <div class="office-item__city">Chihuahua</div>
-        <div class="office-item__region">Oficina Norte</div>
-        <div class="office-item__name">Ing. Alejandro Vela</div>
-        <div class="office-item__phone">614 471 8727</div>
-        <div class="office-item__email">a.vela@ziaintegracion.com</div>
-      </a>
+        <a href="tel:+526144718727" class="office-row" data-office="chihuahua">
+          <div class="office-row__info">
+            <span class="office-row__city">Chihuahua</span>
+            <span class="office-row__region">Norte</span>
+          </div>
+          <span class="office-row__phone">614 471 8727</span>
+        </a>
 
-      <div class="office-item office-item--pending" style="cursor:default">
-        <div class="office-item__city">Culiacán</div>
-        <div class="office-item__region">Oficina Sinaloa</div>
-        <div class="office-item__name">Ing. Jaziel Cienfuegos</div>
-        <div class="office-item__phone">Datos pendientes</div>
+        <div class="office-row office-row--pending" data-office="culiacan">
+          <div class="office-row__info">
+            <span class="office-row__city">Culiacán</span>
+            <span class="office-row__region">Sinaloa</span>
+          </div>
+          <span class="office-row__phone">Datos pendientes</span>
+        </div>
+
+        <a href="tel:+524433280991" class="office-row" data-office="morelia">
+          <div class="office-row__info">
+            <span class="office-row__city">Morelia</span>
+            <span class="office-row__region">Centro</span>
+          </div>
+          <span class="office-row__phone">443 328 0991</span>
+        </a>
+
+        <a href="tel:+522722158160" class="office-row" data-office="orizaba">
+          <div class="office-row__info">
+            <span class="office-row__city">Orizaba</span>
+            <span class="office-row__region">Oriente</span>
+          </div>
+          <span class="office-row__phone">272 215 8160</span>
+        </a>
       </div>
 
     </div>
@@ -289,7 +378,7 @@
           <li><a href="tel:+524433280991">Morelia</a></li>
           <li><a href="tel:+526144718727">Chihuahua</a></li>
           <li><a href="tel:+522722158160">Orizaba</a></li>
-          <li><a href="#">Culiacán</a></li>
+          <li><span style="color:#777;font-style:italic">Culiacán (próxim.)</span></li>
         </ul>
       </div>
     </div>
