@@ -26,10 +26,10 @@
        NAVBAR
   ══════════════════════════════ -->
   <nav class="navbar">
-    <div class="navbar__logo">
+    <a href="home.html" class="navbar__logo">
       <div class="navbar__logo-box">ZIA</div>
       <span class="navbar__logo-text">ZIA Integración</span>
-    </div>
+    </a>
     <button class="navbar__hamburger" id="nav-toggle" aria-label="Menú">
       <span></span><span></span><span></span>
     </button>
@@ -42,15 +42,15 @@
     <a href="contacto.html" class="btn navbar__cta">Solicitar auditoría</a>
   </nav>
   <div class="nav-overlay" id="nav-overlay"></div>
+  <div class="breadcrumb"><a href="home.html">Inicio</a> <span>›</span> Servicios</div>
 
   <!-- ══════════════════════════════
        1. PAGE HERO
   ══════════════════════════════ -->
-  <section class="page-hero">
-
+  <div class="page-hero">
     <h1>Todo lo que su gasolinera necesita en un solo lugar</h1>
     <p>Un portafolio integral que cubre cada obligación regulatoria: desde la auditoría inicial y la gestoría ante organismos hasta la defensa jurídica, el diagnóstico de infraestructura y el equipamiento tecnológico.</p>
-  </section>
+  </div>
 
   <!-- ══════════════════════════════
        2. STATS
@@ -126,7 +126,7 @@
     </div>
     <div class="max-w">
 
-      <details class="service-accordion" open>
+      <details class="service-accordion" id="auditoria" open>
         <summary>
           <div class="service-accordion__ico">□</div>
           <div class="service-accordion__meta">
@@ -152,7 +152,7 @@
         </div>
       </details>
 
-      <details class="service-accordion">
+      <details class="service-accordion" id="gestoria">
         <summary>
           <div class="service-accordion__ico">□</div>
           <div class="service-accordion__meta">
@@ -180,7 +180,7 @@
         </div>
       </details>
 
-      <details class="service-accordion">
+      <details class="service-accordion" id="sat">
         <summary>
           <div class="service-accordion__ico">□</div>
           <div class="service-accordion__meta">
@@ -207,7 +207,7 @@
         </div>
       </details>
 
-      <details class="service-accordion">
+      <details class="service-accordion" id="diagnostico">
         <summary>
           <div class="service-accordion__ico">□</div>
           <div class="service-accordion__meta">
@@ -234,7 +234,7 @@
         </div>
       </details>
 
-      <details class="service-accordion">
+      <details class="service-accordion" id="seguridad">
         <summary>
           <div class="service-accordion__ico">□</div>
           <div class="service-accordion__meta">
@@ -260,7 +260,7 @@
         </div>
       </details>
 
-      <details class="service-accordion">
+      <details class="service-accordion" id="equipo">
         <summary>
           <div class="service-accordion__ico">□</div>
           <div class="service-accordion__meta">
@@ -286,7 +286,7 @@
         </div>
       </details>
 
-      <details class="service-accordion">
+      <details class="service-accordion" id="defensoria">
         <summary>
           <div class="service-accordion__ico">□</div>
           <div class="service-accordion__meta">
@@ -398,15 +398,6 @@
     </div>
   </section>
 
-  <!-- ══════════════════════════════
-       6. CTA
-  ══════════════════════════════ -->
-  <section class="cta-banner">
-
-    <h2>¿Por dónde empezar?</h2>
-    <p>La Auditoría de Cumplimiento Normativo es el primer paso. Identificamos sus riesgos reales antes de diseñar cualquier estrategia de cumplimiento.</p>
-    <a href="contacto.html" class="btn btn-light">Solicitar auditoría gratuita</a>
-  </section>
 
   <div class="mobile-cta">
     <a href="contacto.html" class="btn">Solicitar auditoría gratuita</a>
@@ -455,6 +446,17 @@
     </div>
   </footer>
 
+  <a href="https://wa.me/526641594369" class="whatsapp-sticky" title="Escribir por WhatsApp">WA</a>
   <script src="wireframe.js"></script>
+  <script>
+    var hash = window.location.hash.slice(1);
+    if (hash) {
+      var target = document.getElementById(hash);
+      if (target && target.tagName === 'DETAILS') {
+        target.open = true;
+        setTimeout(function () { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80);
+      }
+    }
+  </script>
 </body>
 </html>

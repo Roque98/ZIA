@@ -15,5 +15,5 @@ Thumbs.db
 dist/
 build/
 
-# Client (private documents — tracked manually)
-# _client/ is intentionally included
+# Client (private documents — never commit)
+_client/
