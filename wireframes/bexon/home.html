@@ -237,16 +237,17 @@
     }
     .whatsapp-sticky:hover { background: var(--tj-color-theme-dark); }
 
-    /* ── Fullpage scroll: cada sección llena el viewport ── */
-    #smooth-content main > section,
-    #smooth-content footer.tj-footer-section {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+    /* ── Fullpage scroll: solo desktop ── */
+    @media (min-width: 992px) {
+      #smooth-content main > section,
+      #smooth-content footer.tj-footer-section {
+        min-height: 100svh; /* svh evita el bug de iOS con la barra del browser */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .zia-hero-section { justify-content: center; }
     }
-    /* Hero: centrado verticalmente */
-    .zia-hero-section { justify-content: center; }
 
     /* ── Mobile floating CTA ── */
     .mobile-cta {
@@ -1073,41 +1074,35 @@
   <script>
   (function () {
     var sections = [];
-    var current = 0;
-    var busy    = false;
-    var LOCK    = 950; // ms de cooldown entre secciones
+    var current  = 0;
+    var busy     = false;
+    var LOCK     = 950;
+    var DESKTOP  = 992; // px — mismo breakpoint que el CSS
+
+    function isDesktop() { return window.innerWidth >= DESKTOP; }
 
     function init() {
+      if (!isDesktop()) return; // en móvil/tablet: scroll nativo, sin interceptar
+
       var main   = document.querySelector('#smooth-content main');
       var footer = document.querySelector('#smooth-content footer');
       if (!main) return;
 
-      // Solo los <section> directos de main (excluye .space-for-header y .mobile-cta que son divs)
       sections = Array.from(main.querySelectorAll(':scope > section'));
       if (footer) sections.push(footer);
       if (!sections.length) return;
 
-      // Rueda del ratón
       window.addEventListener('wheel', onWheel, { passive: false });
 
-      // Touch
-      var tY = 0;
-      window.addEventListener('touchstart', function (e) {
-        tY = e.touches[0].clientY;
-      }, { passive: true });
-      window.addEventListener('touchend', function (e) {
-        var dy = tY - e.changedTouches[0].clientY;
-        if (!busy && Math.abs(dy) > 50) go(dy > 0 ? 1 : -1);
-      }, { passive: true });
-
-      // Teclado
       document.addEventListener('keydown', function (e) {
+        if (!isDesktop()) return;
         if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); go(1); }
         if (e.key === 'ArrowUp'   || e.key === 'PageUp')   { e.preventDefault(); go(-1); }
       });
     }
 
     function go(dir) {
+      if (!isDesktop()) return;
       var next = current + dir;
       if (busy || next < 0 || next >= sections.length) return;
       busy    = true;
@@ -1117,27 +1112,17 @@
     }
 
     function snapTo(el) {
-      // Preferir la API de ScrollSmoother si está activo
       var smoother = (typeof ScrollSmoother !== 'undefined') ? ScrollSmoother.get() : null;
-      if (smoother) {
-        smoother.scrollTo(el, true);
-        return;
-      }
-      // Fallback: GSAP scrollTo (ScrollToPlugin ya está cargado)
+      if (smoother) { smoother.scrollTo(el, true); return; }
       if (typeof gsap !== 'undefined') {
-        gsap.to(window, {
-          scrollTo: { y: el, offsetY: 0 },
-          duration: 0.85,
-          ease: 'power2.inOut',
-          overwrite: true
-        });
+        gsap.to(window, { scrollTo: { y: el, offsetY: 0 }, duration: 0.85, ease: 'power2.inOut', overwrite: true });
         return;
       }
-      // Último fallback: nativo
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function onWheel(e) {
+      if (!isDesktop()) return;
       e.preventDefault();
       if (!busy) go(e.deltaY > 0 ? 1 : -1);
     }
