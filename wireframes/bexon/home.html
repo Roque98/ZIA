@@ -3,26 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ZIA IntegraciÃ³n â€” Cumplimiento normativo para gasolineras en MÃ©xico</title>
+  <title>ZIA Integración — Cumplimiento normativo para gasolineras en México</title>
 
-  <!-- Bexon CSS (via ruta relativa al template) -->
+  <!-- CSS: librerías Bexon (todas locales) -->
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="assets/css/font-awesome-pro.min.css">
   <link rel="stylesheet" href="assets/css/animate.min.css">
-  <link rel="stylesheet" href="assets/css/bexon-icons.css">
   <link rel="stylesheet" href="assets/css/swiper.min.css">
   <link rel="stylesheet" href="assets/css/odometer-theme-default.css">
+  <link rel="stylesheet" href="assets/css/venobox.min.css">
+  <link rel="stylesheet" href="assets/css/nice-select.css">
+  <link rel="stylesheet" href="assets/css/bexon-icons.css">
   <link rel="stylesheet" href="assets/css/meanmenu.css">
   <link rel="stylesheet" href="assets/css/main.css">
 
   <style>
-    /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-       ZIA â€” BEXON ADAPTATION
+    /* ═══════════════════════════════════════════════════
+       ZIA — BEXON ADAPTATION
        Secciones que no tienen equivalente exacto en el
        template se construyen con los tokens de Bexon.
-    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+    ═══════════════════════════════════════════════════ */
 
-    /* â”€â”€ Hero: centered sobre dark bg â”€â”€ */
+    /* ── Hero: centered sobre dark bg ── */
     .zia-hero-section {
       background: var(--tj-color-theme-dark);
       text-align: center;
@@ -34,7 +36,7 @@
       display: inline-flex; align-items: center; gap: 6px;
       font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
       color: var(--tj-color-theme-primary);
-      background: rgba(30,138,138,.12);
+      background: rgba(79, 102, 102, 0.12);
       border: 1px solid rgba(30,138,138,.25);
       padding: 5px 14px; border-radius: 20px;
       margin-bottom: 24px;
@@ -50,7 +52,7 @@
     .zia-hero-ctas {
       display: flex; gap: 14px; justify-content: center; margin-bottom: 56px; flex-wrap: wrap;
     }
-    /* outline variant del botÃ³n Bexon */
+    /* outline variant del botón Bexon */
     .tj-outline-btn {
       display: inline-flex; align-items: center; gap: 10px;
       padding: 12px 28px; border: 2px solid rgba(255,255,255,.25);
@@ -75,7 +77,7 @@
     .zia-hero-stat-num { display: block; font-size: 28px; font-weight: 900; color: var(--tj-color-theme-primary); }
     .zia-hero-stat-txt { font-size: 11px; color: rgba(255,255,255,.4); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
 
-    /* â”€â”€ Risks (dark): misma estructura del original â”€â”€ */
+    /* ── Risks (dark): misma estructura del original ── */
     .zia-risks-section { background: #1a1a1a; }
     .zia-risks-section .sec-heading h2 { color: #fff; }
     .zia-risks-section .sec-heading p  { color: rgba(255,255,255,.45); }
@@ -115,7 +117,7 @@
       padding-top: 28px; border-top: 1px solid rgba(255,255,255,.07);
     }
 
-    /* â”€â”€ DiagnÃ³stico â”€â”€ */
+    /* ── Diagnóstico ── */
     .zia-diag-card {
       max-width: 640px; margin: 0 auto;
       background: #fff;
@@ -181,11 +183,11 @@
     .diag-reg-row__detail { font-size:13px; font-weight:700; color:var(--tj-color-heading-primary); }
     .diag-reg-row__link   { font-size:11px; font-weight:700; color:var(--tj-color-theme-primary); text-decoration:none; border-bottom:1px dashed var(--tj-color-theme-primary); white-space:nowrap; flex-shrink:0; }
 
-    /* â”€â”€ Process 4 pasos â”€â”€ */
+    /* ── Process 4 pasos ── */
     .zia-process { display: flex; align-items: flex-start; max-width: 960px; margin: 0 auto; }
     .zia-process-step { flex: 1; text-align: center; padding: 0 16px; position: relative; }
     .zia-process-step:not(:last-child)::after {
-      content: 'â†’'; position: absolute; right: -10px; top: 14px;
+      content: '→'; position: absolute; right: -10px; top: 14px;
       font-size: 20px; color: var(--tj-color-border-1); font-weight: 700;
     }
     .zia-process-num {
@@ -199,7 +201,7 @@
     .zia-process-title { font-size: 14px; font-weight: 800; color: var(--tj-color-heading-primary); margin-bottom: 8px; }
     .zia-process-desc  { font-size: 12px; color: var(--tj-color-text-body-3); line-height: 1.6; }
 
-    /* â”€â”€ Timeline horizontal â”€â”€ */
+    /* ── Timeline horizontal ── */
     .zia-timeline { max-width: 1000px; margin: 0 auto; position: relative; }
     .zia-timeline__track { height: 3px; background: var(--tj-color-border-1); position: relative; margin: 48px 0; }
     .zia-timeline__items { display: flex; justify-content: space-between; }
@@ -214,7 +216,7 @@
     .zia-timeline__event  { font-size: 11px; font-weight: 700; color: var(--tj-color-heading-primary); margin-bottom: 4px; line-height: 1.3; }
     .zia-timeline__detail { font-size: 11px; color: var(--tj-color-text-body-3); line-height: 1.4; }
 
-    /* â”€â”€ Reguladores â”€â”€ */
+    /* ── Reguladores ── */
     .zia-regulators { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
     .zia-reg-badge {
       border: 1.5px solid var(--tj-color-border-1); border-radius: 10px;
@@ -225,7 +227,7 @@
     .zia-reg-badge__name { font-size: 20px; font-weight: 900; color: var(--tj-color-theme-primary); margin-bottom: 4px; }
     .zia-reg-badge__full { font-size: 10px; color: var(--tj-color-text-body-3); line-height: 1.3; max-width: 110px; }
 
-    /* â”€â”€ WhatsApp sticky â”€â”€ */
+    /* ── WhatsApp sticky ── */
     .whatsapp-sticky {
       position: fixed; bottom: 28px; right: 20px; z-index: 88;
       width: 52px; height: 52px; background: var(--tj-color-theme-primary); border-radius: 50%;
@@ -236,7 +238,19 @@
     }
     .whatsapp-sticky:hover { background: var(--tj-color-theme-dark); }
 
-    /* â”€â”€ Mobile floating CTA â”€â”€ */
+    /* ── Fullpage scroll: solo desktop ── */
+    @media (min-width: 992px) {
+      #smooth-content main > section,
+      #smooth-content footer.tj-footer-section {
+        min-height: 100svh; /* svh evita el bug de iOS con la barra del browser */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .zia-hero-section { justify-content: center; }
+    }
+
+    /* ── Mobile floating CTA ── */
     .mobile-cta {
       display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 80;
       padding: 12px 20px; background: #fff; border-top: 1px solid var(--tj-color-border-1);
@@ -251,7 +265,7 @@
       .zia-hero-stat  { border-right: none; border-bottom: 1px solid rgba(255,255,255,.1); }
       .zia-hero-stat:last-child { border-bottom: none; }
       .zia-process    { flex-direction: column; gap: 32px; }
-      .zia-process-step:not(:last-child)::after { content: 'â†“'; right: auto; left: 50%; top: auto; bottom: -24px; }
+      .zia-process-step:not(:last-child)::after { content: '↓'; right: auto; left: 50%; top: auto; bottom: -24px; }
       .zia-timeline__items { flex-direction: column; gap: 24px; }
       .zia-timeline__track { display: none; }
       .zia-timeline__dot   { margin: 0 auto 10px; }
@@ -279,7 +293,7 @@
           <div class="hamburger_close"><button class="hamburger_close_btn"><i class="fa-thin fa-times"></i></button></div>
         </div>
         <div class="offcanvas-text">
-          <p>MÃ¡s de 20 aÃ±os simplificando la complejidad regulatoria ante los principales organismos del sector gasolinero en MÃ©xico.</p>
+          <p>Más de 20 años simplificando la complejidad regulatoria ante los principales organismos del sector gasolinero en México.</p>
         </div>
         <div class="hamburger-infos">
           <h5 class="hamburger-title">Contacto</h5>
@@ -309,7 +323,7 @@
     </div>
   </div>
 
-  <!-- â”€â”€ NAVBAR (absolute) â”€â”€ -->
+  <!-- ── NAVBAR (absolute) ── -->
   <header class="header-area header-1 header-absolute section-gap-x">
     <div class="container-fluid">
       <div class="row"><div class="col-12">
@@ -330,7 +344,7 @@
           <div class="header-right-item d-none d-lg-inline-flex">
             <div class="header-button">
               <a class="tj-primary-btn" href="#">
-                <span class="btn-text"><span>Solicitar auditorÃ­a</span></span>
+                <span class="btn-text"><span>Solicitar auditoría</span></span>
                 <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
               </a>
             </div>
@@ -342,7 +356,7 @@
     </div>
   </header>
 
-  <!-- â”€â”€ NAVBAR (sticky duplicate) â”€â”€ -->
+  <!-- ── NAVBAR (sticky duplicate) ── -->
   <header class="header-area header-1 header-duplicate header-sticky section-gap-x">
     <div class="container-fluid">
       <div class="row"><div class="col-12">
@@ -363,7 +377,7 @@
           <div class="header-right-item d-none d-lg-inline-flex">
             <div class="header-button">
               <a class="tj-primary-btn" href="#">
-                <span class="btn-text"><span>Solicitar auditorÃ­a</span></span>
+                <span class="btn-text"><span>Solicitar auditoría</span></span>
                 <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
               </a>
             </div>
@@ -375,29 +389,29 @@
     </div>
   </header>
 
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <!-- ══════════════════════════════════════════════════════ -->
   <div id="smooth-wrapper">
     <div id="smooth-content">
       <main id="primary" class="site-main">
         <div class="space-for-header"></div>
 
-        <!-- â•â• 1. HERO â•â• -->
+        <!-- ══ 1. HERO ══ -->
         <section class="zia-hero-section">
           <div class="container">
             <div class="row justify-content-center">
               <div class="col-lg-9">
                 <p class="zia-hero-tag wow fadeInDown" data-wow-delay=".2s">
-                  <i class="tji-excellence"></i> Su aliado estratÃ©gico
+                  <i class="tji-excellence"></i> Su aliado estratégico
                 </p>
                 <h1 class="zia-hero-title title-anim wow fadeInUp" data-wow-delay=".3s">
-                  Cumplimiento normativo integral para gasolineras en <span style="color:var(--tj-color-theme-primary)">MÃ©xico</span>
+                  Cumplimiento normativo integral para gasolineras en <span style="color:var(--tj-color-theme-primary)">México</span>
                 </h1>
                 <p class="zia-hero-sub wow fadeInUp" data-wow-delay=".5s">
-                  MÃ¡s de 20 aÃ±os simplificando la complejidad regulatoria ante ASEA, CRE, SAT, STPS y ProtecciÃ³n Civil.
+                  Más de 20 años simplificando la complejidad regulatoria ante ASEA, CRE, SAT, STPS y Protección Civil.
                 </p>
                 <div class="zia-hero-ctas wow fadeInUp" data-wow-delay=".7s">
                   <a class="tj-primary-btn" href="#">
-                    <span class="btn-text"><span>Solicitar auditorÃ­a gratuita</span></span>
+                    <span class="btn-text"><span>Solicitar auditoría gratuita</span></span>
                     <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                   </a>
                   <a class="tj-outline-btn" href="#">
@@ -409,7 +423,7 @@
                   <div class="zia-hero-stats">
                     <div class="zia-hero-stat">
                       <span class="zia-hero-stat-num odometer" data-count="20">20</span><span class="zia-hero-stat-num" style="display:inline">+</span>
-                      <span class="zia-hero-stat-txt">AÃ±os de experiencia</span>
+                      <span class="zia-hero-stat-txt">Años de experiencia</span>
                     </div>
                     <div class="zia-hero-stat">
                       <span class="zia-hero-stat-num">5</span>
@@ -428,7 +442,7 @@
           <div class="bg-shape-2" style="opacity:.08"><img src="assets/images/shape/pattern-3.svg" alt=""></div>
         </section>
 
-        <!-- â•â• 2. PROPUESTA DE VALOR â€” 3 pilares â•â• -->
+        <!-- ══ 2. PROPUESTA DE VALOR — 3 pilares ══ -->
         <section class="tj-choose-section section-gap">
           <div class="container">
             <div class="row">
@@ -436,7 +450,7 @@
                 <div class="sec-heading text-center">
                   <span class="sub-title wow fadeInUp" data-wow-delay=".3s"><i class="tji-box"></i>Propuesta de valor</span>
                   <h2 class="sec-title title-anim">Todo lo que su gasolinera <span>necesita.</span></h2>
-                  <p class="wow fadeInUp" data-wow-delay=".4s">Desde la auditorÃ­a inicial hasta la defensa jurÃ­dica, acompaÃ±amos cada etapa de su operaciÃ³n.</p>
+                  <p class="wow fadeInUp" data-wow-delay=".4s">Desde la auditoría inicial hasta la defensa jurídica, acompañamos cada etapa de su operación.</p>
                 </div>
               </div>
             </div>
@@ -455,7 +469,7 @@
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-award"></i></div>
                     <h4 class="title">Continuidad operativa</h4>
-                    <p class="desc">SupervisiÃ³n tÃ©cnica, diagnÃ³stico de infraestructura y mantenimiento preventivo.</p>
+                    <p class="desc">Supervisión técnica, diagnóstico de infraestructura y mantenimiento preventivo.</p>
                   </div>
                 </div>
               </div>
@@ -464,7 +478,7 @@
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-support"></i></div>
                     <h4 class="title">Tranquilidad legal</h4>
-                    <p class="desc">DefensorÃ­a jurÃ­dica especializada ante SAT, CRE, ASEA, IMSS e INFONAVIT.</p>
+                    <p class="desc">Defensoría jurídica especializada ante SAT, CRE, ASEA, IMSS e INFONAVIT.</p>
                   </div>
                 </div>
               </div>
@@ -472,7 +486,7 @@
           </div>
         </section>
 
-        <!-- â•â• 3. RIESGOS (dark) â•â• -->
+        <!-- ══ 3. RIESGOS (dark) ══ -->
         <section class="zia-risks-section section-gap section-gap-x" style="position:relative;overflow:hidden;">
           <div class="container" style="position:relative;z-index:2">
             <div class="row">
@@ -480,7 +494,7 @@
                 <div class="sec-heading text-center">
                   <span class="sub-title wow fadeInUp" data-wow-delay=".3s"><i class="tji-box"></i>Riesgo regulatorio</span>
                   <h2 class="sec-title title-anim" style="color:#fff">Las consecuencias de <span>no cumplir.</span></h2>
-                  <p class="wow fadeInUp" data-wow-delay=".4s" style="color:rgba(255,255,255,.45)">Los organismos reguladores no esperan. Una inspecciÃ³n sorpresa puede paralizar su operaciÃ³n en horas.</p>
+                  <p class="wow fadeInUp" data-wow-delay=".4s" style="color:rgba(255,255,255,.45)">Los organismos reguladores no esperan. Una inspección sorpresa puede paralizar su operación en horas.</p>
                 </div>
               </div>
             </div>
@@ -490,7 +504,7 @@
                   <div class="zia-risk-ico"><i class="tji-service-1"></i></div>
                   <span class="zia-risk-org">SAT</span>
                   <h4 class="zia-risk-title">Multas y embargo fiscal</h4>
-                  <p class="zia-risk-desc">El incumplimiento en control volumÃ©trico puede derivar en multas millonarias, auditorÃ­as fiscales y embargo de instalaciones por parte del SAT.</p>
+                  <p class="zia-risk-desc">El incumplimiento en control volumétrico puede derivar en multas millonarias, auditorías fiscales y embargo de instalaciones por parte del SAT.</p>
                   <div class="zia-risk-impact">Sanciones desde $500K hasta millones de pesos</div>
                 </div>
               </div>
@@ -499,16 +513,16 @@
                   <div class="zia-risk-ico"><i class="tji-service-2"></i></div>
                   <span class="zia-risk-org">ASEA</span>
                   <h4 class="zia-risk-title">Clausura inmediata</h4>
-                  <p class="zia-risk-desc">Sin SASISOPA o CÃ©dula de OperaciÃ³n Anual vigente, ASEA puede clausurar la estaciÃ³n sin previo aviso hasta regularizar la situaciÃ³n completa.</p>
-                  <div class="zia-risk-impact">ParalizaciÃ³n total de operaciones</div>
+                  <p class="zia-risk-desc">Sin SASISOPA o Cédula de Operación Anual vigente, ASEA puede clausurar la estación sin previo aviso hasta regularizar la situación completa.</p>
+                  <div class="zia-risk-impact">Paralización total de operaciones</div>
                 </div>
               </div>
               <div class="col-lg-4 wow fadeInUp" data-wow-delay=".7s">
                 <div class="zia-risk-card">
                   <div class="zia-risk-ico"><i class="tji-service-3"></i></div>
                   <span class="zia-risk-org">CRE</span>
-                  <h4 class="zia-risk-title">PÃ©rdida de permiso</h4>
-                  <p class="zia-risk-desc">El incumplimiento en reportes y obligaciones ante CRE pone en riesgo el permiso de operaciÃ³n â€” sin Ã©l, no puede vender combustible legalmente.</p>
+                  <h4 class="zia-risk-title">Pérdida de permiso</h4>
+                  <p class="zia-risk-desc">El incumplimiento en reportes y obligaciones ante CRE pone en riesgo el permiso de operación — sin él, no puede vender combustible legalmente.</p>
                   <div class="zia-risk-impact">Cierre definitivo del negocio</div>
                 </div>
               </div>
@@ -519,14 +533,14 @@
           <div class="bg-shape-2" style="opacity:.06"><img src="assets/images/shape/pattern-3.svg" alt=""></div>
         </section>
 
-        <!-- â•â• 4. DIAGNÃ“STICO INTERACTIVO â•â• -->
+        <!-- ══ 4. DIAGNÓSTICO INTERACTIVO ══ -->
         <section class="tj-choose-section section-gap" style="background:var(--tj-color-grey-1)">
           <div class="container">
             <div class="row">
               <div class="col-12">
                 <div class="sec-heading text-center">
-                  <span class="sub-title wow fadeInUp" data-wow-delay=".3s"><i class="tji-box"></i>DiagnÃ³stico rÃ¡pido</span>
-                  <h2 class="sec-title title-anim">Â¿EstÃ¡ su gasolinera <span>en regla?</span></h2>
+                  <span class="sub-title wow fadeInUp" data-wow-delay=".3s"><i class="tji-box"></i>Diagnóstico rápido</span>
+                  <h2 class="sec-title title-anim">¿Está su gasolinera <span>en regla?</span></h2>
                   <p class="wow fadeInUp" data-wow-delay=".4s">Responda 3 preguntas y descubra su nivel de riesgo regulatorio en este momento.</p>
                 </div>
               </div>
@@ -553,29 +567,29 @@
                   </div>
                   <div id="diag-questions">
                     <div id="dq-1">
-                      <div class="diag-question__step">Pregunta 1 de 3 â€” SAT</div>
-                      <div class="diag-question__text">Â¿Su control volumÃ©trico estÃ¡ activo y reportando correctamente al SAT?</div>
-                      <p class="diag-question__hint">MiscelÃ¡nea Fiscal, Anexo 30 y envÃ­o de archivos JSON/XML certificados.</p>
+                      <div class="diag-question__step">Pregunta 1 de 3 — SAT</div>
+                      <div class="diag-question__text">¿Su control volumétrico está activo y reportando correctamente al SAT?</div>
+                      <p class="diag-question__hint">Miscelánea Fiscal, Anexo 30 y envío de archivos JSON/XML certificados.</p>
                       <div class="diag-actions">
-                        <button class="diag-btn diag-btn--yes" data-q="1" data-ans="yes">SÃ­, estÃ¡ activo</button>
+                        <button class="diag-btn diag-btn--yes" data-q="1" data-ans="yes">Sí, está activo</button>
                         <button class="diag-btn diag-btn--no"  data-q="1" data-ans="no">No / No estoy seguro</button>
                       </div>
                     </div>
                     <div id="dq-2" style="display:none">
-                      <div class="diag-question__step">Pregunta 2 de 3 â€” CRE</div>
-                      <div class="diag-question__text">Â¿Su permiso CRE estÃ¡ vigente y sin observaciones pendientes?</div>
+                      <div class="diag-question__step">Pregunta 2 de 3 — CRE</div>
+                      <div class="diag-question__text">¿Su permiso CRE está vigente y sin observaciones pendientes?</div>
                       <p class="diag-question__hint">Reportes anuales, diarios y trimestrales presentados al corriente.</p>
                       <div class="diag-actions">
-                        <button class="diag-btn diag-btn--yes" data-q="2" data-ans="yes">SÃ­, al corriente</button>
+                        <button class="diag-btn diag-btn--yes" data-q="2" data-ans="yes">Sí, al corriente</button>
                         <button class="diag-btn diag-btn--no"  data-q="2" data-ans="no">No / No estoy seguro</button>
                       </div>
                     </div>
                     <div id="dq-3" style="display:none">
-                      <div class="diag-question__step">Pregunta 3 de 3 â€” ASEA</div>
-                      <div class="diag-question__text">Â¿Cuenta con SASISOPA implementado y CÃ©dula de OperaciÃ³n Anual vigente?</div>
-                      <p class="diag-question__hint">Sistema de AdministraciÃ³n de Seguridad Industrial y ProtecciÃ³n Ambiental ante ASEA.</p>
+                      <div class="diag-question__step">Pregunta 3 de 3 — ASEA</div>
+                      <div class="diag-question__text">¿Cuenta con SASISOPA implementado y Cédula de Operación Anual vigente?</div>
+                      <p class="diag-question__hint">Sistema de Administración de Seguridad Industrial y Protección Ambiental ante ASEA.</p>
                       <div class="diag-actions">
-                        <button class="diag-btn diag-btn--yes" data-q="3" data-ans="yes">SÃ­, implementado</button>
+                        <button class="diag-btn diag-btn--yes" data-q="3" data-ans="yes">Sí, implementado</button>
                         <button class="diag-btn diag-btn--no"  data-q="3" data-ans="no">No / No estoy seguro</button>
                       </div>
                     </div>
@@ -591,7 +605,7 @@
                         <span class="btn-text"><span>Hablar con un especialista</span></span>
                         <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                       </a>
-                      <button class="diag-restart" id="diag-restart">Reiniciar diagnÃ³stico</button>
+                      <button class="diag-restart" id="diag-restart">Reiniciar diagnóstico</button>
                     </div>
                   </div>
                 </div>
@@ -600,15 +614,15 @@
           </div>
         </section>
 
-        <!-- â•â• 5. PROCESO â€” 4 pasos â•â• -->
+        <!-- ══ 5. PROCESO — 4 pasos ══ -->
         <section class="section-gap">
           <div class="container">
             <div class="row">
               <div class="col-12">
                 <div class="sec-heading text-center">
-                  <span class="sub-title wow fadeInUp" data-wow-delay=".3s"><i class="tji-box"></i>Â¿CÃ³mo trabajamos?</span>
-                  <h2 class="sec-title title-anim">Â¿CÃ³mo empezamos a <span>trabajar juntos?</span></h2>
-                  <p class="wow fadeInUp" data-wow-delay=".4s">Cuatro pasos desde el primer contacto hasta la resoluciÃ³n completa de sus obligaciones regulatorias.</p>
+                  <span class="sub-title wow fadeInUp" data-wow-delay=".3s"><i class="tji-box"></i>¿Cómo trabajamos?</span>
+                  <h2 class="sec-title title-anim">¿Cómo empezamos a <span>trabajar juntos?</span></h2>
+                  <p class="wow fadeInUp" data-wow-delay=".4s">Cuatro pasos desde el primer contacto hasta la resolución completa de sus obligaciones regulatorias.</p>
                 </div>
               </div>
             </div>
@@ -617,23 +631,23 @@
                 <div class="zia-process wow fadeInUp" data-wow-delay=".5s">
                   <div class="zia-process-step">
                     <div class="zia-process-num">01</div>
-                    <div class="zia-process-title">AuditorÃ­a inicial</div>
+                    <div class="zia-process-title">Auditoría inicial</div>
                     <p class="zia-process-desc">Evaluamos el estado real de su gasolinera ante los 5 reguladores. Sin costo y sin compromiso.</p>
                   </div>
                   <div class="zia-process-step">
                     <div class="zia-process-num">02</div>
                     <div class="zia-process-title">Estrategia personalizada</div>
-                    <p class="zia-process-desc">DiseÃ±amos un plan priorizado segÃºn sus riesgos, plazos y el grado de exposiciÃ³n ante cada autoridad.</p>
+                    <p class="zia-process-desc">Diseñamos un plan priorizado según sus riesgos, plazos y el grado de exposición ante cada autoridad.</p>
                   </div>
                   <div class="zia-process-step">
                     <div class="zia-process-num">03</div>
-                    <div class="zia-process-title">EjecuciÃ³n y gestorÃ­a</div>
+                    <div class="zia-process-title">Ejecución y gestoría</div>
                     <p class="zia-process-desc">Tramitamos, auditamos y supervisamos todo el proceso. Usted opera; nosotros gestionamos.</p>
                   </div>
                   <div class="zia-process-step">
                     <div class="zia-process-num">04</div>
                     <div class="zia-process-title">Seguimiento continuo</div>
-                    <p class="zia-process-desc">Monitoreamos obligaciones periÃ³dicas, vencimientos y cambios normativos de forma permanente.</p>
+                    <p class="zia-process-desc">Monitoreamos obligaciones periódicas, vencimientos y cambios normativos de forma permanente.</p>
                   </div>
                 </div>
               </div>
@@ -641,7 +655,7 @@
           </div>
         </section>
 
-        <!-- â•â• 6. SERVICIOS â€” 7 tarjetas â•â• -->
+        <!-- ══ 6. SERVICIOS — 7 tarjetas ══ -->
         <section id="servicios" class="section-gap section-gap-x" style="background:var(--tj-color-grey-1)">
           <div class="container">
             <div class="row">
@@ -657,10 +671,10 @@
                 <div class="choose-box" style="height:100%">
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-service-1"></i></div>
-                    <h4 class="title">AuditorÃ­a de Cumplimiento Normativo</h4>
-                    <p class="desc">RevisiÃ³n fÃ­sica, documental y ponderaciÃ³n de riesgos como primera lÃ­nea de defensa.</p>
+                    <h4 class="title">Auditoría de Cumplimiento Normativo</h4>
+                    <p class="desc">Revisión física, documental y ponderación de riesgos como primera línea de defensa.</p>
                     <a class="text-btn mt-3" href="#">
-                      <span class="btn-text"><span>Ver mÃ¡s</span></span>
+                      <span class="btn-text"><span>Ver más</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                     </a>
                   </div>
@@ -670,10 +684,10 @@
                 <div class="choose-box" style="height:100%">
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-service-2"></i></div>
-                    <h4 class="title">GestorÃ­a CRE / ASEA</h4>
-                    <p class="desc">TrÃ¡mites, permisos, reportes y obligaciones ante CRE y ASEA de principio a fin.</p>
+                    <h4 class="title">Gestoría CRE / ASEA</h4>
+                    <p class="desc">Trámites, permisos, reportes y obligaciones ante CRE y ASEA de principio a fin.</p>
                     <a class="text-btn mt-3" href="#">
-                      <span class="btn-text"><span>Ver mÃ¡s</span></span>
+                      <span class="btn-text"><span>Ver más</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                     </a>
                   </div>
@@ -684,9 +698,9 @@
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-service-3"></i></div>
                     <h4 class="title">Servicios Fiscales SAT</h4>
-                    <p class="desc">Control volumÃ©trico, MiscelÃ¡nea Fiscal, Anexo 30 y resoluciones fiscales.</p>
+                    <p class="desc">Control volumétrico, Miscelánea Fiscal, Anexo 30 y resoluciones fiscales.</p>
                     <a class="text-btn mt-3" href="#">
-                      <span class="btn-text"><span>Ver mÃ¡s</span></span>
+                      <span class="btn-text"><span>Ver más</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                     </a>
                   </div>
@@ -696,10 +710,10 @@
                 <div class="choose-box" style="height:100%">
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-service-4"></i></div>
-                    <h4 class="title">DiagnÃ³stico e Infraestructura</h4>
+                    <h4 class="title">Diagnóstico e Infraestructura</h4>
                     <p class="desc">Pruebas de tanques, calidad, hermeticidad y mantenimiento preventivo especializado.</p>
                     <a class="text-btn mt-3" href="#">
-                      <span class="btn-text"><span>Ver mÃ¡s</span></span>
+                      <span class="btn-text"><span>Ver más</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                     </a>
                   </div>
@@ -710,9 +724,9 @@
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-service-5"></i></div>
                     <h4 class="title">Seguridad e Higiene Laboral</h4>
-                    <p class="desc">Cumplimiento STPS y ProtecciÃ³n Civil, seguridad de empleados y normas clave.</p>
+                    <p class="desc">Cumplimiento STPS y Protección Civil, seguridad de empleados y normas clave.</p>
                     <a class="text-btn mt-3" href="#">
-                      <span class="btn-text"><span>Ver mÃ¡s</span></span>
+                      <span class="btn-text"><span>Ver más</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                     </a>
                   </div>
@@ -722,10 +736,10 @@
                 <div class="choose-box" style="height:100%">
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-service-6"></i></div>
-                    <h4 class="title">Equipo TecnolÃ³gico</h4>
-                    <p class="desc">Dispensarios, consolas de telemediciÃ³n, videovigilancia y sistemas de control C4.</p>
+                    <h4 class="title">Equipo Tecnológico</h4>
+                    <p class="desc">Dispensarios, consolas de telemedición, videovigilancia y sistemas de control C4.</p>
                     <a class="text-btn mt-3" href="#">
-                      <span class="btn-text"><span>Ver mÃ¡s</span></span>
+                      <span class="btn-text"><span>Ver más</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                     </a>
                   </div>
@@ -735,10 +749,10 @@
                 <div class="choose-box" style="height:100%">
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-innovative"></i></div>
-                    <h4 class="title">DefensorÃ­a JurÃ­dica</h4>
+                    <h4 class="title">Defensoría Jurídica</h4>
                     <p class="desc">Amparo y litigio contencioso ante SAT, CRE, ASEA, IMSS e INFONAVIT.</p>
                     <a class="text-btn mt-3" href="#">
-                      <span class="btn-text"><span>Ver mÃ¡s</span></span>
+                      <span class="btn-text"><span>Ver más</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                     </a>
                   </div>
@@ -748,15 +762,15 @@
           </div>
         </section>
 
-        <!-- â•â• 7. TRAYECTORIA â€” timeline â•â• -->
+        <!-- ══ 7. TRAYECTORIA — timeline ══ -->
         <section id="nosotros" class="section-gap">
           <div class="container">
             <div class="row">
               <div class="col-12">
                 <div class="sec-heading text-center">
                   <span class="sub-title wow fadeInUp" data-wow-delay=".3s"><i class="tji-box"></i>Nuestra historia</span>
-                  <h2 class="sec-title title-anim">MÃ¡s de 20 aÃ±os al <span>servicio del sector.</span></h2>
-                  <p class="wow fadeInUp" data-wow-delay=".4s">Creciendo y especializÃ¡ndonos desde el aÃ±o 2000 para adaptarnos al sector de hidrocarburos.</p>
+                  <h2 class="sec-title title-anim">Más de 20 años al <span>servicio del sector.</span></h2>
+                  <p class="wow fadeInUp" data-wow-delay=".4s">Creciendo y especializándonos desde el año 2000 para adaptarnos al sector de hidrocarburos.</p>
                 </div>
               </div>
             </div>
@@ -768,32 +782,32 @@
                     <div class="zia-timeline__item">
                       <div class="zia-timeline__dot"></div>
                       <div class="zia-timeline__year">2000</div>
-                      <div class="zia-timeline__event">OrÃ­genes en TI</div>
-                      <p class="zia-timeline__detail">Soporte y asesorÃ­a en sistemas de informaciÃ³n y redes</p>
+                      <div class="zia-timeline__event">Orígenes en TI</div>
+                      <p class="zia-timeline__detail">Soporte y asesoría en sistemas de información y redes</p>
                     </div>
                     <div class="zia-timeline__item">
                       <div class="zia-timeline__dot"></div>
                       <div class="zia-timeline__year">2004</div>
-                      <div class="zia-timeline__event">EspecializaciÃ³n en Hidrocarburos</div>
-                      <p class="zia-timeline__detail">Controles volumÃ©tricos para gasolineras</p>
+                      <div class="zia-timeline__event">Especialización en Hidrocarburos</div>
+                      <p class="zia-timeline__detail">Controles volumétricos para gasolineras</p>
                     </div>
                     <div class="zia-timeline__item">
                       <div class="zia-timeline__dot"></div>
                       <div class="zia-timeline__year">2010</div>
-                      <div class="zia-timeline__event">DiversificaciÃ³n en Seguridad</div>
-                      <p class="zia-timeline__detail">ProtecciÃ³n Civil y STPS</p>
+                      <div class="zia-timeline__event">Diversificación en Seguridad</div>
+                      <p class="zia-timeline__detail">Protección Civil y STPS</p>
                     </div>
                     <div class="zia-timeline__item">
                       <div class="zia-timeline__dot"></div>
                       <div class="zia-timeline__year">2015</div>
-                      <div class="zia-timeline__event">AdaptaciÃ³n Regulatoria</div>
-                      <p class="zia-timeline__detail">AmpliaciÃ³n de catÃ¡logo para CRE y ASEA</p>
+                      <div class="zia-timeline__event">Adaptación Regulatoria</div>
+                      <p class="zia-timeline__detail">Ampliación de catálogo para CRE y ASEA</p>
                     </div>
                     <div class="zia-timeline__item">
                       <div class="zia-timeline__dot"></div>
                       <div class="zia-timeline__year">Hoy</div>
                       <div class="zia-timeline__event">Liderazgo Integral</div>
-                      <p class="zia-timeline__detail">AuditorÃ­as, gestorÃ­a, supervisiÃ³n y defensorÃ­a</p>
+                      <p class="zia-timeline__detail">Auditorías, gestoría, supervisión y defensoría</p>
                     </div>
                   </div>
                 </div>
@@ -802,7 +816,7 @@
           </div>
         </section>
 
-        <!-- â•â• 8. REGULADORES â•â• -->
+        <!-- ══ 8. REGULADORES ══ -->
         <section class="section-gap" style="background:var(--tj-color-grey-1)">
           <div class="container">
             <div class="row">
@@ -817,23 +831,23 @@
                 <div class="zia-regulators wow fadeInUp" data-wow-delay=".4s">
                   <div class="zia-reg-badge">
                     <div class="zia-reg-badge__name">ASEA</div>
-                    <p class="zia-reg-badge__full">Agencia de Seguridad, EnergÃ­a y Ambiente</p>
+                    <p class="zia-reg-badge__full">Agencia de Seguridad, Energía y Ambiente</p>
                   </div>
                   <div class="zia-reg-badge">
                     <div class="zia-reg-badge__name">CRE</div>
-                    <p class="zia-reg-badge__full">ComisiÃ³n Reguladora de EnergÃ­a</p>
+                    <p class="zia-reg-badge__full">Comisión Reguladora de Energía</p>
                   </div>
                   <div class="zia-reg-badge">
                     <div class="zia-reg-badge__name">SAT</div>
-                    <p class="zia-reg-badge__full">Servicio de AdministraciÃ³n Tributaria</p>
+                    <p class="zia-reg-badge__full">Servicio de Administración Tributaria</p>
                   </div>
                   <div class="zia-reg-badge">
                     <div class="zia-reg-badge__name">STPS</div>
-                    <p class="zia-reg-badge__full">SecretarÃ­a del Trabajo y PrevisiÃ³n Social</p>
+                    <p class="zia-reg-badge__full">Secretaría del Trabajo y Previsión Social</p>
                   </div>
                   <div class="zia-reg-badge">
                     <div class="zia-reg-badge__name">PC</div>
-                    <p class="zia-reg-badge__full">ProtecciÃ³n Civil</p>
+                    <p class="zia-reg-badge__full">Protección Civil</p>
                   </div>
                 </div>
               </div>
@@ -841,7 +855,7 @@
           </div>
         </section>
 
-        <!-- â•â• 9. TESTIMONIALES â•â• -->
+        <!-- ══ 9. TESTIMONIALES ══ -->
         <section class="tj-testimonial-section section-gap section-gap-x">
           <div class="container">
             <div class="row">
@@ -850,9 +864,9 @@
                   <span class="sub-title wow fadeInUp" data-wow-delay=".3s"><i class="tji-box"></i>Prueba social</span>
                   <div class="heading-wrap-content">
                     <div class="sec-heading">
-                      <h2 class="sec-title title-anim">Gasolineras en todo MÃ©xico <span>confÃ­an en ZIA.</span></h2>
+                      <h2 class="sec-title title-anim">Gasolineras en todo México <span>confían en ZIA.</span></h2>
                     </div>
-                    <p class="desc wow fadeInUp" data-wow-delay=".5s">MÃ¡s de dos dÃ©cadas acompaÃ±ando a propietarios y administradores ante los reguladores mÃ¡s exigentes del sector.</p>
+                    <p class="desc wow fadeInUp" data-wow-delay=".5s">Más de dos décadas acompañando a propietarios y administradores ante los reguladores más exigentes del sector.</p>
                   </div>
                 </div>
               </div>
@@ -865,7 +879,7 @@
                       <div class="swiper-slide">
                         <div class="testimonial-item">
                           <span class="quote-icon"><i class="tji-quote"></i></span>
-                          <div class="desc"><p>"ZIA nos sacÃ³ de una sanciÃ³n pendiente con el SAT en tiempo rÃ©cord. Su conocimiento del Anexo 30 es inigualable."</p></div>
+                          <div class="desc"><p>"ZIA nos sacó de una sanción pendiente con el SAT en tiempo récord. Su conocimiento del Anexo 30 es inigualable."</p></div>
                           <div class="testimonial-author">
                             <div class="author-inner">
                               <div class="author-img"><img src="assets/images/testimonial/client-1.webp" alt=""></div>
@@ -880,7 +894,7 @@
                       <div class="swiper-slide">
                         <div class="testimonial-item">
                           <span class="quote-icon"><i class="tji-quote"></i></span>
-                          <div class="desc"><p>"Llevamos tres aÃ±os con ZIA y nunca hemos tenido una clausura. Ellos manejan todo lo regulatorio; nosotros nos enfocamos en operar."</p></div>
+                          <div class="desc"><p>"Llevamos tres años con ZIA y nunca hemos tenido una clausura. Ellos manejan todo lo regulatorio; nosotros nos enfocamos en operar."</p></div>
                           <div class="testimonial-author">
                             <div class="author-inner">
                               <div class="author-img"><img src="assets/images/testimonial/client-2.webp" alt=""></div>
@@ -895,7 +909,7 @@
                       <div class="swiper-slide">
                         <div class="testimonial-item">
                           <span class="quote-icon"><i class="tji-quote"></i></span>
-                          <div class="desc"><p>"El proceso de obtenciÃ³n del CURR ante ASEA fue complejo, pero ZIA lo resolviÃ³ sin contratiempos. Los recomiendo ampliamente."</p></div>
+                          <div class="desc"><p>"El proceso de obtención del CURR ante ASEA fue complejo, pero ZIA lo resolvió sin contratiempos. Los recomiendo ampliamente."</p></div>
                           <div class="testimonial-author">
                             <div class="author-inner">
                               <div class="author-img"><img src="assets/images/testimonial/client-3.webp" alt=""></div>
@@ -918,15 +932,15 @@
           <div class="bg-shape-2"><img src="assets/images/shape/pattern-3.svg" alt=""></div>
         </section>
 
-        <!-- â•â• 10. CTA BANNER â•â• -->
+        <!-- ══ 10. CTA BANNER ══ -->
         <section class="tj-cta-section">
           <div class="container">
             <div class="row">
               <div class="col-12">
                 <div class="cta-area">
                   <div class="cta-content">
-                    <h2 class="title title-anim">Â¿Su gasolinera estÃ¡ en regla?</h2>
-                    <p style="color:rgba(255,255,255,.65);margin-bottom:32px">Solicite una auditorÃ­a inicial sin costo. Identifique sus riesgos antes de que lo hagan las autoridades.</p>
+                    <h2 class="title title-anim">¿Su gasolinera está en regla?</h2>
+                    <p style="color:rgba(255,255,255,.65);margin-bottom:32px">Solicite una auditoría inicial sin costo. Identifique sus riesgos antes de que lo hagan las autoridades.</p>
                     <div class="cta-btn wow fadeInUp" data-wow-delay=".6s">
                       <a class="tj-primary-btn btn-dark" href="#">
                         <span class="btn-text"><span>Contactar a un especialista</span></span>
@@ -943,17 +957,17 @@
           </div>
         </section>
 
-        <!-- â•â• 11. MOBILE FLOATING CTA â•â• -->
+        <!-- ══ 11. MOBILE FLOATING CTA ══ -->
         <div class="mobile-cta d-lg-none">
           <a href="#" class="tj-primary-btn" style="display:block;text-align:center">
-            <span class="btn-text"><span>Solicitar auditorÃ­a gratuita</span></span>
+            <span class="btn-text"><span>Solicitar auditoría gratuita</span></span>
             <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
           </a>
         </div>
 
       </main>
 
-      <!-- â•â• 12. FOOTER â•â• -->
+      <!-- ══ 12. FOOTER ══ -->
       <footer class="tj-footer-section footer-1 section-gap-x">
         <div class="footer-main-area">
           <div class="container">
@@ -964,7 +978,7 @@
                     <span style="font-size:30px;font-weight:900;color:var(--tj-color-theme-primary);letter-spacing:5px">ZIA</span>
                   </div>
                   <div class="footer-text">
-                    <p>Su aliado estratÃ©gico en el sector gasolinero. MÃ¡s de 20 aÃ±os simplificando el cumplimiento normativo.</p>
+                    <p>Su aliado estratégico en el sector gasolinero. Más de 20 años simplificando el cumplimiento normativo.</p>
                   </div>
                 </div>
               </div>
@@ -972,11 +986,11 @@
                 <div class="footer-widget widget-nav-menu wow fadeInUp" data-wow-delay=".3s">
                   <h5 class="title">Servicios</h5>
                   <ul>
-                    <li><a href="#">AuditorÃ­a Normativa</a></li>
-                    <li><a href="#">GestorÃ­a CRE/ASEA</a></li>
+                    <li><a href="#">Auditoría Normativa</a></li>
+                    <li><a href="#">Gestoría CRE/ASEA</a></li>
                     <li><a href="#">Fiscal SAT</a></li>
-                    <li><a href="#">DefensorÃ­a JurÃ­dica</a></li>
-                    <li><a href="#">Equipo TecnolÃ³gico</a></li>
+                    <li><a href="#">Defensoría Jurídica</a></li>
+                    <li><a href="#">Equipo Tecnológico</a></li>
                   </ul>
                 </div>
               </div>
@@ -984,7 +998,7 @@
                 <div class="footer-widget widget-nav-menu wow fadeInUp" data-wow-delay=".5s">
                   <h5 class="title">Nosotros</h5>
                   <ul>
-                    <li><a href="#">MisiÃ³n</a></li>
+                    <li><a href="#">Misión</a></li>
                     <li><a href="#">Trayectoria</a></li>
                     <li><a href="#">Equipo</a></li>
                   </ul>
@@ -998,7 +1012,7 @@
                     <li><a href="#">Morelia</a></li>
                     <li><a href="#">Chihuahua</a></li>
                     <li><a href="#">Orizaba</a></li>
-                    <li><a href="#">CuliacÃ¡n</a></li>
+                    <li><a href="#">Culiacán</a></li>
                   </ul>
                 </div>
               </div>
@@ -1027,7 +1041,7 @@
                     </ul>
                   </div>
                   <div class="copyright-text">
-                    <p>&copy; 2026 ZIA IntegraciÃ³n Â· www.ziaintegracion.com Â· Su aliado estratÃ©gico en el sector gasolinero</p>
+                    <p>&copy; 2026 ZIA Integración · www.ziaintegracion.com · Su aliado estratégico en el sector gasolinero</p>
                   </div>
                 </div>
               </div>
@@ -1040,10 +1054,10 @@
     </div>
   </div>
 
-  <!-- â•â• 13. WHATSAPP STICKY â•â• -->
+  <!-- ══ 13. WHATSAPP STICKY ══ -->
   <a href="https://wa.me/526641594369" class="whatsapp-sticky" title="Escribir por WhatsApp">WA</a>
 
-  <!-- Bexon JS -->
+  <!-- JS: librerías Bexon (todas locales) -->
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/bootstrap.bundle.min.js"></script>
   <script src="assets/js/gsap.min.js"></script>
@@ -1051,31 +1065,34 @@
   <script src="assets/js/gsap-scroll-to-plugin.min.js"></script>
   <script src="assets/js/gsap-scroll-trigger.min.js"></script>
   <script src="assets/js/gsap-split-text.min.js"></script>
+  <script src="assets/js/jquery.nice-select.min.js"></script>
   <script src="assets/js/swiper.min.js"></script>
   <script src="assets/js/odometer.min.js"></script>
+  <script src="assets/js/venobox.min.js"></script>
   <script src="assets/js/appear.min.js"></script>
   <script src="assets/js/wow.min.js"></script>
   <script src="assets/js/meanmenu.js"></script>
   <script src="assets/js/main.js"></script>
 
-  <!-- DiagnÃ³stico interactivo -->
+
+  <!-- Diagnóstico interactivo -->
   <script>
   (function () {
     var answers = {};
     var REGS = [
-      { org:'SAT',  okText:'Control volumÃ©trico activo y reportando',   riskText:'Sin control volumÃ©trico activo',       href:'#' },
+      { org:'SAT',  okText:'Control volumétrico activo y reportando',   riskText:'Sin control volumétrico activo',       href:'#' },
       { org:'CRE',  okText:'Permiso vigente y sin observaciones',        riskText:'Permiso con observaciones pendientes', href:'#' },
-      { org:'ASEA', okText:'SASISOPA y CÃ©dula de OperaciÃ³n vigentes',    riskText:'Sin SASISOPA o CÃ©dula vencida',        href:'#' }
+      { org:'ASEA', okText:'SASISOPA y Cédula de Operación vigentes',    riskText:'Sin SASISOPA o Cédula vencida',        href:'#' }
     ];
     var LEVELS = [
-      { key:'ok',       label:'Nivel: Bajo',    icon:'âœ“', title:'Buen nivel de cumplimiento',                       desc:'Aun asÃ­, le recomendamos una AuditorÃ­a Preventiva anual para anticiparse a cambios normativos.' },
-      { key:'medium',   label:'Nivel: Medio',   icon:'âš ', title:'1 Ã¡rea de riesgo detectada',                      desc:'Este incumplimiento puede derivar en multas o sanciones. ActÃºe antes de una inspecciÃ³n sorpresa.' },
-      { key:'high',     label:'Nivel: Alto',    icon:'âš ', title:'2 Ã¡reas de riesgo regulatorio detectadas',        desc:'Estos incumplimientos lo exponen a multas, clausura o pÃ©rdida de permiso. ActÃºe con urgencia.' },
-      { key:'critical', label:'Nivel: CrÃ­tico', icon:'!', title:'Riesgo crÃ­tico: 3 Ã¡reas sin cumplimiento',        desc:'Su gasolinera estÃ¡ expuesta a clausura inmediata y pÃ©rdida de permiso. ContÃ¡ctenos hoy.' }
+      { key:'ok',       label:'Nivel: Bajo',    icon:'✓', title:'Buen nivel de cumplimiento',                       desc:'Aun así, le recomendamos una Auditoría Preventiva anual para anticiparse a cambios normativos.' },
+      { key:'medium',   label:'Nivel: Medio',   icon:'⚠', title:'1 área de riesgo detectada',                      desc:'Este incumplimiento puede derivar en multas o sanciones. Actúe antes de una inspección sorpresa.' },
+      { key:'high',     label:'Nivel: Alto',    icon:'⚠', title:'2 áreas de riesgo regulatorio detectadas',        desc:'Estos incumplimientos lo exponen a multas, clausura o pérdida de permiso. Actúe con urgencia.' },
+      { key:'critical', label:'Nivel: Crítico', icon:'!', title:'Riesgo crítico: 3 áreas sin cumplimiento',        desc:'Su gasolinera está expuesta a clausura inmediata y pérdida de permiso. Contáctenos hoy.' }
     ];
     function diagBar(s) { var b=document.getElementById('diag-bar'); if(b) b.style.width=(s/3*100)+'%'; }
     function diagShowQ(n) {
-      for(var i=1;i<=3;i++){var ds=document.getElementById('ds-'+i);if(ds){ds.classList.toggle('is-active',i===n);ds.classList.toggle('is-done',i<n);var d=ds.querySelector('.diag-step__dot');if(d)d.textContent=i<n?'âœ“':String(i);}}
+      for(var i=1;i<=3;i++){var ds=document.getElementById('ds-'+i);if(ds){ds.classList.toggle('is-active',i===n);ds.classList.toggle('is-done',i<n);var d=ds.querySelector('.diag-step__dot');if(d)d.textContent=i<n?'✓':String(i);}}
       var cur=null;
       for(var j=1;j<=3;j++){var c=document.getElementById('dq-'+j);if(c&&c.style.display!=='none'){cur=c;break;}}
       var nxt=document.getElementById('dq-'+n);
@@ -1087,7 +1104,7 @@
     function diagResult() {
       var qW=document.getElementById('diag-questions'),rW=document.getElementById('diag-result');
       if(!qW||!rW)return;
-      for(var i=1;i<=3;i++){var ds=document.getElementById('ds-'+i);if(ds){ds.classList.remove('is-active');ds.classList.add('is-done');var d=ds.querySelector('.diag-step__dot');if(d)d.textContent='âœ“';}}
+      for(var i=1;i<=3;i++){var ds=document.getElementById('ds-'+i);if(ds){ds.classList.remove('is-active');ds.classList.add('is-done');var d=ds.querySelector('.diag-step__dot');if(d)d.textContent='✓';}}
       diagBar(3);
       qW.style.display='none';rW.style.display='block';void rW.offsetWidth;
       rW.classList.add('diag-question-entering');setTimeout(function(){rW.classList.remove('diag-question-entering');},300);
@@ -1100,7 +1117,7 @@
       var t=document.getElementById('diag-title'),dsc=document.getElementById('diag-desc');
       if(t)t.textContent=lv.title;if(dsc)dsc.textContent=lv.desc;
       var re=document.getElementById('diag-regulators');
-      if(re){var html='<div class="diag-reg-rows">';for(var k=0;k<3;k++){var r=REGS[k],ok=answers[k+1]!=='no';html+='<div class="diag-reg-row diag-reg-row--'+(ok?'ok':'risk')+'"><div class="diag-reg-row__status-dot">'+(ok?'âœ“':'âœ•')+'</div><div class="diag-reg-row__label"><div class="diag-reg-row__org">'+r.org+'</div><div class="diag-reg-row__detail">'+(ok?r.okText:r.riskText)+'</div></div>'+(!ok?'<a href="'+r.href+'" class="diag-reg-row__link">Resolver â†’</a>':'')+'</div>';}re.innerHTML=html+'</div>';}
+      if(re){var html='<div class="diag-reg-rows">';for(var k=0;k<3;k++){var r=REGS[k],ok=answers[k+1]!=='no';html+='<div class="diag-reg-row diag-reg-row--'+(ok?'ok':'risk')+'"><div class="diag-reg-row__status-dot">'+(ok?'✓':'✕')+'</div><div class="diag-reg-row__label"><div class="diag-reg-row__org">'+r.org+'</div><div class="diag-reg-row__detail">'+(ok?r.okText:r.riskText)+'</div></div>'+(!ok?'<a href="'+r.href+'" class="diag-reg-row__link">Resolver →</a>':'')+'</div>';}re.innerHTML=html+'</div>';}
     }
     document.addEventListener('click',function(e){
       if(e.target.classList.contains('diag-btn')){var q=parseInt(e.target.getAttribute('data-q'),10),a=e.target.getAttribute('data-ans');answers[q]=a;if(q<3)diagShowQ(q+1);else diagResult();}
@@ -1111,4 +1128,3 @@
   </script>
 </body>
 </html>
-
