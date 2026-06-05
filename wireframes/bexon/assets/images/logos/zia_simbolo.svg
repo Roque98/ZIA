@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="795.5 -21 740 740">
+  <!-- Símbolo Zía - ZÍA INTEGRACIÓN | geometría pixel-exacta extraída del PNG original -->
+  <!-- Colores: dorado #A69140, gris #979899, rojo #EC3237 -->
+  <!-- Rayos: grosor 26px, centros separados 44px (gap 18px), idéntico al original -->
+  <!-- Orden de pintado: rayos -> núcleo negro -> anillo rojo -> líneas negras (rayos quedan por debajo del anillo) -->
+
+  <!-- ===== RAYOS DORADOS (verticales) ===== -->
+  <g fill="#A69140">
+    <rect x="1086.5" y="58"  width="26" height="291" rx="13"/>
+    <rect x="1086.5" y="349" width="26" height="290" rx="13"/>
+    <rect x="1130.5" y="1"   width="26" height="348" rx="13"/>
+    <rect x="1130.5" y="349" width="26" height="347" rx="13"/>
+    <rect x="1174"   y="1"   width="26" height="348" rx="13"/>
+    <rect x="1174"   y="349" width="26" height="347" rx="13"/>
+    <rect x="1217.5" y="58"  width="26" height="291" rx="13"/>
+    <rect x="1217.5" y="349" width="26" height="290" rx="13"/>
+  </g>
+
+  <!-- ===== RAYOS GRISES (horizontales) ===== -->
+  <g fill="#979899">
+    <rect x="873"    y="270.5" width="292.5" height="26" rx="13"/>
+    <rect x="1165.5" y="270.5" width="292.5" height="26" rx="13"/>
+    <rect x="816"    y="314.5" width="349.5" height="26" rx="13"/>
+    <rect x="1165.5" y="314.5" width="349.5" height="26" rx="13"/>
+    <rect x="816"    y="358.5" width="349.5" height="26" rx="13"/>
+    <rect x="1165.5" y="358.5" width="349.5" height="26" rx="13"/>
+    <rect x="873"    y="402.5" width="292.5" height="26" rx="13"/>
+    <rect x="1165.5" y="402.5" width="292.5" height="26" rx="13"/>
+  </g>
+
+  <!-- ===== NÚCLEO NEGRO ===== -->
+  <circle cx="1165.5" cy="349" r="100.5" fill="#000000"/>
+
+  <!-- ===== ANILLO ROJO COMPLETO ===== -->
+  <circle cx="1165.5" cy="349" r="112.5" fill="none" stroke="#EC3237" stroke-width="24"/>
+
+  <!-- ===== 4 LÍNEAS NEGRAS recortadas a la banda del anillo ===== -->
+  <defs>
+    <clipPath id="anillo">
+      <path fill-rule="evenodd"
+            d="M 1165.5 224.5 A 124.5 124.5 0 1 1 1165.49 224.5 Z
+               M 1165.5 248.5 A 100.5 100.5 0 1 0 1165.49 248.5 Z"/>
+    </clipPath>
+  </defs>
+  <g stroke="#000000" stroke-width="16" stroke-linecap="butt" clip-path="url(#anillo)">
+    <line x1="1224.3" y1="407.8" x2="1265.8" y2="449.3"/>
+    <line x1="1106.7" y1="407.8" x2="1065.2" y2="449.3"/>
+    <line x1="1106.7" y1="290.2" x2="1065.2" y2="248.7"/>
+    <line x1="1224.3" y1="290.2" x2="1265.8" y2="248.7"/>
+  </g>
+</svg>
