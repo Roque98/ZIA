@@ -215,6 +215,8 @@
     .choose-box.is-highlighted .choose-icon { color: var(--tj-color-common-white); animation: gelatine 0.6s; -webkit-animation: gelatine 0.6s; }
     .choose-box.is-highlighted .desc,
     .choose-box.is-highlighted .title { color: var(--tj-color-common-white); }
+    /* Hover bloqueado durante la secuencia de animación inicial */
+    .rightSwipeWrap.pillar-animating .choose-box { pointer-events: none; }
 
     /* ── Timeline horizontal ── */
     .zia-timeline { max-width: 1000px; margin: 0 auto; position: relative; }
@@ -1181,18 +1183,24 @@
   <script>
     (function () {
       function runPillarSequence() {
-        var boxes = document.querySelectorAll('.rightSwipeWrap .choose-box');
+        var wrap  = document.querySelector('.rightSwipeWrap');
+        var boxes = wrap ? wrap.querySelectorAll('.choose-box') : [];
         if (!boxes.length) return;
-        var ON  = 900;   // ms iluminado por tarjeta
-        var GAP = 300;   // ms de pausa entre tarjetas
+        var ON  = 900;
+        var GAP = 300;
+        wrap.classList.add('pillar-animating');
         boxes.forEach(function (box, i) {
           setTimeout(function () {
             box.classList.add('is-highlighted');
-            setTimeout(function () { box.classList.remove('is-highlighted'); }, ON);
+            setTimeout(function () {
+              box.classList.remove('is-highlighted');
+              if (i === boxes.length - 1) {
+                wrap.classList.remove('pillar-animating');
+              }
+            }, ON);
           }, i * (ON + GAP));
         });
       }
-      // Esperar a que terminen las animaciones WOW (~1.8 s)
       setTimeout(runPillarSequence, 1800);
     })();
   </script>
