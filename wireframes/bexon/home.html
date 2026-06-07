@@ -114,71 +114,48 @@
       margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.07);
     }
 
-    /* ── Diagnóstico ── */
-    .zia-diag-card {
-      max-width: 640px; margin: 0 auto;
-      background: #fff;
-      border-radius: 16px;
-      padding: 52px 56px;
-      box-shadow: 0 8px 48px rgba(0,0,0,.07);
-      border: 1px solid var(--tj-color-border-1);
+    /* ── Calculadora de exposición ── */
+    .zia-calc-panel {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px; padding: 32px; height: 100%;
     }
-    .diag-stepper { display: flex; align-items: flex-start; margin-bottom: 44px; }
-    .diag-step { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .diag-step__dot {
-      width: 38px; height: 38px; border-radius: 50%;
-      border: 2px solid var(--tj-color-border-1); background: var(--tj-color-grey-1);
-      color: var(--tj-color-text-body-3); font-size: 12px; font-weight: 800;
-      display: flex; align-items: center; justify-content: center; transition: all .25s;
+    .zia-calc-field { margin-bottom: 32px; }
+    .zia-calc-field:last-of-type { margin-bottom: 0; }
+    .zia-calc-label {
+      display: block; font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .14em; color: rgba(255,255,255,.35); margin-bottom: 16px;
     }
-    .diag-step__label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: var(--tj-color-text-body-2); transition: color .25s; }
-    .diag-step.is-active .diag-step__dot { background: var(--tj-color-theme-primary); border-color: var(--tj-color-theme-primary); color: #fff; }
-    .diag-step.is-active .diag-step__label { color: var(--tj-color-theme-primary); }
-    .diag-step.is-done  .diag-step__dot { background: var(--tj-color-theme-primary); border-color: var(--tj-color-theme-primary); color: #fff; }
-    .diag-step__line { flex: 1; height: 2px; background: var(--tj-color-border-1); margin: 19px 8px 0; }
-    .diag-progress { height: 3px; background: var(--tj-color-border-1); border-radius: 2px; margin-bottom: 40px; overflow: hidden; }
-    .diag-progress__bar { height: 100%; background: var(--tj-color-theme-primary); width: 0%; transition: width .45s cubic-bezier(.4,0,.2,1); }
-    @keyframes diagSlideIn { from { opacity:0; transform:translateX(18px); } to { opacity:1; transform:translateX(0); } }
-    .diag-question-entering { animation: diagSlideIn .26s ease-out forwards; }
-    .diag-question-leaving { opacity:0; transform:translateX(-14px); transition:opacity .18s ease, transform .18s ease; pointer-events:none; }
-    .diag-question__step { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--tj-color-theme-primary); margin-bottom: 14px; }
-    .diag-question__text { font-size: 22px; font-weight: 900; color: var(--tj-color-heading-primary); line-height: 1.3; margin-bottom: 10px; }
-    .diag-question__hint { font-size: 13px; color: var(--tj-color-text-body-3); line-height: 1.6; margin-bottom: 32px; }
-    .diag-actions { display: flex; gap: 12px; }
-    .diag-btn {
-      flex: 1; padding: 15px 16px; border: 2px solid var(--tj-color-border-1);
-      border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all .15s;
+    .zia-calc-stepper { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; overflow: hidden; }
+    .zia-calc-step-btn {
+      width: 48px; height: 48px; background: rgba(255,255,255,.05); border: none;
+      color: rgba(255,255,255,.7); font-size: 22px; cursor: pointer; transition: background .15s; font-family: inherit;
     }
-    .diag-btn--yes { background: var(--tj-color-theme-primary); color: #fff; border-color: var(--tj-color-theme-primary); }
-    .diag-btn--yes:hover { background: var(--tj-color-theme-dark); border-color: var(--tj-color-theme-dark); }
-    .diag-btn--no  { background: transparent; color: var(--tj-color-text-body); }
-    .diag-btn--no:hover { border-color: var(--tj-color-theme-primary); color: var(--tj-color-theme-primary); }
-    .diag-result { text-align: center; padding: 8px 0; }
-    .diag-result__icon { width: 68px; height: 68px; border-radius: 50%; border: 2px solid var(--tj-color-border-1); background: var(--tj-color-grey-1); font-size: 28px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
-    .diag-result__icon--ok       { background:#d1fae5!important; border-color:#a7f3d0!important; color:#059669!important; }
-    .diag-result__icon--medium   { background:#fef9c3!important; border-color:#fde047!important; color:#ca8a04!important; }
-    .diag-result__icon--high     { background:#ffedd5!important; border-color:#fed7aa!important; color:#ea580c!important; }
-    .diag-result__icon--critical { background:#fee2e2!important; border-color:#fca5a5!important; color:#dc2626!important; }
-    .diag-result__title { font-size: 24px; font-weight: 900; color: var(--tj-color-heading-primary); margin-bottom: 10px; }
-    .diag-result__desc  { font-size: 14px; color: var(--tj-color-text-body-3); line-height: 1.7; margin-bottom: 24px; max-width: 440px; margin-left:auto; margin-right:auto; }
-    .diag-result__actions { display: flex; gap: 12px; justify-content: center; padding-top: 24px; border-top: 1px solid var(--tj-color-border-1); flex-wrap:wrap; }
-    .diag-restart { padding: 12px 28px; border: 2px solid var(--tj-color-border-1); background: transparent; color: var(--tj-color-text-body-3); font-size: 13px; font-weight: 700; cursor: pointer; border-radius: 8px; font-family: inherit; }
-    .diag-restart:hover { border-color: var(--tj-color-theme-primary); color: var(--tj-color-theme-primary); }
-    .diag-risk-badge { display: inline-flex; align-items: center; gap: 7px; padding: 5px 14px 5px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .09em; margin-bottom: 18px; }
-    .diag-risk-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .diag-risk-badge--ok       { background:#d1fae5; color:#065f46; } .diag-risk-badge--ok       .diag-risk-dot { background:#059669; }
-    .diag-risk-badge--medium   { background:#fef9c3; color:#713f12; } .diag-risk-badge--medium   .diag-risk-dot { background:#ca8a04; }
-    .diag-risk-badge--high     { background:#ffedd5; color:#9a3412; } .diag-risk-badge--high     .diag-risk-dot { background:#ea580c; }
-    .diag-risk-badge--critical { background:#fee2e2; color:#991b1b; } .diag-risk-badge--critical .diag-risk-dot { background:#dc2626; }
-    .diag-reg-rows { display:flex; flex-direction:column; gap:8px; margin-bottom:28px; text-align:left; }
-    .diag-reg-row { display:flex; align-items:center; gap:14px; padding:13px 16px; border-radius:10px; border:1.5px solid var(--tj-color-border-1); background:var(--tj-color-grey-1); }
-    .diag-reg-row__status-dot { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:900; flex-shrink:0; }
-    .diag-reg-row--ok   { border-color:#a7f3d0; } .diag-reg-row--ok   .diag-reg-row__status-dot { background:#d1fae5; color:#059669; }
-    .diag-reg-row--risk { border-color:#fca5a5; } .diag-reg-row--risk .diag-reg-row__status-dot { background:#fee2e2; color:#dc2626; }
-    .diag-reg-row__label { flex:1; }
-    .diag-reg-row__org    { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.09em; color:var(--tj-color-text-body-3); margin-bottom:2px; }
-    .diag-reg-row__detail { font-size:13px; font-weight:700; color:var(--tj-color-heading-primary); }
-    .diag-reg-row__link   { font-size:11px; font-weight:700; color:var(--tj-color-theme-primary); text-decoration:none; border-bottom:1px dashed var(--tj-color-theme-primary); white-space:nowrap; flex-shrink:0; }
+    .zia-calc-step-btn:hover { background: rgba(255,255,255,.12); }
+    .zia-calc-step-val { min-width: 72px; text-align: center; font-size: 28px; font-weight: 900; color: var(--tj-color-theme-primary); line-height: 48px; }
+    .zia-calc-opts { display: flex; flex-direction: column; gap: 6px; }
+    .zia-calc-opt {
+      padding: 10px 16px; border-radius: 6px; border: 1px solid rgba(255,255,255,.08);
+      background: transparent; color: rgba(255,255,255,.4); font-size: 13px; font-weight: 700;
+      cursor: pointer; text-align: left; transition: all .15s; font-family: inherit;
+    }
+    .zia-calc-opt:hover { border-color: rgba(30,138,138,.4); color: rgba(255,255,255,.75); }
+    .zia-calc-opt.is-sel { border-color: var(--tj-color-theme-primary); background: rgba(30,138,138,.15); color: #fff; }
+    .zia-calc-footnote { font-size: 11px; color: rgba(255,255,255,.18); line-height: 1.6; margin-top: 28px; }
+    /* Tabla de resultados */
+    .zia-calc-results { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; height: 100%; }
+    .zia-calc-row { display: grid; grid-template-columns: 1fr auto auto; gap: 16px; padding: 15px 24px; border-bottom: 1px solid rgba(255,255,255,.05); align-items: center; }
+    .zia-calc-row--hd { background: rgba(255,255,255,.03); }
+    .zia-calc-row--hd span { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.22); }
+    .zia-calc-row--hd span:not(:first-child) { text-align: right; min-width: 80px; }
+    .zia-calc-row__org { display: flex; align-items: center; gap: 10px; font-size: 13px; color: rgba(255,255,255,.55); }
+    .zia-calc-num { font-size: 14px; font-weight: 900; color: rgba(255,255,255,.45); min-width: 80px; text-align: right; font-variant-numeric: tabular-nums; transition: color .3s; }
+    .zia-calc-num.is-live { color: rgba(255,255,255,.75); }
+    .zia-calc-row--total { background: rgba(30,138,138,.1); border-bottom: none; border-top: 1px solid rgba(30,138,138,.2); }
+    .zia-calc-row--total .zia-calc-row__org { color: #fff; font-weight: 800; font-size: 14px; }
+    .zia-calc-row--total .zia-calc-num { color: var(--tj-color-theme-primary); font-size: 16px; }
+    .zia-calc-row--total .zia-calc-num.is-live { color: var(--tj-color-theme-primary); }
+    .zia-calc-cta-row { padding: 20px 24px; border-top: 1px solid rgba(255,255,255,.07); display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: auto; }
+    .zia-calc-cta-note { font-size: 12px; color: rgba(255,255,255,.28); line-height: 1.6; flex: 1; min-width: 180px; }
 
     /* ── Process v2: rail animado con ScrollTrigger ── */
     .zia-process-v2 { max-width: 980px; margin: 0 auto; position: relative; }
@@ -218,31 +195,203 @@
     /* Hover bloqueado durante la secuencia de animación inicial */
     .rightSwipeWrap.pillar-animating .choose-box { pointer-events: none; }
 
-    /* ── Timeline horizontal ── */
-    .zia-timeline { max-width: 1000px; margin: 0 auto; position: relative; }
-    .zia-timeline__track { height: 3px; background: var(--tj-color-border-1); position: relative; margin: 48px 0; }
-    .zia-timeline__items { display: flex; justify-content: space-between; }
-    .zia-timeline__item  { flex: 1; text-align: center; padding: 0 8px; }
-    .zia-timeline__dot {
-      width: 16px; height: 16px; border-radius: 50%;
-      background: var(--tj-color-theme-primary);
-      border: 3px solid #fff; outline: 2px solid var(--tj-color-theme-primary);
-      margin: -58px auto 12px;
+    /* ── Timeline horizontal alternado, track con relleno al scroll ── */
+    /* Cada hito es un grid de 3 filas (zona-arriba / nodo / zona-abajo).
+       Al estar en el flujo, las tarjetas nunca se salen sobre el título. */
+    .zia-tl { max-width: 1080px; margin: 0 auto; position: relative; }
+    .zia-tl__items { display: flex; position: relative; }
+    .zia-tl__item  {
+      flex: 1; padding: 0 10px;
+      display: grid; grid-template-rows: 1fr 44px 1fr; justify-items: center;
     }
-    .zia-timeline__year   { font-size: 13px; font-weight: 900; color: var(--tj-color-theme-primary); margin-bottom: 4px; }
-    .zia-timeline__event  { font-size: 11px; font-weight: 700; color: var(--tj-color-heading-primary); margin-bottom: 4px; line-height: 1.3; }
-    .zia-timeline__detail { font-size: 11px; color: var(--tj-color-text-body-3); line-height: 1.4; }
+    /* Track central (atraviesa la fila de nodos, a 50% del alto total) */
+    .zia-tl__track {
+      position: absolute; left: 0; right: 0; top: 50%; height: 3px;
+      transform: translateY(-50%); background: var(--tj-color-border-1); border-radius: 3px; z-index: 0;
+    }
+    .zia-tl__fill {
+      position: absolute; left: 0; top: 0; height: 100%; width: 0;
+      background: var(--tj-color-theme-primary); border-radius: 3px;
+    }
+    /* Nodo en la fila central */
+    .zia-tl__node {
+      grid-row: 2; align-self: center;
+      width: 18px; height: 18px; border-radius: 50%; z-index: 2;
+      background: #fff; border: 2px solid var(--tj-color-border-1);
+      transition: background .35s, border-color .35s, box-shadow .35s;
+    }
+    .zia-tl__item.is-active .zia-tl__node {
+      background: var(--tj-color-theme-primary); border-color: var(--tj-color-theme-primary);
+      box-shadow: 0 0 0 6px rgba(30,138,138,.16);
+    }
+    /* Tarjeta: impares en la fila de arriba, pares en la de abajo */
+    .zia-tl__card {
+      position: relative; width: 100%; max-width: 200px;
+      background: #fff; border: 1px solid var(--tj-color-border-1); border-radius: 12px;
+      padding: 24px 18px; text-align: center; box-shadow: 0 6px 24px rgba(13,17,23,.05);
+      opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease, border-color .35s, box-shadow .35s;
+    }
+    .zia-tl__item.is-active .zia-tl__card { opacity: 1; transform: translateY(0); border-color: rgba(30,138,138,.35); }
+    .zia-tl__item:nth-child(odd)  .zia-tl__card { grid-row: 1; align-self: end; }
+    .zia-tl__item:nth-child(even) .zia-tl__card { grid-row: 3; align-self: start; }
+    /* Conector vertical tarjeta ↔ nodo (la fila central mide 44px → 22px a cada lado) */
+    .zia-tl__card::after {
+      content: ""; position: absolute; left: 50%; width: 2px; height: 22px;
+      background: var(--tj-color-border-1); transform: translateX(-50%); transition: background .35s;
+    }
+    .zia-tl__item:nth-child(odd)  .zia-tl__card::after { top: 100%; }
+    .zia-tl__item:nth-child(even) .zia-tl__card::after { bottom: 100%; }
+    .zia-tl__item.is-active .zia-tl__card::after { background: var(--tj-color-theme-primary); }
+    .zia-tl__icon  { font-size: 32px; color: var(--tj-color-theme-primary); line-height: 1; margin-bottom: 14px; display: inline-flex; }
+    .zia-tl__year  { font-size: 26px; font-weight: 900; color: var(--tj-color-theme-primary); line-height: 1; margin-bottom: 10px; }
+    .zia-tl__event { font-size: 15px; font-weight: 800; color: var(--tj-color-heading-primary); margin-bottom: 8px; line-height: 1.3; }
+    .zia-tl__detail{ font-size: 12.5px; color: var(--tj-color-text-body-3); line-height: 1.6; margin: 0; }
 
-    /* ── Reguladores ── */
-    .zia-regulators { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
-    .zia-reg-badge {
-      border: 1.5px solid var(--tj-color-border-1); border-radius: 10px;
-      padding: 18px 28px; text-align: center; background: #fff; min-width: 130px;
-      transition: border-color .2s, transform .2s;
+    /* ── Reguladores: órbita con ZIA al centro ── */
+    .zia-orbit-stage {
+      position: relative; padding: 30px 0;
+      background:
+        radial-gradient(circle at 50% 46%, rgba(30,138,138,.07), rgba(30,138,138,0) 58%);
     }
-    .zia-reg-badge:hover { border-color: var(--tj-color-theme-primary); transform: translateY(-2px); }
-    .zia-reg-badge__name { font-size: 20px; font-weight: 900; color: var(--tj-color-theme-primary); margin-bottom: 4px; }
-    .zia-reg-badge__full { font-size: 10px; color: var(--tj-color-text-body-3); line-height: 1.3; max-width: 110px; }
+    .zia-orbit {
+      position: relative; width: 600px; max-width: 100%; aspect-ratio: 1 / 1;
+      margin: 0 auto; --r: 224px;
+    }
+    /* Anillo orbital punteado (pasa por los nodos) */
+    .zia-orbit__ring {
+      position: absolute; top: 50%; left: 50%;
+      width: calc(var(--r) * 2); height: calc(var(--r) * 2); border-radius: 50%;
+      border: 1.5px dashed rgba(30,138,138,.28); z-index: 0;
+      transform: translate(-50%, -50%) scale(.82); opacity: 0;
+      transition: transform .8s cubic-bezier(.22,.61,.36,1), opacity .8s ease;
+    }
+    .zia-orbit__ring--inner {
+      width: calc(var(--r) * 1.1); height: calc(var(--r) * 1.1);
+      border-style: solid; border-color: rgba(30,138,138,.10);
+    }
+    .zia-orbit.is-on .zia-orbit__ring { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    /* Líneas radiales (se "dibujan" al entrar) */
+    .zia-orbit__line {
+      position: absolute; top: 50%; left: 50%; z-index: 1;
+      width: var(--r); height: 2px;
+      background: linear-gradient(90deg, rgba(30,138,138,.10), rgba(30,138,138,.32));
+      transform-origin: 0 50%; transform: rotate(var(--a)) scaleX(0);
+      transition: transform .7s cubic-bezier(.22,.61,.36,1); transition-delay: var(--d, 0s);
+    }
+    .zia-orbit.is-on .zia-orbit__line { transform: rotate(var(--a)) scaleX(1); }
+    /* Núcleo ZIA */
+    .zia-orbit__core {
+      position: absolute; top: 50%; left: 50%; z-index: 3;
+      width: 152px; height: 152px; border-radius: 50%;
+      background: radial-gradient(circle at 50% 32%, #14403f, var(--tj-color-theme-dark)); color: #fff;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+      border: 4px solid #fff; box-shadow: 0 16px 48px rgba(20,64,63,.45);
+      opacity: 0; transform: translate(-50%, -50%) scale(.7);
+      transition: opacity .5s ease, transform .55s cubic-bezier(.22,.61,.36,1);
+    }
+    .zia-orbit.is-on .zia-orbit__core { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    .zia-orbit__core::after {
+      content: ""; position: absolute; inset: -4px; border-radius: 50%;
+      border: 2px solid rgba(30,138,138,.45); animation: ziaOrbitPulse 2.8s ease-out infinite;
+    }
+    @keyframes ziaOrbitPulse { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.4); opacity: 0; } }
+    .zia-orbit__core-txt { font-size: 34px; font-weight: 900; letter-spacing: 5px; color: var(--tj-color-theme-primary); line-height: 1; }
+    .zia-orbit__core-sub { font-size: 9px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+    /* Nodos reguladores: badge con icono centrado en el punto + etiqueta */
+    .zia-orbit__node {
+      position: absolute; top: 50%; left: 50%; z-index: 2;
+      width: 84px; height: 84px;
+      transform: translate(-50%, -50%) rotate(var(--a)) translate(var(--r)) rotate(calc(-1 * var(--a))) scale(.6);
+      opacity: 0; transition: opacity .5s ease, transform .55s cubic-bezier(.22,.61,.36,1); transition-delay: var(--d, 0s);
+    }
+    .zia-orbit.is-on .zia-orbit__node {
+      opacity: 1;
+      transform: translate(-50%, -50%) rotate(var(--a)) translate(var(--r)) rotate(calc(-1 * var(--a))) scale(1);
+    }
+    .zia-orbit__badge {
+      width: 100%; height: 100%; border-radius: 50%; background: #fff;
+      border: 2px solid var(--tj-color-border-1);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--tj-color-theme-primary);
+      box-shadow: 0 8px 24px rgba(13,17,23,.10); transition: background .25s, color .25s, border-color .25s, transform .25s, box-shadow .25s;
+      cursor: default;
+    }
+    .zia-orbit__badge i { font-size: 34px; line-height: 1; transition: color .25s; }
+    .zia-orbit__node:hover .zia-orbit__badge {
+      background: var(--tj-color-theme-primary); border-color: var(--tj-color-theme-primary);
+      transform: translateY(-4px); box-shadow: 0 14px 32px rgba(30,138,138,.38);
+    }
+    .zia-orbit__node:hover .zia-orbit__badge i { color: #fff; }
+    .zia-orbit__label {
+      position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%);
+      width: 168px; text-align: center;
+    }
+    .zia-orbit__acr  { display: block; font-size: 16px; font-weight: 900; letter-spacing: .03em; color: var(--tj-color-heading-primary); }
+    .zia-orbit__full { display: block; font-size: 12.5px; font-weight: 600; line-height: 1.4; color: var(--tj-color-text-body); margin-top: 4px; }
+    @media (min-width: 992px) and (max-width: 1199px) { .zia-orbit { width: 540px; --r: 202px; } }
+    @media (min-width: 768px) and (max-width: 991px)  { .zia-orbit { width: 470px; --r: 176px; } }
+
+    /* ── CTA: panel de marca (sustituye la imagen del template) ── */
+    .zia-cta-brand {
+      position: relative; width: 100%; height: 100%; min-height: 320px; overflow: hidden;
+      background: radial-gradient(circle at 72% 28%, #1c5e5c, var(--tj-color-theme-dark));
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+      text-align: center; padding: 40px;
+    }
+    /* Tarjeta blanca que aloja el logo completo (legible sobre el panel oscuro) */
+    .zia-cta-brand__card {
+      position: relative; z-index: 2;
+      background: #fff; border-radius: 14px; padding: 32px 40px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.32);
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+    }
+    .zia-cta-brand__logo { height: 64px; width: auto; display: block; }
+    .zia-cta-brand__tag  {
+      font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--tj-color-theme-primary); line-height: 1.4;
+    }
+    .zia-cta-brand__pat { position: absolute; z-index: 1; opacity: .12; pointer-events: none; }
+    .zia-cta-brand__pat--1 { top: -36px; right: -36px; width: 210px; }
+    .zia-cta-brand__pat--2 { bottom: -44px; left: -36px; width: 230px; }
+    @media (max-width: 991px) { .zia-cta-brand { min-height: 240px; } }
+    @media (max-width: 575px) { .zia-cta-brand__card { padding: 26px 28px; } .zia-cta-brand__logo { height: 52px; } }
+
+    /* ── Servicios: cards iguales, botón en footer, card clickeable ── */
+    /* Grid propio: grid-auto-rows:1fr fuerza que TODAS las cards (incluso
+       las de la 2ª fila) tengan idéntica altura, no solo las de cada fila. */
+    .zia-services-grid { display: grid; gap: 24px; margin: 0; }
+    .zia-services-grid > [class*="col-"] {
+      width: 100%; max-width: 100%; flex: none; padding-left: 0; padding-right: 0;
+    }
+    @media (min-width: 1200px) {
+      .zia-services-grid { grid-template-columns: repeat(4, 1fr); grid-auto-rows: 1fr; }
+    }
+    @media (min-width: 768px) and (max-width: 1199px) {
+      .zia-services-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 1fr; }
+    }
+    @media (max-width: 767px) {
+      .zia-services-grid { grid-template-columns: 1fr; }
+    }
+    #servicios .choose-box {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      cursor: pointer;
+    }
+    #servicios .choose-content { flex: 1; }
+    #servicios .zia-card-footer {
+      padding-top: 16px;
+      border-top: 1px solid var(--tj-color-border-1);
+      margin-top: 16px;
+      position: relative;
+      z-index: 2;
+    }
+    #servicios .zia-card-link {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border-radius: inherit;
+    }
 
     /* ── WhatsApp sticky ── */
     .whatsapp-sticky {
@@ -289,10 +438,41 @@
       .zia-process-v2__step { text-align: left; opacity: 1; transform: none; display: flex; gap: 16px; align-items: flex-start; }
       .zia-process-v2__dot { margin: 2px 0 0; flex-shrink: 0; }
       .zia-process-v2__num { margin-bottom: 6px; }
-      .zia-timeline__items { flex-direction: column; gap: 24px; }
-      .zia-timeline__track { display: none; }
-      .zia-timeline__dot   { margin: 0 auto 10px; }
-      .zia-regulators { gap: 12px; }
+      /* Timeline: pasa a vertical, track a la izquierda y tarjetas a la derecha */
+      .zia-tl__track { left: 9px; right: auto; top: 0; bottom: 0; width: 3px; height: auto; transform: none; }
+      .zia-tl__fill  { width: 100%; height: 0; }
+      .zia-tl__items { flex-direction: column; gap: 22px; }
+      .zia-tl__item  { display: block; position: relative; padding: 0 0 0 40px; }
+      .zia-tl__node  { position: absolute; left: 9px; top: 26px; transform: translate(-50%, -50%); }
+      .zia-tl__card,
+      .zia-tl__item:nth-child(odd)  .zia-tl__card,
+      .zia-tl__item:nth-child(even) .zia-tl__card {
+        max-width: none; width: 100%; grid-row: auto; align-self: auto; text-align: left;
+      }
+      .zia-tl__card::after,
+      .zia-tl__item:nth-child(odd)  .zia-tl__card::after,
+      .zia-tl__item:nth-child(even) .zia-tl__card::after {
+        left: -31px; top: 26px; bottom: auto; width: 31px; height: 2px; transform: translateY(-50%);
+      }
+      /* Reguladores: la órbita se aplana a lista vertical con ZIA arriba */
+      .zia-orbit-stage { padding: 0; background: none; }
+      .zia-orbit { width: 100%; max-width: 440px; aspect-ratio: auto; display: flex; flex-direction: column; gap: 12px; margin: 0 auto; }
+      .zia-orbit__line, .zia-orbit__ring { display: none; }
+      .zia-orbit__core {
+        position: relative; top: auto; left: auto; opacity: 1 !important;
+        transform: none !important; width: 116px; height: 116px; align-self: center; margin-bottom: 8px;
+      }
+      .zia-orbit__core::after { display: none; }
+      .zia-orbit__node {
+        position: relative; top: auto; left: auto; opacity: 1 !important;
+        transform: none !important; width: 100%; height: auto;
+        display: flex; align-items: center; gap: 14px;
+        padding: 12px 16px; background: #fff; border: 1px solid var(--tj-color-border-1); border-radius: 10px;
+      }
+      .zia-orbit__badge { width: 56px; height: 56px; flex-shrink: 0; }
+      .zia-orbit__badge i { font-size: 26px; }
+      .zia-orbit__label { position: relative; top: auto; left: auto; transform: none; width: auto; text-align: left; }
+      .zia-orbit__full { font-size: 12px; }
       .zia-diag-card { padding: 32px 24px; border-radius: 10px; }
       .diag-actions  { flex-direction: column; }
       .diag-result__actions { flex-direction: column; align-items: stretch; }
@@ -581,82 +761,87 @@
           <div class="bg-shape-2" style="opacity:.05"><img src="assets/images/shape/pattern-3.svg" alt=""></div>
         </section>
 
-        <!-- ══ 4. DIAGNÓSTICO INTERACTIVO ══ -->
-        <section id="diagnostico" class="tj-choose-section section-gap" style="background:rgba(30,138,138,.1)">
+        <!-- ══ 4. CALCULADORA DE EXPOSICIÓN ══ -->
+        <section id="diagnostico" class="section-gap section-gap-x" style="background:#0d1117;border-top:1px solid rgba(255,255,255,.06)">
           <div class="container">
             <div class="row">
               <div class="col-12">
                 <div class="sec-heading text-center">
-                  <h2 class="sec-title title-anim">¿Está su gasolinera <span>en regla?</span></h2>
-                  <p class="wow fadeInUp" data-wow-delay=".4s">Responda 3 preguntas y descubra su nivel de riesgo regulatorio en este momento.</p>
+                  <h2 class="sec-title title-anim" style="color:#fff">¿Cuánto le cuesta <span>el incumplimiento?</span></h2>
+                  <p class="wow fadeInUp" data-wow-delay=".4s" style="color:rgba(255,255,255,.45)">Estime su exposición económica ante los 5 organismos reguladores según el tamaño de su operación.</p>
                 </div>
               </div>
             </div>
-            <div class="row justify-content-center">
+            <div class="row g-4 mt-3 align-items-stretch wow fadeInUp" data-wow-delay=".5s">
+
+              <!-- Panel de inputs -->
+              <div class="col-lg-4">
+                <div class="zia-calc-panel">
+                  <div class="zia-calc-field">
+                    <span class="zia-calc-label">Número de dispensarios</span>
+                    <div class="zia-calc-stepper">
+                      <button class="zia-calc-step-btn" id="calc-minus">−</button>
+                      <span class="zia-calc-step-val" id="calc-disp">4</span>
+                      <button class="zia-calc-step-btn" id="calc-plus">+</button>
+                    </div>
+                  </div>
+                  <div class="zia-calc-field">
+                    <span class="zia-calc-label">Ventas mensuales aproximadas</span>
+                    <div class="zia-calc-opts" id="calc-ventas">
+                      <button class="zia-calc-opt" data-v="1">Menos de $500,000</button>
+                      <button class="zia-calc-opt is-sel" data-v="2">$500,000 – $1,000,000</button>
+                      <button class="zia-calc-opt" data-v="3">$1,000,000 – $3,000,000</button>
+                      <button class="zia-calc-opt" data-v="4">$3,000,000 – $5,000,000</button>
+                      <button class="zia-calc-opt" data-v="5">Más de $5,000,000</button>
+                    </div>
+                  </div>
+                  <p class="zia-calc-footnote">Estimación basada en rangos del CFF, LGDCC y reglamentos CRE / ASEA vigentes. No constituye asesoría legal.</p>
+                </div>
+              </div>
+
+              <!-- Tabla de resultados -->
               <div class="col-lg-8">
-                <div class="zia-diag-card wow fadeInUp" data-wow-delay=".5s">
-                  <div class="diag-progress"><div class="diag-progress__bar" id="diag-bar"></div></div>
-                  <div class="diag-stepper">
-                    <div class="diag-step is-active" id="ds-1">
-                      <div class="diag-step__dot">1</div>
-                      <div class="diag-step__label">SAT</div>
-                    </div>
-                    <div class="diag-step__line"></div>
-                    <div class="diag-step" id="ds-2">
-                      <div class="diag-step__dot">2</div>
-                      <div class="diag-step__label">CRE</div>
-                    </div>
-                    <div class="diag-step__line"></div>
-                    <div class="diag-step" id="ds-3">
-                      <div class="diag-step__dot">3</div>
-                      <div class="diag-step__label">ASEA</div>
-                    </div>
+                <div class="zia-calc-results">
+                  <div class="zia-calc-row zia-calc-row--hd">
+                    <span>Organismo / Obligación</span>
+                    <span>Mínimo</span>
+                    <span>Máximo</span>
                   </div>
-                  <div id="diag-questions">
-                    <div id="dq-1">
-                      <div class="diag-question__step">Pregunta 1 de 3 — SAT</div>
-                      <div class="diag-question__text">¿Su control volumétrico está activo y reportando correctamente al SAT?</div>
-                      <p class="diag-question__hint">Miscelánea Fiscal, Anexo 30 y envío de archivos JSON/XML certificados.</p>
-                      <div class="diag-actions">
-                        <button class="diag-btn diag-btn--yes" data-q="1" data-ans="yes">Sí, está activo</button>
-                        <button class="diag-btn diag-btn--no"  data-q="1" data-ans="no">No / No estoy seguro</button>
-                      </div>
-                    </div>
-                    <div id="dq-2" style="display:none">
-                      <div class="diag-question__step">Pregunta 2 de 3 — CRE</div>
-                      <div class="diag-question__text">¿Su permiso CRE está vigente y sin observaciones pendientes?</div>
-                      <p class="diag-question__hint">Reportes anuales, diarios y trimestrales presentados al corriente.</p>
-                      <div class="diag-actions">
-                        <button class="diag-btn diag-btn--yes" data-q="2" data-ans="yes">Sí, al corriente</button>
-                        <button class="diag-btn diag-btn--no"  data-q="2" data-ans="no">No / No estoy seguro</button>
-                      </div>
-                    </div>
-                    <div id="dq-3" style="display:none">
-                      <div class="diag-question__step">Pregunta 3 de 3 — ASEA</div>
-                      <div class="diag-question__text">¿Cuenta con SASISOPA implementado y Cédula de Operación Anual vigente?</div>
-                      <p class="diag-question__hint">Sistema de Administración de Seguridad Industrial y Protección Ambiental ante ASEA.</p>
-                      <div class="diag-actions">
-                        <button class="diag-btn diag-btn--yes" data-q="3" data-ans="yes">Sí, implementado</button>
-                        <button class="diag-btn diag-btn--no"  data-q="3" data-ans="no">No / No estoy seguro</button>
-                      </div>
-                    </div>
+                  <div class="zia-calc-row">
+                    <div class="zia-calc-row__org"><span class="zia-risk-org">SAT</span> Control volumétrico</div>
+                    <span class="zia-calc-num" id="r-sat-min">—</span>
+                    <span class="zia-calc-num" id="r-sat-max">—</span>
                   </div>
-                  <div id="diag-result" style="display:none" class="diag-result">
-                    <div id="diag-risk-level"></div>
-                    <div class="diag-result__icon" id="diag-icon"></div>
-                    <div class="diag-result__title" id="diag-title"></div>
-                    <p class="diag-result__desc" id="diag-desc"></p>
-                    <div id="diag-regulators"></div>
-                    <div class="diag-result__actions">
-                      <a href="contacto.html" class="tj-primary-btn">
-                        <span class="btn-text"><span>Hablar con un especialista</span></span>
-                        <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
-                      </a>
-                      <button class="diag-restart" id="diag-restart">Reiniciar diagnóstico</button>
-                    </div>
+                  <div class="zia-calc-row">
+                    <div class="zia-calc-row__org"><span class="zia-risk-org">ASEA</span> SASISOPA / Cédula</div>
+                    <span class="zia-calc-num" id="r-asea-min">—</span>
+                    <span class="zia-calc-num" id="r-asea-max">—</span>
+                  </div>
+                  <div class="zia-calc-row">
+                    <div class="zia-calc-row__org"><span class="zia-risk-org">CRE</span> Reportes y permiso</div>
+                    <span class="zia-calc-num" id="r-cre-min">—</span>
+                    <span class="zia-calc-num" id="r-cre-max">—</span>
+                  </div>
+                  <div class="zia-calc-row">
+                    <div class="zia-calc-row__org"><span class="zia-risk-org">STPS</span> Seguridad e higiene</div>
+                    <span class="zia-calc-num" id="r-stps-min">—</span>
+                    <span class="zia-calc-num" id="r-stps-max">—</span>
+                  </div>
+                  <div class="zia-calc-row zia-calc-row--total">
+                    <div class="zia-calc-row__org">Exposición total estimada</div>
+                    <span class="zia-calc-num" id="r-total-min">—</span>
+                    <span class="zia-calc-num" id="r-total-max">—</span>
+                  </div>
+                  <div class="zia-calc-cta-row">
+                    <p class="zia-calc-cta-note">Esta estimación es conservadora. Su exposición real depende del historial de cumplimiento y puede ser significativamente mayor.</p>
+                    <a href="contacto.html" class="tj-primary-btn">
+                      <span class="btn-text"><span>Solicitar auditoría sin costo</span></span>
+                      <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
+                    </a>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
         </section>
@@ -722,92 +907,113 @@
                 </div>
               </div>
             </div>
-            <div class="row row-gap-4">
-              <div class="col-xl-3 col-md-6 wow fadeInUp" data-wow-delay=".2s">
-                <div class="choose-box" style="height:100%">
+            <div class="row row-gap-4 zia-services-grid">
+              <div class="col-xl-3 col-md-6 d-flex wow fadeInUp" data-wow-delay=".2s">
+                <div class="choose-box w-100">
+                  <a href="servicios.html" class="zia-card-link" aria-hidden="true" tabindex="-1"></a>
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-service-1"></i></div>
                     <h4 class="title">Auditoría de Cumplimiento Normativo</h4>
                     <p class="desc">Revisión física, documental y ponderación de riesgos como primera línea de defensa.</p>
-                    <a class="text-btn mt-3" href="servicios.html">
+                  </div>
+                  <div class="zia-card-footer">
+                    <a class="text-btn" href="servicios.html">
                       <span class="btn-text"><span>Ver más</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                     </a>
                   </div>
                 </div>
               </div>
-              <div class="col-xl-3 col-md-6 wow fadeInUp" data-wow-delay=".3s">
-                <div class="choose-box" style="height:100%">
+              <div class="col-xl-3 col-md-6 d-flex wow fadeInUp" data-wow-delay=".3s">
+                <div class="choose-box w-100">
+                  <a href="servicios.html" class="zia-card-link" aria-hidden="true" tabindex="-1"></a>
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-service-2"></i></div>
                     <h4 class="title">Gestoría CRE / ASEA</h4>
                     <p class="desc">Trámites, permisos, reportes y obligaciones ante CRE y ASEA de principio a fin.</p>
-                    <a class="text-btn mt-3" href="servicios.html">
+                  </div>
+                  <div class="zia-card-footer">
+                    <a class="text-btn" href="servicios.html">
                       <span class="btn-text"><span>Ver más</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                     </a>
                   </div>
                 </div>
               </div>
-              <div class="col-xl-3 col-md-6 wow fadeInUp" data-wow-delay=".4s">
-                <div class="choose-box" style="height:100%">
+              <div class="col-xl-3 col-md-6 d-flex wow fadeInUp" data-wow-delay=".4s">
+                <div class="choose-box w-100">
+                  <a href="servicios.html" class="zia-card-link" aria-hidden="true" tabindex="-1"></a>
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-service-3"></i></div>
                     <h4 class="title">Servicios Fiscales SAT</h4>
                     <p class="desc">Control volumétrico, Miscelánea Fiscal, Anexo 30 y resoluciones fiscales.</p>
-                    <a class="text-btn mt-3" href="servicios.html">
+                  </div>
+                  <div class="zia-card-footer">
+                    <a class="text-btn" href="servicios.html">
                       <span class="btn-text"><span>Ver más</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                     </a>
                   </div>
                 </div>
               </div>
-              <div class="col-xl-3 col-md-6 wow fadeInUp" data-wow-delay=".5s">
-                <div class="choose-box" style="height:100%">
+              <div class="col-xl-3 col-md-6 d-flex wow fadeInUp" data-wow-delay=".5s">
+                <div class="choose-box w-100">
+                  <a href="servicios.html" class="zia-card-link" aria-hidden="true" tabindex="-1"></a>
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-service-4"></i></div>
                     <h4 class="title">Diagnóstico e Infraestructura</h4>
                     <p class="desc">Pruebas de tanques, calidad, hermeticidad y mantenimiento preventivo especializado.</p>
-                    <a class="text-btn mt-3" href="servicios.html">
+                  </div>
+                  <div class="zia-card-footer">
+                    <a class="text-btn" href="servicios.html">
                       <span class="btn-text"><span>Ver más</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                     </a>
                   </div>
                 </div>
               </div>
-              <div class="col-xl-3 col-md-6 wow fadeInUp" data-wow-delay=".3s">
-                <div class="choose-box" style="height:100%">
+              <div class="col-xl-3 col-md-6 d-flex wow fadeInUp" data-wow-delay=".3s">
+                <div class="choose-box w-100">
+                  <a href="servicios.html" class="zia-card-link" aria-hidden="true" tabindex="-1"></a>
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-service-5"></i></div>
                     <h4 class="title">Seguridad e Higiene Laboral</h4>
                     <p class="desc">Cumplimiento STPS y Protección Civil, seguridad de empleados y normas clave.</p>
-                    <a class="text-btn mt-3" href="servicios.html">
+                  </div>
+                  <div class="zia-card-footer">
+                    <a class="text-btn" href="servicios.html">
                       <span class="btn-text"><span>Ver más</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                     </a>
                   </div>
                 </div>
               </div>
-              <div class="col-xl-3 col-md-6 wow fadeInUp" data-wow-delay=".4s">
-                <div class="choose-box" style="height:100%">
+              <div class="col-xl-3 col-md-6 d-flex wow fadeInUp" data-wow-delay=".4s">
+                <div class="choose-box w-100">
+                  <a href="servicios.html" class="zia-card-link" aria-hidden="true" tabindex="-1"></a>
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-service-6"></i></div>
                     <h4 class="title">Equipo Tecnológico</h4>
                     <p class="desc">Dispensarios, consolas de telemedición, videovigilancia y sistemas de control C4.</p>
-                    <a class="text-btn mt-3" href="servicios.html">
+                  </div>
+                  <div class="zia-card-footer">
+                    <a class="text-btn" href="servicios.html">
                       <span class="btn-text"><span>Ver más</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                     </a>
                   </div>
                 </div>
               </div>
-              <div class="col-xl-3 col-md-6 wow fadeInUp" data-wow-delay=".5s">
-                <div class="choose-box" style="height:100%">
+              <div class="col-xl-3 col-md-6 d-flex wow fadeInUp" data-wow-delay=".5s">
+                <div class="choose-box w-100">
+                  <a href="servicios.html" class="zia-card-link" aria-hidden="true" tabindex="-1"></a>
                   <div class="choose-content">
                     <div class="choose-icon"><i class="tji-innovative"></i></div>
                     <h4 class="title">Defensoría Jurídica</h4>
                     <p class="desc">Amparo y litigio contencioso ante SAT, CRE, ASEA, IMSS e INFONAVIT.</p>
-                    <a class="text-btn mt-3" href="servicios.html">
+                  </div>
+                  <div class="zia-card-footer">
+                    <a class="text-btn" href="servicios.html">
                       <span class="btn-text"><span>Ver más</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                     </a>
@@ -831,39 +1037,60 @@
             </div>
             <div class="row">
               <div class="col-12">
-                <div class="zia-timeline wow fadeInUp" data-wow-delay=".5s">
-                  <div class="zia-timeline__track"></div>
-                  <div class="zia-timeline__items">
-                    <div class="zia-timeline__item">
-                      <div class="zia-timeline__dot"></div>
-                      <div class="zia-timeline__year">2000</div>
-                      <div class="zia-timeline__event">Orígenes en TI</div>
-                      <p class="zia-timeline__detail">Soporte y asesoría en sistemas de información y redes</p>
+                <div class="zia-tl wow fadeInUp" data-wow-delay=".3s" id="zia-tl">
+                  <div class="zia-tl__track"><div class="zia-tl__fill" id="zia-tl-fill"></div></div>
+                  <div class="zia-tl__items">
+
+                    <div class="zia-tl__item">
+                      <div class="zia-tl__card">
+                        <span class="zia-tl__icon"><i class="tji-innovative"></i></span>
+                        <div class="zia-tl__year">2000</div>
+                        <div class="zia-tl__event">Orígenes en TI</div>
+                        <p class="zia-tl__detail">Soporte y asesoría en sistemas de información y redes.</p>
+                      </div>
+                      <div class="zia-tl__node"></div>
                     </div>
-                    <div class="zia-timeline__item">
-                      <div class="zia-timeline__dot"></div>
-                      <div class="zia-timeline__year">2004</div>
-                      <div class="zia-timeline__event">Especialización en Hidrocarburos</div>
-                      <p class="zia-timeline__detail">Controles volumétricos para gasolineras</p>
+
+                    <div class="zia-tl__item">
+                      <div class="zia-tl__card">
+                        <span class="zia-tl__icon"><i class="tji-service-3"></i></span>
+                        <div class="zia-tl__year">2004</div>
+                        <div class="zia-tl__event">Especialización en Hidrocarburos</div>
+                        <p class="zia-tl__detail">Primeros controles volumétricos para gasolineras.</p>
+                      </div>
+                      <div class="zia-tl__node"></div>
                     </div>
-                    <div class="zia-timeline__item">
-                      <div class="zia-timeline__dot"></div>
-                      <div class="zia-timeline__year">2010</div>
-                      <div class="zia-timeline__event">Diversificación en Seguridad</div>
-                      <p class="zia-timeline__detail">Protección Civil y STPS</p>
+
+                    <div class="zia-tl__item">
+                      <div class="zia-tl__card">
+                        <span class="zia-tl__icon"><i class="tji-service-5"></i></span>
+                        <div class="zia-tl__year">2010</div>
+                        <div class="zia-tl__event">Diversificación en Seguridad</div>
+                        <p class="zia-tl__detail">Incorporamos Protección Civil y STPS a nuestro catálogo.</p>
+                      </div>
+                      <div class="zia-tl__node"></div>
                     </div>
-                    <div class="zia-timeline__item">
-                      <div class="zia-timeline__dot"></div>
-                      <div class="zia-timeline__year">2015</div>
-                      <div class="zia-timeline__event">Adaptación Regulatoria</div>
-                      <p class="zia-timeline__detail">Ampliación de catálogo para CRE y ASEA</p>
+
+                    <div class="zia-tl__item">
+                      <div class="zia-tl__card">
+                        <span class="zia-tl__icon"><i class="tji-service-2"></i></span>
+                        <div class="zia-tl__year">2015</div>
+                        <div class="zia-tl__event">Adaptación Regulatoria</div>
+                        <p class="zia-tl__detail">Ampliación de servicios para CRE y ASEA tras la reforma energética.</p>
+                      </div>
+                      <div class="zia-tl__node"></div>
                     </div>
-                    <div class="zia-timeline__item">
-                      <div class="zia-timeline__dot"></div>
-                      <div class="zia-timeline__year">Hoy</div>
-                      <div class="zia-timeline__event">Liderazgo Integral</div>
-                      <p class="zia-timeline__detail">Auditorías, gestoría, supervisión y defensoría</p>
+
+                    <div class="zia-tl__item">
+                      <div class="zia-tl__card">
+                        <span class="zia-tl__icon"><i class="tji-award"></i></span>
+                        <div class="zia-tl__year">Hoy</div>
+                        <div class="zia-tl__event">Liderazgo Integral</div>
+                        <p class="zia-tl__detail">Auditorías, gestoría, supervisión y defensoría bajo un mismo techo.</p>
+                      </div>
+                      <div class="zia-tl__node"></div>
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -883,26 +1110,61 @@
             </div>
             <div class="row">
               <div class="col-12">
-                <div class="zia-regulators wow fadeInUp" data-wow-delay=".4s">
-                  <div class="zia-reg-badge">
-                    <div class="zia-reg-badge__name">ASEA</div>
-                    <p class="zia-reg-badge__full">Agencia de Seguridad, Energía y Ambiente</p>
-                  </div>
-                  <div class="zia-reg-badge">
-                    <div class="zia-reg-badge__name">CRE</div>
-                    <p class="zia-reg-badge__full">Comisión Reguladora de Energía</p>
-                  </div>
-                  <div class="zia-reg-badge">
-                    <div class="zia-reg-badge__name">SAT</div>
-                    <p class="zia-reg-badge__full">Servicio de Administración Tributaria</p>
-                  </div>
-                  <div class="zia-reg-badge">
-                    <div class="zia-reg-badge__name">STPS</div>
-                    <p class="zia-reg-badge__full">Secretaría del Trabajo y Previsión Social</p>
-                  </div>
-                  <div class="zia-reg-badge">
-                    <div class="zia-reg-badge__name">PC</div>
-                    <p class="zia-reg-badge__full">Protección Civil</p>
+                <div class="zia-orbit-stage">
+                  <div class="zia-orbit" id="zia-orbit">
+                    <!-- Anillos orbitales -->
+                    <span class="zia-orbit__ring"></span>
+                    <span class="zia-orbit__ring zia-orbit__ring--inner"></span>
+
+                    <!-- Spokes radiales -->
+                    <span class="zia-orbit__line" style="--a:-90deg; --d:.05s"></span>
+                    <span class="zia-orbit__line" style="--a:-18deg; --d:.12s"></span>
+                    <span class="zia-orbit__line" style="--a:54deg;  --d:.19s"></span>
+                    <span class="zia-orbit__line" style="--a:126deg; --d:.26s"></span>
+                    <span class="zia-orbit__line" style="--a:198deg; --d:.33s"></span>
+
+                    <!-- Núcleo -->
+                    <div class="zia-orbit__core">
+                      <span class="zia-orbit__core-txt">ZIA</span>
+                      <span class="zia-orbit__core-sub">Cumplimiento</span>
+                    </div>
+
+                    <!-- Nodos reguladores -->
+                    <div class="zia-orbit__node" style="--a:-90deg; --d:.22s">
+                      <div class="zia-orbit__badge"><i class="tji-service-4"></i></div>
+                      <div class="zia-orbit__label">
+                        <span class="zia-orbit__acr">ASEA</span>
+                        <span class="zia-orbit__full">Seguridad, Energía y Ambiente</span>
+                      </div>
+                    </div>
+                    <div class="zia-orbit__node" style="--a:-18deg; --d:.30s">
+                      <div class="zia-orbit__badge"><i class="tji-service-2"></i></div>
+                      <div class="zia-orbit__label">
+                        <span class="zia-orbit__acr">CRE</span>
+                        <span class="zia-orbit__full">Comisión Reguladora de Energía</span>
+                      </div>
+                    </div>
+                    <div class="zia-orbit__node" style="--a:54deg; --d:.38s">
+                      <div class="zia-orbit__badge"><i class="tji-service-3"></i></div>
+                      <div class="zia-orbit__label">
+                        <span class="zia-orbit__acr">SAT</span>
+                        <span class="zia-orbit__full">Servicio de Administración Tributaria</span>
+                      </div>
+                    </div>
+                    <div class="zia-orbit__node" style="--a:126deg; --d:.46s">
+                      <div class="zia-orbit__badge"><i class="tji-service-5"></i></div>
+                      <div class="zia-orbit__label">
+                        <span class="zia-orbit__acr">STPS</span>
+                        <span class="zia-orbit__full">Trabajo y Previsión Social</span>
+                      </div>
+                    </div>
+                    <div class="zia-orbit__node" style="--a:198deg; --d:.54s">
+                      <div class="zia-orbit__badge"><i class="tji-excellence"></i></div>
+                      <div class="zia-orbit__label">
+                        <span class="zia-orbit__acr">PC</span>
+                        <span class="zia-orbit__full">Protección Civil</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1003,7 +1265,14 @@
                     </div>
                   </div>
                   <div class="cta-img">
-                    <img src="assets/images/cta/cta-bg.webp" alt="">
+                    <div class="zia-cta-brand">
+                      <img class="zia-cta-brand__pat zia-cta-brand__pat--1" src="assets/images/shape/pattern-2.svg" alt="">
+                      <img class="zia-cta-brand__pat zia-cta-brand__pat--2" src="assets/images/shape/pattern-3.svg" alt="">
+                      <div class="zia-cta-brand__card">
+                        <img class="zia-cta-brand__logo" src="./assets/images/logos/zia_logo_completo.svg" alt="ZIA Integración">
+                        <span class="zia-cta-brand__tag">Cumplimiento normativo integral</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1129,55 +1398,63 @@
   <script src="assets/js/main.js"></script>
 
 
-  <!-- Diagnóstico interactivo -->
+  <!-- Calculadora de exposición regulatoria -->
   <script>
   (function () {
-    var answers = {};
-    var REGS = [
-      { org:'SAT',  okText:'Control volumétrico activo y reportando',   riskText:'Sin control volumétrico activo',       href:'#' },
-      { org:'CRE',  okText:'Permiso vigente y sin observaciones',        riskText:'Permiso con observaciones pendientes', href:'#' },
-      { org:'ASEA', okText:'SASISOPA y Cédula de Operación vigentes',    riskText:'Sin SASISOPA o Cédula vencida',        href:'#' }
-    ];
-    var LEVELS = [
-      { key:'ok',       label:'Nivel: Bajo',    icon:'✓', title:'Buen nivel de cumplimiento',                       desc:'Aun así, le recomendamos una Auditoría Preventiva anual para anticiparse a cambios normativos.' },
-      { key:'medium',   label:'Nivel: Medio',   icon:'⚠', title:'1 área de riesgo detectada',                      desc:'Este incumplimiento puede derivar en multas o sanciones. Actúe antes de una inspección sorpresa.' },
-      { key:'high',     label:'Nivel: Alto',    icon:'⚠', title:'2 áreas de riesgo regulatorio detectadas',        desc:'Estos incumplimientos lo exponen a multas, clausura o pérdida de permiso. Actúe con urgencia.' },
-      { key:'critical', label:'Nivel: Crítico', icon:'!', title:'Riesgo crítico: 3 áreas sin cumplimiento',        desc:'Su gasolinera está expuesta a clausura inmediata y pérdida de permiso. Contáctenos hoy.' }
-    ];
-    function diagBar(s) { var b=document.getElementById('diag-bar'); if(b) b.style.width=(s/3*100)+'%'; }
-    function diagShowQ(n) {
-      for(var i=1;i<=3;i++){var ds=document.getElementById('ds-'+i);if(ds){ds.classList.toggle('is-active',i===n);ds.classList.toggle('is-done',i<n);var d=ds.querySelector('.diag-step__dot');if(d)d.textContent=i<n?'✓':String(i);}}
-      var cur=null;
-      for(var j=1;j<=3;j++){var c=document.getElementById('dq-'+j);if(c&&c.style.display!=='none'){cur=c;break;}}
-      var nxt=document.getElementById('dq-'+n);
-      if(!nxt)return;
-      diagBar(n-1);
-      if(cur&&cur!==nxt){cur.classList.add('diag-question-leaving');var cap=cur;setTimeout(function(){cap.style.display='none';cap.classList.remove('diag-question-leaving');nxt.style.display='block';void nxt.offsetWidth;nxt.classList.add('diag-question-entering');setTimeout(function(){nxt.classList.remove('diag-question-entering');},300);},190);}
-      else{nxt.style.display='block';void nxt.offsetWidth;nxt.classList.add('diag-question-entering');setTimeout(function(){nxt.classList.remove('diag-question-entering');},300);}
+    var state = { d: 4, v: 2 };
+    var VM = [250000, 750000, 2000000, 4000000, 7000000];
+
+    function calc() {
+      var d = state.d, v = VM[state.v - 1];
+      return {
+        sat:  { mn: 500000 + d * 100000,          mx: 3000000 + d * 250000 + v * 0.03 },
+        asea: { mn: 200000 + d * 80000,            mx: 1500000 + d * 200000 },
+        cre:  { mn: 100000 + v * 0.02,             mx: Math.min(3000000 + v * 0.05, 8000000) },
+        stps: { mn: d * 5 * 5000,                  mx: d * 5 * 25000 }
+      };
     }
-    function diagResult() {
-      var qW=document.getElementById('diag-questions'),rW=document.getElementById('diag-result');
-      if(!qW||!rW)return;
-      for(var i=1;i<=3;i++){var ds=document.getElementById('ds-'+i);if(ds){ds.classList.remove('is-active');ds.classList.add('is-done');var d=ds.querySelector('.diag-step__dot');if(d)d.textContent='✓';}}
-      diagBar(3);
-      qW.style.display='none';rW.style.display='block';void rW.offsetWidth;
-      rW.classList.add('diag-question-entering');setTimeout(function(){rW.classList.remove('diag-question-entering');},300);
-      var issues=(answers[1]==='no'?1:0)+(answers[2]==='no'?1:0)+(answers[3]==='no'?1:0);
-      var lv=LEVELS[issues];
-      var rl=document.getElementById('diag-risk-level');
-      if(rl)rl.innerHTML='<span class="diag-risk-badge diag-risk-badge--'+lv.key+'"><span class="diag-risk-dot"></span>'+lv.label+'</span>';
-      var ic=document.getElementById('diag-icon');
-      if(ic){ic.textContent=lv.icon;ic.className='diag-result__icon diag-result__icon--'+lv.key;}
-      var t=document.getElementById('diag-title'),dsc=document.getElementById('diag-desc');
-      if(t)t.textContent=lv.title;if(dsc)dsc.textContent=lv.desc;
-      var re=document.getElementById('diag-regulators');
-      if(re){var html='<div class="diag-reg-rows">';for(var k=0;k<3;k++){var r=REGS[k],ok=answers[k+1]!=='no';html+='<div class="diag-reg-row diag-reg-row--'+(ok?'ok':'risk')+'"><div class="diag-reg-row__status-dot">'+(ok?'✓':'✕')+'</div><div class="diag-reg-row__label"><div class="diag-reg-row__org">'+r.org+'</div><div class="diag-reg-row__detail">'+(ok?r.okText:r.riskText)+'</div></div>'+(!ok?'<a href="'+r.href+'" class="diag-reg-row__link">Resolver →</a>':'')+'</div>';}re.innerHTML=html+'</div>';}
+
+    function fmt(n) {
+      if (n >= 1000000) return '$' + (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+      return '$' + Math.round(n / 1000) + 'K';
     }
-    document.addEventListener('click',function(e){
-      if(e.target.classList.contains('diag-btn')){var q=parseInt(e.target.getAttribute('data-q'),10),a=e.target.getAttribute('data-ans');answers[q]=a;if(q<3)diagShowQ(q+1);else diagResult();}
-      if(e.target.id==='diag-restart'){answers={};var qW=document.getElementById('diag-questions'),rW=document.getElementById('diag-result');if(qW)qW.style.display='block';if(rW)rW.style.display='none';diagShowQ(1);}
+
+    function render() {
+      var r = calc();
+      var ids = { sat: r.sat, asea: r.asea, cre: r.cre, stps: r.stps };
+      var tMin = 0, tMax = 0;
+      Object.keys(ids).forEach(function (k) {
+        tMin += ids[k].mn; tMax += ids[k].mx;
+        set('r-' + k + '-min', fmt(ids[k].mn));
+        set('r-' + k + '-max', fmt(ids[k].mx));
+      });
+      set('r-total-min', fmt(tMin));
+      set('r-total-max', fmt(tMax));
+      document.getElementById('calc-disp').textContent = state.d;
+    }
+
+    function set(id, val) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = val;
+      el.classList.add('is-live');
+    }
+
+    var minus = document.getElementById('calc-minus');
+    var plus  = document.getElementById('calc-plus');
+    if (minus) minus.addEventListener('click', function () { if (state.d > 1)  { state.d--; render(); } });
+    if (plus)  plus.addEventListener('click',  function () { if (state.d < 30) { state.d++; render(); } });
+
+    document.querySelectorAll('#calc-ventas .zia-calc-opt').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('#calc-ventas .zia-calc-opt').forEach(function (b) { b.classList.remove('is-sel'); });
+        btn.classList.add('is-sel');
+        state.v = parseInt(btn.dataset.v, 10);
+        render();
+      });
     });
-    if(document.getElementById('dq-1'))diagBar(0);
+
+    render();
   }());
   </script>
   <script>
@@ -1219,9 +1496,9 @@
       ease: 'none',
       scrollTrigger: {
         trigger: '#zia-process-v2',
-        start: 'top 72%',
-        end: 'top 28%',
-        scrub: 1.2,
+        start: 'top 85%',
+        end: 'center 62%',
+        scrub: 0.6,
         onUpdate: function (self) {
           var p = self.progress;
           dots.forEach(function (dot, i) {
@@ -1235,6 +1512,70 @@
           steps[0].classList.add('is-visible');
         }
       }
+    });
+  }());
+  </script>
+
+  <!-- Timeline horizontal: track que se rellena + activación de hitos -->
+  <script>
+  (function () {
+    var tl = document.getElementById('zia-tl');
+    if (!tl) return;
+    var fill  = document.getElementById('zia-tl-fill');
+    var items = tl.querySelectorAll('.zia-tl__item');
+    if (!items.length) return;
+
+    // En móvil el track es vertical (alto), en desktop horizontal (ancho).
+    function isVertical() { return window.matchMedia('(max-width: 767px)').matches; }
+
+    function setFill(p) {
+      if (!fill) return;
+      var pct = (Math.max(0, Math.min(1, p)) * 100).toFixed(2) + '%';
+      if (isVertical()) { fill.style.height = pct; fill.style.width = '100%'; }
+      else              { fill.style.width = pct;  fill.style.height = '100%'; }
+    }
+
+    // Umbral = centro de cada hito a lo largo del recorrido.
+    var thresholds = [];
+    items.forEach(function (_, i) { thresholds.push((i + 0.5) / items.length); });
+
+    function activate(p) {
+      items.forEach(function (item, i) {
+        item.classList.toggle('is-active', p >= thresholds[i] - 0.05);
+      });
+    }
+
+    // Fallback sin GSAP: todo lleno y activo.
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+      setFill(1); activate(1); return;
+    }
+    gsap.registerPlugin(ScrollTrigger);
+
+    ScrollTrigger.create({
+      trigger: tl,
+      start: 'top 78%',
+      end: 'center 58%',
+      onUpdate: function (self) { setFill(self.progress); activate(self.progress); },
+      onEnter:  function () { items[0].classList.add('is-active'); }
+    });
+  }());
+  </script>
+
+  <!-- Reguladores: activar órbita al entrar en viewport -->
+  <script>
+  (function () {
+    var orbit = document.getElementById('zia-orbit');
+    if (!orbit) return;
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+      orbit.classList.add('is-on');
+      return;
+    }
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.create({
+      trigger: orbit,
+      start: 'top 75%',
+      onEnter:     function () { orbit.classList.add('is-on'); },
+      onLeaveBack: function () { orbit.classList.remove('is-on'); }
     });
   }());
   </script>
