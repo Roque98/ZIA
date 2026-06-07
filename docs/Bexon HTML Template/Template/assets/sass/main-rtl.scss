@@ -1,0 +1,969 @@
+@use "./utilities" as *;
+
+/**----------------------------------------
+START: Default CSS
+----------------------------------------*/
+html[lang="ar"] {
+	h1,
+	h2 {
+		line-height: 1.25 !important;
+	}
+}
+
+select,
+.nice-select,
+input:not([type="radio"]):not([type="checkbox"]),
+textarea {
+	direction: rtl;
+}
+
+/**
+  Buttons CSS
+*/
+.tj-primary-btn {
+	padding-inline-end: 5px;
+	padding-inline-start: 25px;
+	.btn-text span {
+		line-height: 1.2;
+	}
+	.btn-icon {
+		i {
+			transform: rotate(-135deg);
+		}
+	}
+	&:hover {
+		.btn-icon {
+			i {
+				transform: rotate(-180deg);
+			}
+		}
+	}
+	&-lg {
+		padding-inline-end: 7px;
+		padding-inline-start: 44px;
+	}
+}
+
+.text-btn {
+	.btn-icon {
+		i {
+			transform: rotate(-135deg);
+		}
+	}
+	&:hover {
+		.btn-icon {
+			i {
+				transform: rotate(-180deg);
+			}
+		}
+	}
+}
+.tji-icon-btn {
+	i {
+		transform: rotate(-135deg);
+	}
+	&:hover {
+		i {
+			transform: rotate(-180deg);
+		}
+	}
+}
+
+// preloader
+.tj-preloader {
+	.tj-preloader {
+		&-ball {
+			transform: translate(50%, 50%);
+			&-wrap {
+				transform: translateX(-16px);
+				@media only screen and (min-width: 1025px) {
+					transform: none;
+				}
+			}
+
+			&-inner-wrap {
+				transform: translate(100%, -50%);
+			}
+		}
+	}
+}
+// Video btn
+.video-btn {
+	transform: translate(50%, -50%);
+	i {
+		transform: scaleX(-1);
+	}
+	&:hover {
+		transform: translate(50%, -50%) scale(1.1);
+	}
+}
+
+// Swiper
+.slider-next,
+.slider-prev {
+	.anim-icon {
+		transform: scaleX(-1);
+	}
+}
+
+// Bg image
+.bg-shape {
+	&-1,
+	&-2,
+	&-3,
+	&-4 {
+		img {
+			transform: scaleX(-1);
+		}
+	}
+}
+.list-items li i {
+	transform: scaleX(-1);
+}
+// cursor
+.cb-cursor {
+	inset-inline-start: auto;
+	inset-inline-end: 0;
+}
+
+.tj-page-link span:not(:first-child) i {
+	&::before {
+		transform: scaleX(-1);
+	}
+}
+/* !END:  Default CSS */
+
+/**----------------------------------------
+START: Theme Header CSS
+----------------------------------------*/
+.mainmenu,
+.mobile_menu {
+	ul > {
+		li {
+			> .mega-menu {
+				transform: scaleY(0) translateX(50%);
+			}
+			&:hover {
+				> .mega-menu {
+					transform: scaleY(1) translateX(50%);
+				}
+			}
+			@media #{$md,$sm,$xs} {
+				> .mega-menu {
+					transform: scaleY(1) translateX(0);
+				}
+				&:hover {
+					> .mega-menu {
+						transform: scaleY(1) translateX(0);
+					}
+				}
+			}
+		}
+	}
+}
+.tj-demo-button {
+	transform: translate(50%, -50%);
+}
+.header-top-content .topbar-text a::after {
+	transform: scale(-1);
+}
+.tj_search_wrapper
+	.search_form
+	form
+	.search_input
+	.search-box
+	input:not([type="submit"]):not([type="radio"]):not([type="checkbox"]):not(
+		[type="search"]
+	),
+.tj_search_wrapper
+	.search_form
+	form
+	.search_input
+	.search-box
+	input[type="text"] {
+	padding-inline-start: 24px;
+	padding-inline-end: 90px;
+}
+.header-area.h8-header.header-absolute {
+	@media #{$md,$sm,$xs} {
+		transform: translateX(50%);
+		&::before {
+			transform: rotate(0deg);
+		}
+		&::after {
+			transform: rotate(90deg);
+		}
+	}
+	.h8-header-mainmenu-bg-shape {
+		transform: translateX(50%);
+		&::before {
+			transform: rotate(0deg);
+		}
+		&::after {
+			transform: rotate(90deg);
+		}
+	}
+}
+.mainmenu ul > li > .mega-menu-service-single .mega-menu-service-nav,
+.mobile_menu ul > li > .mega-menu-service-single .mega-menu-service-nav {
+	transform: rotate(-135deg);
+}
+/* !END: Theme Header CSS */
+
+/**----------------------------------------
+START: Hero CSS
+----------------------------------------*/
+.banner-scroll .scroll-down {
+	flex-direction: row-reverse;
+}
+.box-area {
+	padding-inline-start: 0;
+	padding-inline-end: 15px;
+	&::before,
+	&::after {
+		transform: rotate(-180deg);
+	}
+}
+.banner-content .banner-link {
+	padding-inline-start: 0;
+	padding-inline-end: 30px;
+	span {
+		transform: scaleX(-1);
+	}
+}
+.hero-thumb {
+	transform: translateX(50%);
+}
+.circle-text-wrap .circle-icon,
+.circle-text-wrap .circle-text {
+	transform: translate(50%, -50%);
+}
+.tj-banner-section-2 {
+	.banner-content-2 .title-video {
+		i {
+			transform: translate(50%, -50%);
+			&::before {
+				transform: scale(-1);
+				display: inline-block;
+			}
+		}
+		&:hover {
+			i {
+				transform: translate(50%, -50%) scale(1.2);
+			}
+		}
+	}
+	.banner-img-area {
+		.banner-author {
+			right: 88px;
+			left: auto;
+			@media #{$lg} {
+				right: 60px;
+				left: auto;
+				bottom: 180px;
+			}
+			@media #{$sm} {
+				right: 40px;
+				left: auto;
+				bottom: 150px;
+			}
+			@media #{$xs} {
+				right: 20px;
+				left: auto;
+				bottom: 100px;
+			}
+		}
+	}
+
+	.banner-img .brand-name {
+		right: auto;
+		left: 10px;
+	}
+}
+.h6-hero-card-video {
+	transform: translate(50%, -50%) scaleX(-1);
+	i {
+		padding-inline-start: 0px;
+		padding-inline-end: 4px;
+	}
+}
+
+.h7-hero {
+	.circle-text-wrap .circle-icon {
+		transform: translate(50%, -50%) rotate(135deg);
+	}
+
+	&-shape {
+		img {
+			transform: scaleX(-1);
+		}
+	}
+}
+.h8-hero {
+	&-banner {
+		transform: translateX(50%);
+	}
+	.circle-text-wrap {
+		.desc {
+			i {
+				transform: rotate(-135deg) translateY(-3px);
+			}
+		}
+		&:hover {
+			.desc {
+				i {
+					transform: rotate(-180deg) translateY(-5px);
+				}
+			}
+		}
+	}
+}
+.tji-curve-arrow::before {
+	transform: scaleX(-1);
+	display: inline-block;
+}
+/* !END: Hero CSS */
+
+/**----------------------------------------
+START: Client CSS
+----------------------------------------*/
+.client-content {
+	transform: translate(50%, -50%);
+}
+.client-slider-1 {
+	&::before,
+	&::after {
+		transform: scaleX(-1);
+	}
+}
+/* !END: Client CSS */
+
+/**----------------------------------------
+START: About CSS
+----------------------------------------*/
+.about-bottom-area .client-review-cont .quote-icon {
+	transform: scaleX(-1);
+}
+.about-content-area-2 .video-btn:hover {
+	transform: translate(50%, -50%) scale(0.9);
+}
+.h9-sec-heading .sec-title span {
+	padding-inline-start: 0;
+	padding-inline-end: 105px;
+	@media #{$lg} {
+		padding-inline-end: 80px;
+	}
+	@media #{$sm, $xs} {
+		padding-inline-end: 70px;
+	}
+}
+.h9-about-img .box-area {
+	padding-inline-start: 28px;
+	padding-inline-end: 0;
+	&::after,
+	&::before {
+		transform: rotate(-90deg);
+	}
+}
+/* !END: About CSS */
+
+/**----------------------------------------
+START: Service CSS
+----------------------------------------*/
+.service-reveal-bg {
+	transform: translate(50%, -50%) scale(0.7);
+}
+.service-item.style-3 {
+	padding-inline-start: 30px;
+	padding-inline-end: 60px;
+	@media #{$xl, $lg} {
+		padding-inline-end: 40px;
+	}
+	@media #{$sm, $xs} {
+		padding-inline-start: 20px;
+		padding-inline-end: 20px;
+	}
+	&:hover {
+		.service-reveal-bg {
+			transform: translate(50%, -50%) scale(1);
+		}
+	}
+}
+.service-bottom-text a::after {
+	transform: rotate(-135deg);
+}
+.h8-about-video-btn {
+	transform: translate(50%, -50%) scaleX(-1);
+	i {
+		padding-inline-start: 0;
+		padding-inline-end: 4px;
+	}
+}
+.sec-heading.style-8 .sub-title {
+	padding-inline-start: 12px;
+	padding-inline-end: 0;
+}
+.h9-service-wrapper .service-item.style-5 .h9-service-nav {
+	transform: rotate(-135deg);
+	&:hover {
+		transform: rotate(-180deg);
+	}
+}
+.h10-service-wrapper .service-item.style-4 {
+	.h10-service-sln {
+		&::before,
+		&::after {
+			transform: rotate(0deg);
+		}
+	}
+	.text-btn {
+		transform: translateX(calc(100% - 30px));
+	}
+}
+
+.service-categories ul li a {
+	padding-inline-start: 25px;
+	padding-inline-end: 15px;
+	.icon {
+		i {
+			transform: scale(-1);
+		}
+	}
+}
+/* !END:  Service CSS */
+
+/**----------------------------------------
+START: Project CSS
+----------------------------------------*/
+.project-btn {
+	i {
+		transform: rotate(-135deg);
+	}
+	&:hover {
+		i {
+			transform: rotate(-180deg);
+		}
+	}
+}
+.project-area .project-btn {
+	i {
+		transform: rotate(-135deg);
+	}
+	&:hover {
+		i {
+			transform: rotate(-180deg);
+		}
+	}
+}
+.project-slider .project-item .project-content {
+	transform: translate(50%, -50%);
+	.project-btn {
+		i {
+			transform: rotate(-135deg);
+		}
+
+		&:hover {
+			i {
+				transform: rotate(-180deg);
+			}
+		}
+	}
+}
+.project-item .project-content {
+	padding-inline-start: 30px;
+	padding-inline-end: 20px;
+}
+.h6-project-item .project-content {
+	padding-inline-start: 30px;
+	padding-inline-end: 30px;
+	.project-btn {
+		i {
+			transform: rotate(-135deg);
+		}
+		&:hover {
+			i {
+				transform: rotate(-180deg);
+			}
+		}
+	}
+	@media #{$xl} {
+		padding-inline-start: 20px;
+		padding-inline-end: 20px;
+	}
+	@media #{$lg,$xs} {
+		padding-inline-start: 15px;
+		padding-inline-end: 15px;
+	}
+	@media #{$md} {
+		padding-inline-start: 10px;
+		padding-inline-end: 10px;
+	}
+}
+/* !END: Project CSS */
+
+/**----------------------------------------
+START: Testimonial CSS
+----------------------------------------*/
+.testimonial-slider .testimonial-item .quote-icon,
+.testimonial-slider-2 .testimonial-item .quote-icon {
+	transform: scaleX(-1);
+}
+.testimonial-img-area .box-area {
+	padding-inline-end: 0;
+	padding-inline-start: 15px;
+	&::before,
+	&::after {
+		transform: rotate(-90deg);
+	}
+}
+.testimonial-wrapper-2 {
+	.testimonial-item::before {
+		transform: translateX(50%) rotate(45deg);
+	}
+	.client-thumb .author-header {
+		transform: translateX(50%);
+	}
+}
+.h6-testimonial-banner-video {
+	transform: translate(50%, -50%) scale(-1);
+	i {
+		padding-inline-start: 0;
+		padding-inline-end: 4px;
+	}
+}
+/* !END: Testimonial CSS */
+
+/**----------------------------------------
+START: Team CSS
+----------------------------------------*/
+.team-item .social-links {
+	transform: translate(50%, -50%);
+}
+.team-item-wrap .team-item .team-link {
+	transform: rotate(-135deg);
+	&:hover {
+		transform: rotate(-180deg);
+	}
+}
+.h7-team {
+	&-wrapper {
+		.team-item {
+			padding-inline-start: 34px;
+			padding-inline-end: 14px;
+			@media #{$md,$sm,$xs} {
+				padding-inline-start: 24px;
+				padding-inline-end: 10px;
+			}
+		}
+		.h7-team-marquee:nth-child(2) {
+			.team-item {
+				padding-inline-start: 14px;
+				padding-inline-end: 34px;
+				@media #{$md,$sm,$xs} {
+					padding-inline-start: 10px;
+					padding-inline-end: 24px;
+				}
+			}
+		}
+	}
+	.bg-shape-3 {
+		transform: translate(50%, 50%);
+	}
+}
+.h8-team-action .circle-text-wrap {
+	i {
+		transform: rotate(-135deg);
+	}
+	&:hover {
+		i {
+			transform: rotate(-180deg);
+		}
+	}
+}
+
+.h9-team-item-wrap {
+	.team-item {
+		&::before {
+			transform: translate(50%, -50%);
+		}
+		.team-img {
+			transform: translate(50%, -50%) scale(0.8);
+			@media #{$md,$sm,$xs} {
+				transform: none;
+			}
+		}
+		&:hover {
+			.team-img {
+				transform: translate(50%, -50%) scale(1);
+				@media #{$md,$sm,$xs} {
+					transform: none;
+				}
+			}
+		}
+	}
+}
+/* !END:  Team CSS */
+
+/**----------------------------------------
+START: Faq CSS
+----------------------------------------*/
+.tj-faq .accordion-item .faq-title {
+	padding-inline-start: 0;
+	padding-inline-end: 60px;
+	@media #{$md, $sm, $xs} {
+		padding-inline-end: 40px;
+	}
+}
+.faq-img-area .box-area {
+	padding-inline-start: 15px;
+	padding-inline-end: 0;
+	&::before,
+	&::after {
+		transform: rotate(-90deg);
+	}
+}
+/* !END: Faq CSS */
+
+/**----------------------------------------
+START: Contact CSS
+----------------------------------------*/
+.location-tooltip {
+	transform: translateX(50%);
+	&::after {
+		transform: translateX(50%) rotate(45deg);
+	}
+}
+/* !END: Contact CSS */
+
+/**----------------------------------------
+START: Working process CSS
+----------------------------------------*/
+.process-item {
+	&:not(:last-child)::after {
+		transform: translateY(-50%) scale(-1);
+		@media #{$md,$sm,$xs} {
+			transform: translate(50%, 0) rotate(90deg);
+		}
+	}
+}
+.h10-process-wrapper .h10-process-sln {
+	&::after,
+	&::before {
+		transform: rotate(90deg);
+	}
+}
+/* !END: Working process CSS */
+
+/**----------------------------------------
+START: Choose CSS
+----------------------------------------*/
+.h6-choose {
+	&-box {
+		.choose-icon {
+			i {
+				width: 100%;
+				height: 100%;
+				align-items: center;
+			}
+			.tji-support {
+				margin-inline-start: 5px;
+				margin-top: -3px;
+			}
+		}
+	}
+}
+.h9-choose-box.choose-box .choose-icon i {
+	width: 100%;
+}
+/* !END: Choose CSS */
+
+/**----------------------------------------
+START: Funfact CSS
+----------------------------------------*/
+.progress-item .progress-circle input {
+	margin-left: 0;
+	margin-right: -92px;
+}
+.h6-about-funfact-shape {
+	transform: scaleX(-1);
+}
+.h8-funfact-banner {
+	.box-area {
+		padding-inline-start: 15px;
+		padding-inline-end: 0;
+	}
+
+	.box-area {
+		&::before,
+		&::after {
+			transform: rotate(-90deg);
+		}
+	}
+}
+/* !END: Funfact CSS */
+
+/**----------------------------------------
+START: Blog CSS
+----------------------------------------*/
+.blog-item .blog-content .title a {
+	background-position: 100% 85%;
+}
+.blog-item.style-2 {
+	padding-inline-start: 15px;
+	padding-inline-end: 0;
+	@media #{$xs} {
+		padding-inline-end: 15px;
+	}
+}
+.h5-blog-wrapper .blog-item.h5-blog-item .blog-content {
+	padding-inline-start: 25px;
+	padding-inline-end: 15px;
+	@media #{$xs} {
+		padding-inline-start: 0;
+		padding-inline-end: 0;
+	}
+}
+.tj-sidebar-widget.widget-search .search-box form input[type="search"] {
+	padding-inline-start: 20px;
+	padding-inline-end: 65px;
+}
+.tj-sidebar-widget.widget-categories ul li a {
+	padding-inline-start: 25px;
+	padding-inline-end: 15px;
+}
+blockquote::before {
+	transform: scaleX(-1);
+}
+.post-details-wrapper {
+	.blog-text {
+		ul li {
+			i {
+				transform: scaleX(-1);
+			}
+		}
+
+		.blog-video .video-btn {
+			transform: translate(50%, -50%);
+			&::before {
+				transform: translate(50%, -50%);
+			}
+		}
+	}
+}
+.tj-post__navigation .tj-nav-post__nav a span i {
+	transform: scaleX(-1);
+}
+.tj-pagination ul li .page-numbers i {
+	transform: scaleX(-1);
+	display: inline-block;
+}
+/* !END: Blog CSS */
+
+/**----------------------------------------
+START: CTA CSS
+----------------------------------------*/
+.cta-area .cta-content {
+	padding-inline-start: 55px;
+	padding-inline-end: 15px;
+	@media #{$lg} {
+		padding-inline-start: 35px;
+	}
+	@media #{$md, $sm, $xs} {
+		padding-inline-start: 30px;
+		padding-inline-end: 30px;
+	}
+}
+.h9-cta-section .cta-content .title {
+	&::before {
+		transform: translate(50%, -50%);
+	}
+	.cta-img a {
+		transform: translateX(50%);
+		&:hover {
+			transform: translateX(50%) scale(0.9);
+		}
+	}
+}
+/* !END: CTA CSS */
+
+/*START: Careers CSS */
+.tj-careers {
+	.tj-careers-btn span.btn-icon {
+		i {
+			transform: scaleX(-1);
+			margin-top: 0;
+			&:last-child {
+				transform: scaleX(-1) translateX(-150%);
+			}
+		}
+	}
+	&:hover {
+		.tj-careers-btn span.btn-icon {
+			i {
+				:first-child {
+					transform: scaleX(-1) translateX(-150%);
+				}
+				&:last-child {
+					transform: scaleX(-1) translateX(0);
+				}
+			}
+		}
+	}
+}
+.tj-careers-top .location i {
+	margin-inline-start: 5px;
+}
+/* !END: Careers CSS */
+
+/**----------------------------------------
+START: Shop CSS
+----------------------------------------*/
+.tj-checkout-billing-wrapper .nice-select {
+	&::after {
+		transform: rotate(-45deg);
+	}
+	&.open::after {
+		transform: rotate(135deg);
+	}
+}
+.woosw-list table.woosw-items tr.woosw-item td .woosw-item--atc {
+	float: left;
+	@media #{$sm,$xs} {
+		float: unset;
+	}
+}
+div.product-widget.widget_product_categories ul li {
+	padding-inline-start: 25px;
+	padding-inline-end: 15px;
+}
+.tj-product-action-btn-tooltip::after {
+	transform: translate(50%, -50%) rotate(45deg);
+}
+.tj-product-details-description ol.commentlist {
+	padding-inline-start: 0;
+	padding-inline-end: 0;
+	.review .comment_container img {
+		float: right;
+		overflow: hidden;
+		border-radius: 50%;
+	}
+}
+
+/* !END: Shop CSS */
+
+/**----------------------------------------
+START: Theme Footer CSS
+----------------------------------------*/
+.subscribe-form {
+	button i {
+		transform: rotate(-90deg);
+	}
+	&:hover {
+		button i {
+			transform: scale(0.8) rotate(-90deg);
+		}
+	}
+}
+.footer-subscribe .subscribe-form input[type="email"] {
+	padding-inline-start: 30px;
+	padding-inline-end: 205px;
+	@media #{$xs} {
+		padding-inline-start: 24px;
+		padding-inline-end: 24px;
+	}
+}
+.widget-subscribe-3 .subscribe-form input[type="email"] {
+	padding-inline-end: 180px;
+	padding-inline-start: 25px;
+	@media #{$xs} {
+		padding-inline-end: 25px;
+	}
+}
+.footer-cta .cta-btn .btn-text {
+	i {
+		transform: rotate(-135deg);
+	}
+}
+/* !END: Theme Footer CSS */
+
+/**----------------------------------------
+START: Animation CSS
+----------------------------------------*/
+
+@keyframes tj-shadow-blur {
+	0% {
+		filter: blur(12px);
+		transform: translate(50%) scale(0.6);
+		opacity: 0.4;
+	}
+
+	30% {
+		filter: blur(2px);
+		transform: translate(50%, -0.5rem) scale(1);
+		opacity: 1;
+	}
+
+	to {
+		filter: blur(12px);
+		transform: translate(50%) scale(0.6);
+		opacity: 0.4;
+	}
+}
+@keyframes fadeLeftToRight {
+	0% {
+		filter: blur(0);
+		transform: translate(0, 0) scale(1);
+		opacity: 1;
+	}
+
+	30% {
+		filter: blur(0);
+		transform: translate(3000%, 0) scale(1);
+		opacity: 1;
+	}
+	40% {
+		filter: blur(0);
+		transform: translate(2000%, 0) scale(1);
+		opacity: 1;
+	}
+	60% {
+		filter: blur(0);
+		transform: translate(0%, 0) scale(1);
+		opacity: 1;
+	}
+
+	to {
+		filter: blur(12px);
+		transform: translate(-1000%, 0) scale(7);
+		opacity: 0.4;
+	}
+}
+@include keyframes(textrotate) {
+	0% {
+		transform: translate(50%, -50%) rotate(0deg);
+	}
+	100% {
+		transform: translate(50%, -50%) rotate(-360deg);
+	}
+}
+
+@keyframes moveVarBig {
+	0% {
+		transform: translateY(0) scaleX(-1);
+	}
+
+	100% {
+		transform: translateY(150px) scaleX(-1);
+	}
+}
+
+@keyframes moveVarBigReverse {
+	0% {
+		transform: translateY(150px) scaleX(-1);
+	}
+
+	100% {
+		transform: translateY(0) scaleX(-1);
+	}
+}
+/* !END: Theme Footer CSS */
