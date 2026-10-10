@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZIA — Landing lo-fi</title>
+  <link rel="stylesheet" href="wireframe.css" />
+  <style>
+    /* ─── Hero (home-specific) ─── */
+    .hero {
+      position: relative;
+      height: 520px;
+      background: var(--accent-bg);
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 48px;
+      overflow: hidden;
+    }
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      background: #888;
+      opacity: .15;
+      pointer-events: none;
+    }
+    .hero__tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .hero__title {
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--darker);
+      max-width: 640px;
+      margin-bottom: 16px;
+    }
+    .hero__sub {
+      font-size: 15px;
+      color: var(--dark);
+      max-width: 500px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .hero__ctas {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+    .hero__stats {
+      display: flex;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .hero__stat {
+      padding: 14px 32px;
+      text-align: center;
+      border-right: 2px solid var(--border);
+    }
+    .hero__stat:last-child { border-right: none; }
+    .hero__stat-num {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--darker);
+      display: block;
+    }
+    .hero__stat-txt {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    /* ─── Propuesta de valor — pilares ─── */
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .pillar {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      padding: 32px 24px;
+      text-align: center;
+    }
+    section:nth-child(even) .pillar { background: var(--bg); }
+    .pillar__icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--accent-bg);
+      border: 2px solid var(--border);
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .pillar__title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--darker);
+      margin-bottom: 8px;
+    }
+    .pillar__desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── Servicios grid ─── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .service-card {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      padding: 24px 20px;
+    }
+    section:nth-child(even) .service-card { background: var(--surface); }
+    .service-card__ico {
+      width: 40px;
+      height: 40px;
+      background: var(--accent-bg);
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .service-card__title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--darker);
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+    .service-card__desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .service-card__link {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--dark);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .service-card--more {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-bg);
+      border-style: dashed;
+    }
+    .service-card--more a {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--dark);
+      text-decoration: none;
+    }
+
+    /* ─── Responsive overrides (home-specific) ─── */
+    @media (max-width: 768px) {
+      .hero { height: auto; min-height: 500px; padding: 40px 20px 32px; }
+      .hero__title { font-size: 26px; }
+      .hero__sub { font-size: 14px; }
+      .hero__ctas { flex-direction: column; align-items: center; gap: 10px; }
+      .hero__ctas .btn { width: 100%; max-width: 320px; text-align: center; }
+      .hero__stats { width: 100%; border-radius: 0; border-left: none; border-right: none; }
+      .hero__stat { flex: 1; padding: 12px 6px; }
+      .hero__stat-num { font-size: 18px; }
+      .hero__stat-txt { font-size: 9px; }
+      .pillars { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 480px) {
+      .services-grid { grid-template-columns: 1fr; }
+    }
+    .stats-row {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+    }
+    .stat-card { text-align: center; min-width: 200px; }
+
+    @media (max-width: 768px) {
+      .stats-row { flex-direction: column; align-items: stretch; gap: 12px; }
+      .stat-card { min-width: 0; }
+      .stat-card .stat-num { font-size: 26px !important; }
+    }
+    /* Estación con puntos + índice de servicios */
+    .hotspot { position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%; background: var(--darker); color: #fff; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+    .svc-index { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 32px; }
+    .svc-index a { padding: 8px 14px; border: 1px solid var(--border); border-radius: 20px; font-size: 12px; font-weight: 700; color: var(--darker); text-decoration: none; }
+    .svc-index a:hover { background: var(--darker); color: #fff; }
+    .monogram { width: 52px; height: 52px; flex-shrink: 0; border-radius: 50%; background: var(--darker); color: #fff; font-weight: 900; font-size: 17px; display: flex; align-items: center; justify-content: center; }
+
+    /* ── Layout principal: 2 columnas ── */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+      align-items: start;
+    }
+    .contact-left__header { margin-bottom: 24px; }
+    .contact-left__header h2 { font-size: 26px; font-weight: 900; color: var(--darker); margin-bottom: 8px; }
+    .contact-left__header p  { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* Canales: siempre en fila (columna izquierda) */
+    .contact-channels { display: flex; flex-direction: column; gap: 12px; }
+    .channel-card {
+      display: flex; flex-direction: row;
+      align-items: center; gap: 16px;
+      padding: 16px 20px;
+      background: var(--surface); border: 2px solid var(--border);
+      border-radius: 6px; text-decoration: none; color: var(--darker);
+    }
+    section:nth-child(even) .channel-card { background: var(--bg); }
+    .channel-card:hover { border-color: var(--darker); }
+    .channel-card--primary { border-color: var(--darker); border-width: 3px; }
+    .channel-card__ico {
+      width: 48px; height: 48px; font-size: 20px; flex-shrink: 0;
+      background: var(--accent-bg); border: 2px solid var(--border);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    }
+    .channel-card__body  { display: flex; flex-direction: column; flex: 1; }
+    .channel-card__title  { font-size: 14px; font-weight: 900; color: var(--darker); margin-bottom: 4px; }
+    .channel-card__detail { font-size: 12px; color: var(--muted); line-height: 1.4; margin-bottom: 8px; }
+    .channel-card__action { font-size: 12px; font-weight: 700; color: var(--dark); border-bottom: 1px solid var(--border); align-self: flex-start; }
+
+    /* Header dentro del formulario */
+    .form-header { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .form-header h3 { font-size: 16px; font-weight: 900; color: var(--darker); margin-bottom: 4px; }
+    .form-header p  { font-size: 12px; color: var(--muted); }
+
+    /* ── Widget de oficinas (mapa + panel) ── */
+    .offices-layout {
+      display: grid;
+      grid-template-columns: 1fr 290px;
+      align-items: stretch;
+      max-width: 1100px;
+      margin: 0 auto;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .offices-map {
+      background: #e8eaed;
+      border-right: 1px solid var(--border);
+    }
+    #mexico-map {
+      position: relative;
+      height: 100%;
+      min-height: 280px;
+      overflow: hidden;
+      background: #e8eaed;
+    }
+    #mexico-map svg { display: block; width: 100%; height: 100%; }
+    #mexico-map svg path {
+      fill: #d6d8db; stroke: #fff; stroke-width: 0.6; transition: fill .12s;
+    }
+    #mexico-map svg .map-state--office  { fill: #aaa; cursor: pointer; }
+    #mexico-map svg .map-state--pending { fill: #c4c4c4; stroke-dasharray: 3 2; }
+    #mexico-map svg .map-state--office:hover,
+    #mexico-map svg .map-state--office.map-state--active { fill: var(--darker); }
+
+    /* Tooltip */
+    .map-tooltip {
+      position: absolute;
+      background: var(--surface);
+      border: 2px solid var(--darker);
+      border-radius: 4px;
+      padding: 12px 16px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .1s;
+      z-index: 20;
+      min-width: 200px;
+      transform: translate(14px, -50%);
+    }
+    .map-tooltip.is-visible { opacity: 1; }
+    .map-tooltip__city    { font-size: 14px; font-weight: 900; color: var(--darker); margin-bottom: 2px; }
+    .map-tooltip__region  { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 8px; }
+    .map-tooltip__name    { font-size: 11px; color: var(--dark); margin-bottom: 4px; }
+    .map-tooltip__phone   { font-size: 13px; font-weight: 800; color: var(--darker); }
+    .map-tooltip__pending { font-size: 11px; color: var(--muted); font-style: italic; }
+
+    /* Panel derecho */
+    .offices-panel {
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+    }
+    section:nth-child(even) .offices-panel { background: var(--bg); }
+    .offices-panel__header {
+      padding: 20px 20px 16px;
+      border-bottom: 2px solid var(--border);
+      flex-shrink: 0;
+    }
+    .offices-panel__header h2 { font-size: 18px; font-weight: 900; color: var(--darker); margin-bottom: 4px; }
+    .offices-panel__header p  { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+    /* Filas compactas de oficina */
+    .office-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0 20px;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      flex: 1;
+      min-height: 44px;
+      transition: background .12s;
+    }
+    .office-row:last-child { border-bottom: none; }
+    .office-row:hover,
+    .office-row.is-active  { background: var(--accent-bg); border-left: 3px solid var(--darker); padding-left: 17px; }
+    section:nth-child(even) .office-row:hover,
+    section:nth-child(even) .office-row.is-active { background: var(--surface); }
+    .office-row--pending   { cursor: default; }
+    .office-row__city      { display: block; font-size: 13px; font-weight: 800; color: var(--darker); line-height: 1.2; }
+    .office-row__region    { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+    .office-row__phone     { font-size: 12px; font-weight: 700; color: var(--dark); white-space: nowrap; flex-shrink: 0; }
+    .office-row--pending .office-row__phone { color: var(--muted); font-weight: 400; font-style: italic; font-size: 11px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .offices-layout { grid-template-columns: 1fr 260px; }
+    }
+
+    @media (max-width: 768px) {
+
+      /* Apila: mapa arriba, panel (2 cols) abajo */
+      .offices-layout { grid-template-columns: 1fr; }
+      .offices-map { border-right: none; border-bottom: 1px solid var(--border); }
+      #mexico-map { height: auto; min-height: 0; aspect-ratio: 792 / 497; }
+      .offices-panel { display: grid; grid-template-columns: 1fr 1fr; }
+      .offices-panel__header { grid-column: 1 / -1; border-bottom: 1px solid var(--border); }
+      .office-row { flex: none; min-height: 58px; border-bottom: 1px solid var(--border); }
+      .office-row:nth-last-child(-n+2) { border-bottom: none; }
+      .map-tooltip { display: none !important; }
+    }
+
+    @media (max-width: 480px) {
+      .offices-panel { grid-template-columns: 1fr; }
+      .office-row:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
+      .office-row:last-child { border-bottom: none; }
+    }
+    /* ── Formulario en 3 pasos ── */
+    .tri-steps { list-style: none; padding: 0; margin: 0 0 18px; display: flex; gap: 6px; }
+    .tri-steps li { flex: 1; font-size: 11px; font-weight: 800; color: #999; padding-top: 8px; border-top: 3px solid #ddd; }
+    .tri-steps li.is-current, .tri-steps li.is-done { color: var(--darker); border-color: var(--darker); }
+    .tri-panel { border: 0; padding: 0; margin: 0; }
+    .tri-panel legend { font-size: 15px; font-weight: 800; color: var(--darker); margin-bottom: 12px; }
+    .tri-panel legend small { font-size: 11px; font-weight: 600; color: var(--muted); }
+    .tri-picks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .tri-picks label, .tri-urg label { display: flex; gap: 8px; align-items: center; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; cursor: pointer; }
+    .tri-urg { display: grid; gap: 8px; }
+    .tri-picks label:has(input:checked), .tri-urg label:has(input:checked) { border-color: var(--darker); background: #eee; }
+    .tri-urgent { margin: 10px 0 0; padding: 10px 12px; border: 1px dashed var(--darker); border-radius: 6px; font-size: 13px; }
+    .tri-assign { margin: 4px 0 12px; padding: 10px 12px; border: 1px dashed var(--border); border-radius: 6px; font-size: 13px; }
+    .tri-error { color: var(--darker); font-weight: 800; font-size: 12px; margin: 8px 0 0; }
+    .tri-nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 18px; }
+    .tri-next { margin-left: auto; }
+    .tri-done { text-align: center; padding: 24px 0; }
+    .tri-done__ico { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--darker); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 900; }
+    .tri-summary { font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <!-- Header sin menú: logo + teléfono + CTA -->
+  <nav class="navbar">
+    <a href="#inicio" class="navbar__logo">
+      <div class="navbar__logo-box">ZIA</div>
+      <span class="navbar__logo-text">ZIA Integración</span>
+    </a>
+    <a href="tel:6641594369" style="margin-left:auto;margin-right:16px;font-weight:700;color:inherit;text-decoration:none">664 159 4369</a>
+    <a href="#diagnostico" class="btn navbar__cta" style="display:inline-flex">Diagnóstico sin costo</a>
+  </nav>
+
+  <!-- 1. HERO: titular + video promocional en loop (en Bexon: zia-promo-loop.mp4) -->
+  <section id="inicio" class="section--dark">
+    <div class="grid-2 max-w" style="align-items:center;gap:40px;">
+      <div>
+        <div class="label">Su aliado estratégico en el sector gasolinero</div>
+        <h1 style="font-size:40px;line-height:1.1;margin:12px 0 16px;color:#fff;">Una gasolinera. Cinco reguladores. Un solo aliado.</h1>
+        <p style="margin-bottom:24px;color:#ccc;">Más de 20 años poniendo en regla estaciones de servicio ante ASEA, CRE, SAT, STPS y Protección Civil.</p>
+        <a href="#diagnostico" class="btn">Solicitar diagnóstico sin costo</a>
+        <a href="#estacion" class="btn btn-outline" style="color:#fff;border-color:#888;">Qué revisamos</a>
+      </div>
+      <div class="img-placeholder" style="height:280px;">Video promocional (loop sin audio) · botón "Ver con sonido 31 s"</div>
+    </div>
+  </section>
+
+  <!-- 2. ESTACIÓN -->
+  <section id="estacion">
+    <div class="grid-2 max-w" style="align-items:center;gap:32px;">
+      <div class="img-placeholder" style="height:300px;position:relative;">Ilustración: corte de estación (marquesina, dispensarios, tienda, tanques, telemedición)
+        <span class="hotspot" style="left:44%;top:12%">1</span><span class="hotspot" style="left:30%;top:42%">2</span><span class="hotspot" style="left:76%;top:46%">3</span><span class="hotspot" style="left:92%;top:20%">4</span><span class="hotspot" style="left:95%;top:55%">5</span><span class="hotspot" style="left:28%;top:82%">6</span>
+      </div>
+      <div>
+        <h3 style="font-size:18px;margin-bottom:12px;">Qué revisamos: del tanque al trámite</h3>
+        <ol class="list-check" style="list-style:none;padding:0;display:grid;gap:8px;font-size:13px;">
+          <li><b>1 · Operación</b> — SASISOPA y emergencias → <a href="#diagnostico">Solicitar revisión</a></li>
+          <li><b>2 · Dispensarios</b> — control volumétrico → <a href="#diagnostico">Solicitar revisión</a></li>
+          <li><b>3 · Consola</b> — telemedición y Anexo 30 → <a href="#diagnostico">Solicitar revisión</a></li>
+          <li><b>4 · Cámaras</b> — videovigilancia tipo C4 → <a href="#diagnostico">Solicitar revisión</a></li>
+          <li><b>5 · Eléctrica</b> — NOM-001-SEDE-2012 → <a href="#diagnostico">Solicitar revisión</a></li>
+          <li><b>6 · Tanques</b> — hermeticidad e integridad → <a href="#diagnostico">Solicitar revisión</a></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. CUÁNTO ARRIESGA: riesgos + diagnóstico -->
+  <section class="section--dark" id="riesgo">
+    <div class="section-header">
+      <span class="label">Riesgo regulatorio</span>
+      <h2>Las consecuencias de no cumplir</h2>
+      <p>Los organismos reguladores no esperan. Una inspección sorpresa puede paralizar su operación en horas.</p>
+    </div>
+    <div class="risks-grid">
+      <div class="risk-card">
+        <div class="risk-card__ico">⊠</div>
+        <span class="risk-card__org">SAT</span>
+        <div class="risk-card__title">Multas y embargo fiscal</div>
+        <p class="risk-card__desc">El incumplimiento en control volumétrico puede derivar en multas millonarias, auditorías fiscales y embargo de instalaciones por parte del SAT.</p>
+        <div class="risk-card__impact">Sanciones desde $500K hasta millones de pesos</div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-card__ico">⊠</div>
+        <span class="risk-card__org">ASEA</span>
+        <div class="risk-card__title">Clausura inmediata</div>
+        <p class="risk-card__desc">Sin SASISOPA o Cédula de Operación Anual vigente, ASEA puede clausurar la estación sin previo aviso hasta regularizar la situación completa.</p>
+        <div class="risk-card__impact">Paralización total de operaciones</div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-card__ico">⊠</div>
+        <span class="risk-card__org">CRE</span>
+        <div class="risk-card__title">Pérdida de permiso</div>
+        <p class="risk-card__desc">El incumplimiento en reportes y obligaciones ante CRE pone en riesgo el permiso de operación — sin él, no puede vender combustible legalmente.</p>
+        <div class="risk-card__impact">Cierre definitivo del negocio</div>
+      </div>
+    </div>
+    <p class="risks-footnote">ZIA identifica y resuelve estos riesgos antes de que lleguen las autoridades.</p>
+  </section>
+  <section>
+    <div class="section-header">
+      <h2>¿Está su gasolinera en regla?</h2>
+      <p>Responda 3 preguntas y descubra su nivel de riesgo regulatorio en este momento.</p>
+    </div>
+    <div class="diag-wrap">
+      <div class="diag-progress"><div class="diag-progress__bar" id="diag-bar"></div></div>
+      <div class="diag-stepper">
+        <div class="diag-step is-active" id="ds-1">
+          <div class="diag-step__dot">1</div>
+          <div class="diag-step__label">SAT</div>
+        </div>
+        <div class="diag-step__line"></div>
+        <div class="diag-step" id="ds-2">
+          <div class="diag-step__dot">2</div>
+          <div class="diag-step__label">CRE</div>
+        </div>
+        <div class="diag-step__line"></div>
+        <div class="diag-step" id="ds-3">
+          <div class="diag-step__dot">3</div>
+          <div class="diag-step__label">ASEA</div>
+        </div>
+      </div>
+
+      <div id="diag-questions">
+        <div id="dq-1">
+          <div class="diag-question__step">Pregunta 1 de 3 — SAT</div>
+          <div class="diag-question__text">¿Su control volumétrico está activo y reportando correctamente al SAT?</div>
+          <p class="diag-question__hint">Miscelánea Fiscal, Anexo 30 y envío de archivos JSON/XML certificados.</p>
+          <div class="diag-actions">
+            <button class="diag-btn diag-btn--yes" data-q="1" data-ans="yes">Sí, está activo</button>
+            <button class="diag-btn diag-btn--no" data-q="1" data-ans="no">No / No estoy seguro</button>
+          </div>
+        </div>
+        <div id="dq-2" style="display:none">
+          <div class="diag-question__step">Pregunta 2 de 3 — CRE</div>
+          <div class="diag-question__text">¿Su permiso CRE está vigente y sin observaciones pendientes?</div>
+          <p class="diag-question__hint">Reportes anuales, diarios y trimestrales presentados al corriente.</p>
+          <div class="diag-actions">
+            <button class="diag-btn diag-btn--yes" data-q="2" data-ans="yes">Sí, al corriente</button>
+            <button class="diag-btn diag-btn--no" data-q="2" data-ans="no">No / No estoy seguro</button>
+          </div>
+        </div>
+        <div id="dq-3" style="display:none">
+          <div class="diag-question__step">Pregunta 3 de 3 — ASEA</div>
+          <div class="diag-question__text">¿Cuenta con SASISOPA implementado y Cédula de Operación Anual vigente?</div>
+          <p class="diag-question__hint">Sistema de Administración de Seguridad Industrial y Protección Ambiental ante ASEA.</p>
+          <div class="diag-actions">
+            <button class="diag-btn diag-btn--yes" data-q="3" data-ans="yes">Sí, implementado</button>
+            <button class="diag-btn diag-btn--no" data-q="3" data-ans="no">No / No estoy seguro</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="diag-result" style="display:none">
+        <div id="diag-risk-level"></div>
+        <div class="diag-result__icon" id="diag-icon"></div>
+        <div class="diag-result__title" id="diag-title"></div>
+        <p class="diag-result__desc" id="diag-desc"></p>
+        <div id="diag-regulators"></div>
+        <div class="diag-result__actions">
+          <a href="#diagnostico" class="btn">Hablar con un especialista</a>
+          <button class="diag-restart" id="diag-restart">Reiniciar diagnóstico</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. CÓMO TRABAJAMOS -->
+  <section id="proceso">
+    <div class="section-header">
+      <h2>¿Cómo empezamos a trabajar juntos?</h2>
+      <p>Cuatro pasos desde el primer contacto hasta la resolución completa de sus obligaciones regulatorias.</p>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="process-step__num">01</div>
+        <div class="process-step__content">
+          <div class="process-step__title">Auditoría inicial</div>
+          <p class="process-step__desc">Evaluamos el estado real de su gasolinera ante los 5 reguladores. Sin costo y sin compromiso.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="process-step__num">02</div>
+        <div class="process-step__content">
+          <div class="process-step__title">Estrategia personalizada</div>
+          <p class="process-step__desc">Diseñamos un plan priorizado según sus riesgos, plazos y el grado de exposición ante cada autoridad.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="process-step__num">03</div>
+        <div class="process-step__content">
+          <div class="process-step__title">Ejecución y gestoría</div>
+          <p class="process-step__desc">Tramitamos, auditamos y supervisamos todo el proceso. Usted opera; nosotros gestionamos.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="process-step__num">04</div>
+        <div class="process-step__content">
+          <div class="process-step__title">Seguimiento continuo</div>
+          <p class="process-step__desc">Monitoreamos obligaciones periódicas, vencimientos y cambios normativos de forma permanente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. QUIÉNES SOMOS -->
+  <section id="nosotros">
+    <div class="section-header">
+      <h2>Más de 20 años al servicio del sector</h2>
+      <p>Creciendo y especializándonos desde el año 2000 para adaptarnos al sector de hidrocarburos.</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline__track"></div>
+      <div class="timeline__items">
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">
+            <div class="timeline__year">2000</div>
+            <div class="timeline__event">Orígenes en TI</div>
+            <p class="timeline__detail">Soporte y asesoría en sistemas de información y redes</p>
+          </div>
+        </div>
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">
+            <div class="timeline__year">2004</div>
+            <div class="timeline__event">Especialización en Hidrocarburos</div>
+            <p class="timeline__detail">Controles volumétricos para gasolineras</p>
+          </div>
+        </div>
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">
+            <div class="timeline__year">2010</div>
+            <div class="timeline__event">Diversificación en Seguridad</div>
+            <p class="timeline__detail">Protección Civil y STPS</p>
+          </div>
+        </div>
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">
+            <div class="timeline__year">2015</div>
+            <div class="timeline__event">Adaptación Regulatoria</div>
+            <p class="timeline__detail">Ampliación de catálogo para CRE y ASEA</p>
+          </div>
+        </div>
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">
+            <div class="timeline__year">Hoy</div>
+            <div class="timeline__event">Liderazgo Integral</div>
+            <p class="timeline__detail">Auditorías, gestoría, supervisión y defensoría</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. COBERTURA -->
+  <section id="cobertura">
+    <div class="offices-layout">
+
+      <!-- Mapa interactivo -->
+      <div class="offices-map">
+        <div id="mexico-map">
+          <div class="map-tooltip" id="map-tooltip"></div>
+        </div>
+      </div>
+
+      <!-- Panel: título + filas compactas -->
+      <div class="offices-panel">
+        <div class="offices-panel__header">
+          <h2>Nuestras oficinas</h2>
+          <p class="offices-panel__instruction">Pase el cursor sobre un estado para ver los datos de contacto.</p>
+        </div>
+
+        <a href="tel:+526641594369" class="office-row" data-office="tijuana">
+          <div class="office-row__info">
+            <span class="office-row__city">Tijuana</span>
+            <span class="office-row__region">Noroeste</span>
+          </div>
+          <span class="office-row__phone">664 159 4369</span>
+        </a>
+
+        <a href="tel:+526144718727" class="office-row" data-office="chihuahua">
+          <div class="office-row__info">
+            <span class="office-row__city">Chihuahua</span>
+            <span class="office-row__region">Norte</span>
+          </div>
+          <span class="office-row__phone">614 471 8727</span>
+        </a>
+
+        <div class="office-row office-row--pending" data-office="culiacan">
+          <div class="office-row__info">
+            <span class="office-row__city">Culiacán</span>
+            <span class="office-row__region">Sinaloa</span>
+          </div>
+          <span class="office-row__phone">Datos pendientes</span>
+        </div>
+
+        <a href="tel:+524433280991" class="office-row" data-office="morelia">
+          <div class="office-row__info">
+            <span class="office-row__city">Morelia</span>
+            <span class="office-row__region">Centro</span>
+          </div>
+          <span class="office-row__phone">443 328 0991</span>
+        </a>
+
+        <a href="tel:+522722158160" class="office-row" data-office="orizaba">
+          <div class="office-row__info">
+            <span class="office-row__city">Orizaba</span>
+            <span class="office-row__region">Oriente</span>
+          </div>
+          <span class="office-row__phone">272 215 8160</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 7. DIAGNÓSTICO (formulario de cierre) -->
+  <section id="diagnostico">
+    <div class="contact-layout">
+
+      <!-- Columna izquierda: título + canales directos -->
+      <div class="contact-left">
+        <div class="contact-left__header">
+          <h2>Contáctenos hoy</h2>
+          <p>Un especialista le responde en menos de 2 horas en horario hábil. Elija el canal que prefiera o déjenos sus datos.</p>
+        </div>
+        <div class="contact-channels">
+
+          <a href="https://wa.me/526641594369" class="channel-card channel-card--primary">
+            <div class="channel-card__ico">💬</div>
+            <div class="channel-card__body">
+              <div class="channel-card__title">WhatsApp</div>
+              <div class="channel-card__detail">664 159 4369 · Respuesta inmediata</div>
+              <span class="channel-card__action">Abrir chat →</span>
+            </div>
+          </a>
+
+          <a href="tel:+526641594369" class="channel-card">
+            <div class="channel-card__ico">📞</div>
+            <div class="channel-card__body">
+              <div class="channel-card__title">Llamar</div>
+              <div class="channel-card__detail">664 159 4369 · Lun–Vie 9:00–18:00</div>
+              <span class="channel-card__action">Marcar →</span>
+            </div>
+          </a>
+
+          <a href="mailto:estrella.d@ziaintegracion.com" class="channel-card">
+            <div class="channel-card__ico">✉</div>
+            <div class="channel-card__body">
+              <div class="channel-card__title">Correo electrónico</div>
+              <div class="channel-card__detail">estrella.d@ziaintegracion.com</div>
+              <span class="channel-card__action">Enviar correo →</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Columna derecha: formulario -->
+      <div class="contact-right">
+        <div class="card">
+          <div class="form-header">
+            <h3>Diagnóstico inicial sin costo</h3>
+            <p>Lo contactamos nosotros. Sin compromiso.</p>
+          </div>
+          <!-- Formulario en 3 pasos (mismo flujo que la Propuesta 02). Sin backend: envío simulado. -->
+          <ol class="tri-steps" aria-label="Progreso">
+            <li class="is-current">1 · Tema</li><li>2 · Urgencia</li><li>3 · Datos</li>
+          </ol>
+          <form id="triage-form" novalidate>
+            <fieldset class="tri-panel" data-step="1">
+              <legend>¿Qué le preocupa? <small>Puede elegir varios</small></legend>
+              <div class="tri-picks">
+                <label><input type="checkbox" name="temas" value="ASEA" /> ASEA</label>
+                <label><input type="checkbox" name="temas" value="CRE" /> CRE</label>
+                <label><input type="checkbox" name="temas" value="SAT" /> SAT</label>
+                <label><input type="checkbox" name="temas" value="STPS" /> STPS</label>
+                <label><input type="checkbox" name="temas" value="Protección Civil" /> Protección Civil</label>
+                <label><input type="checkbox" name="temas" value="No estoy seguro" /> No estoy seguro</label>
+              </div>
+              <p class="tri-error" data-error="temas" hidden>Elija al menos una opción.</p>
+            </fieldset>
+            <fieldset class="tri-panel" data-step="2" hidden>
+              <legend>¿Qué tan urgente es?</legend>
+              <div class="tri-urg">
+                <label><input type="radio" name="urgencia" value="prevenir" /> <b>Quiero prevenir</b> — revisar antes de una visita</label>
+                <label><input type="radio" name="urgencia" value="requerimiento" /> <b>Tengo un requerimiento</b> — oficio o visita programada</label>
+                <label><input type="radio" name="urgencia" value="clausura" /> <b>Clausura o sanción en curso</b></label>
+              </div>
+              <p class="tri-urgent" hidden>Llámenos ahora: <a href="tel:6641594369">664 159 4369</a>. También puede terminar el formulario y lo priorizamos.</p>
+              <p class="tri-error" data-error="urgencia" hidden>Elija una opción.</p>
+            </fieldset>
+            <fieldset class="tri-panel" data-step="3" hidden>
+              <legend>¿Cómo lo contactamos?</legend>
+              <div class="form-group"><label for="cf-nombre">Nombre *</label><input id="cf-nombre" name="nombre" type="text" placeholder="Ej. Juan Ramírez" required /></div>
+              <div class="form-group"><label for="cf-empresa">Gasolinera o empresa *</label><input id="cf-empresa" name="empresa" type="text" placeholder="Ej. Servicio Las Torres" required /></div>
+              <div class="form-group"><label for="cf-tel">Teléfono *</label><input id="cf-tel" name="telefono" type="tel" placeholder="10 dígitos" required /></div>
+              <div class="form-group"><label for="cf-email">Correo *</label><input id="cf-email" name="email" type="email" placeholder="nombre@empresa.com" required /></div>
+              <div class="form-group">
+                <label for="cf-estado">Estado donde opera *</label>
+                <select id="cf-estado" name="estado" required>
+                  <option value="">— Seleccionar —</option>
+                  <option>Baja California</option><option>Baja California Sur</option><option>Sonora</option><option>Chihuahua</option><option>Coahuila</option><option>Durango</option><option>Nuevo León</option><option>Tamaulipas</option><option>Sinaloa</option><option>Michoacán</option><option>Jalisco</option><option>Guanajuato</option><option>Ciudad de México</option><option>Estado de México</option><option>Querétaro</option><option>Veracruz</option><option>Puebla</option><option>Oaxaca</option><option>Tabasco</option><option>Chiapas</option><option>Yucatán</option><option>Otro estado</option>
+                </select>
+              </div>
+              <p class="tri-assign" hidden>Le atenderá la oficina <b></b></p>
+              <p class="tri-error" data-error="datos" hidden>Complete los campos marcados con *.</p>
+            </fieldset>
+            <div class="tri-nav">
+              <button type="button" class="btn btn-outline btn-sm tri-back" hidden>← Atrás</button>
+              <button type="submit" class="btn tri-next">Continuar</button>
+            </div>
+          </form>
+          <div class="tri-done" hidden>
+            <div class="tri-done__ico">✓</div>
+            <h3>Recibimos su solicitud</h3>
+            <p class="tri-summary"></p>
+          </div>
+          <script>
+          (function () {
+            var form = document.getElementById('triage-form');
+            if (!form) return;
+            var card = form.parentNode, step = 1;
+            var panels = form.querySelectorAll('.tri-panel'), steps = card.querySelectorAll('.tri-steps li');
+            var back = form.querySelector('.tri-back'), next = form.querySelector('.tri-next');
+            // Cobertura propuesta (validar con el cliente); el resto del país: Morelia
+            var REGION = { 'Baja California': 'Tijuana', 'Baja California Sur': 'Tijuana', 'Sonora': 'Tijuana',
+              'Chihuahua': 'Chihuahua', 'Coahuila': 'Chihuahua', 'Durango': 'Chihuahua', 'Nuevo León': 'Chihuahua', 'Tamaulipas': 'Chihuahua', 'Sinaloa': 'Chihuahua',
+              'Veracruz': 'Orizaba', 'Puebla': 'Orizaba', 'Oaxaca': 'Orizaba', 'Tabasco': 'Orizaba', 'Chiapas': 'Orizaba', 'Yucatán': 'Orizaba' };
+            function vals(n) { return Array.prototype.map.call(form.querySelectorAll('[name="' + n + '"]:checked'), function (i) { return i.value; }); }
+            function err(n, on) { form.querySelector('[data-error="' + n + '"]').hidden = !on; }
+            function show(n) {
+              step = n;
+              panels.forEach(function (p) { p.hidden = +p.dataset.step !== n; });
+              steps.forEach(function (li, i) { li.className = i + 1 === n ? 'is-current' : (i + 1 < n ? 'is-done' : ''); });
+              back.hidden = n === 1;
+              next.textContent = n === 3 ? 'Enviar solicitud' : 'Continuar';
+            }
+            form.querySelectorAll('[name="urgencia"]').forEach(function (r) {
+              r.addEventListener('change', function () { form.querySelector('.tri-urgent').hidden = vals('urgencia')[0] !== 'clausura'; });
+            });
+            form.elements.estado.addEventListener('change', function () {
+              var a = form.querySelector('.tri-assign');
+              a.hidden = !this.value;
+              a.querySelector('b').textContent = REGION[this.value] || 'Morelia';
+            });
+            back.addEventListener('click', function () { show(step - 1); });
+            form.addEventListener('submit', function (e) {
+              e.preventDefault();
+              if (step === 1) { var a = vals('temas').length > 0; err('temas', !a); if (a) show(2); return; }
+              if (step === 2) { var b = vals('urgencia').length > 0; err('urgencia', !b); if (b) show(3); return; }
+              var f = form.elements, ok = f.nombre.value.trim() && f.empresa.value.trim() &&
+                f.telefono.value.replace(/\D/g, '').length === 10 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value) && f.estado.value;
+              err('datos', !ok);
+              if (!ok) return;
+              card.querySelector('.tri-summary').textContent = 'Gracias, ' + f.nombre.value.trim().split(/\s+/)[0] +
+                '. La oficina ' + (REGION[f.estado.value] || 'Morelia') + ' le contactará sobre ' + vals('temas').join(', ') + '.';
+              form.hidden = true;
+              card.querySelector('.tri-done').hidden = false;
+            });
+          }());
+          </script>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="mobile-cta">
+    <a href="#diagnostico" class="btn">Diagnóstico sin costo</a>
+  </div>
+  <!-- Footer mínimo -->
+  <footer>
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand-logo"><div class="footer__brand-box">ZIA</div><span class="footer__brand-name">ZIA Integración</span></div>
+        <p class="footer__tagline">Su aliado estratégico en el sector gasolinero. Desde 2000.</p>
+      </div>
+      <div class="footer__col">
+        <h4>Oficinas</h4>
+        <ul><li>Tijuana · 664 159 4369</li><li>Chihuahua · 614 471 8727</li><li>Morelia · 443 328 0991</li><li>Orizaba · 272 215 8160</li><li>Culiacán · próximamente</li></ul>
+      </div>
+      <div class="footer__col">
+        <h4>Contacto</h4>
+        <ul><li>contacto@ziaintegracion.com</li><li>Aviso de privacidad (pendiente)</li></ul>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/526641594369" class="whatsapp-sticky" title="Escribir por WhatsApp">WA</a>
+  <script src="wireframe.js"></script>
+
+</body>
+</html>
