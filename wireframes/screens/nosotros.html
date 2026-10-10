@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wireframe — Nosotros · ZIA Integración</title>
   <link rel="stylesheet" href="wireframe.css" />
+  <style>
+    .monogram { width: 52px; height: 52px; flex-shrink: 0; border-radius: 50%; background: var(--darker); color: #fff; font-weight: 900; font-size: 17px; display: flex; align-items: center; justify-content: center; }
+  </style>
 </head>
 <body>
 
@@ -34,22 +37,14 @@
     <p>Desde 2000, ZIA Integración acompaña a propietarios y administradores de gasolineras en México, simplificando la complejidad regulatoria para que puedan enfocarse en su negocio.</p>
   </div>
 
-  <!-- MISIÓN Y VISIÓN -->
+  <!-- MISIÓN (la visión no está en el brief del cliente) -->
   <section>
     <div class="section-header">
-
-      <h2>Misión y Visión</h2>
+      <h2>Misión</h2>
     </div>
-    <div class="grid-2 max-w-m">
+    <div class="max-w-m">
       <div class="card">
-        <div class="card__ico">◎</div>
-        <div class="card__title">Misión</div>
-        <p class="card__desc">Ser el socio clave para el éxito y la seguridad de su gasolinera en México, simplificando la complejidad regulatoria y técnica para que los propietarios puedan enfocarse en el crecimiento de su negocio con total tranquilidad.</p>
-      </div>
-      <div class="card">
-        <div class="card__ico">◈</div>
-        <div class="card__title">Visión</div>
-        <p class="card__desc">Ser el referente nacional en asesoría integral para el sector de hidrocarburos, reconocidos por nuestra excelencia técnica, ética profesional y el impacto positivo en la seguridad y competitividad de nuestros clientes.</p>
+        <p class="card__desc" style="font-size:18px;font-weight:700;color:var(--darker);line-height:1.5">“Ser el socio clave para el éxito y la seguridad de las gasolineras en México, simplificando la complejidad regulatoria y técnica para que los clientes se enfoquen en el crecimiento de su negocio con total tranquilidad.”</p>
       </div>
     </div>
   </section>
@@ -149,33 +144,42 @@
     </div>
   </section>
 
-  <!-- EQUIPO -->
+  <!-- EQUIPO: monogramas hasta tener retratos reales (ver docs/fotos-pendientes.md) -->
   <section>
     <div class="section-header">
-
-      <h2>Nuestros especialistas</h2>
-      <p>Un equipo multidisciplinario con experiencia comprobada en cada área del sector.</p>
+      <h2>Responsables en cada región</h2>
+      <p>Dirección general y un responsable por oficina regional.</p>
     </div>
-    <div class="grid-3 max-w" style="max-width:800px;margin:0 auto;">
-      <div class="card" style="text-align:center;">
-        <div class="img-placeholder" style="height:120px;border-radius:50%;width:120px;margin:0 auto 16px;">Foto</div>
-        <div class="card__title">Ing. Daniel Ponce</div>
-        <p class="card__desc">Director General</p>
+    <div class="grid-3 max-w">
+      <div class="card" style="display:flex;gap:14px;align-items:center;">
+        <div class="monogram">DP</div>
+        <div><div class="card__title" style="margin:0">Ing. Daniel Ponce</div><p class="card__desc" style="margin:0">Dirección general</p></div>
       </div>
-      <div class="card" style="text-align:center;">
-        <div class="img-placeholder" style="height:120px;border-radius:50%;width:120px;margin:0 auto 16px;">Foto</div>
-        <div class="card__title">Mtra. Alma Estrella Domínguez</div>
-        <p class="card__desc">Gerente — Tijuana<br><span style="font-size:11px;color:#888">664 159 4369</span></p>
+      <div class="card" style="display:flex;gap:14px;align-items:center;">
+        <div class="monogram">AE</div>
+        <div><div class="card__title" style="margin:0">Mtra. Alma Estrella Domínguez</div><p class="card__desc" style="margin:0">Tijuana · 664 159 4369</p></div>
       </div>
-      <div class="card" style="text-align:center;">
-        <div class="img-placeholder" style="height:120px;border-radius:50%;width:120px;margin:0 auto 16px;">Foto</div>
-        <div class="card__title">Ing. Edilberto Brito</div>
-        <p class="card__desc">Gerente — Morelia<br><span style="font-size:11px;color:#888">443 328 0991</span></p>
+      <div class="card" style="display:flex;gap:14px;align-items:center;">
+        <div class="monogram">AV</div>
+        <div><div class="card__title" style="margin:0">Ing. Alejandro Vela</div><p class="card__desc" style="margin:0">Chihuahua · 614 471 8727</p></div>
+      </div>
+      <div class="card" style="display:flex;gap:14px;align-items:center;">
+        <div class="monogram">EB</div>
+        <div><div class="card__title" style="margin:0">Ing. Edilberto Brito</div><p class="card__desc" style="margin:0">Morelia · 443 328 0991</p></div>
+      </div>
+      <div class="card" style="display:flex;gap:14px;align-items:center;">
+        <div class="monogram">FS</div>
+        <div><div class="card__title" style="margin:0">Ing. Francisco Santos</div><p class="card__desc" style="margin:0">Orizaba · 272 215 8160</p></div>
+      </div>
+      <div class="card" style="display:flex;gap:14px;align-items:center;">
+        <div class="monogram">JC</div>
+        <div><div class="card__title" style="margin:0">Ing. Jaziel Cienfuegos</div><p class="card__desc" style="margin:0">Culiacán · próximamente</p></div>
+      </div>
+      <div class="card" style="display:flex;gap:14px;align-items:center;">
+        <div class="monogram">CE</div>
+        <div><div class="card__title" style="margin:0">Ing. Carlos Escalante</div><p class="card__desc" style="margin:0">Culiacán · próximamente</p></div>
       </div>
     </div>
-    <p style="text-align:center;margin-top:24px;font-size:12px;color:#888;">
-      + Ing. Francisco Santos (Orizaba) · Ing. Alejandro Vela (Chihuahua) · Ing. Jaziel Cienfuegos (Culiacán)
-    </p>
   </section>
 
 
