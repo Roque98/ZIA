@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>ZIA — Video promocional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@500;700;800;900&display=block" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #0c1e21; }
+      #root {
+        position: relative; width: 1920px; height: 1080px; overflow: hidden;
+        font-family: "Mona Sans", ui-sans-serif, system-ui, sans-serif; color: #fff;
+        background:
+          radial-gradient(circle at 78% 30%, rgba(30,138,138,.28), rgba(30,138,138,0) 55%),
+          #0c1e21;
+      }
+      /* Retícula de puntos de fondo (misma firma visual que el sitio) */
+      #root::before {
+        content: ""; position: absolute; inset: 0;
+        background-image: radial-gradient(rgba(30,138,138,.25) 1.6px, transparent 1.8px);
+        background-size: 34px 34px; opacity: .55;
+      }
+      .clip { position: absolute; inset: 0; }
+      .teal { color: #1e8a8a; }
+      .red { color: #EC3237; }
+      .kicker { font-size: 26px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: #1e8a8a; }
+      .h1 { font-size: 104px; font-weight: 900; line-height: 1.02; letter-spacing: -.02em; }
+
+      /* ── Escena 1: símbolo ── */
+      #s1 { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 34px; }
+      #s1-mark { width: 360px; height: 360px; }
+      #s1-word { font-size: 120px; font-weight: 900; letter-spacing: .32em; margin-right: -.32em; color: #1e8a8a; }
+      #s1-sub { font-size: 30px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: rgba(255,255,255,.7); }
+
+      /* ── Escenas 2 y 3: estación → lista de cumplimiento ── */
+      #s23-head { position: absolute; left: 120px; top: 200px; width: 620px; }
+      #s23-head .h1 { font-size: 88px; }
+      .swap { position: absolute; left: 0; top: 0; }
+      #s2-q { margin-top: 36px; font-size: 44px; font-weight: 800; }
+      #card {
+        position: absolute; left: 760px; top: 260px; width: 1040px; padding: 20px;
+        background: #fff; border-radius: 28px; box-shadow: 0 40px 120px rgba(0,0,0,.45);
+      }
+      #card img { display: block; width: 1000px; border-radius: 16px; }
+      .badge {
+        position: absolute; min-width: 190px; height: 64px; border-radius: 40px; white-space: nowrap;
+        display: flex; align-items: center; gap: 12px; padding: 0 18px 0 8px;
+        background: #fff; color: #0c1e21; font-size: 26px; font-weight: 900; letter-spacing: .04em;
+        border: 4px solid #EC3237; box-shadow: 0 14px 40px rgba(0,0,0,.35); z-index: 3;
+      }
+      .badge img { width: 48px; height: 48px; }
+      .row {
+        position: absolute; left: 1060px; width: 700px; height: 92px; border-radius: 20px;
+        background: rgba(255,255,255,.06); border: 2px solid rgba(255,255,255,.1); z-index: 2;
+      }
+      .status {
+        position: absolute; right: 22px; top: 22px; height: 48px; padding: 0 22px; border-radius: 30px;
+        display: flex; align-items: center; font-size: 22px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+      }
+      .status--bad { background: rgba(236,50,55,.16); color: #ff6b6f; }
+      .status--ok { background: #1e8a8a; color: #fff; }
+      #meter { position: absolute; left: 120px; top: 640px; width: 620px; }
+      #meter-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; }
+      #meter-label { font-size: 28px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.7); }
+      #meter-num { font-size: 96px; font-weight: 900; color: #1e8a8a; font-variant-numeric: tabular-nums; }
+      #meter-track { height: 16px; border-radius: 10px; background: rgba(255,255,255,.1); overflow: hidden; }
+      #meter-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #1e8a8a, #4fd1c5); transform-origin: 0 50%; }
+
+      /* ── Escena 4: mapa ── */
+      #s4-head { position: absolute; left: 120px; top: 230px; width: 640px; }
+      #s4-cities { margin-top: 48px; display: grid; gap: 18px; }
+      .city { font-size: 36px; font-weight: 800; display: flex; align-items: center; gap: 18px; }
+      .city i { width: 18px; height: 18px; border-radius: 50%; background: #1e8a8a; display: inline-block; }
+      .city small { font-size: 24px; font-weight: 700; color: #A69140; }
+      #map { position: absolute; left: 820px; top: 210px; width: 1000px; height: 662px; }
+      #map img { width: 100%; height: 100%; opacity: .55; }
+      .pin { position: absolute; width: 0; height: 0; }
+      .pin span {
+        position: absolute; left: -17px; top: -17px; width: 34px; height: 34px; border-radius: 50%;
+        background: #EC3237; border: 6px solid #fff; box-shadow: 0 0 0 14px rgba(236,50,55,.25);
+      }
+      .pin--soon span { background: #A69140; box-shadow: 0 0 0 14px rgba(166,145,64,.25); }
+
+      /* ── Escena 5: cierre ── */
+      #s5 { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 44px; text-align: center; }
+      #s5-card { background: #fff; border-radius: 32px; padding: 54px 84px; box-shadow: 0 40px 120px rgba(0,0,0,.45); }
+      #s5-card img { display: block; width: 640px; }
+      #s5-tag { font-size: 58px; font-weight: 900; line-height: 1.15; max-width: 1300px; }
+      #s5-cta { display: flex; gap: 28px; align-items: center; font-size: 34px; font-weight: 800; }
+      #s5-cta .pill { padding: 20px 40px; border-radius: 60px; background: #1e8a8a; }
+      #s5-cta .muted { color: rgba(255,255,255,.75); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="26" data-width="1920" data-height="1080">
+
+      <!-- Escena 1 (0–4.5 s): símbolo ZIA -->
+      <div id="s1" class="clip" data-start="0" data-duration="4.5" data-track-index="0">
+        <img id="s1-mark" src="assets/zia_simbolo.svg" alt="" />
+        <div id="s1-word">ZIA</div>
+        <div id="s1-sub">Integración · Seguridad y tecnología</div>
+      </div>
+
+      <!-- Escenas 2–3 (4.5–17 s): reguladores sobre la estación → lista en regla -->
+      <div id="s23" class="clip" data-start="4.5" data-duration="12.5" data-track-index="1">
+        <div id="s23-head">
+          <div class="swap" id="s2-text">
+            <div class="kicker">Su estación</div>
+            <div class="h1" style="margin-top:22px">Una estación.<br /><span class="teal">Cinco reguladores.</span></div>
+            <div id="s2-q" class="red">¿Está en regla?</div>
+          </div>
+          <div class="swap" id="s3-text">
+            <div class="kicker">Con ZIA</div>
+            <div class="h1" style="margin-top:22px">Todo en orden,<br /><span class="teal">en un solo lugar.</span></div>
+          </div>
+        </div>
+
+        <div id="card"><img src="assets/estacion-corte.svg" alt="" /></div>
+
+        <div class="row" id="row0" style="top:250px"><span class="status status--bad" id="st0b" data-layout-allow-overlap data-layout-allow-occlusion>Pendiente</span><span class="status status--ok" id="st0o">✓ En regla</span></div>
+        <div class="row" id="row1" style="top:362px"><span class="status status--bad" id="st1b" data-layout-allow-overlap data-layout-allow-occlusion>Pendiente</span><span class="status status--ok" id="st1o">✓ En regla</span></div>
+        <div class="row" id="row2" style="top:474px"><span class="status status--bad" id="st2b" data-layout-allow-overlap data-layout-allow-occlusion>Pendiente</span><span class="status status--ok" id="st2o">✓ En regla</span></div>
+        <div class="row" id="row3" style="top:586px"><span class="status status--bad" id="st3b" data-layout-allow-overlap data-layout-allow-occlusion>Pendiente</span><span class="status status--ok" id="st3o">✓ En regla</span></div>
+        <div class="row" id="row4" style="top:698px"><span class="status status--bad" id="st4b" data-layout-allow-overlap data-layout-allow-occlusion>Pendiente</span><span class="status status--ok" id="st4o">✓ En regla</span></div>
+
+        <!-- Sellos: posición inicial sobre la estación (centro - mitad del tamaño) -->
+        <div class="badge" id="b0" style="left:1118px;top:298px"><img src="assets/icons/asea.svg" alt="" />ASEA</div>
+        <div class="badge" id="b1" style="left:1015px;top:438px"><img src="assets/icons/cre.svg" alt="" />CRE</div>
+        <div class="badge" id="b2" style="left:1505px;top:418px"><img src="assets/icons/sat.svg" alt="" />SAT</div>
+        <div class="badge" id="b3" style="left:1355px;top:298px"><img src="assets/icons/stps.svg" alt="" />STPS</div>
+        <div class="badge" id="b4" style="left:1155px;top:668px"><img src="assets/icons/proteccion-civil.svg" alt="" />P. CIVIL</div>
+
+        <div id="meter">
+          <div id="meter-top"><span id="meter-label">Cumplimiento</span><span id="meter-num">0%</span></div>
+          <div id="meter-track"><div id="meter-fill"></div></div>
+        </div>
+      </div>
+
+      <!-- Escena 4 (17–22 s): cobertura nacional -->
+      <div id="s4" class="clip" data-start="17" data-duration="5" data-track-index="2">
+        <div id="s4-head">
+          <div class="kicker">Cobertura</div>
+          <div class="h1" style="margin-top:22px;font-size:92px">Presentes en<br /><span class="teal">todo México.</span></div>
+          <div id="s4-cities">
+            <div class="city" id="c0"><i></i>Tijuana</div>
+            <div class="city" id="c1"><i></i>Chihuahua</div>
+            <div class="city" id="c2"><i></i>Morelia</div>
+            <div class="city" id="c3"><i></i>Orizaba</div>
+            <div class="city" id="c4"><i style="background:#A69140"></i>Culiacán <small>próximamente</small></div>
+          </div>
+        </div>
+        <div id="map">
+          <img src="assets/mapa-puntos.svg" alt="" />
+          <div class="pin" id="p0" style="left:1.8%;top:3.63%"><span></span></div>
+          <div class="pin" id="p1" style="left:36.9%;top:24.02%"><span></span></div>
+          <div class="pin" id="p2" style="left:52.6%;top:71%"><span></span></div>
+          <div class="pin" id="p3" style="left:65.7%;top:75.53%"><span></span></div>
+          <div class="pin pin--soon" id="p4" style="left:32.7%;top:44.11%"><span></span></div>
+        </div>
+      </div>
+
+      <!-- Escena 5 (22–26 s): cierre -->
+      <div id="s5" class="clip" data-start="22" data-duration="4" data-track-index="3">
+        <div id="s5-card"><img src="assets/zia_logo_completo.svg" alt="ZIA Integración" /></div>
+        <div id="s5-tag">Su aliado estratégico en el <span class="teal">sector gasolinero.</span></div>
+        <div id="s5-cta"><span class="pill">Auditoría inicial sin costo</span><span class="muted">ziaintegracion.com · 664 159 4369</span></div>
+      </div>
+
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out";
+
+      // ── Escena 1 ──
+      tl.fromTo("#s1-mark", { opacity: 0, scale: 0.4, rotation: -90 }, { opacity: 1, scale: 1, rotation: 0, duration: 1.4, ease: "back.out(1.4)" }, 0.2);
+      tl.fromTo("#s1-word", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: E }, 1.1);
+      tl.fromTo("#s1-sub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: E }, 1.5);
+      tl.to("#s1", { opacity: 0, scale: 1.08, duration: 0.6, ease: "power2.in" }, 3.9);
+
+      // ── Escena 2 (base 4.5 s) ──
+      const s2 = 4.5;
+      tl.fromTo("#s2-text", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.8, ease: E }, s2 + 0.1);
+      tl.fromTo("#card", { opacity: 0, x: 120 }, { opacity: 1, x: 0, duration: 1, ease: E }, s2 + 0.2);
+      tl.fromTo("#s2-q", { opacity: 0 }, { opacity: 1, duration: 0.5 }, s2 + 4.4);
+      ["#b0", "#b1", "#b2", "#b3", "#b4"].forEach((b, i) => {
+        tl.fromTo(b, { opacity: 0, scale: 1.9, rotation: -14 }, { opacity: 1, scale: 1, rotation: i % 2 ? 4 : -4, duration: 0.45, ease: "back.out(2.2)" }, s2 + 1.4 + i * 0.45);
+      });
+      tl.set(".status--ok", { opacity: 0 }, 0);
+      tl.set(".row", { opacity: 0 }, 0);
+      tl.set("#meter", { opacity: 0 }, 0);
+      tl.set("#s3-text", { opacity: 0 }, 0);
+
+      // ── Escena 3 (base 11 s): los sellos vuelan a la lista ──
+      const s3 = 11;
+      tl.to("#s2-text", { opacity: 0, x: -40, duration: 0.5, ease: "power2.in" }, s3);
+      tl.fromTo("#s3-text", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.7, ease: E }, s3 + 0.5);
+      tl.to("#card", { opacity: 0, scale: 0.9, duration: 0.7, ease: "power2.in" }, s3 + 0.1);
+      tl.to(".row", { opacity: 1, duration: 0.5, stagger: 0.08 }, s3 + 0.5);
+      // destino: centro de la fila (left 1060 + 120, top fila + 46) - posición inicial
+      const starts = [[1118, 298], [1015, 438], [1505, 418], [1355, 298], [1155, 668]];
+      starts.forEach(([l, t], i) => {
+        const rowTop = 250 + i * 112;
+        tl.to("#b" + i, { x: 1080 - l, y: rowTop + 14 - t, rotation: 0, duration: 0.9, ease: "power3.inOut" }, s3 + 0.4 + i * 0.1);
+      });
+      tl.fromTo("#meter", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: E }, s3 + 1.0);
+      const meter = { v: 0 };
+      tl.fromTo("#meter-fill", { scaleX: 0 }, { scaleX: 1, duration: 3.6, ease: "power1.inOut" }, s3 + 1.6);
+      tl.fromTo(meter, { v: 0 }, {
+        v: 100, duration: 3.6, ease: "power1.inOut",
+        onUpdate: () => { document.getElementById("meter-num").textContent = Math.round(meter.v) + "%"; }
+      }, s3 + 1.6);
+      [0, 1, 2, 3, 4].forEach((i) => {
+        const t = s3 + 1.9 + i * 0.7;
+        tl.to("#st" + i + "b", { opacity: 0, duration: 0.2 }, t);
+        tl.fromTo("#st" + i + "o", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, t);
+        tl.to("#b" + i, { borderColor: "#1e8a8a", duration: 0.3 }, t);
+      });
+      tl.to("#s23", { opacity: 0, duration: 0.5, ease: "power2.in" }, 16.5);
+
+      // ── Escena 4 (base 17 s) ──
+      const s4 = 17;
+      tl.fromTo("#s4-head", { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: 0.8, ease: E }, s4 + 0.1);
+      tl.fromTo("#map", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 1, ease: E }, s4 + 0.2);
+      [0, 1, 2, 3, 4].forEach((i) => {
+        tl.fromTo("#p" + i + " span", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.6)" }, s4 + 1.0 + i * 0.4);
+        tl.fromTo("#c" + i, { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.4, ease: E }, s4 + 1.0 + i * 0.4);
+      });
+      tl.to("#s4", { opacity: 0, duration: 0.5, ease: "power2.in" }, 21.5);
+
+      // ── Escena 5 (base 22 s) ──
+      const s5 = 22;
+      tl.fromTo("#s5-card", { opacity: 0, y: 40, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: E }, s5 + 0.1);
+      tl.fromTo("#s5-tag", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: E }, s5 + 0.7);
+      tl.fromTo("#s5-cta", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: E }, s5 + 1.3);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
