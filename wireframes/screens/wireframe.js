@@ -1,4 +1,6 @@
 (function () {
+  // Carpeta de este script: los assets se resuelven desde aquí (sirve también para las páginas en _archivo/)
+  var BASE = document.currentScript ? new URL('.', document.currentScript.src).href : '';
 
   /* ── HAMBURGER NAV ── */
   var toggle  = document.getElementById('nav-toggle');
@@ -222,7 +224,7 @@
     var tooltip = document.getElementById('map-tooltip');
     if (!wrap || !tooltip) return;
 
-    fetch('assets/img/mexico.svg')
+    fetch(BASE + 'assets/img/mexico.svg')
       .then(function (r) { return r.text(); })
       .then(function (svgText) {
         tooltip.insertAdjacentHTML('beforebegin', svgText);
