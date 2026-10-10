@@ -8,6 +8,13 @@
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (hasGsap) gsap.registerPlugin(ScrollTrigger);
 
+  // Las fuentes y el SplitText del template cambian alturas después de crear los triggers:
+  // recalcular posiciones cuando todo terminó de cargar.
+  if (hasGsap) {
+    window.addEventListener('load', function () { ScrollTrigger.refresh(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
+  }
+
   /* ── Línea de tiempo: track que se rellena + activación de hitos ── */
   document.querySelectorAll('.zia-tl').forEach(function (tl) {
     var fill  = tl.querySelector('.zia-tl__fill');

@@ -16,8 +16,110 @@
   <link rel="stylesheet" href="assets/css/main.css">
   <link rel="stylesheet" href="assets/css/zia.css">
   <style>
-    /* Organismos reguladores */
-    .zia-org-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:4px 12px;border-radius:20px;border:1px solid rgba(30,138,138,.25);background:rgba(30,138,138,.06);color:var(--tj-color-theme-primary);margin:3px;}
+    /* ═══ Servicios ═══ */
+    .zia-svc-hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
+
+    /* Estación interactiva */
+    .zia-station { position: relative; background: #fff; border-radius: 18px; padding: 10px; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+    .zia-station svg { border-radius: 12px; }
+    .zia-station .ln { stroke: #0c1e21; stroke-width: 3; }
+    .zia-station .lt { stroke: #0c1e21; stroke-width: 2; }
+    .zia-station .tl { fill: #d8e5e5; }
+    .zia-station .tm { fill: #1e8a8a; }
+    .zia-station .wh { fill: #fff; }
+    .zia-station .gd { fill: #A69140; }
+    .zia-station .dash { stroke: #1e8a8a; stroke-width: 2.5; stroke-dasharray: 6 8; animation: ziaFlow 1.2s linear infinite; }
+    @keyframes ziaFlow { to { stroke-dashoffset: -28; } }
+    .zia-station .pt { fill: #EC3237; stroke: #fff; stroke-width: 3; cursor: pointer; transform-box: fill-box; transform-origin: center; transition: transform .25s, fill .25s; }
+    .zia-station .pt.is-active { transform: scale(1.45); fill: #0c1e21; }
+    .zia-station .pt-ring { fill: none; stroke: #EC3237; stroke-width: 2; transform-box: fill-box; transform-origin: center; animation: ziaRing 2.2s ease-out infinite; pointer-events: none; }
+    @keyframes ziaRing { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(2.4); opacity: 0; } }
+    .zia-station__tip {
+      position: absolute; z-index: 3; width: 250px; padding: 14px 16px; border-radius: 12px;
+      background: var(--zia-ink); color: #fff; box-shadow: 0 16px 40px rgba(0,0,0,.35);
+      transform: translate(-50%, calc(-100% - 22px)); pointer-events: auto;
+    }
+    .zia-station__tip::after { content: ""; position: absolute; left: var(--arrow, 50%); bottom: -7px; width: 14px; height: 14px; margin-left: -7px; background: var(--zia-ink); transform: rotate(45deg); }
+    .zia-station__tip.is-below { transform: translate(-50%, 22px); }
+    .zia-station__tip.is-below::after { bottom: auto; top: -7px; }
+    .zia-station__tip-kicker { display: block; font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--zia-teal); }
+    .zia-station__tip-title { display: block; font-size: 16px; font-weight: 900; margin: 2px 0 4px; }
+    .zia-station__tip-desc { display: block; font-size: 13px; line-height: 1.45; color: rgba(255,255,255,.72); }
+    .zia-station__tip-link { display: inline-flex; gap: 6px; align-items: center; margin-top: 8px; font-size: 13px; font-weight: 800; color: #4fd1c5; text-decoration: none; }
+    .zia-station__tip-link:hover { color: #fff; }
+    .zia-station__legend { list-style: none; padding: 0; margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+    .zia-station__legend button { border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.04); color: rgba(255,255,255,.75); font-size: 12.5px; font-weight: 700; padding: 6px 12px 6px 26px; border-radius: 20px; position: relative; cursor: pointer; transition: all .2s; }
+    .zia-station__legend button::before { content: ""; position: absolute; left: 10px; top: 50%; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%; background: var(--zia-red); }
+    .zia-station__legend button:hover, .zia-station__legend button.is-active { border-color: var(--zia-teal); background: rgba(30,138,138,.18); color: #fff; }
+
+    /* Índice de servicios */
+    .zia-svc-nav-wrap { position: relative; z-index: 20; }
+    .zia-svc-nav { background: rgba(255,255,255,.96); backdrop-filter: blur(8px); border-bottom: 1px solid var(--tj-color-border-1); }
+    .zia-svc-nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+    .zia-svc-nav ul::-webkit-scrollbar { display: none; }
+    .zia-svc-nav a { display: flex; align-items: center; gap: 8px; white-space: nowrap; padding: 18px 14px; font-size: 14px; font-weight: 800; color: #5f7173; text-decoration: none; border-bottom: 3px solid transparent; transition: color .2s, border-color .2s; }
+    .zia-svc-nav a span { font-size: 11px; color: #a7b5b7; }
+    .zia-svc-nav a:hover, .zia-svc-nav a.is-active { color: var(--zia-ink); border-color: var(--zia-teal); }
+    .zia-svc-nav a.is-active span { color: var(--zia-teal); }
+
+    /* Bloques de servicio */
+    .zia-svc-list { padding: 40px 0 60px; }
+    .zia-svc { padding: 70px 0; border-bottom: 1px solid var(--tj-color-border-1); scroll-margin-top: 90px; }
+    .zia-svc:last-child { border-bottom: 0; }
+    .zia-svc__num { display: block; font-size: 56px; font-weight: 900; line-height: 1; color: transparent; -webkit-text-stroke: 1.5px var(--zia-teal); margin-bottom: 14px; }
+    .zia-svc__title { font-size: 32px; font-weight: 900; line-height: 1.15; color: var(--zia-ink); margin-bottom: 14px; }
+    .zia-svc__lead { font-size: 16px; line-height: 1.7; color: var(--tj-color-text-body); margin-bottom: 20px; }
+    .zia-svc__regs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .zia-svc__cta { display: inline-flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 800; color: var(--zia-teal); text-decoration: none; padding-bottom: 4px; border-bottom: 2px solid currentColor; }
+    .zia-svc__cta:hover { color: var(--zia-ink); }
+    .zia-svc__cta--alert { color: var(--zia-red); }
+    .zia-svc__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .zia-svc__card { --c: var(--zia-teal); background: #fff; border: 1px solid var(--tj-color-border-1); border-top: 4px solid var(--c); border-radius: 14px; padding: 24px; height: 100%; }
+    .zia-svc__card--cre { --c: var(--zia-cre); }
+    .zia-svc__card--asea { --c: var(--zia-asea); }
+    .zia-svc__card--sat { --c: var(--zia-sat); }
+    .zia-svc__card h3 { font-size: 17px; font-weight: 900; color: var(--zia-ink); margin-bottom: 14px; }
+    .zia-checks { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .zia-checks li { position: relative; padding-left: 26px; font-size: 14px; line-height: 1.5; color: var(--tj-color-text-body); }
+    .zia-checks li::before { content: ""; position: absolute; left: 0; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: rgba(30,138,138,.14); }
+    .zia-checks li::after { content: ""; position: absolute; left: 5px; top: 7px; width: 6px; height: 4px; border-left: 2px solid var(--zia-teal); border-bottom: 2px solid var(--zia-teal); transform: rotate(-45deg); }
+    .zia-steps { list-style: none; padding: 0; margin: 0; counter-reset: paso; display: grid; gap: 12px; }
+    .zia-steps li { counter-increment: paso; position: relative; padding: 20px 22px 20px 74px; border-radius: 14px; background: #fff; border: 1px solid var(--tj-color-border-1); }
+    .zia-steps li::before { content: "0" counter(paso); position: absolute; left: 22px; top: 50%; transform: translateY(-50%); font-size: 22px; font-weight: 900; color: var(--zia-teal); }
+    .zia-steps b { display: block; font-size: 16px; color: var(--zia-ink); }
+    .zia-steps span { font-size: 14px; color: #6b7d7f; }
+    .zia-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .zia-tile { padding: 22px; border-radius: 14px; background: #f4f8f8; border: 1px solid transparent; transition: border-color .25s, background .25s, transform .25s; }
+    .zia-tile:hover { background: #fff; border-color: var(--zia-teal); transform: translateY(-3px); }
+    .zia-tile i { font-size: 34px; color: var(--zia-teal); display: block; margin-bottom: 12px; }
+    .zia-tile b { display: block; font-size: 16px; color: var(--zia-ink); margin-bottom: 4px; }
+    .zia-tile span { font-size: 13.5px; color: #6b7d7f; line-height: 1.5; }
+    .zia-authorities { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .zia-authorities span { font-size: 12px; font-weight: 900; letter-spacing: .06em; padding: 6px 12px; border-radius: 6px; background: var(--zia-ink); color: #fff; }
+
+    /* Reguladores */
+    .zia-regs { background: #f4f8f8; }
+    .zia-regs__grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+    .zia-reg { --c: var(--zia-teal); background: #fff; border-radius: 16px; padding: 26px 20px; text-align: center; border: 1px solid var(--tj-color-border-1); border-bottom: 4px solid var(--c); transition: transform .25s, box-shadow .25s; }
+    .zia-reg:hover { transform: translateY(-6px); box-shadow: 0 18px 40px color-mix(in srgb, var(--c) 22%, transparent); }
+    .zia-reg--asea { --c: var(--zia-asea); } .zia-reg--cre { --c: var(--zia-cre); } .zia-reg--sat { --c: var(--zia-sat); } .zia-reg--stps { --c: var(--zia-stps); } .zia-reg--pc { --c: var(--zia-pc); }
+    .zia-reg img { width: 64px; height: 64px; margin-bottom: 12px; }
+    .zia-reg b { display: block; font-size: 18px; font-weight: 900; color: var(--zia-ink); }
+    .zia-reg small { display: block; font-size: 12px; color: #7d8f91; margin: 2px 0 10px; line-height: 1.35; }
+    .zia-reg p { font-size: 13.5px; color: var(--tj-color-text-body); margin: 0; line-height: 1.5; }
+
+    @media (max-width: 1199px) { .zia-regs__grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 991px) {
+      .zia-svc { padding: 50px 0; }
+      .zia-svc__title { font-size: 26px; }
+    }
+    @media (max-width: 767px) {
+      .zia-svc__cols, .zia-tiles { grid-template-columns: 1fr; }
+      .zia-regs__grid { grid-template-columns: 1fr 1fr; }
+      /* En móvil el detalle va como tarjeta bajo la ilustración, no flotante */
+      .zia-station__tip, .zia-station__tip.is-below { position: static; transform: none; width: auto; margin-top: 10px; }
+      .zia-station__tip::after { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -110,221 +212,396 @@
       <main id="primary" class="site-main">
         <div class="space-for-header"></div>
 
-        <!-- ==================== SECCIÓN 1: PAGE HEADER ==================== -->
-        <section class="tj-page-header section-gap-x" data-bg-image="assets/images/bg/pheader-bg.webp">
+        <!-- =============================================
+             SECCIÓN 1 — Cabecera con estación interactiva
+             ============================================= -->
+        <section class="zia-page-hero zia-svc-hero">
           <div class="container">
-            <div class="row"><div class="col-lg-12">
-              <div class="tj-page-header-content text-center">
-                <h1 class="tj-page-title">Servicios</h1>
-                <div class="tj-page-link">
-                  <span><i class="tji-home"></i></span>
-                  <span><a href="home.html">Inicio</a></span>
-                  <span><i class="tji-arrow-right"></i></span>
-                  <span>Servicios</span>
+            <div class="row align-items-center g-5">
+              <div class="col-xl-5 col-lg-6">
+                <span class="zia-page-hero__eyebrow"><i class="tji-service-1"></i> Servicios</span>
+                <h1 class="zia-page-hero__title title-anim">Todo lo que su estación necesita para <span>operar en regla.</span></h1>
+                <p class="zia-page-hero__lead">Revisamos cada parte de la estación, del tanque al trámite, ante ASEA, CRE, SAT, STPS y Protección Civil. Pase el cursor sobre los puntos rojos.</p>
+                <div class="zia-svc-hero__ctas" data-zia-hero-item>
+                  <a class="tj-primary-btn" href="contacto.html?tema=No%20estoy%20seguro">
+                    <span class="btn-text"><span>Solicitar auditoría sin costo</span></span>
+                    <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
+                  </a>
+                  <a class="tj-outline-btn" href="#auditoria"><span>Ver servicios</span><i class="tji-arrow-right-long"></i></a>
+                </div>
+                <div class="zia-page-hero__crumbs">
+                  <a href="home.html">Inicio</a><i class="tji-arrow-right"></i><span>Servicios</span>
                 </div>
               </div>
-            </div></div>
-          </div>
-          <div class="page-header-overlay" data-bg-image="assets/images/shape/pheader-overlay.webp"></div>
-        </section>
-
-        <!-- ==================== SECCIÓN 2: GRID DE SERVICIOS ==================== -->
-        <section class="tj-service-section service-4 section-gap">
-          <div class="container">
-
-            <div class="row mb-5">
-              <div class="col-12 text-center">
-                <div class="sec-heading">
-                  <h2 class="sec-title title-anim">Cobertura completa para su <span>gasolinera.</span></h2>
-                </div>
-              </div>
-            </div>
-
-            <div class="row row-gap-4">
-
-              <!-- Servicio 1 -->
-              <div class="col-lg-4 col-md-6">
-                <div class="service-item style-4 wow fadeInUp" data-wow-delay=".1s">
-                  <div class="service-icon"><i class="tji-service-1"></i></div>
-                  <div class="service-content">
-                    <h4 class="title"><a href="#">Auditoría de Cumplimiento Normativo</a></h4>
-                    <p class="desc">Primera línea de defensa: evaluación física, análisis documental y ponderación de riesgos ante ASEA, CRE, SAT, STPS y Protección Civil.</p>
-                    <a class="text-btn" href="#">
-                      <span class="btn-text"><span>Ver más</span></span>
-                      <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
-                    </a>
+              <div class="col-xl-7 col-lg-6">
+                <div class="zia-page-hero__art">
+                  <div class="zia-station" id="zia-station">
+                    <svg role="img" aria-label="Corte de una estación de servicio con puntos de inspección" xmlns="http://www.w3.org/2000/svg" viewBox="0 120 1200 580" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <g id="zia-suelo">
+                        <rect x="0" y="440" width="1200" height="260" fill="#eef4f4"/>
+                        <path class="ln" d="M20 440H1180"/>
+                        <path d="M60 470h40M160 500h30M300 480h50M520 520h40M760 470h30M900 510h50M1080 480h40M120 640h40M420 660h30M980 650h40" stroke="#c4d6d6" stroke-width="3"/>
+                      </g>
+                      <g id="zia-tanques">
+                        <g id="zia-tanque-1">
+                          <rect class="ln wh" x="250" y="540" width="300" height="100" rx="50"/>
+                          <clipPath id="zia-t1"><rect x="252" y="542" width="296" height="96" rx="48"/></clipPath>
+                          <rect id="zia-nivel-1" class="gd" x="250" y="580" width="300" height="60" clip-path="url(#zia-t1)" opacity=".85"/>
+                          <path class="lt" d="M300 540v-14h20v14M480 540v-14h20v14"/>
+                        </g>
+                        <g id="zia-tanque-2">
+                          <rect class="ln wh" x="600" y="540" width="300" height="100" rx="50"/>
+                          <clipPath id="zia-t2"><rect x="602" y="542" width="296" height="96" rx="48"/></clipPath>
+                          <rect id="zia-nivel-2" class="tm" x="600" y="595" width="300" height="45" clip-path="url(#zia-t2)" opacity=".75"/>
+                          <path class="lt" d="M650 540v-14h20v14M830 540v-14h20v14"/>
+                        </g>
+                      </g>
+                      <g id="zia-tuberias">
+                        <path class="ln" d="M310 526V480H430V440"/>
+                        <path class="ln" d="M660 526V490H600V440"/>
+                      </g>
+                      <g id="zia-telemedicion">
+                        <path class="dash" d="M490 526V470H983V362"/>
+                        <path class="dash" d="M840 526V470"/>
+                        <circle class="tm" cx="490" cy="526" r="6"/>
+                        <circle class="tm" cx="840" cy="526" r="6"/>
+                      </g>
+                      <g id="zia-marquesina">
+                        <rect class="ln tl" x="300" y="150" width="440" height="44" rx="6"/>
+                        <rect class="tm" x="302" y="176" width="436" height="16"/>
+                        <path class="ln" d="M300 194h440"/>
+                        <path class="ln" d="M360 194V440M680 194V440"/>
+                        <path class="lt" d="M420 202h60M560 202h60" stroke="#A69140"/>
+                      </g>
+                      <g id="zia-dispensarios">
+                        <g id="zia-disp-1">
+                          <rect class="ln wh" x="400" y="300" width="60" height="140" rx="6"/>
+                          <rect class="lt tm" x="410" y="314" width="40" height="24" rx="3"/>
+                          <path class="lt" d="M416 352h28M416 362h28"/>
+                          <path class="ln" d="M460 360c22 0 22 40 6 50"/>
+                          <rect class="ln tl" x="392" y="432" width="76" height="8" rx="2"/>
+                        </g>
+                        <g id="zia-disp-2">
+                          <rect class="ln wh" x="570" y="300" width="60" height="140" rx="6"/>
+                          <rect class="lt tm" x="580" y="314" width="40" height="24" rx="3"/>
+                          <path class="lt" d="M586 352h28M586 362h28"/>
+                          <path class="ln" d="M630 360c22 0 22 40 6 50"/>
+                          <rect class="ln tl" x="562" y="432" width="76" height="8" rx="2"/>
+                        </g>
+                      </g>
+                      <g id="zia-tienda">
+                        <rect class="ln wh" x="820" y="250" width="300" height="190" rx="4"/>
+                        <rect class="ln tm" x="810" y="232" width="320" height="22" rx="4"/>
+                        <rect class="lt tl" x="850" y="290" width="110" height="80" rx="3"/>
+                        <path class="lt" d="M905 290v80M850 330h110"/>
+                        <rect class="lt tl" x="1010" y="320" width="70" height="120"/>
+                        <circle cx="1068" cy="384" r="3" fill="#0c1e21"/>
+                        <rect class="lt" x="967" y="340" width="32" height="22" rx="3" fill="#0c1e21"/>
+                        <path d="M973 351h20" stroke="#4fd1c5" stroke-width="2"/>
+                      </g>
+                      <g id="zia-camara">
+                        <path class="ln" d="M1120 262h26v-30"/>
+                        <rect class="ln tl" x="1126" y="214" width="40" height="20" rx="4" transform="rotate(-18 1146 224)"/>
+                        <path d="M1100 250l-60 40M1100 250l-20 70" stroke="#1e8a8a" stroke-width="2" stroke-dasharray="2 6" opacity=".7"/>
+                      </g>
+                      <g id="zia-totem">
+                        <path class="ln" d="M110 440V300"/>
+                        <rect class="ln tl" x="60" y="140" width="100" height="160" rx="6"/>
+                        <rect class="tm" x="70" y="152" width="80" height="34" rx="3"/>
+                        <rect class="lt wh" x="72" y="198" width="76" height="22" rx="2"/>
+                        <rect class="lt wh" x="72" y="228" width="76" height="22" rx="2"/>
+                        <rect class="lt wh" x="72" y="258" width="76" height="22" rx="2"/>
+                        <path d="M80 209h22M80 239h22M80 269h22" stroke="#A69140" stroke-width="4"/>
+                      </g>
+                      <g id="zia-electrica">
+                        <path class="ln" d="M1160 440V150"/>
+                        <path class="lt" d="M1145 170h30M1150 182h20"/>
+                        <path d="M1160 176C1150 200 1140 215 1130 232" stroke="#0c1e21" stroke-width="2"/>
+                      </g>
+                      <g id="zia-puntos">
+                        <circle class="pt" data-punto="hermeticidad" cx="400" cy="590" r="11"/>
+                        <circle class="pt" data-punto="volumetrico" cx="430" cy="326" r="11"/>
+                        <circle class="pt" data-punto="telemedicion" cx="983" cy="351" r="11"/>
+                        <circle class="pt" data-punto="videovigilancia" cx="1146" cy="224" r="11"/>
+                        <circle class="pt" data-punto="electrica" cx="1160" cy="300" r="11"/>
+                        <circle class="pt" data-punto="seguridad" cx="520" cy="172" r="11"/>
+                      </g>
+                    </svg>
+                    <div class="zia-station__tip" role="status" aria-live="polite" hidden>
+                      <span class="zia-station__tip-kicker"></span>
+                      <b class="zia-station__tip-title"></b>
+                      <span class="zia-station__tip-desc"></span>
+                      <a class="zia-station__tip-link" href="#">Ver servicio <i class="tji-arrow-right-long"></i></a>
+                    </div>
                   </div>
-                </div>
-              </div>
-
-              <!-- Servicio 2 -->
-              <div class="col-lg-4 col-md-6">
-                <div class="service-item style-4 wow fadeInUp" data-wow-delay=".2s">
-                  <div class="service-icon"><i class="tji-service-2"></i></div>
-                  <div class="service-content">
-                    <h4 class="title"><a href="#">Ejes Normativos</a></h4>
-                    <p class="desc">Cobertura integral ante los cinco organismos reguladores clave del sector gasolinero: ASEA, CRE, SAT, STPS y Protección Civil.</p>
-                    <a class="text-btn" href="#">
-                      <span class="btn-text"><span>Ver más</span></span>
-                      <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Servicio 3 -->
-              <div class="col-lg-4 col-md-6">
-                <div class="service-item style-4 wow fadeInUp" data-wow-delay=".3s">
-                  <div class="service-icon"><i class="tji-service-3"></i></div>
-                  <div class="service-content">
-                    <h4 class="title"><a href="#">Gestoría Integral ante Autoridades</a></h4>
-                    <p class="desc">Altas de permiso CRE, registro ASEA (CURR, SASISOPA), reportes anuales y regularización de trámites pendientes.</p>
-                    <a class="text-btn" href="#">
-                      <span class="btn-text"><span>Ver más</span></span>
-                      <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Servicio 4 -->
-              <div class="col-lg-4 col-md-6">
-                <div class="service-item style-4 wow fadeInUp" data-wow-delay=".4s">
-                  <div class="service-icon"><i class="tji-service-4"></i></div>
-                  <div class="service-content">
-                    <h4 class="title"><a href="#">Servicios Fiscales SAT</a></h4>
-                    <p class="desc">Implementación de control volumétrico, Anexo 30, seguridad perimetral de red y asistencia en aplicativos de controles (JSON/XML).</p>
-                    <a class="text-btn" href="#">
-                      <span class="btn-text"><span>Ver más</span></span>
-                      <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Servicio 5 -->
-              <div class="col-lg-4 col-md-6">
-                <div class="service-item style-4 wow fadeInUp" data-wow-delay=".5s">
-                  <div class="service-icon"><i class="tji-service-5"></i></div>
-                  <div class="service-content">
-                    <h4 class="title"><a href="#">Diagnóstico e Infraestructura</a></h4>
-                    <p class="desc">Integridad de tanques, pruebas no destructivas (hermeticidad, cubicación, Anexo 32), laboratorios NOM-016-CRE-2016 y estudios de aguas residuales.</p>
-                    <a class="text-btn" href="#">
-                      <span class="btn-text"><span>Ver más</span></span>
-                      <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Servicio 6 -->
-              <div class="col-lg-4 col-md-6">
-                <div class="service-item style-4 wow fadeInUp" data-wow-delay=".6s">
-                  <div class="service-icon"><i class="tji-service-6"></i></div>
-                  <div class="service-content">
-                    <h4 class="title"><a href="#">Suministro de Equipo Tecnológico</a></h4>
-                    <p class="desc">Dispensarios NOM-005-SCFI-2017, consolas de telemedición, equipos de cómputo, control de acceso y videovigilancia tipo C4.</p>
-                    <a class="text-btn" href="#">
-                      <span class="btn-text"><span>Ver más</span></span>
-                      <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Servicio 7 -->
-              <div class="col-lg-4 col-md-6">
-                <div class="service-item style-4 wow fadeInUp" data-wow-delay=".7s">
-                  <div class="service-icon"><i class="tji-service-7"></i></div>
-                  <div class="service-content">
-                    <h4 class="title"><a href="#">Defensoría Jurídica Especializada</a></h4>
-                    <p class="desc">Abogacía ante SAT, CRE, ASEA, IMSS e INFONAVIT. Juicios contenciosos administrativos, recursos de revisión y amparos.</p>
-                    <a class="text-btn" href="#">
-                      <span class="btn-text"><span>Ver más</span></span>
-                      <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-            </div><!-- /.row -->
-          </div><!-- /.container -->
-        </section>
-
-        <!-- ==================== SECCIÓN 3: ORGANISMOS REGULADORES ==================== -->
-        <section class="section-gap-x" style="background:var(--tj-color-bg-2);padding:60px 0;">
-          <div class="container">
-            <div class="row align-items-center">
-              <div class="col-lg-5 wow fadeInLeft" data-wow-delay=".3s">
-                <div class="sec-heading">
-                  <h2 class="sec-title title-anim">Los 5 reguladores del <span>sector gasolinero.</span></h2>
-                  <p style="font-size:14px;color:var(--tj-color-text-body-3);margin-top:16px;line-height:1.7">Una sola relación de servicio que cubre todos los frentes regulatorios. Ninguna inspección sorpresa le tomará desprevenido.</p>
-                  <div style="margin-top:28px">
-                    <a class="tj-primary-btn" href="contacto.html">
-                      <span class="btn-text"><span>Solicitar evaluación</span></span>
-                      <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-7 wow fadeInRight" data-wow-delay=".4s">
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px">
-                  <!-- ASEA -->
-                  <div style="background:var(--tj-color-common-white);border:1px solid var(--tj-color-border-1);border-radius:12px;padding:24px;">
-                    <span class="zia-org-badge">ASEA</span>
-                    <h5 style="font-size:15px;font-weight:800;margin:12px 0 8px">Agencia de Seguridad, Energía y Ambiente</h5>
-                    <p style="font-size:12px;color:var(--tj-color-text-body-3);margin:0;line-height:1.6">Seguridad industrial, operativa y protección ambiental. SASISOPA, licencias y análisis de riesgo.</p>
-                  </div>
-                  <!-- CRE -->
-                  <div style="background:var(--tj-color-common-white);border:1px solid var(--tj-color-border-1);border-radius:12px;padding:24px;">
-                    <span class="zia-org-badge">CRE</span>
-                    <h5 style="font-size:15px;font-weight:800;margin:12px 0 8px">Comisión Reguladora de Energía</h5>
-                    <p style="font-size:12px;color:var(--tj-color-text-body-3);margin:0;line-height:1.6">Permisos, reportes de volumen, NOM-016-CRE-2016 y representación ante la Comisión.</p>
-                  </div>
-                  <!-- SAT -->
-                  <div style="background:var(--tj-color-common-white);border:1px solid var(--tj-color-border-1);border-radius:12px;padding:24px;">
-                    <span class="zia-org-badge">SAT</span>
-                    <h5 style="font-size:15px;font-weight:800;margin:12px 0 8px">Sistema de Administración Tributaria</h5>
-                    <p style="font-size:12px;color:var(--tj-color-text-body-3);margin:0;line-height:1.6">Control volumétrico, Anexo 30, obligaciones fiscales y aviso de funcionamiento.</p>
-                  </div>
-                  <!-- STPS -->
-                  <div style="background:var(--tj-color-common-white);border:1px solid var(--tj-color-border-1);border-radius:12px;padding:24px;">
-                    <span class="zia-org-badge">STPS</span>
-                    <h5 style="font-size:15px;font-weight:800;margin:12px 0 8px">Secretaría del Trabajo</h5>
-                    <p style="font-size:12px;color:var(--tj-color-text-body-3);margin:0;line-height:1.6">Seguridad e higiene laboral, programas de protección civil y capacitación obligatoria.</p>
-                  </div>
-                  <!-- Protección Civil -->
-                  <div style="background:var(--tj-color-common-white);border:1px solid var(--tj-color-border-1);border-radius:12px;padding:24px;grid-column:1/-1;">
-                    <span class="zia-org-badge">Protección Civil</span>
-                    <h5 style="font-size:15px;font-weight:800;margin:12px 0 8px">Protección Civil Municipal y Estatal</h5>
-                    <p style="font-size:12px;color:var(--tj-color-text-body-3);margin:0;line-height:1.6">Capacidad de respuesta ante emergencias, protocolos de evacuación y dictámenes de riesgo.</p>
-                  </div>
+                  <ul class="zia-station__legend" aria-label="Puntos de inspección">
+                    <li><button type="button" data-punto="hermeticidad">Tanques</button></li>
+                    <li><button type="button" data-punto="volumetrico">Dispensarios</button></li>
+                    <li><button type="button" data-punto="telemedicion">Telemedición</button></li>
+                    <li><button type="button" data-punto="videovigilancia">Videovigilancia</button></li>
+                    <li><button type="button" data-punto="electrica">Eléctrica</button></li>
+                    <li><button type="button" data-punto="seguridad">Seguridad</button></li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- ==================== SECCIÓN 4: CTA ==================== -->
+        <!-- =============================================
+             SECCIÓN 2 — Índice de servicios (se fija al hacer scroll)
+             ============================================= -->
+        <div class="zia-svc-nav-wrap">
+          <nav class="zia-svc-nav" aria-label="Servicios">
+            <div class="container">
+              <ul>
+                <li><a href="#auditoria"><span>01</span>Auditoría</a></li>
+                <li><a href="#gestoria"><span>02</span>Gestoría CRE / ASEA</a></li>
+                <li><a href="#fiscal"><span>03</span>SAT y supervisión</a></li>
+                <li><a href="#infraestructura"><span>04</span>Infraestructura</a></li>
+                <li><a href="#equipo"><span>05</span>Equipo tecnológico</a></li>
+                <li><a href="#juridico"><span>06</span>Defensoría jurídica</a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+
+        <!-- =============================================
+             SECCIÓN 3 — Detalle de servicios
+             ============================================= -->
+        <section class="zia-svc-list" id="zia-svc-list">
+          <div class="container">
+
+            <!-- 01 Auditoría -->
+            <article class="zia-svc" id="auditoria">
+              <div class="row g-5">
+                <div class="col-lg-5">
+                  <span class="zia-svc__num">01</span>
+                  <h2 class="zia-svc__title">Auditoría de cumplimiento normativo</h2>
+                  <p class="zia-svc__lead">Su primera línea de defensa. Detectamos lo que una inspección encontraría y lo ordenamos por riesgo de sanción o clausura.</p>
+                  <div class="zia-svc__regs">
+                    <span class="zia-reg-chip zia-reg-chip--asea"><img src="assets/images/zia/icons/asea.svg" alt="">ASEA</span>
+                    <span class="zia-reg-chip zia-reg-chip--cre"><img src="assets/images/zia/icons/cre.svg" alt="">CRE</span>
+                    <span class="zia-reg-chip zia-reg-chip--sat"><img src="assets/images/zia/icons/sat.svg" alt="">SAT</span>
+                    <span class="zia-reg-chip zia-reg-chip--stps"><img src="assets/images/zia/icons/stps.svg" alt="">STPS</span>
+                    <span class="zia-reg-chip zia-reg-chip--pc"><img src="assets/images/zia/icons/proteccion-civil.svg" alt="">PC</span>
+                  </div>
+                  <a class="zia-svc__cta" href="contacto.html?tema=ASEA,CRE,SAT,STPS,Protecci%C3%B3n%20Civil">Solicitar auditoría <i class="tji-arrow-right-long"></i></a>
+                </div>
+                <div class="col-lg-7">
+                  <ol class="zia-steps">
+                    <li><b>Revisión física y técnica</b><span>Evaluamos equipamiento e instalaciones en sitio.</span></li>
+                    <li><b>Análisis documental exhaustivo</b><span>Verificamos toda la documentación que piden las autoridades.</span></li>
+                    <li><b>Ponderación de riesgos</b><span>Priorizamos lo que puede derivar en sanción o clausura inminente.</span></li>
+                    <li><b>Estrategia de cumplimiento</b><span>Plan personalizado con base en los hallazgos.</span></li>
+                  </ol>
+                </div>
+              </div>
+            </article>
+
+            <!-- 02 Gestoría -->
+            <article class="zia-svc" id="gestoria">
+              <div class="row g-5">
+                <div class="col-lg-5">
+                  <span class="zia-svc__num">02</span>
+                  <h2 class="zia-svc__title">Gestoría integral ante autoridades</h2>
+                  <p class="zia-svc__lead">Nos encargamos de los trámites, registros y reportes para que su permiso siga vigente.</p>
+                  <div class="zia-svc__regs">
+                    <span class="zia-reg-chip zia-reg-chip--cre"><img src="assets/images/zia/icons/cre.svg" alt="">CRE</span>
+                    <span class="zia-reg-chip zia-reg-chip--asea"><img src="assets/images/zia/icons/asea.svg" alt="">ASEA</span>
+                  </div>
+                  <a class="zia-svc__cta" href="contacto.html?tema=CRE,ASEA">Consultar un trámite <i class="tji-arrow-right-long"></i></a>
+                </div>
+                <div class="col-lg-7">
+                  <div class="zia-svc__cols">
+                    <div class="zia-svc__card zia-svc__card--cre">
+                      <h3>Ante CRE</h3>
+                      <ul class="zia-checks">
+                        <li>Altas y solicitudes de permiso</li>
+                        <li>Modificaciones al permiso y cambio de representante legal</li>
+                        <li>Reportes anuales, trimestrales y diarios</li>
+                        <li>Reporte de estructura accionaria</li>
+                        <li>Regularización de trámites pendientes</li>
+                        <li>Sistemas de Gestión de la Medición y NOM-016-CRE-2016</li>
+                      </ul>
+                    </div>
+                    <div class="zia-svc__card zia-svc__card--asea">
+                      <h3>Ante ASEA</h3>
+                      <ul class="zia-checks">
+                        <li>Registro en el Portal del Regulado (CURR)</li>
+                        <li>Pólizas de seguro y generador de residuos peligrosos</li>
+                        <li>Manifiesto de Impacto Ambiental o Informe Preventivo</li>
+                        <li>Análisis de riesgo y Protocolo de Respuesta a Emergencias</li>
+                        <li>Licencia de Funcionamiento y Cédula de Operación Anual</li>
+                        <li>Elaboración, dictaminación e implementación de SASISOPA</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- 03 SAT y supervisión -->
+            <article class="zia-svc" id="fiscal">
+              <div class="row g-5">
+                <div class="col-lg-5">
+                  <span class="zia-svc__num">03</span>
+                  <h2 class="zia-svc__title">Servicios fiscales y supervisión</h2>
+                  <p class="zia-svc__lead">Control volumétrico al día y visitas periódicas para que nada se desajuste entre auditorías.</p>
+                  <div class="zia-svc__regs">
+                    <span class="zia-reg-chip zia-reg-chip--sat"><img src="assets/images/zia/icons/sat.svg" alt="">SAT</span>
+                    <span class="zia-reg-chip zia-reg-chip--cre"><img src="assets/images/zia/icons/cre.svg" alt="">CRE</span>
+                    <span class="zia-reg-chip zia-reg-chip--asea"><img src="assets/images/zia/icons/asea.svg" alt="">ASEA</span>
+                  </div>
+                  <a class="zia-svc__cta" href="contacto.html?tema=SAT">Revisar mi control volumétrico <i class="tji-arrow-right-long"></i></a>
+                </div>
+                <div class="col-lg-7">
+                  <div class="zia-svc__cols">
+                    <div class="zia-svc__card zia-svc__card--sat">
+                      <h3>Cumplimiento SAT</h3>
+                      <ul class="zia-checks">
+                        <li>Control volumétrico conforme a la Miscelánea Fiscal</li>
+                        <li>Seguridad perimetral de la red de datos (Anexo 30)</li>
+                        <li>Envío de archivos y certificados JSON o XML del aplicativo</li>
+                        <li>Aviso de funcionamiento de control volumétrico</li>
+                      </ul>
+                    </div>
+                    <div class="zia-svc__card">
+                      <h3>Supervisión y auditoría</h3>
+                      <ul class="zia-checks">
+                        <li>Supervisión técnica con visitas mensuales o trimestrales</li>
+                        <li>Verificación NOM-005-ASEA-2016</li>
+                        <li>Verificación NOM-016-CRE-2016 y Anexo 30 2025 certificado</li>
+                        <li>Verificación de instalaciones eléctricas (NOM-001-SEDE-2012)</li>
+                        <li>Estudios de iluminación, ruido y energía estática</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- 04 Infraestructura -->
+            <article class="zia-svc" id="infraestructura">
+              <div class="row g-5">
+                <div class="col-lg-5">
+                  <span class="zia-svc__num">04</span>
+                  <h2 class="zia-svc__title">Diagnóstico y mantenimiento de infraestructura</h2>
+                  <p class="zia-svc__lead">Pruebas que previenen fugas, multas y paros de operación.</p>
+                  <div class="zia-svc__regs">
+                    <span class="zia-reg-chip zia-reg-chip--asea"><img src="assets/images/zia/icons/asea.svg" alt="">ASEA</span>
+                    <span class="zia-reg-chip zia-reg-chip--sat"><img src="assets/images/zia/icons/sat.svg" alt="">SAT</span>
+                    <span class="zia-reg-chip zia-reg-chip--cre"><img src="assets/images/zia/icons/cre.svg" alt="">CRE</span>
+                  </div>
+                  <a class="zia-svc__cta" href="contacto.html?tema=ASEA">Programar una prueba <i class="tji-arrow-right-long"></i></a>
+                </div>
+                <div class="col-lg-7">
+                  <div class="zia-tiles">
+                    <div class="zia-tile"><i class="tji-service-5"></i><b>Integridad de tanques</b><span>Análisis de integridad y grosor para prevenir fugas.</span></div>
+                    <div class="zia-tile"><i class="tji-service-3"></i><b>Pruebas no destructivas</b><span>Hermeticidad, cubicación y ensayos (Anexo 32 SAT).</span></div>
+                    <div class="zia-tile"><i class="tji-service-4"></i><b>Pruebas de calidad</b><span>Laboratorios NOM-016-CRE-2016 y aguas residuales.</span></div>
+                    <div class="zia-tile"><i class="tji-service-1"></i><b>Análisis documental</b><span>Verificación de la documentación ante autoridades.</span></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- 05 Equipo tecnológico -->
+            <article class="zia-svc" id="equipo">
+              <div class="row g-5">
+                <div class="col-lg-5">
+                  <span class="zia-svc__num">05</span>
+                  <h2 class="zia-svc__title">Suministro de equipo tecnológico</h2>
+                  <p class="zia-svc__lead">El equipo que exige la norma, instalado por quien conoce la norma.</p>
+                  <a class="zia-svc__cta" href="contacto.html?tema=No%20estoy%20seguro">Cotizar equipo <i class="tji-arrow-right-long"></i></a>
+                </div>
+                <div class="col-lg-7">
+                  <div class="zia-tiles">
+                    <div class="zia-tile"><i class="tji-service-2"></i><b>Dispensarios</b><span>Acordes a NOM-005-SCFI-2017.</span></div>
+                    <div class="zia-tile"><i class="tji-service-6"></i><b>Telemedición</b><span>Consolas de telemedición y jarras patrón.</span></div>
+                    <div class="zia-tile"><i class="tji-service-4"></i><b>Cómputo y acceso</b><span>Equipos de cómputo y control de acceso.</span></div>
+                    <div class="zia-tile"><i class="tji-service-3"></i><b>Videovigilancia</b><span>Monitoreo remoto tipo C4.</span></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- 06 Defensoría jurídica -->
+            <article class="zia-svc" id="juridico">
+              <div class="row g-5">
+                <div class="col-lg-5">
+                  <span class="zia-svc__num">06</span>
+                  <h2 class="zia-svc__title">Defensoría jurídica especializada</h2>
+                  <p class="zia-svc__lead">Si ya hay un procedimiento abierto, lo acompañamos de principio a fin.</p>
+                  <a class="zia-svc__cta zia-svc__cta--alert" href="contacto.html?tema=No%20estoy%20seguro">Tengo un procedimiento abierto <i class="tji-arrow-right-long"></i></a>
+                </div>
+                <div class="col-lg-7">
+                  <div class="zia-svc__card">
+                    <h3>Acompañamiento y abogacía ante</h3>
+                    <div class="zia-authorities"><span>SAT</span><span>CRE</span><span>ASEA</span><span>IMSS</span><span>INFONAVIT</span></div>
+                    <ul class="zia-checks">
+                      <li>Juicios contenciosos administrativos</li>
+                      <li>Recursos de revisión</li>
+                      <li>Amparos</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- =============================================
+             SECCIÓN 4 — Los 5 reguladores
+             ============================================= -->
+        <section class="zia-regs section-gap">
+          <div class="container">
+            <div class="row">
+              <div class="col-12">
+                <div class="sec-heading text-center">
+                  <div class="sub-title-box"><span class="sub-title">Ejes de cumplimiento</span></div>
+                  <h2 class="sec-title title-anim">Cinco reguladores, <span>un solo aliado.</span></h2>
+                </div>
+              </div>
+            </div>
+            <div class="zia-regs__grid">
+              <div class="zia-reg zia-reg--asea"><img src="assets/images/zia/icons/asea.svg" alt=""><b>ASEA</b><small>Agencia de Seguridad, Energía y Ambiente</small><p>Seguridad industrial, operativa y protección ambiental.</p></div>
+              <div class="zia-reg zia-reg--cre"><img src="assets/images/zia/icons/cre.svg" alt=""><b>CRE</b><small>Comisión Reguladora de Energía</small><p>Permisos, reportes de volumen y medición.</p></div>
+              <div class="zia-reg zia-reg--sat"><img src="assets/images/zia/icons/sat.svg" alt=""><b>SAT</b><small>Servicio de Administración Tributaria</small><p>Control volumétrico y obligaciones fiscales.</p></div>
+              <div class="zia-reg zia-reg--stps"><img src="assets/images/zia/icons/stps.svg" alt=""><b>STPS</b><small>Secretaría del Trabajo y Previsión Social</small><p>Seguridad e higiene laboral.</p></div>
+              <div class="zia-reg zia-reg--pc"><img src="assets/images/zia/icons/proteccion-civil.svg" alt=""><b>Protección Civil</b><small>Estatal y municipal</small><p>Capacidad de respuesta ante emergencias y riesgos.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =============================================
+             SECCIÓN 5 — CTA
+             ============================================= -->
         <section class="tj-cta-section">
-          <div class="container">
-            <div class="row"><div class="col-12">
-              <div class="cta-area">
-                <div class="cta-content">
-                  <h2 class="title title-anim">¿Cuál es su situación regulatoria hoy?</h2>
-                  <div class="cta-btn wow fadeInUp" data-wow-delay=".6s">
-                    <a class="tj-primary-btn btn-dark" href="contacto.html">
-                      <span class="btn-text"><span>Solicitar diagnóstico gratuito</span></span>
-                      <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
-                    </a>
-                  </div>
-                </div>
-                <div class="cta-img">
-                  <img src="assets/images/service/service-ad.webp" alt="">
+          <div class="container"><div class="row"><div class="col-12">
+            <div class="cta-area">
+              <div class="cta-content">
+                <h2 class="title title-anim">¿Cuál es su situación regulatoria hoy?</h2>
+                <div class="cta-btn wow fadeInUp" data-wow-delay=".6s">
+                  <a class="tj-primary-btn btn-dark" href="contacto.html">
+                    <span class="btn-text"><span>Solicitar diagnóstico gratuito</span></span>
+                    <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
+                  </a>
                 </div>
               </div>
-            </div></div>
-          </div>
+              <div class="cta-img">
+                <div class="zia-cta-brand">
+                  <img class="zia-cta-brand__pat zia-cta-brand__pat--1" src="assets/images/shape/pattern-2.svg" alt="">
+                  <img class="zia-cta-brand__pat zia-cta-brand__pat--2" src="assets/images/shape/pattern-3.svg" alt="">
+                  <div class="zia-cta-brand__card">
+                    <img class="zia-cta-brand__logo" src="./assets/images/logos/zia_logo_completo.svg" alt="ZIA Integración">
+                    <span class="zia-cta-brand__tag">Cumplimiento normativo integral</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div></div></div>
         </section>
 
       </main>
@@ -345,11 +622,11 @@
                 <div class="footer-widget widget-nav-menu wow fadeInUp" data-wow-delay=".3s">
                   <h5 class="title">Servicios</h5>
                   <ul>
-                    <li><a href="servicios.html">Auditoría Normativa</a></li>
-                    <li><a href="servicios.html">Gestoría CRE/ASEA</a></li>
-                    <li><a href="servicios.html">Fiscal SAT</a></li>
-                    <li><a href="servicios.html">Defensoría Jurídica</a></li>
-                    <li><a href="servicios.html">Equipo Tecnológico</a></li>
+                    <li><a href="servicios.html#auditoria">Auditoría Normativa</a></li>
+                    <li><a href="servicios.html#gestoria">Gestoría CRE/ASEA</a></li>
+                    <li><a href="servicios.html#fiscal">Fiscal SAT</a></li>
+                    <li><a href="servicios.html#juridico">Defensoría Jurídica</a></li>
+                    <li><a href="servicios.html#equipo">Equipo Tecnológico</a></li>
                   </ul>
                 </div>
               </div>
@@ -413,5 +690,133 @@
   <script src="assets/js/meanmenu.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/zia.js"></script>
+  <!-- Estación interactiva + índice de servicios -->
+  <script>
+  (function () {
+    var hasGsap = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Desplazamiento a un ancla compatible con ScrollSmoother
+    function goTo(hash) {
+      var target = document.querySelector(hash);
+      if (!target) return;
+      var smoother = window.ScrollSmoother && ScrollSmoother.get && ScrollSmoother.get();
+      if (smoother) smoother.scrollTo(target, true, 'top 70px');
+      else target.scrollIntoView({ behavior: 'smooth' });
+    }
+    document.querySelectorAll('.zia-svc-nav a, .zia-svc-hero a[href^="#"], .zia-station__tip-link').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var href = a.getAttribute('href');
+        if (!href || href.charAt(0) !== '#') return;
+        e.preventDefault();
+        goTo(href);
+      });
+    });
+
+    /* ── Estación: puntos de inspección ── */
+    var PUNTOS = {
+      hermeticidad:    { k: 'Tanques',             t: 'Hermeticidad e integridad',  d: 'Pruebas no destructivas, cubicación y grosor de pared para prevenir fugas.', href: '#infraestructura' },
+      volumetrico:     { k: 'Dispensarios',        t: 'Control volumétrico',        d: 'Medición conforme a la Miscelánea Fiscal y dispensarios NOM-005-SCFI-2017.', href: '#fiscal' },
+      telemedicion:    { k: 'Consola',             t: 'Telemedición y Anexo 30',    d: 'Consolas, archivos JSON/XML al SAT y seguridad perimetral de la red.', href: '#fiscal' },
+      videovigilancia: { k: 'Cámaras',             t: 'Videovigilancia tipo C4',    d: 'Monitoreo remoto y control de acceso.', href: '#equipo' },
+      electrica:       { k: 'Instalación eléctrica', t: 'NOM-001-SEDE-2012',        d: 'Verificación eléctrica, iluminación, ruido y energía estática.', href: '#fiscal' },
+      seguridad:       { k: 'Operación',           t: 'SASISOPA y emergencias',     d: 'Análisis de riesgo, protocolo de respuesta y licencia de funcionamiento.', href: '#gestoria' }
+    };
+    var station = document.getElementById('zia-station');
+    if (station) {
+      var svg = station.querySelector('svg');
+      var tip = station.querySelector('.zia-station__tip');
+      var legend = document.querySelectorAll('.zia-station__legend button');
+      var ids = Object.keys(PUNTOS);
+      var current = null, timer = null, userTook = false;
+
+      // Anillo pulsante detrás de cada punto
+      svg.querySelectorAll('.pt').forEach(function (pt) {
+        var ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        ring.setAttribute('class', 'pt-ring');
+        ring.setAttribute('cx', pt.getAttribute('cx'));
+        ring.setAttribute('cy', pt.getAttribute('cy'));
+        ring.setAttribute('r', pt.getAttribute('r'));
+        pt.parentNode.insertBefore(ring, pt);
+        pt.setAttribute('tabindex', '0');
+        pt.setAttribute('role', 'button');
+        pt.setAttribute('aria-label', PUNTOS[pt.dataset.punto].k);
+      });
+
+      function show(id) {
+        var data = PUNTOS[id];
+        var pt = svg.querySelector('.pt[data-punto="' + id + '"]');
+        if (!data || !pt) return;
+        current = id;
+        svg.querySelectorAll('.pt').forEach(function (p) { p.classList.toggle('is-active', p === pt); });
+        legend.forEach(function (b) { b.classList.toggle('is-active', b.dataset.punto === id); });
+        tip.querySelector('.zia-station__tip-kicker').textContent = data.k;
+        tip.querySelector('.zia-station__tip-title').textContent = data.t;
+        tip.querySelector('.zia-station__tip-desc').textContent = data.d;
+        tip.querySelector('.zia-station__tip-link').setAttribute('href', data.href);
+        tip.hidden = false;
+
+        // Posición: sobre el punto; debajo si no cabe arriba; dentro del contenedor a lo ancho
+        var box = station.getBoundingClientRect(), r = pt.getBoundingClientRect();
+        var x = r.left + r.width / 2 - box.left, y = r.top + r.height / 2 - box.top;
+        var half = tip.offsetWidth / 2, pad = 8;
+        var cx = Math.max(half + pad, Math.min(box.width - half - pad, x));
+        var below = y - tip.offsetHeight - 30 < 0;
+        tip.classList.toggle('is-below', below);
+        tip.style.left = cx + 'px';
+        tip.style.top = y + 'px';
+        tip.style.setProperty('--arrow', (half + x - cx) + 'px');
+        if (hasGsap && !reduced) gsap.fromTo(tip, { opacity: 0 }, { opacity: 1, duration: .25, clearProps: 'opacity' });
+      }
+      function stopAuto() { userTook = true; clearInterval(timer); }
+
+      svg.querySelectorAll('.pt').forEach(function (pt) {
+        ['mouseenter', 'focus', 'click'].forEach(function (ev) {
+          pt.addEventListener(ev, function () { stopAuto(); show(pt.dataset.punto); });
+        });
+      });
+      legend.forEach(function (b) {
+        ['mouseenter', 'click'].forEach(function (ev) {
+          b.addEventListener(ev, function () { stopAuto(); show(b.dataset.punto); });
+        });
+      });
+      window.addEventListener('resize', function () { if (current) show(current); });
+
+      // Recorrido automático mientras la cabecera está a la vista y nadie interactúa
+      if (!reduced) {
+        var i = 0;
+        var cycle = function () { show(ids[i % ids.length]); i++; };
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            clearInterval(timer);
+            if (en.isIntersecting && !userTook) { cycle(); timer = setInterval(cycle, 3200); }
+          });
+        }, { threshold: .4 }).observe(station);
+      } else {
+        show(ids[0]);
+      }
+    }
+
+    /* ── Índice: se fija arriba en escritorio y marca el servicio en pantalla ── */
+    var nav = document.querySelector('.zia-svc-nav');
+    if (nav && hasGsap) {
+      var links = nav.querySelectorAll('a');
+      ScrollTrigger.matchMedia({
+        '(min-width: 992px)': function () {
+          ScrollTrigger.create({ trigger: '.zia-svc-nav-wrap', start: 'top top', endTrigger: '#zia-svc-list', end: 'bottom 80px', pin: nav, pinSpacing: false });
+        }
+      });
+      document.querySelectorAll('.zia-svc').forEach(function (block) {
+        ScrollTrigger.create({
+          trigger: block, start: 'top 50%', end: 'bottom 50%',
+          onToggle: function (self) {
+            if (!self.isActive) return;
+            links.forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('href') === '#' + block.id); });
+          }
+        });
+      });
+    }
+  }());
+  </script>
 </body>
 </html>
