@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 120 1200 580" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Ilustración ZIA: corte de estación de servicio. Ids por pieza para animar con GSAP (zia.js). -->
+  <!-- Paleta: tinta #0c1e21 · teal #1e8a8a · teal claro #d8e5e5 · dorado #A69140 · rojo #EC3237 -->
+  <style>
+    .ln{stroke:#0c1e21;stroke-width:3}
+    .lt{stroke:#0c1e21;stroke-width:2}
+    .tl{fill:#d8e5e5}
+    .tm{fill:#1e8a8a}
+    .wh{fill:#fff}
+    .gd{fill:#A69140}
+    .dash{stroke:#1e8a8a;stroke-width:2.5;stroke-dasharray:6 8}
+    .pt{fill:#EC3237;stroke:#fff;stroke-width:3}
+  </style>
+
+  <!-- Suelo -->
+  <g id="zia-suelo">
+    <rect x="0" y="440" width="1200" height="260" fill="#eef4f4"/>
+    <path class="ln" d="M20 440H1180"/>
+    <path d="M60 470h40M160 500h30M300 480h50M520 520h40M760 470h30M900 510h50M1080 480h40M120 640h40M420 660h30M980 650h40" stroke="#c4d6d6" stroke-width="3"/>
+  </g>
+
+  <!-- Tanques subterráneos -->
+  <g id="zia-tanques">
+    <g id="zia-tanque-1">
+      <rect class="ln wh" x="250" y="540" width="300" height="100" rx="50"/>
+      <clipPath id="zia-t1"><rect x="252" y="542" width="296" height="96" rx="48"/></clipPath>
+      <rect id="zia-nivel-1" class="gd" x="250" y="580" width="300" height="60" clip-path="url(#zia-t1)" opacity=".85"/>
+      <path class="lt" d="M300 540v-14h20v14M480 540v-14h20v14"/>
+    </g>
+    <g id="zia-tanque-2">
+      <rect class="ln wh" x="600" y="540" width="300" height="100" rx="50"/>
+      <clipPath id="zia-t2"><rect x="602" y="542" width="296" height="96" rx="48"/></clipPath>
+      <rect id="zia-nivel-2" class="tm" x="600" y="595" width="300" height="45" clip-path="url(#zia-t2)" opacity=".75"/>
+      <path class="lt" d="M650 540v-14h20v14M830 540v-14h20v14"/>
+    </g>
+  </g>
+
+  <!-- Tuberías tanque → dispensarios -->
+  <g id="zia-tuberias">
+    <path class="ln" d="M310 526V480H430V440"/>
+    <path class="ln" d="M660 526V490H600V440"/>
+  </g>
+
+  <!-- Sondas de telemedición → consola en tienda -->
+  <g id="zia-telemedicion">
+    <path class="dash" d="M490 526V470H983V362"/>
+    <path class="dash" d="M840 526V470"/>
+    <circle class="tm" cx="490" cy="526" r="6"/>
+    <circle class="tm" cx="840" cy="526" r="6"/>
+  </g>
+
+  <!-- Marquesina -->
+  <g id="zia-marquesina">
+    <rect class="ln tl" x="300" y="150" width="440" height="44" rx="6"/>
+    <rect class="tm" x="302" y="176" width="436" height="16"/>
+    <path class="ln" d="M300 194h440"/>
+    <path class="ln" d="M360 194V440M680 194V440"/>
+    <path class="lt" d="M420 202h60M560 202h60" stroke="#A69140"/>
+  </g>
+
+  <!-- Dispensarios -->
+  <g id="zia-dispensarios">
+    <g id="zia-disp-1">
+      <rect class="ln wh" x="400" y="300" width="60" height="140" rx="6"/>
+      <rect class="lt tm" x="410" y="314" width="40" height="24" rx="3"/>
+      <path class="lt" d="M416 352h28M416 362h28"/>
+      <path class="ln" d="M460 360c22 0 22 40 6 50"/>
+      <rect class="ln tl" x="392" y="432" width="76" height="8" rx="2"/>
+    </g>
+    <g id="zia-disp-2">
+      <rect class="ln wh" x="570" y="300" width="60" height="140" rx="6"/>
+      <rect class="lt tm" x="580" y="314" width="40" height="24" rx="3"/>
+      <path class="lt" d="M586 352h28M586 362h28"/>
+      <path class="ln" d="M630 360c22 0 22 40 6 50"/>
+      <rect class="ln tl" x="562" y="432" width="76" height="8" rx="2"/>
+    </g>
+  </g>
+
+  <!-- Tienda / oficina con consola y cámara -->
+  <g id="zia-tienda">
+    <rect class="ln wh" x="820" y="250" width="300" height="190" rx="4"/>
+    <rect class="ln tm" x="810" y="232" width="320" height="22" rx="4"/>
+    <rect class="lt tl" x="850" y="290" width="110" height="80" rx="3"/>
+    <path class="lt" d="M905 290v80M850 330h110"/>
+    <rect class="lt tl" x="1010" y="320" width="70" height="120"/>
+    <circle cx="1068" cy="384" r="3" fill="#0c1e21"/>
+    <!-- consola de telemedición -->
+    <rect class="lt" x="967" y="340" width="32" height="22" rx="3" fill="#0c1e21"/>
+    <path d="M973 351h20" stroke="#4fd1c5" stroke-width="2"/>
+  </g>
+  <g id="zia-camara">
+    <path class="ln" d="M1120 262h26v-30"/>
+    <rect class="ln tl" x="1126" y="214" width="40" height="20" rx="4" transform="rotate(-18 1146 224)"/>
+    <path d="M1100 250l-60 40M1100 250l-20 70" stroke="#1e8a8a" stroke-width="2" stroke-dasharray="2 6" opacity=".7"/>
+  </g>
+
+  <!-- Totem de precios -->
+  <g id="zia-totem">
+    <path class="ln" d="M110 440V300"/>
+    <rect class="ln tl" x="60" y="140" width="100" height="160" rx="6"/>
+    <rect class="tm" x="70" y="152" width="80" height="34" rx="3"/>
+    <rect class="lt wh" x="72" y="198" width="76" height="22" rx="2"/>
+    <rect class="lt wh" x="72" y="228" width="76" height="22" rx="2"/>
+    <rect class="lt wh" x="72" y="258" width="76" height="22" rx="2"/>
+    <path d="M80 209h22M80 239h22M80 269h22" stroke="#A69140" stroke-width="4"/>
+  </g>
+
+  <!-- Instalación eléctrica -->
+  <g id="zia-electrica">
+    <path class="ln" d="M1160 440V150"/>
+    <path class="lt" d="M1145 170h30M1150 182h20"/>
+    <path d="M1160 176C1150 200 1140 215 1130 232" stroke="#0c1e21" stroke-width="2"/>
+  </g>
+
+  <!-- Puntos de inspección (callouts) -->
+  <g id="zia-puntos">
+    <circle class="pt" data-punto="hermeticidad" cx="400" cy="590" r="11"/>
+    <circle class="pt" data-punto="volumetrico" cx="430" cy="326" r="11"/>
+    <circle class="pt" data-punto="telemedicion" cx="983" cy="351" r="11"/>
+    <circle class="pt" data-punto="videovigilancia" cx="1146" cy="224" r="11"/>
+    <circle class="pt" data-punto="electrica" cx="1160" cy="300" r="11"/>
+    <circle class="pt" data-punto="seguridad" cx="520" cy="172" r="11"/>
+  </g>
+</svg>
