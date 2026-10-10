@@ -18,6 +18,11 @@
       .stat-card { min-width: 0; }
       .stat-card .stat-num { font-size: 26px !important; }
     }
+    /* Estación con puntos + índice de servicios */
+    .hotspot { position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%; background: var(--darker); color: #fff; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+    .svc-index { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 32px; }
+    .svc-index a { padding: 8px 14px; border: 1px solid var(--border); border-radius: 20px; font-size: 12px; font-weight: 700; color: var(--darker); text-decoration: none; }
+    .svc-index a:hover { background: var(--darker); color: #fff; }
   </style>
 </head>
 <body>
@@ -51,6 +56,32 @@
     <h1>Todo lo que su gasolinera necesita en un solo lugar</h1>
     <p>Un portafolio integral que cubre cada obligación regulatoria: desde la auditoría inicial y la gestoría ante organismos hasta la defensa jurídica, el diagnóstico de infraestructura y el equipamiento tecnológico.</p>
   </div>
+
+  <!-- ══════════════════════════════
+       1b. ESTACIÓN CON PUNTOS DE INSPECCIÓN + ÍNDICE
+       (en la Propuesta 02 es una ilustración interactiva)
+  ══════════════════════════════ -->
+  <section>
+    <div class="grid-2 max-w" style="align-items:center;gap:32px;">
+      <div class="img-placeholder" style="height:300px;position:relative;">Ilustración: corte de estación (marquesina, dispensarios, tienda, tanques, telemedición)
+        <span class="hotspot" style="left:44%;top:12%">1</span><span class="hotspot" style="left:30%;top:42%">2</span><span class="hotspot" style="left:76%;top:46%">3</span><span class="hotspot" style="left:92%;top:20%">4</span><span class="hotspot" style="left:95%;top:55%">5</span><span class="hotspot" style="left:28%;top:82%">6</span>
+      </div>
+      <div>
+        <h3 style="font-size:18px;margin-bottom:12px;">Pase el cursor por cada punto de la estación</h3>
+        <ol class="list-check" style="list-style:none;padding:0;display:grid;gap:8px;font-size:13px;">
+          <li><b>1 · Operación</b> — SASISOPA y emergencias → <a href="#gestoria">Gestoría</a></li>
+          <li><b>2 · Dispensarios</b> — control volumétrico → <a href="#sat">SAT</a></li>
+          <li><b>3 · Consola</b> — telemedición y Anexo 30 → <a href="#sat">SAT</a></li>
+          <li><b>4 · Cámaras</b> — videovigilancia tipo C4 → <a href="#equipo">Equipo</a></li>
+          <li><b>5 · Eléctrica</b> — NOM-001-SEDE-2012 → <a href="#sat">Supervisión</a></li>
+          <li><b>6 · Tanques</b> — hermeticidad e integridad → <a href="#diagnostico">Infraestructura</a></li>
+        </ol>
+      </div>
+    </div>
+    <nav class="svc-index" aria-label="Servicios">
+      <a href="#auditoria">01 Auditoría</a><a href="#gestoria">02 Gestoría</a><a href="#sat">03 SAT</a><a href="#diagnostico">04 Infraestructura</a><a href="#seguridad">05 Seguridad laboral</a><a href="#equipo">06 Equipo</a><a href="#defensoria">07 Defensoría</a>
+    </nav>
+  </section>
 
   <!-- ══════════════════════════════
        2. STATS

@@ -162,6 +162,25 @@
       .office-row:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
       .office-row:last-child { border-bottom: none; }
     }
+    /* ── Formulario en 3 pasos ── */
+    .tri-steps { list-style: none; padding: 0; margin: 0 0 18px; display: flex; gap: 6px; }
+    .tri-steps li { flex: 1; font-size: 11px; font-weight: 800; color: #999; padding-top: 8px; border-top: 3px solid #ddd; }
+    .tri-steps li.is-current, .tri-steps li.is-done { color: var(--darker); border-color: var(--darker); }
+    .tri-panel { border: 0; padding: 0; margin: 0; }
+    .tri-panel legend { font-size: 15px; font-weight: 800; color: var(--darker); margin-bottom: 12px; }
+    .tri-panel legend small { font-size: 11px; font-weight: 600; color: var(--muted); }
+    .tri-picks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .tri-picks label, .tri-urg label { display: flex; gap: 8px; align-items: center; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; cursor: pointer; }
+    .tri-urg { display: grid; gap: 8px; }
+    .tri-picks label:has(input:checked), .tri-urg label:has(input:checked) { border-color: var(--darker); background: #eee; }
+    .tri-urgent { margin: 10px 0 0; padding: 10px 12px; border: 1px dashed var(--darker); border-radius: 6px; font-size: 13px; }
+    .tri-assign { margin: 4px 0 12px; padding: 10px 12px; border: 1px dashed var(--border); border-radius: 6px; font-size: 13px; }
+    .tri-error { color: var(--darker); font-weight: 800; font-size: 12px; margin: 8px 0 0; }
+    .tri-nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 18px; }
+    .tri-next { margin-left: auto; }
+    .tri-done { text-align: center; padding: 24px 0; }
+    .tri-done__ico { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--darker); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 900; }
+    .tri-summary { font-size: 13px; color: var(--muted); }
   </style>
 </head>
 <body>
@@ -233,42 +252,106 @@
       <div class="contact-right">
         <div class="card">
           <div class="form-header">
-            <h3>Déjenos sus datos</h3>
+            <h3>Diagnóstico inicial sin costo</h3>
             <p>Lo contactamos nosotros. Sin compromiso.</p>
           </div>
-          <form id="contact-form" novalidate>
-            <div class="form-group">
-              <label for="cf-nombre">Nombre</label>
-              <input id="cf-nombre" type="text" placeholder="Ej. Juan Ramírez" required />
+          <!-- Formulario en 3 pasos (mismo flujo que la Propuesta 02). Sin backend: envío simulado. -->
+          <ol class="tri-steps" aria-label="Progreso">
+            <li class="is-current">1 · Tema</li><li>2 · Urgencia</li><li>3 · Datos</li>
+          </ol>
+          <form id="triage-form" novalidate>
+            <fieldset class="tri-panel" data-step="1">
+              <legend>¿Qué le preocupa? <small>Puede elegir varios</small></legend>
+              <div class="tri-picks">
+                <label><input type="checkbox" name="temas" value="ASEA" /> ASEA</label>
+                <label><input type="checkbox" name="temas" value="CRE" /> CRE</label>
+                <label><input type="checkbox" name="temas" value="SAT" /> SAT</label>
+                <label><input type="checkbox" name="temas" value="STPS" /> STPS</label>
+                <label><input type="checkbox" name="temas" value="Protección Civil" /> Protección Civil</label>
+                <label><input type="checkbox" name="temas" value="No estoy seguro" /> No estoy seguro</label>
+              </div>
+              <p class="tri-error" data-error="temas" hidden>Elija al menos una opción.</p>
+            </fieldset>
+            <fieldset class="tri-panel" data-step="2" hidden>
+              <legend>¿Qué tan urgente es?</legend>
+              <div class="tri-urg">
+                <label><input type="radio" name="urgencia" value="prevenir" /> <b>Quiero prevenir</b> — revisar antes de una visita</label>
+                <label><input type="radio" name="urgencia" value="requerimiento" /> <b>Tengo un requerimiento</b> — oficio o visita programada</label>
+                <label><input type="radio" name="urgencia" value="clausura" /> <b>Clausura o sanción en curso</b></label>
+              </div>
+              <p class="tri-urgent" hidden>Llámenos ahora: <a href="tel:6641594369">664 159 4369</a>. También puede terminar el formulario y lo priorizamos.</p>
+              <p class="tri-error" data-error="urgencia" hidden>Elija una opción.</p>
+            </fieldset>
+            <fieldset class="tri-panel" data-step="3" hidden>
+              <legend>¿Cómo lo contactamos?</legend>
+              <div class="form-group"><label for="cf-nombre">Nombre *</label><input id="cf-nombre" name="nombre" type="text" placeholder="Ej. Juan Ramírez" required /></div>
+              <div class="form-group"><label for="cf-empresa">Gasolinera o empresa *</label><input id="cf-empresa" name="empresa" type="text" placeholder="Ej. Servicio Las Torres" required /></div>
+              <div class="form-group"><label for="cf-tel">Teléfono *</label><input id="cf-tel" name="telefono" type="tel" placeholder="10 dígitos" required /></div>
+              <div class="form-group"><label for="cf-email">Correo *</label><input id="cf-email" name="email" type="email" placeholder="nombre@empresa.com" required /></div>
+              <div class="form-group">
+                <label for="cf-estado">Estado donde opera *</label>
+                <select id="cf-estado" name="estado" required>
+                  <option value="">— Seleccionar —</option>
+                  <option>Baja California</option><option>Baja California Sur</option><option>Sonora</option><option>Chihuahua</option><option>Coahuila</option><option>Durango</option><option>Nuevo León</option><option>Tamaulipas</option><option>Sinaloa</option><option>Michoacán</option><option>Jalisco</option><option>Guanajuato</option><option>Ciudad de México</option><option>Estado de México</option><option>Querétaro</option><option>Veracruz</option><option>Puebla</option><option>Oaxaca</option><option>Tabasco</option><option>Chiapas</option><option>Yucatán</option><option>Otro estado</option>
+                </select>
+              </div>
+              <p class="tri-assign" hidden>Le atenderá la oficina <b></b></p>
+              <p class="tri-error" data-error="datos" hidden>Complete los campos marcados con *.</p>
+            </fieldset>
+            <div class="tri-nav">
+              <button type="button" class="btn btn-outline btn-sm tri-back" hidden>← Atrás</button>
+              <button type="submit" class="btn tri-next">Continuar</button>
             </div>
-            <div class="form-group">
-              <label for="cf-empresa">Empresa / Gasolinera</label>
-              <input id="cf-empresa" type="text" placeholder="Ej. Gasolinera Las Torres" />
-            </div>
-            <div class="form-group">
-              <label for="cf-tel">Teléfono / WhatsApp</label>
-              <input id="cf-tel" type="tel" placeholder="10 dígitos" required />
-            </div>
-            <div class="form-group">
-              <label for="cf-servicio">Servicio de interés</label>
-              <select id="cf-servicio">
-                <option value="">— Seleccionar —</option>
-                <option>Auditoría de Cumplimiento Normativo</option>
-                <option>Gestoría CRE / ASEA</option>
-                <option>Servicios Fiscales SAT</option>
-                <option>Diagnóstico e Infraestructura</option>
-                <option>Seguridad e Higiene Laboral</option>
-                <option>Equipo Tecnológico</option>
-                <option>Defensoría Jurídica</option>
-                <option>No lo sé — requiero orientación</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="cf-mensaje">¿En qué le podemos ayudar?</label>
-              <textarea id="cf-mensaje" placeholder="Descríbanos brevemente su situación…"></textarea>
-            </div>
-            <button type="submit" class="btn" style="width:100%">Enviar solicitud</button>
           </form>
+          <div class="tri-done" hidden>
+            <div class="tri-done__ico">✓</div>
+            <h3>Recibimos su solicitud</h3>
+            <p class="tri-summary"></p>
+          </div>
+          <script>
+          (function () {
+            var form = document.getElementById('triage-form');
+            if (!form) return;
+            var card = form.parentNode, step = 1;
+            var panels = form.querySelectorAll('.tri-panel'), steps = card.querySelectorAll('.tri-steps li');
+            var back = form.querySelector('.tri-back'), next = form.querySelector('.tri-next');
+            // Cobertura propuesta (validar con el cliente); el resto del país: Morelia
+            var REGION = { 'Baja California': 'Tijuana', 'Baja California Sur': 'Tijuana', 'Sonora': 'Tijuana',
+              'Chihuahua': 'Chihuahua', 'Coahuila': 'Chihuahua', 'Durango': 'Chihuahua', 'Nuevo León': 'Chihuahua', 'Tamaulipas': 'Chihuahua', 'Sinaloa': 'Chihuahua',
+              'Veracruz': 'Orizaba', 'Puebla': 'Orizaba', 'Oaxaca': 'Orizaba', 'Tabasco': 'Orizaba', 'Chiapas': 'Orizaba', 'Yucatán': 'Orizaba' };
+            function vals(n) { return Array.prototype.map.call(form.querySelectorAll('[name="' + n + '"]:checked'), function (i) { return i.value; }); }
+            function err(n, on) { form.querySelector('[data-error="' + n + '"]').hidden = !on; }
+            function show(n) {
+              step = n;
+              panels.forEach(function (p) { p.hidden = +p.dataset.step !== n; });
+              steps.forEach(function (li, i) { li.className = i + 1 === n ? 'is-current' : (i + 1 < n ? 'is-done' : ''); });
+              back.hidden = n === 1;
+              next.textContent = n === 3 ? 'Enviar solicitud' : 'Continuar';
+            }
+            form.querySelectorAll('[name="urgencia"]').forEach(function (r) {
+              r.addEventListener('change', function () { form.querySelector('.tri-urgent').hidden = vals('urgencia')[0] !== 'clausura'; });
+            });
+            form.elements.estado.addEventListener('change', function () {
+              var a = form.querySelector('.tri-assign');
+              a.hidden = !this.value;
+              a.querySelector('b').textContent = REGION[this.value] || 'Morelia';
+            });
+            back.addEventListener('click', function () { show(step - 1); });
+            form.addEventListener('submit', function (e) {
+              e.preventDefault();
+              if (step === 1) { var a = vals('temas').length > 0; err('temas', !a); if (a) show(2); return; }
+              if (step === 2) { var b = vals('urgencia').length > 0; err('urgencia', !b); if (b) show(3); return; }
+              var f = form.elements, ok = f.nombre.value.trim() && f.empresa.value.trim() &&
+                f.telefono.value.replace(/\D/g, '').length === 10 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value) && f.estado.value;
+              err('datos', !ok);
+              if (!ok) return;
+              card.querySelector('.tri-summary').textContent = 'Gracias, ' + f.nombre.value.trim().split(/\s+/)[0] +
+                '. La oficina ' + (REGION[f.estado.value] || 'Morelia') + ' le contactará sobre ' + vals('temas').join(', ') + '.';
+              form.hidden = true;
+              card.querySelector('.tri-done').hidden = false;
+            });
+          }());
+          </script>
         </div>
       </div>
 
