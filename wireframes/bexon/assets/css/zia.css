@@ -158,6 +158,8 @@
   -webkit-mask-image: radial-gradient(ellipse at 75% 50%, #000 0%, transparent 70%);
 }
 .zia-page-hero .container { position: relative; z-index: 1; }
+/* GSAP anima estas piezas; la transition:all del template en <p> lo interfiere */
+.zia-page-hero__eyebrow, .zia-page-hero__lead, .zia-page-hero__crumbs, .zia-page-hero [data-zia-hero-item] { transition: none; }
 .zia-page-hero__eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
@@ -212,4 +214,30 @@
 /* ── Accesibilidad: sin movimiento si el usuario lo pide ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+/* ── Mapa de oficinas (SVG inline generado; ver assets/images/zia/mapa-mexico.svg) ── */
+.zia-map svg { width: 100%; height: auto; display: block; overflow: visible; }
+.zia-map__dots { stroke: var(--zia-teal); stroke-width: 6.5; stroke-linecap: round; fill: none; opacity: .45; }
+.zia-map__pin { cursor: pointer; outline: none; }
+.zia-map__pulse { fill: var(--zia-teal); opacity: .22; transform-box: fill-box; transform-origin: center; animation: ziaPinPulse 2.6s ease-out infinite; }
+.zia-map__core { fill: var(--zia-teal); stroke: #fff; stroke-width: 4; transform-box: fill-box; transform-origin: center; transition: fill .25s, transform .25s; }
+.zia-map__lbl {
+  font: 800 24px/1 var(--tj-ff-heading, sans-serif); fill: var(--zia-ink);
+  paint-order: stroke; stroke: #fff; stroke-width: 7px; stroke-linejoin: round; transition: fill .25s;
+}
+.zia-map__pin:hover .zia-map__core,
+.zia-map__pin:focus-visible .zia-map__core,
+.zia-map__pin.is-active .zia-map__core { fill: var(--zia-red); transform: scale(1.35); }
+.zia-map__pin.is-active .zia-map__pulse { fill: var(--zia-red); }
+.zia-map__pin.is-active .zia-map__lbl { fill: var(--zia-red); }
+.zia-map__pin--soon .zia-map__core { fill: #fff; stroke: var(--zia-gold); stroke-dasharray: 5 4; }
+.zia-map__pin--soon .zia-map__pulse { fill: var(--zia-gold); animation: none; opacity: .15; }
+.zia-map__pin--soon.is-active .zia-map__core { fill: var(--zia-gold); stroke: #fff; stroke-dasharray: none; }
+.zia-map__pin--soon.is-active .zia-map__lbl { fill: var(--zia-gold); }
+@keyframes ziaPinPulse { 0% { transform: scale(.4); opacity: .45; } 100% { transform: scale(1.4); opacity: 0; } }
+@media (max-width: 575px) {
+  .zia-map__lbl { font-size: 42px; stroke-width: 11px; }
+  .zia-map__core { transform: scale(1.5); }
+  .zia-map__pin.is-active .zia-map__core { transform: scale(1.9); }
 }
