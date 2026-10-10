@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="assets/css/bexon-icons.css">
   <link rel="stylesheet" href="assets/css/meanmenu.css">
   <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/zia.css">
 
   <style>
     /* ═══════════════════════════════════════════════════
@@ -52,15 +53,6 @@
     .zia-hero-ctas {
       display: flex; gap: 14px; justify-content: center; margin-bottom: 56px; flex-wrap: wrap;
     }
-    /* outline variant del botón Bexon */
-    .tj-outline-btn {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 12px 28px; border: 2px solid rgba(255,255,255,.25);
-      background: transparent; color: rgba(255,255,255,.8);
-      font-size: 14px; font-weight: 700; border-radius: 4px;
-      text-decoration: none; transition: all .2s;
-    }
-    .tj-outline-btn:hover { border-color: var(--tj-color-theme-primary); color: var(--tj-color-theme-primary); }
     /* stats bar en el hero */
     .zia-hero-stats {
       display: inline-flex;
@@ -195,57 +187,6 @@
     /* Hover bloqueado durante la secuencia de animación inicial */
     .rightSwipeWrap.pillar-animating .choose-box { pointer-events: none; }
 
-    /* ── Timeline horizontal alternado, track con relleno al scroll ── */
-    /* Cada hito es un grid de 3 filas (zona-arriba / nodo / zona-abajo).
-       Al estar en el flujo, las tarjetas nunca se salen sobre el título. */
-    .zia-tl { max-width: 1080px; margin: 0 auto; position: relative; }
-    .zia-tl__items { display: flex; position: relative; }
-    .zia-tl__item  {
-      flex: 1; padding: 0 10px;
-      display: grid; grid-template-rows: 1fr 44px 1fr; justify-items: center;
-    }
-    /* Track central (atraviesa la fila de nodos, a 50% del alto total) */
-    .zia-tl__track {
-      position: absolute; left: 0; right: 0; top: 50%; height: 3px;
-      transform: translateY(-50%); background: var(--tj-color-border-1); border-radius: 3px; z-index: 0;
-    }
-    .zia-tl__fill {
-      position: absolute; left: 0; top: 0; height: 100%; width: 0;
-      background: var(--tj-color-theme-primary); border-radius: 3px;
-    }
-    /* Nodo en la fila central */
-    .zia-tl__node {
-      grid-row: 2; align-self: center;
-      width: 18px; height: 18px; border-radius: 50%; z-index: 2;
-      background: #fff; border: 2px solid var(--tj-color-border-1);
-      transition: background .35s, border-color .35s, box-shadow .35s;
-    }
-    .zia-tl__item.is-active .zia-tl__node {
-      background: var(--tj-color-theme-primary); border-color: var(--tj-color-theme-primary);
-      box-shadow: 0 0 0 6px rgba(30,138,138,.16);
-    }
-    /* Tarjeta: impares en la fila de arriba, pares en la de abajo */
-    .zia-tl__card {
-      position: relative; width: 100%; max-width: 200px;
-      background: #fff; border: 1px solid var(--tj-color-border-1); border-radius: 12px;
-      padding: 24px 18px; text-align: center; box-shadow: 0 6px 24px rgba(13,17,23,.05);
-      opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease, border-color .35s, box-shadow .35s;
-    }
-    .zia-tl__item.is-active .zia-tl__card { opacity: 1; transform: translateY(0); border-color: rgba(30,138,138,.35); }
-    .zia-tl__item:nth-child(odd)  .zia-tl__card { grid-row: 1; align-self: end; }
-    .zia-tl__item:nth-child(even) .zia-tl__card { grid-row: 3; align-self: start; }
-    /* Conector vertical tarjeta ↔ nodo (la fila central mide 44px → 22px a cada lado) */
-    .zia-tl__card::after {
-      content: ""; position: absolute; left: 50%; width: 2px; height: 22px;
-      background: var(--tj-color-border-1); transform: translateX(-50%); transition: background .35s;
-    }
-    .zia-tl__item:nth-child(odd)  .zia-tl__card::after { top: 100%; }
-    .zia-tl__item:nth-child(even) .zia-tl__card::after { bottom: 100%; }
-    .zia-tl__item.is-active .zia-tl__card::after { background: var(--tj-color-theme-primary); }
-    .zia-tl__icon  { font-size: 32px; color: var(--tj-color-theme-primary); line-height: 1; margin-bottom: 14px; display: inline-flex; }
-    .zia-tl__year  { font-size: 26px; font-weight: 900; color: var(--tj-color-theme-primary); line-height: 1; margin-bottom: 10px; }
-    .zia-tl__event { font-size: 15px; font-weight: 800; color: var(--tj-color-heading-primary); margin-bottom: 8px; line-height: 1.3; }
-    .zia-tl__detail{ font-size: 12.5px; color: var(--tj-color-text-body-3); line-height: 1.6; margin: 0; }
 
     /* ── Reguladores: órbita con ZIA al centro ── */
     .zia-orbit-stage {
@@ -331,30 +272,6 @@
     @media (min-width: 992px) and (max-width: 1199px) { .zia-orbit { width: 540px; --r: 202px; } }
     @media (min-width: 768px) and (max-width: 991px)  { .zia-orbit { width: 470px; --r: 176px; } }
 
-    /* ── CTA: panel de marca (sustituye la imagen del template) ── */
-    .zia-cta-brand {
-      position: relative; width: 100%; height: 100%; min-height: 320px; overflow: hidden;
-      background: radial-gradient(circle at 72% 28%, #1c5e5c, var(--tj-color-theme-dark));
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
-      text-align: center; padding: 40px;
-    }
-    /* Tarjeta blanca que aloja el logo completo (legible sobre el panel oscuro) */
-    .zia-cta-brand__card {
-      position: relative; z-index: 2;
-      background: #fff; border-radius: 14px; padding: 32px 40px;
-      box-shadow: 0 18px 50px rgba(0,0,0,.32);
-      display: flex; flex-direction: column; align-items: center; gap: 16px;
-    }
-    .zia-cta-brand__logo { height: 64px; width: auto; display: block; }
-    .zia-cta-brand__tag  {
-      font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
-      color: var(--tj-color-theme-primary); line-height: 1.4;
-    }
-    .zia-cta-brand__pat { position: absolute; z-index: 1; opacity: .12; pointer-events: none; }
-    .zia-cta-brand__pat--1 { top: -36px; right: -36px; width: 210px; }
-    .zia-cta-brand__pat--2 { bottom: -44px; left: -36px; width: 230px; }
-    @media (max-width: 991px) { .zia-cta-brand { min-height: 240px; } }
-    @media (max-width: 575px) { .zia-cta-brand__card { padding: 26px 28px; } .zia-cta-brand__logo { height: 52px; } }
 
     /* ── Servicios: cards iguales, botón en footer, card clickeable ── */
     /* Grid propio: grid-auto-rows:1fr fuerza que TODAS las cards (incluso
@@ -393,16 +310,6 @@
       border-radius: inherit;
     }
 
-    /* ── WhatsApp sticky ── */
-    .whatsapp-sticky {
-      position: fixed; bottom: 112px; right: 40px; z-index: 88;
-      width: 52px; height: 52px; background: var(--tj-color-theme-primary); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 900; color: #fff; text-decoration: none;
-      letter-spacing: .04em; border: 2px solid rgba(255,255,255,.2);
-      box-shadow: 0 4px 20px rgba(30,138,138,.35);
-    }
-    .whatsapp-sticky:hover { background: var(--tj-color-theme-dark); }
 
     /* ── Fullpage scroll: solo desktop ── */
     @media (min-width: 992px) {
@@ -419,14 +326,7 @@
       }
     }
 
-    /* ── Mobile floating CTA ── */
-    .mobile-cta {
-      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 80;
-      padding: 12px 20px; background: #fff; border-top: 1px solid var(--tj-color-border-1);
-    }
-    .mobile-cta a { display: block; text-align: center; }
     @media (max-width: 768px) {
-      .mobile-cta { display: block; }
       .zia-hero-title { font-size: 28px; }
       .zia-hero-sub   { font-size: 14px; }
       .zia-hero-ctas  { flex-direction: column; align-items: center; }
@@ -438,22 +338,6 @@
       .zia-process-v2__step { text-align: left; opacity: 1; transform: none; display: flex; gap: 16px; align-items: flex-start; }
       .zia-process-v2__dot { margin: 2px 0 0; flex-shrink: 0; }
       .zia-process-v2__num { margin-bottom: 6px; }
-      /* Timeline: pasa a vertical, track a la izquierda y tarjetas a la derecha */
-      .zia-tl__track { left: 9px; right: auto; top: 0; bottom: 0; width: 3px; height: auto; transform: none; }
-      .zia-tl__fill  { width: 100%; height: 0; }
-      .zia-tl__items { flex-direction: column; gap: 22px; }
-      .zia-tl__item  { display: block; position: relative; padding: 0 0 0 40px; }
-      .zia-tl__node  { position: absolute; left: 9px; top: 26px; transform: translate(-50%, -50%); }
-      .zia-tl__card,
-      .zia-tl__item:nth-child(odd)  .zia-tl__card,
-      .zia-tl__item:nth-child(even) .zia-tl__card {
-        max-width: none; width: 100%; grid-row: auto; align-self: auto; text-align: left;
-      }
-      .zia-tl__card::after,
-      .zia-tl__item:nth-child(odd)  .zia-tl__card::after,
-      .zia-tl__item:nth-child(even) .zia-tl__card::after {
-        left: -31px; top: 26px; bottom: auto; width: 31px; height: 2px; transform: translateY(-50%);
-      }
       /* Reguladores: la órbita se aplana a lista vertical con ZIA arriba */
       .zia-orbit-stage { padding: 0; background: none; }
       .zia-orbit { width: 100%; max-width: 440px; aspect-ratio: auto; display: flex; flex-direction: column; gap: 12px; margin: 0 auto; }
@@ -1396,6 +1280,7 @@
   <script src="assets/js/wow.min.js"></script>
   <script src="assets/js/meanmenu.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/zia.js"></script>
 
 
   <!-- Calculadora de exposición regulatoria -->
@@ -1516,50 +1401,6 @@
   }());
   </script>
 
-  <!-- Timeline horizontal: track que se rellena + activación de hitos -->
-  <script>
-  (function () {
-    var tl = document.getElementById('zia-tl');
-    if (!tl) return;
-    var fill  = document.getElementById('zia-tl-fill');
-    var items = tl.querySelectorAll('.zia-tl__item');
-    if (!items.length) return;
-
-    // En móvil el track es vertical (alto), en desktop horizontal (ancho).
-    function isVertical() { return window.matchMedia('(max-width: 767px)').matches; }
-
-    function setFill(p) {
-      if (!fill) return;
-      var pct = (Math.max(0, Math.min(1, p)) * 100).toFixed(2) + '%';
-      if (isVertical()) { fill.style.height = pct; fill.style.width = '100%'; }
-      else              { fill.style.width = pct;  fill.style.height = '100%'; }
-    }
-
-    // Umbral = centro de cada hito a lo largo del recorrido.
-    var thresholds = [];
-    items.forEach(function (_, i) { thresholds.push((i + 0.5) / items.length); });
-
-    function activate(p) {
-      items.forEach(function (item, i) {
-        item.classList.toggle('is-active', p >= thresholds[i] - 0.05);
-      });
-    }
-
-    // Fallback sin GSAP: todo lleno y activo.
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-      setFill(1); activate(1); return;
-    }
-    gsap.registerPlugin(ScrollTrigger);
-
-    ScrollTrigger.create({
-      trigger: tl,
-      start: 'top 78%',
-      end: 'center 58%',
-      onUpdate: function (self) { setFill(self.progress); activate(self.progress); },
-      onEnter:  function () { items[0].classList.add('is-active'); }
-    });
-  }());
-  </script>
 
   <!-- Reguladores: activar órbita al entrar en viewport -->
   <script>
