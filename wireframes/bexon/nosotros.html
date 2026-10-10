@@ -14,27 +14,51 @@
   <link rel="stylesheet" href="assets/css/bexon-icons.css">
   <link rel="stylesheet" href="assets/css/meanmenu.css">
   <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/zia.css">
   <style>
-    /* Timeline de trayectoria */
-    .zia-timeline { position: relative; }
-    .zia-timeline::before { content:''; position:absolute; left:50%; top:0; bottom:0; width:2px; background:var(--tj-color-border-1); transform:translateX(-50%); }
-    .zia-timeline-item { display:flex; gap:48px; margin-bottom:48px; position:relative; align-items:flex-start; }
-    .zia-timeline-item:nth-child(even) { flex-direction:row-reverse; }
-    .zia-timeline-side { flex:1; }
-    .zia-timeline-center { flex:0 0 auto; display:flex; flex-direction:column; align-items:center; position:relative; z-index:1; }
-    .zia-timeline-dot { width:16px; height:16px; border-radius:50%; background:var(--tj-color-theme-primary); box-shadow:0 0 0 5px rgba(30,138,138,.15); margin-top:8px; }
-    .zia-timeline-content { background:var(--tj-color-bg-2); border:1px solid var(--tj-color-border-1); border-radius:12px; padding:28px 32px; }
-    .zia-timeline-year { font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--tj-color-theme-primary); margin-bottom:8px; display:block; }
-    .zia-timeline-title { font-size:17px; font-weight:800; color:var(--tj-color-text-heading); margin-bottom:8px; }
-    .zia-timeline-desc { font-size:13px; color:var(--tj-color-text-body-3); line-height:1.6; margin:0; }
-    @media(max-width:768px){
-      .zia-timeline::before{left:16px;}
-      .zia-timeline-item,.zia-timeline-item:nth-child(even){flex-direction:column;padding-left:44px;}
-      .zia-timeline-center{position:absolute;left:0;top:4px;}
+    /* ═══ Nosotros ═══ */
+    /* Cifras de la cabecera */
+    .zia-figures { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .zia-figures__mark { position: absolute; right: -60px; top: 50%; width: 420px; max-width: none; transform: translateY(-50%); opacity: .07; pointer-events: none; animation: ziaSpin 90s linear infinite; }
+    @keyframes ziaSpin { to { transform: translateY(-50%) rotate(360deg); } }
+    .zia-figure { position: relative; padding: 26px 24px; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(2px); }
+    .zia-figure b { display: block; font-size: 52px; font-weight: 900; line-height: 1; color: var(--zia-teal); font-variant-numeric: tabular-nums; margin-bottom: 10px; }
+    .zia-figure span { font-size: 13.5px; line-height: 1.45; color: rgba(255,255,255,.7); }
+    .zia-figure:first-of-type b { color: var(--zia-gold); }
+
+    /* Misión */
+    /* Anula el estilo de blockquote del template (caja y comillas) */
+    blockquote.zia-mission__quote { background: none; border: 0; border-left: 4px solid var(--zia-teal); border-radius: 0; padding: 0 0 0 28px; }
+    blockquote.zia-mission__quote::before { display: none; }
+    .zia-mission__quote { font-size: 30px; font-weight: 800; line-height: 1.35; color: var(--zia-ink); margin: 18px 0 0; padding-left: 28px; border-left: 4px solid var(--zia-teal); }
+    .zia-mission__quote span { color: var(--zia-teal); }
+    .zia-pillars { display: grid; gap: 14px; }
+    .zia-pillar { display: flex; gap: 18px; align-items: flex-start; padding: 22px 24px; border-radius: 14px; background: #fff; border: 1px solid var(--tj-color-border-1); transition: border-color .25s, transform .25s, box-shadow .25s; }
+    .zia-pillar:hover { border-color: var(--zia-teal); transform: translateX(6px); box-shadow: 0 14px 34px rgba(30,138,138,.12); }
+    .zia-pillar i { font-size: 34px; color: var(--zia-teal); line-height: 1; }
+    .zia-pillar b { display: block; font-size: 17px; color: var(--zia-ink); margin-bottom: 4px; }
+    .zia-pillar p { margin: 0; font-size: 14px; color: #5f7173; line-height: 1.55; }
+
+    /* Equipo */
+    .zia-lead { display: flex; align-items: center; gap: 16px; padding: 18px 22px; border-radius: 14px; background: var(--zia-ink); color: #fff; margin-bottom: 14px; }
+    .zia-lead small { display: block; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--zia-gold); }
+    .zia-lead b { font-size: 20px; }
+    .zia-team__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .zia-person { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 12px; background: #fff; border: 1.5px solid var(--tj-color-border-1); text-decoration: none; transition: border-color .25s, box-shadow .25s; }
+    .zia-person b { display: block; font-size: 14.5px; color: var(--zia-ink); line-height: 1.3; }
+    .zia-person small { font-size: 12.5px; color: #7d8f91; }
+    .zia-person.is-active, .zia-person:hover { border-color: var(--zia-teal); box-shadow: 0 10px 26px rgba(30,138,138,.14); }
+    .zia-person[data-office-card="culiacan"].is-active { border-color: var(--zia-gold); }
+
+    @media (max-width: 991px) {
+      .zia-figures__mark { right: 50%; transform: translate(50%, -50%); }
+      @keyframes ziaSpin { to { transform: translate(50%, -50%) rotate(360deg); } }
+      .zia-mission__quote { font-size: 24px; }
     }
-    /* WhatsApp sticky */
-    .whatsapp-sticky{position:fixed;bottom:112px;right:40px;z-index:88;width:48px;height:48px;border-radius:50%;background:var(--tj-color-theme-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;text-decoration:none;box-shadow:0 4px 16px rgba(30,138,138,.35);}
-    .whatsapp-sticky:hover{background:var(--tj-color-theme-dark);}
+    @media (max-width: 575px) {
+      .zia-figure b { font-size: 40px; }
+      .zia-team__grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -155,71 +179,28 @@
       <main id="primary" class="site-main">
         <div class="space-for-header"></div>
 
-        <!-- 1. Page header -->
-        <section class="tj-page-header section-gap-x" data-bg-image="assets/images/bg/pheader-bg.webp">
+        <!-- =============================================
+             SECCIÓN 1 — Cabecera con cifras
+             ============================================= -->
+        <section class="zia-page-hero zia-about-hero">
           <div class="container">
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="tj-page-header-content text-center">
-                  <h1 class="tj-page-title">Nosotros</h1>
-                  <div class="tj-page-link">
-                    <span><i class="tji-home"></i></span>
-                    <span><a href="home.html">Inicio</a></span>
-                    <span><i class="tji-arrow-right"></i></span>
-                    <span>Nosotros</span>
-                  </div>
+            <div class="row align-items-center g-5">
+              <div class="col-lg-6">
+                <span class="zia-page-hero__eyebrow"><i class="tji-excellence"></i> Nosotros</span>
+                <h1 class="zia-page-hero__title title-anim">Más de 20 años simplificando la <span>complejidad regulatoria.</span></h1>
+                <p class="zia-page-hero__lead">Empezamos en tecnología en el año 2000 y crecimos junto al sector gasolinero: del control volumétrico a la defensa jurídica, siempre del lado de la estación.</p>
+                <div class="zia-page-hero__crumbs">
+                  <a href="home.html">Inicio</a><i class="tji-arrow-right"></i><span>Nosotros</span>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="page-header-overlay" data-bg-image="assets/images/shape/pheader-overlay.webp"></div>
-        </section>
-
-        <!-- 2. ¿Por qué ZIA? -->
-        <section class="tj-choose-section section-gap">
-          <div class="container">
-            <div class="row">
-              <div class="col-12">
-                <div class="sec-heading-wrap">
-                  <div class="heading-wrap-content">
-                    <div class="sec-heading">
-                      <h2 class="sec-title title-anim">La elección que hace la <span>diferencia.</span></h2>
-                    </div>
-                    <div class="btn-wrap wow fadeInUp" data-wow-delay=".6s">
-                      <a class="tj-primary-btn" href="contacto.html">
-                        <span class="btn-text"><span>Solicitar auditoría</span></span>
-                        <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row row-gap-4 rightSwipeWrap">
-              <div class="col-lg-4">
-                <div class="choose-box right-swipe">
-                  <div class="choose-content">
-                    <div class="choose-icon"><i class="tji-innovative"></i></div>
-                    <h4 class="title">20+ Años de Especialización</h4>
-                    <p class="desc">Desde 2000 operando exclusivamente en el sector gasolinero, acumulando experiencia única ante ASEA, CRE, SAT, STPS y Protección Civil.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="choose-box right-swipe">
-                  <div class="choose-content">
-                    <div class="choose-icon"><i class="tji-shield"></i></div>
-                    <h4 class="title">Cobertura Normativa Integral</h4>
-                    <p class="desc">Atendemos los cinco organismos reguladores clave del sector en una sola relación de servicio.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="choose-box right-swipe">
-                  <div class="choose-content">
-                    <div class="choose-icon"><i class="tji-award"></i></div>
-                    <h4 class="title">Defensa Hasta el Final</h4>
-                    <p class="desc">El único aliado que lo acompaña desde la auditoría inicial hasta la defensa jurídica ante tribunales.</p>
+              <div class="col-lg-6">
+                <div class="zia-page-hero__art">
+                  <div class="zia-figures">
+                    <img class="zia-figures__mark" src="./assets/images/logos/zia_simbolo.svg" alt="">
+                    <div class="zia-figure"><b data-count="2000" data-plain>2000</b><span>Año de fundación</span></div>
+                    <div class="zia-figure"><b data-count="5">5</b><span>Reguladores que atendemos</span></div>
+                    <div class="zia-figure"><b data-count="4">4</b><span>Oficinas regionales + Culiacán próximamente</span></div>
+                    <div class="zia-figure"><b data-count="6">6</b><span>Líneas de servicio, de la auditoría al amparo</span></div>
                   </div>
                 </div>
               </div>
@@ -227,184 +208,166 @@
           </div>
         </section>
 
-        <!-- 3. Misión y Visión -->
-        <section class="tj-about-section-2 section-gap section-gap-x">
+        <!-- =============================================
+             SECCIÓN 2 — Misión
+             ============================================= -->
+        <section class="zia-mission section-gap">
           <div class="container">
-            <div class="row">
-              <div class="col-xl-6 col-lg-6 order-lg-1 order-2">
-                <div class="about-img-area style-2 wow fadeInLeft" data-wow-delay=".3s">
-                  <div class="about-img overflow-hidden">
-                    <img data-speed=".8" src="assets/images/about/about-5.webp" alt="ZIA Integración">
-                  </div>
-                  <div class="box-area style-2">
-                    <div class="progress-box wow fadeInUp" data-wow-delay=".3s">
-                      <h4 class="title">Resultados probados</h4>
-                      <ul class="tj-progress-list">
-                        <li>
-                          <h6 class="tj-progress-title">Clientes satisfechos</h6>
-                          <div class="tj-progress">
-                            <span class="tj-progress-percent">95%</span>
-                            <div class="tj-progress-bar" data-percent="95"></div>
-                          </div>
-                        </li>
-                        <li>
-                          <h6 class="tj-progress-title">Casos resueltos</h6>
-                          <div class="tj-progress">
-                            <span class="tj-progress-percent">88%</span>
-                            <div class="tj-progress-bar" data-percent="88"></div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+            <div class="row g-5 align-items-center">
+              <div class="col-lg-6">
+                <div class="sub-title-box"><span class="sub-title">Misión</span></div>
+                <blockquote class="zia-mission__quote">Ser el socio clave para el éxito y la seguridad de las gasolineras en México, simplificando la complejidad regulatoria y técnica para que nuestros clientes se enfoquen en <span>crecer con total tranquilidad.</span></blockquote>
               </div>
-              <div class="col-xl-6 col-lg-6 order-lg-2 order-1">
-                <div class="about-content-area">
-                  <div class="sec-heading">
-                    <h2 class="sec-title title-anim">Ser el socio clave para el éxito de la gasolinera <span>mexicana.</span></h2>
+              <div class="col-lg-6">
+                <div class="zia-pillars">
+                  <div class="zia-pillar">
+                    <i class="tji-innovative"></i>
+                    <div><b>Especialización desde 2000</b><p>Dos décadas en el sector gasolinero ante ASEA, CRE, SAT, STPS y Protección Civil.</p></div>
                   </div>
-                </div>
-                <div class="about-bottom-area">
-                  <div class="mission-vision-box wow fadeInLeft" data-wow-delay=".5s">
-                    <h4 class="title">Misión</h4>
-                    <p class="desc">Simplificar la complejidad regulatoria y técnica para que los clientes se enfoquen en el crecimiento de su negocio con total tranquilidad.</p>
-                    <ul class="list-items">
-                      <li><i class="tji-list"></i>Cumplimiento proactivo</li>
-                      <li><i class="tji-list"></i>Representación integral</li>
-                      <li><i class="tji-list"></i>Tranquilidad operativa</li>
-                    </ul>
+                  <div class="zia-pillar">
+                    <i class="tji-complete"></i>
+                    <div><b>Cobertura normativa integral</b><p>Los cinco reguladores clave en una sola relación de servicio.</p></div>
                   </div>
-                  <div class="mission-vision-box wow fadeInRight" data-wow-delay=".5s">
-                    <h4 class="title">Visión</h4>
-                    <p class="desc">Ser el referente nacional en cumplimiento normativo del sector energético, reconocido por la calidad técnica y el respaldo jurídico.</p>
-                    <ul class="list-items">
-                      <li><i class="tji-list"></i>Liderazgo sectorial</li>
-                      <li><i class="tji-list"></i>Calidad técnica</li>
-                      <li><i class="tji-list"></i>Cobertura nacional</li>
-                    </ul>
+                  <div class="zia-pillar">
+                    <i class="tji-award"></i>
+                    <div><b>De la auditoría a la defensa</b><p>Lo acompañamos desde el diagnóstico hasta juicios y amparos.</p></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="bg-shape-1"><img src="assets/images/shape/pattern-2.svg" alt=""></div>
-          <div class="bg-shape-2"><img src="assets/images/shape/pattern-3.svg" alt=""></div>
         </section>
 
-        <!-- 4. Trayectoria -->
-        <section class="section-gap section-gap-x" style="background:var(--tj-color-grey-1)">
+        <!-- =============================================
+             SECCIÓN 3 — Trayectoria (línea de tiempo compartida)
+             ============================================= -->
+        <section class="section-gap section-gap-x" style="background:rgba(30,138,138,.1)">
           <div class="container">
             <div class="row">
               <div class="col-12">
                 <div class="sec-heading text-center">
-                  <h2 class="sec-title title-anim">Más de 20 años creciendo junto al <span>sector.</span></h2>
-                  <p class="wow fadeInUp" data-wow-delay=".4s">Desde la tecnología de información hasta el liderazgo integral en cumplimiento normativo gasolinero.</p>
+                  <div class="sub-title-box"><span class="sub-title">Trayectoria</span></div>
+                  <h2 class="sec-title title-anim">Crecimos al ritmo de la <span>regulación.</span></h2>
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-12">
-                <div class="zia-timeline wow fadeInUp" data-wow-delay=".5s">
-
-                  <div class="zia-timeline-item">
-                    <div class="zia-timeline-side">
-                      <div class="zia-timeline-content">
-                        <span class="zia-timeline-year">2000</span>
-                        <div class="zia-timeline-title">Orígenes en Tecnología</div>
-                        <p class="zia-timeline-desc">Fundación enfocada en soporte TI, sistemas de información y asesoría en redes para empresas del sector energético.</p>
-                      </div>
-                    </div>
-                    <div class="zia-timeline-center">
-                      <div class="zia-timeline-dot"></div>
-                    </div>
-                    <div class="zia-timeline-side"></div>
+            <div class="zia-tl">
+              <div class="zia-tl__track"><div class="zia-tl__fill"></div></div>
+              <div class="zia-tl__items">
+                <div class="zia-tl__item">
+                  <div class="zia-tl__card">
+                    <span class="zia-tl__icon"><i class="tji-innovative"></i></span>
+                    <div class="zia-tl__year">2000</div>
+                    <div class="zia-tl__event">Orígenes en TI</div>
+                    <p class="zia-tl__detail">Soporte y asesoría en sistemas de información y redes.</p>
                   </div>
-
-                  <div class="zia-timeline-item">
-                    <div class="zia-timeline-side"></div>
-                    <div class="zia-timeline-center">
-                      <div class="zia-timeline-dot"></div>
-                    </div>
-                    <div class="zia-timeline-side">
-                      <div class="zia-timeline-content">
-                        <span class="zia-timeline-year">2004</span>
-                        <div class="zia-timeline-title">Especialización en Hidrocarburos</div>
-                        <p class="zia-timeline-desc">Incorporación de controles volumétricos para gasolineras, posicionándonos como referente técnico ante las primeras regulaciones del sector.</p>
-                      </div>
-                    </div>
+                  <div class="zia-tl__node"></div>
+                </div>
+                <div class="zia-tl__item">
+                  <div class="zia-tl__card">
+                    <span class="zia-tl__icon"><i class="tji-service-3"></i></span>
+                    <div class="zia-tl__year">2004</div>
+                    <div class="zia-tl__event">Hidrocarburos</div>
+                    <p class="zia-tl__detail">Controles volumétricos para gasolineras.</p>
                   </div>
-
-                  <div class="zia-timeline-item">
-                    <div class="zia-timeline-side">
-                      <div class="zia-timeline-content">
-                        <span class="zia-timeline-year">2010</span>
-                        <div class="zia-timeline-title">Ampliación al Área de Seguridad</div>
-                        <p class="zia-timeline-desc">Desarrollo del área de seguridad e higiene, Protección Civil y STPS, complementando la oferta de cumplimiento normativo.</p>
-                      </div>
-                    </div>
-                    <div class="zia-timeline-center">
-                      <div class="zia-timeline-dot"></div>
-                    </div>
-                    <div class="zia-timeline-side"></div>
+                  <div class="zia-tl__node"></div>
+                </div>
+                <div class="zia-tl__item">
+                  <div class="zia-tl__card">
+                    <span class="zia-tl__icon"><i class="tji-service-5"></i></span>
+                    <div class="zia-tl__year">2010</div>
+                    <div class="zia-tl__event">Seguridad</div>
+                    <p class="zia-tl__detail">Seguridad e higiene, Protección Civil y STPS.</p>
                   </div>
-
-                  <div class="zia-timeline-item">
-                    <div class="zia-timeline-side"></div>
-                    <div class="zia-timeline-center">
-                      <div class="zia-timeline-dot"></div>
-                    </div>
-                    <div class="zia-timeline-side">
-                      <div class="zia-timeline-content">
-                        <span class="zia-timeline-year">2015</span>
-                        <div class="zia-timeline-title">Adaptación Regulatoria CRE/ASEA</div>
-                        <p class="zia-timeline-desc">Ampliación del catálogo de servicios para atender los nuevos requerimientos de CRE y ASEA tras la reforma energética en México.</p>
-                      </div>
-                    </div>
+                  <div class="zia-tl__node"></div>
+                </div>
+                <div class="zia-tl__item">
+                  <div class="zia-tl__card">
+                    <span class="zia-tl__icon"><i class="tji-service-2"></i></span>
+                    <div class="zia-tl__year">2015</div>
+                    <div class="zia-tl__event">CRE y ASEA</div>
+                    <p class="zia-tl__detail">Ampliamos el catálogo para los nuevos reguladores.</p>
                   </div>
-
-                  <div class="zia-timeline-item">
-                    <div class="zia-timeline-side">
-                      <div class="zia-timeline-content">
-                        <span class="zia-timeline-year">Presente</span>
-                        <div class="zia-timeline-title">Liderazgo Integral</div>
-                        <p class="zia-timeline-desc">Presencia en cinco estados con oficinas propias, atendiendo desde auditorías preventivas hasta defensoría jurídica ante SAT, CRE, ASEA e IMSS.</p>
-                      </div>
-                    </div>
-                    <div class="zia-timeline-center">
-                      <div class="zia-timeline-dot"></div>
-                    </div>
-                    <div class="zia-timeline-side"></div>
+                  <div class="zia-tl__node"></div>
+                </div>
+                <div class="zia-tl__item">
+                  <div class="zia-tl__card">
+                    <span class="zia-tl__icon"><i class="tji-award"></i></span>
+                    <div class="zia-tl__year">Hoy</div>
+                    <div class="zia-tl__event">Liderazgo integral</div>
+                    <p class="zia-tl__detail">De la auditoría a la defensoría jurídica.</p>
                   </div>
-
+                  <div class="zia-tl__node"></div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- 5. CTA -->
-        <section class="tj-cta-section">
+        <!-- =============================================
+             SECCIÓN 4 — Equipo y cobertura (mapa compartido con Contacto)
+             ============================================= -->
+        <section class="zia-team section-gap">
           <div class="container">
             <div class="row">
               <div class="col-12">
-                <div class="cta-area">
-                  <div class="cta-content">
-                    <h2 class="title title-anim">¿Listo para operar con total tranquilidad?</h2>
-                    <div class="cta-btn wow fadeInUp" data-wow-delay=".6s">
-                      <a class="tj-primary-btn btn-dark" href="contacto.html">
-                        <span class="btn-text"><span>Solicitar auditoría gratuita</span></span>
-                        <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="cta-img">
-                    <img src="assets/images/about/about-5.webp" alt="">
-                  </div>
+                <div class="sec-heading text-center">
+                  <div class="sub-title-box"><span class="sub-title">Equipo</span></div>
+                  <h2 class="sec-title title-anim">Responsables en <span>cada región.</span></h2>
+                </div>
+              </div>
+            </div>
+            <div class="row g-5 align-items-center">
+              <div class="col-lg-6">
+                <div class="zia-map" data-zia-map>
+                  <svg viewBox="-150 -40 1180 742" role="img" aria-label="Mapa de oficinas ZIA en México"><path class="zia-map__dots" d="M33 22h0M44 22h0M55 22h0M66 22h0M77 22h0M88 22h0M28 33h0M38 33h0M50 33h0M60 33h0M72 33h0M82 33h0M94 33h0M104 33h0M33 44h0M44 44h0M55 44h0M66 44h0M77 44h0M88 44h0M99 44h0M110 44h0M121 44h0M132 44h0M143 44h0M38 55h0M50 55h0M60 55h0M72 55h0M82 55h0M126 55h0M138 55h0M148 55h0M160 55h0M170 55h0M302 55h0M314 55h0M324 55h0M336 55h0M346 55h0M358 55h0M44 66h0M55 66h0M66 66h0M77 66h0M88 66h0M143 66h0M154 66h0M165 66h0M176 66h0M187 66h0M198 66h0M209 66h0M220 66h0M231 66h0M242 66h0M253 66h0M264 66h0M275 66h0M286 66h0M297 66h0M308 66h0M319 66h0M330 66h0M341 66h0M352 66h0M363 66h0M374 66h0M50 77h0M60 77h0M72 77h0M82 77h0M94 77h0M160 77h0M170 77h0M182 77h0M192 77h0M204 77h0M214 77h0M226 77h0M236 77h0M248 77h0M258 77h0M270 77h0M280 77h0M292 77h0M302 77h0M314 77h0M324 77h0M336 77h0M346 77h0M358 77h0M368 77h0M380 77h0M55 88h0M66 88h0M77 88h0M88 88h0M99 88h0M165 88h0M176 88h0M187 88h0M198 88h0M209 88h0M220 88h0M231 88h0M242 88h0M253 88h0M264 88h0M275 88h0M286 88h0M297 88h0M308 88h0M319 88h0M330 88h0M341 88h0M352 88h0M363 88h0M374 88h0M385 88h0M60 99h0M72 99h0M82 99h0M94 99h0M170 99h0M182 99h0M192 99h0M204 99h0M214 99h0M226 99h0M236 99h0M248 99h0M258 99h0M270 99h0M280 99h0M292 99h0M302 99h0M314 99h0M324 99h0M336 99h0M346 99h0M358 99h0M368 99h0M380 99h0M390 99h0M77 110h0M88 110h0M99 110h0M176 110h0M187 110h0M198 110h0M209 110h0M220 110h0M231 110h0M242 110h0M253 110h0M264 110h0M275 110h0M286 110h0M297 110h0M308 110h0M319 110h0M330 110h0M341 110h0M352 110h0M363 110h0M374 110h0M385 110h0M396 110h0M407 110h0M82 121h0M94 121h0M104 121h0M182 121h0M192 121h0M204 121h0M214 121h0M226 121h0M236 121h0M248 121h0M258 121h0M270 121h0M280 121h0M292 121h0M302 121h0M314 121h0M324 121h0M336 121h0M346 121h0M358 121h0M368 121h0M380 121h0M390 121h0M402 121h0M412 121h0M490 121h0M500 121h0M512 121h0M88 132h0M99 132h0M110 132h0M121 132h0M187 132h0M198 132h0M209 132h0M220 132h0M231 132h0M242 132h0M253 132h0M264 132h0M275 132h0M286 132h0M297 132h0M308 132h0M319 132h0M330 132h0M341 132h0M352 132h0M363 132h0M374 132h0M385 132h0M396 132h0M407 132h0M418 132h0M429 132h0M484 132h0M495 132h0M506 132h0M517 132h0M528 132h0M104 143h0M116 143h0M126 143h0M192 143h0M204 143h0M214 143h0M226 143h0M236 143h0M248 143h0M258 143h0M270 143h0M280 143h0M292 143h0M302 143h0M314 143h0M324 143h0M336 143h0M346 143h0M358 143h0M368 143h0M380 143h0M390 143h0M402 143h0M412 143h0M424 143h0M434 143h0M446 143h0M478 143h0M490 143h0M500 143h0M512 143h0M522 143h0M534 143h0M110 154h0M121 154h0M132 154h0M198 154h0M209 154h0M220 154h0M231 154h0M242 154h0M253 154h0M264 154h0M275 154h0M286 154h0M297 154h0M308 154h0M319 154h0M330 154h0M341 154h0M352 154h0M363 154h0M374 154h0M385 154h0M396 154h0M407 154h0M418 154h0M429 154h0M440 154h0M451 154h0M462 154h0M473 154h0M484 154h0M495 154h0M506 154h0M517 154h0M528 154h0M539 154h0M116 165h0M126 165h0M138 165h0M204 165h0M214 165h0M226 165h0M236 165h0M248 165h0M258 165h0M270 165h0M280 165h0M292 165h0M302 165h0M314 165h0M324 165h0M336 165h0M346 165h0M358 165h0M368 165h0M380 165h0M390 165h0M402 165h0M412 165h0M424 165h0M434 165h0M446 165h0M456 165h0M468 165h0M478 165h0M490 165h0M500 165h0M512 165h0M522 165h0M534 165h0M544 165h0M110 176h0M121 176h0M132 176h0M143 176h0M209 176h0M220 176h0M231 176h0M242 176h0M253 176h0M264 176h0M275 176h0M286 176h0M297 176h0M308 176h0M319 176h0M330 176h0M341 176h0M352 176h0M363 176h0M374 176h0M385 176h0M396 176h0M407 176h0M418 176h0M429 176h0M440 176h0M451 176h0M462 176h0M473 176h0M484 176h0M495 176h0M506 176h0M517 176h0M528 176h0M539 176h0M550 176h0M116 187h0M126 187h0M138 187h0M148 187h0M226 187h0M236 187h0M248 187h0M258 187h0M270 187h0M280 187h0M292 187h0M302 187h0M314 187h0M324 187h0M336 187h0M346 187h0M358 187h0M368 187h0M380 187h0M390 187h0M402 187h0M412 187h0M424 187h0M434 187h0M446 187h0M456 187h0M468 187h0M478 187h0M490 187h0M500 187h0M512 187h0M522 187h0M534 187h0M544 187h0M556 187h0M566 187h0M121 198h0M132 198h0M143 198h0M154 198h0M231 198h0M242 198h0M253 198h0M264 198h0M275 198h0M286 198h0M297 198h0M308 198h0M319 198h0M330 198h0M341 198h0M352 198h0M363 198h0M374 198h0M385 198h0M396 198h0M407 198h0M418 198h0M429 198h0M440 198h0M451 198h0M462 198h0M473 198h0M484 198h0M495 198h0M506 198h0M517 198h0M528 198h0M539 198h0M550 198h0M561 198h0M572 198h0M126 209h0M138 209h0M148 209h0M160 209h0M248 209h0M258 209h0M270 209h0M280 209h0M292 209h0M302 209h0M314 209h0M324 209h0M336 209h0M346 209h0M358 209h0M368 209h0M380 209h0M390 209h0M402 209h0M412 209h0M424 209h0M434 209h0M446 209h0M456 209h0M468 209h0M478 209h0M490 209h0M500 209h0M512 209h0M522 209h0M534 209h0M544 209h0M556 209h0M566 209h0M578 209h0M143 220h0M154 220h0M165 220h0M253 220h0M264 220h0M275 220h0M286 220h0M297 220h0M308 220h0M319 220h0M330 220h0M341 220h0M352 220h0M363 220h0M374 220h0M385 220h0M396 220h0M407 220h0M418 220h0M429 220h0M440 220h0M451 220h0M462 220h0M473 220h0M484 220h0M495 220h0M506 220h0M517 220h0M528 220h0M539 220h0M550 220h0M561 220h0M572 220h0M583 220h0M148 231h0M160 231h0M170 231h0M182 231h0M270 231h0M280 231h0M292 231h0M302 231h0M314 231h0M324 231h0M336 231h0M346 231h0M358 231h0M368 231h0M380 231h0M390 231h0M402 231h0M412 231h0M424 231h0M434 231h0M446 231h0M456 231h0M468 231h0M478 231h0M490 231h0M500 231h0M512 231h0M522 231h0M534 231h0M544 231h0M556 231h0M566 231h0M578 231h0M588 231h0M165 242h0M176 242h0M187 242h0M275 242h0M286 242h0M297 242h0M308 242h0M319 242h0M330 242h0M341 242h0M352 242h0M363 242h0M374 242h0M385 242h0M396 242h0M407 242h0M418 242h0M429 242h0M440 242h0M451 242h0M462 242h0M473 242h0M484 242h0M495 242h0M506 242h0M517 242h0M528 242h0M539 242h0M550 242h0M561 242h0M572 242h0M583 242h0M594 242h0M605 242h0M182 253h0M192 253h0M280 253h0M292 253h0M302 253h0M314 253h0M324 253h0M336 253h0M346 253h0M358 253h0M368 253h0M380 253h0M390 253h0M402 253h0M412 253h0M424 253h0M434 253h0M446 253h0M456 253h0M468 253h0M478 253h0M490 253h0M500 253h0M512 253h0M522 253h0M534 253h0M544 253h0M556 253h0M566 253h0M578 253h0M588 253h0M600 253h0M610 253h0M622 253h0M632 253h0M176 264h0M187 264h0M198 264h0M286 264h0M297 264h0M308 264h0M319 264h0M330 264h0M341 264h0M352 264h0M363 264h0M374 264h0M385 264h0M396 264h0M407 264h0M418 264h0M429 264h0M440 264h0M451 264h0M462 264h0M473 264h0M484 264h0M495 264h0M506 264h0M517 264h0M528 264h0M539 264h0M550 264h0M561 264h0M572 264h0M583 264h0M594 264h0M605 264h0M616 264h0M627 264h0M638 264h0M182 275h0M192 275h0M204 275h0M302 275h0M314 275h0M324 275h0M336 275h0M346 275h0M358 275h0M368 275h0M380 275h0M390 275h0M402 275h0M412 275h0M424 275h0M434 275h0M446 275h0M456 275h0M468 275h0M478 275h0M490 275h0M500 275h0M512 275h0M522 275h0M534 275h0M544 275h0M556 275h0M566 275h0M578 275h0M588 275h0M600 275h0M610 275h0M622 275h0M632 275h0M644 275h0M176 286h0M187 286h0M198 286h0M209 286h0M319 286h0M330 286h0M341 286h0M352 286h0M363 286h0M374 286h0M385 286h0M396 286h0M407 286h0M418 286h0M429 286h0M440 286h0M451 286h0M462 286h0M473 286h0M484 286h0M495 286h0M506 286h0M517 286h0M528 286h0M539 286h0M550 286h0M561 286h0M572 286h0M583 286h0M594 286h0M605 286h0M616 286h0M627 286h0M638 286h0M649 286h0M192 297h0M204 297h0M214 297h0M324 297h0M336 297h0M346 297h0M358 297h0M368 297h0M380 297h0M390 297h0M402 297h0M412 297h0M424 297h0M434 297h0M446 297h0M456 297h0M468 297h0M478 297h0M490 297h0M500 297h0M512 297h0M522 297h0M534 297h0M544 297h0M556 297h0M566 297h0M578 297h0M588 297h0M600 297h0M610 297h0M622 297h0M632 297h0M644 297h0M198 308h0M209 308h0M220 308h0M231 308h0M341 308h0M352 308h0M363 308h0M374 308h0M385 308h0M396 308h0M407 308h0M418 308h0M429 308h0M440 308h0M451 308h0M462 308h0M473 308h0M484 308h0M495 308h0M506 308h0M517 308h0M528 308h0M539 308h0M550 308h0M561 308h0M572 308h0M583 308h0M594 308h0M605 308h0M616 308h0M627 308h0M638 308h0M214 319h0M226 319h0M236 319h0M346 319h0M358 319h0M368 319h0M380 319h0M390 319h0M402 319h0M412 319h0M424 319h0M434 319h0M446 319h0M456 319h0M468 319h0M478 319h0M490 319h0M500 319h0M512 319h0M522 319h0M534 319h0M544 319h0M556 319h0M566 319h0M578 319h0M588 319h0M600 319h0M610 319h0M622 319h0M632 319h0M231 330h0M242 330h0M352 330h0M363 330h0M374 330h0M385 330h0M396 330h0M407 330h0M418 330h0M429 330h0M440 330h0M451 330h0M462 330h0M473 330h0M484 330h0M495 330h0M506 330h0M517 330h0M528 330h0M539 330h0M550 330h0M561 330h0M572 330h0M583 330h0M594 330h0M605 330h0M616 330h0M627 330h0M236 341h0M358 341h0M368 341h0M380 341h0M390 341h0M402 341h0M412 341h0M424 341h0M434 341h0M446 341h0M456 341h0M468 341h0M478 341h0M490 341h0M500 341h0M512 341h0M522 341h0M534 341h0M544 341h0M556 341h0M566 341h0M578 341h0M588 341h0M600 341h0M610 341h0M622 341h0M632 341h0M242 352h0M363 352h0M374 352h0M385 352h0M396 352h0M407 352h0M418 352h0M429 352h0M440 352h0M451 352h0M462 352h0M473 352h0M484 352h0M495 352h0M506 352h0M517 352h0M528 352h0M539 352h0M550 352h0M561 352h0M572 352h0M583 352h0M594 352h0M605 352h0M616 352h0M627 352h0M380 363h0M390 363h0M402 363h0M412 363h0M424 363h0M434 363h0M446 363h0M456 363h0M468 363h0M478 363h0M490 363h0M500 363h0M512 363h0M522 363h0M534 363h0M544 363h0M556 363h0M566 363h0M578 363h0M588 363h0M600 363h0M610 363h0M622 363h0M632 363h0M385 374h0M396 374h0M407 374h0M418 374h0M429 374h0M440 374h0M451 374h0M462 374h0M473 374h0M484 374h0M495 374h0M506 374h0M517 374h0M528 374h0M539 374h0M550 374h0M561 374h0M572 374h0M583 374h0M594 374h0M605 374h0M616 374h0M627 374h0M390 385h0M402 385h0M412 385h0M424 385h0M434 385h0M446 385h0M456 385h0M468 385h0M478 385h0M490 385h0M500 385h0M512 385h0M522 385h0M534 385h0M544 385h0M556 385h0M566 385h0M578 385h0M588 385h0M600 385h0M610 385h0M622 385h0M632 385h0M396 396h0M407 396h0M418 396h0M429 396h0M440 396h0M451 396h0M462 396h0M473 396h0M484 396h0M495 396h0M506 396h0M517 396h0M528 396h0M539 396h0M550 396h0M561 396h0M572 396h0M583 396h0M594 396h0M605 396h0M616 396h0M627 396h0M638 396h0M402 407h0M412 407h0M424 407h0M434 407h0M446 407h0M456 407h0M468 407h0M478 407h0M490 407h0M500 407h0M512 407h0M522 407h0M534 407h0M544 407h0M556 407h0M566 407h0M578 407h0M588 407h0M600 407h0M610 407h0M622 407h0M632 407h0M644 407h0M940 407h0M952 407h0M962 407h0M974 407h0M396 418h0M407 418h0M418 418h0M429 418h0M440 418h0M451 418h0M462 418h0M473 418h0M484 418h0M495 418h0M506 418h0M517 418h0M528 418h0M539 418h0M550 418h0M561 418h0M572 418h0M583 418h0M594 418h0M605 418h0M616 418h0M627 418h0M638 418h0M891 418h0M902 418h0M913 418h0M924 418h0M935 418h0M946 418h0M957 418h0M968 418h0M979 418h0M402 429h0M412 429h0M424 429h0M434 429h0M446 429h0M456 429h0M468 429h0M478 429h0M490 429h0M500 429h0M512 429h0M522 429h0M534 429h0M544 429h0M556 429h0M566 429h0M578 429h0M588 429h0M600 429h0M610 429h0M622 429h0M632 429h0M644 429h0M874 429h0M886 429h0M896 429h0M908 429h0M918 429h0M930 429h0M940 429h0M952 429h0M962 429h0M974 429h0M396 440h0M407 440h0M418 440h0M429 440h0M440 440h0M451 440h0M462 440h0M473 440h0M484 440h0M495 440h0M506 440h0M517 440h0M528 440h0M539 440h0M550 440h0M561 440h0M572 440h0M583 440h0M594 440h0M605 440h0M616 440h0M627 440h0M638 440h0M649 440h0M660 440h0M880 440h0M891 440h0M902 440h0M913 440h0M924 440h0M935 440h0M946 440h0M957 440h0M968 440h0M402 451h0M412 451h0M424 451h0M434 451h0M446 451h0M456 451h0M468 451h0M478 451h0M490 451h0M500 451h0M512 451h0M522 451h0M534 451h0M544 451h0M556 451h0M566 451h0M578 451h0M588 451h0M600 451h0M610 451h0M622 451h0M632 451h0M644 451h0M654 451h0M666 451h0M874 451h0M886 451h0M896 451h0M908 451h0M918 451h0M930 451h0M940 451h0M952 451h0M962 451h0M407 462h0M418 462h0M429 462h0M440 462h0M451 462h0M462 462h0M473 462h0M484 462h0M495 462h0M506 462h0M517 462h0M528 462h0M539 462h0M550 462h0M561 462h0M572 462h0M583 462h0M594 462h0M605 462h0M616 462h0M627 462h0M638 462h0M649 462h0M660 462h0M671 462h0M869 462h0M880 462h0M891 462h0M902 462h0M913 462h0M924 462h0M935 462h0M946 462h0M957 462h0M412 473h0M424 473h0M434 473h0M446 473h0M456 473h0M468 473h0M478 473h0M490 473h0M500 473h0M512 473h0M522 473h0M534 473h0M544 473h0M556 473h0M566 473h0M578 473h0M588 473h0M600 473h0M610 473h0M622 473h0M632 473h0M644 473h0M654 473h0M666 473h0M676 473h0M864 473h0M874 473h0M886 473h0M896 473h0M908 473h0M918 473h0M930 473h0M940 473h0M952 473h0M962 473h0M429 484h0M440 484h0M451 484h0M462 484h0M473 484h0M484 484h0M495 484h0M506 484h0M517 484h0M528 484h0M539 484h0M550 484h0M561 484h0M572 484h0M583 484h0M594 484h0M605 484h0M616 484h0M627 484h0M638 484h0M649 484h0M660 484h0M671 484h0M682 484h0M869 484h0M880 484h0M891 484h0M902 484h0M913 484h0M924 484h0M935 484h0M946 484h0M957 484h0M434 495h0M446 495h0M456 495h0M468 495h0M478 495h0M490 495h0M500 495h0M512 495h0M522 495h0M534 495h0M544 495h0M556 495h0M566 495h0M578 495h0M588 495h0M600 495h0M610 495h0M622 495h0M632 495h0M644 495h0M654 495h0M666 495h0M676 495h0M688 495h0M698 495h0M852 495h0M864 495h0M874 495h0M886 495h0M896 495h0M908 495h0M918 495h0M930 495h0M940 495h0M952 495h0M451 506h0M462 506h0M473 506h0M484 506h0M495 506h0M506 506h0M517 506h0M528 506h0M539 506h0M550 506h0M561 506h0M572 506h0M583 506h0M594 506h0M605 506h0M616 506h0M627 506h0M638 506h0M649 506h0M660 506h0M671 506h0M682 506h0M693 506h0M704 506h0M715 506h0M847 506h0M858 506h0M869 506h0M880 506h0M891 506h0M902 506h0M913 506h0M924 506h0M935 506h0M946 506h0M456 517h0M468 517h0M478 517h0M490 517h0M500 517h0M512 517h0M522 517h0M534 517h0M544 517h0M556 517h0M566 517h0M578 517h0M588 517h0M600 517h0M610 517h0M622 517h0M632 517h0M644 517h0M654 517h0M666 517h0M676 517h0M688 517h0M698 517h0M710 517h0M720 517h0M732 517h0M776 517h0M786 517h0M798 517h0M808 517h0M820 517h0M830 517h0M842 517h0M852 517h0M864 517h0M874 517h0M886 517h0M896 517h0M908 517h0M918 517h0M930 517h0M484 528h0M495 528h0M506 528h0M517 528h0M528 528h0M539 528h0M550 528h0M561 528h0M572 528h0M583 528h0M594 528h0M605 528h0M616 528h0M627 528h0M638 528h0M649 528h0M660 528h0M671 528h0M682 528h0M693 528h0M704 528h0M715 528h0M726 528h0M737 528h0M748 528h0M759 528h0M770 528h0M781 528h0M792 528h0M803 528h0M814 528h0M825 528h0M836 528h0M847 528h0M858 528h0M869 528h0M880 528h0M891 528h0M902 528h0M913 528h0M512 539h0M522 539h0M534 539h0M544 539h0M556 539h0M566 539h0M578 539h0M588 539h0M600 539h0M610 539h0M622 539h0M632 539h0M644 539h0M654 539h0M666 539h0M676 539h0M688 539h0M698 539h0M710 539h0M720 539h0M732 539h0M742 539h0M754 539h0M764 539h0M776 539h0M786 539h0M798 539h0M808 539h0M820 539h0M830 539h0M842 539h0M852 539h0M528 550h0M539 550h0M550 550h0M561 550h0M572 550h0M583 550h0M594 550h0M605 550h0M616 550h0M627 550h0M638 550h0M649 550h0M660 550h0M671 550h0M682 550h0M693 550h0M704 550h0M715 550h0M726 550h0M737 550h0M748 550h0M759 550h0M770 550h0M781 550h0M792 550h0M803 550h0M814 550h0M825 550h0M836 550h0M847 550h0M556 561h0M566 561h0M578 561h0M588 561h0M600 561h0M610 561h0M622 561h0M632 561h0M644 561h0M654 561h0M666 561h0M676 561h0M688 561h0M698 561h0M710 561h0M720 561h0M732 561h0M742 561h0M754 561h0M764 561h0M776 561h0M786 561h0M798 561h0M808 561h0M820 561h0M830 561h0M842 561h0M583 572h0M594 572h0M605 572h0M616 572h0M627 572h0M638 572h0M649 572h0M660 572h0M671 572h0M682 572h0M693 572h0M704 572h0M715 572h0M726 572h0M737 572h0M748 572h0M759 572h0M770 572h0M781 572h0M792 572h0M803 572h0M814 572h0M825 572h0M836 572h0M847 572h0M622 583h0M632 583h0M644 583h0M654 583h0M666 583h0M676 583h0M688 583h0M698 583h0M710 583h0M720 583h0M732 583h0M742 583h0M754 583h0M764 583h0M776 583h0M786 583h0M798 583h0M808 583h0M820 583h0M830 583h0M842 583h0M852 583h0M638 594h0M649 594h0M660 594h0M671 594h0M682 594h0M693 594h0M704 594h0M715 594h0M726 594h0M737 594h0M748 594h0M759 594h0M770 594h0M781 594h0M792 594h0M803 594h0M814 594h0M825 594h0M836 594h0M847 594h0M858 594h0M869 594h0M666 605h0M676 605h0M688 605h0M764 605h0M776 605h0M786 605h0M798 605h0M808 605h0M820 605h0M781 616h0M792 616h0M803 616h0M814 616h0M798 627h0M808 627h0M803 638h0"/><g class="zia-map__pins"><g class="zia-map__pin" data-office="tijuana" transform="translate(18 24)" tabindex="0" role="button" aria-label="Oficina Tijuana"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="-22" y="8" text-anchor="end">Tijuana</text></g><g class="zia-map__pin" data-office="chihuahua" transform="translate(369 159)" tabindex="0" role="button" aria-label="Oficina Chihuahua"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="22" y="8" text-anchor="start">Chihuahua</text></g><g class="zia-map__pin zia-map__pin--soon" data-office="culiacan" transform="translate(327 292)" tabindex="0" role="button" aria-label="Oficina Culiacán (próximamente)"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="-22" y="8" text-anchor="end">Culiacán</text></g><g class="zia-map__pin" data-office="morelia" transform="translate(526 470)" tabindex="0" role="button" aria-label="Oficina Morelia"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="-22" y="8" text-anchor="end">Morelia</text></g><g class="zia-map__pin" data-office="orizaba" transform="translate(657 500)" tabindex="0" role="button" aria-label="Oficina Orizaba"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="22" y="8" text-anchor="start">Orizaba</text></g></g></svg>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="zia-lead">
+                  <span class="zia-monogram zia-monogram--gold" style="--size:64px">DP</span>
+                  <div><small>Dirección general</small><b>Ing. Daniel Ponce</b></div>
+                </div>
+                <div class="zia-team__grid">
+                  <a class="zia-person" href="contacto.html#oficina-tijuana" data-office-card="tijuana"><span class="zia-monogram" style="--size:48px">AE</span><span><b>Mtra. Alma Estrella Domínguez</b><small>Tijuana · Baja California</small></span></a>
+                  <a class="zia-person" href="contacto.html#oficina-chihuahua" data-office-card="chihuahua"><span class="zia-monogram" style="--size:48px">AV</span><span><b>Ing. Alejandro Vela</b><small>Chihuahua · Norte</small></span></a>
+                  <a class="zia-person" href="contacto.html#oficina-morelia" data-office-card="morelia"><span class="zia-monogram" style="--size:48px">EB</span><span><b>Ing. Edilberto Brito</b><small>Morelia · Centro</small></span></a>
+                  <a class="zia-person" href="contacto.html#oficina-orizaba" data-office-card="orizaba"><span class="zia-monogram" style="--size:48px">FS</span><span><b>Ing. Francisco Santos</b><small>Orizaba · Oriente</small></span></a>
+                  <a class="zia-person" href="contacto.html#oficina-culiacan" data-office-card="culiacan"><span class="zia-monogram zia-monogram--gold" style="--size:48px">JC</span><span><b>Ing. Jaziel Cienfuegos</b><small>Culiacán · Próximamente</small></span></a>
+                  <a class="zia-person" href="contacto.html#oficina-culiacan" data-office-card="culiacan"><span class="zia-monogram zia-monogram--gold" style="--size:48px">CE</span><span><b>Ing. Carlos Escalante</b><small>Culiacán · Próximamente</small></span></a>
                 </div>
               </div>
             </div>
           </div>
+        </section>
+
+        <!-- =============================================
+             SECCIÓN 5 — CTA
+             ============================================= -->
+        <section class="tj-cta-section">
+          <div class="container"><div class="row"><div class="col-12">
+            <div class="cta-area">
+              <div class="cta-content">
+                <h2 class="title title-anim">¿Listo para operar con total tranquilidad?</h2>
+                <div class="cta-btn wow fadeInUp" data-wow-delay=".6s">
+                  <a class="tj-primary-btn btn-dark" href="contacto.html">
+                    <span class="btn-text"><span>Solicitar auditoría gratuita</span></span>
+                    <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
+                  </a>
+                </div>
+              </div>
+              <div class="cta-img">
+                <div class="zia-cta-brand">
+                  <img class="zia-cta-brand__pat zia-cta-brand__pat--1" src="assets/images/shape/pattern-2.svg" alt="">
+                  <img class="zia-cta-brand__pat zia-cta-brand__pat--2" src="assets/images/shape/pattern-3.svg" alt="">
+                  <div class="zia-cta-brand__card">
+                    <img class="zia-cta-brand__logo" src="./assets/images/logos/zia_logo_completo.svg" alt="ZIA Integración">
+                    <span class="zia-cta-brand__tag">Desde 2000 en el sector gasolinero</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div></div></div>
         </section>
 
       </main>
@@ -427,11 +390,11 @@
                 <div class="footer-widget widget-nav-menu wow fadeInUp" data-wow-delay=".3s">
                   <h5 class="title">Servicios</h5>
                   <ul>
-                    <li><a href="servicios.html">Auditoría Normativa</a></li>
-                    <li><a href="servicios.html">Gestoría CRE/ASEA</a></li>
-                    <li><a href="servicios.html">Fiscal SAT</a></li>
-                    <li><a href="servicios.html">Defensoría Jurídica</a></li>
-                    <li><a href="servicios.html">Equipo Tecnológico</a></li>
+                    <li><a href="servicios.html#auditoria">Auditoría Normativa</a></li>
+                    <li><a href="servicios.html#gestoria">Gestoría CRE/ASEA</a></li>
+                    <li><a href="servicios.html#fiscal">Fiscal SAT</a></li>
+                    <li><a href="servicios.html#juridico">Defensoría Jurídica</a></li>
+                    <li><a href="servicios.html#equipo">Equipo Tecnológico</a></li>
                   </ul>
                 </div>
               </div>
@@ -502,5 +465,22 @@
   <script src="assets/js/wow.min.js"></script>
   <script src="assets/js/meanmenu.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/zia.js"></script>
+  <!-- Contadores de la cabecera -->
+  <script>
+  (function () {
+    if (typeof gsap === 'undefined' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('.zia-figure b[data-count]').forEach(function (el, i) {
+      var end = +el.dataset.count;
+      // El año arranca cerca de su valor para que no "cuente" desde cero
+      var obj = { v: el.hasAttribute('data-plain') ? end - 40 : 0 };
+      el.textContent = Math.round(obj.v);
+      gsap.to(obj, {
+        v: end, duration: 1.6, delay: .5 + i * .12, ease: 'power3.out',
+        onUpdate: function () { el.textContent = Math.round(obj.v); }
+      });
+    });
+  }());
+  </script>
 </body>
 </html>

@@ -14,18 +14,122 @@
   <link rel="stylesheet" href="assets/css/bexon-icons.css">
   <link rel="stylesheet" href="assets/css/meanmenu.css">
   <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/zia.css">
   <style>
-    .whatsapp-sticky{position:fixed;bottom:112px;right:40px;z-index:88;width:48px;height:48px;border-radius:50%;background:var(--tj-color-theme-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;text-decoration:none;box-shadow:0 4px 16px rgba(30,138,138,.35);}
-    .whatsapp-sticky:hover{background:var(--tj-color-theme-dark);}
-    /* Tarjeta de oficina extendida */
-    .zia-office-card{background:var(--tj-color-bg-2);border:1px solid var(--tj-color-border-1);border-radius:12px;padding:28px 24px;height:100%;}
-    .zia-office-card__region{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--tj-color-theme-primary);margin-bottom:8px;display:block;}
-    .zia-office-card__city{font-size:20px;font-weight:900;color:var(--tj-color-text-heading);margin-bottom:4px;}
-    .zia-office-card__name{font-size:13px;color:var(--tj-color-text-body-3);margin-bottom:16px;}
-    .zia-office-card__contact{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
-    .zia-office-card__contact li a{font-size:13px;color:var(--tj-color-text-body);text-decoration:none;display:flex;align-items:center;gap:8px;}
-    .zia-office-card__contact li a:hover{color:var(--tj-color-theme-primary);}
-    .zia-office-card__contact li i{color:var(--tj-color-theme-primary);font-size:13px;width:16px;}
+    /* ═══ Contacto ═══ */
+    /* Contacto directo en la cabecera */
+    .zia-direct { list-style: none; padding: 0; margin: 0 0 32px; display: grid; gap: 10px; }
+    .zia-direct__item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 10px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); color: #fff; text-decoration: none; font-weight: 700; font-size: 15px; transition: border-color .2s, background .2s; }
+    .zia-direct__item:hover { border-color: var(--zia-teal); background: rgba(30,138,138,.12); color: #fff; }
+    .zia-direct__item small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+    .zia-direct__ico i { font-size: 18px; line-height: 1; }
+    .zia-direct__ico { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: var(--zia-teal); font-size: 17px; }
+
+    /* Formulario en pasos */
+    .zia-triage { background: #fff; color: var(--tj-color-text-body); border-radius: 18px; padding: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+    .zia-triage__kicker { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--zia-teal); }
+    .zia-triage__title { font-size: 26px; font-weight: 900; margin: 6px 0 20px; color: var(--zia-ink); }
+    .zia-triage__steps { list-style: none; padding: 0; margin: 0 0 26px; display: flex; gap: 6px; }
+    .zia-triage__steps li { flex: 1; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; color: #9aa9ab; padding-top: 10px; border-top: 3px solid var(--tj-color-border-1); transition: color .3s, border-color .3s; }
+    .zia-triage__steps li span { width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; background: var(--tj-color-border-1); color: #fff; transition: background .3s; }
+    .zia-triage__steps li.is-current, .zia-triage__steps li.is-done { color: var(--zia-ink); border-color: var(--zia-teal); }
+    .zia-triage__steps li.is-current span, .zia-triage__steps li.is-done span { background: var(--zia-teal); }
+    .zia-triage fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+    .zia-triage legend { font-size: 17px; font-weight: 800; color: var(--zia-ink); margin-bottom: 16px; float: none; width: 100%; }
+    .zia-triage legend small { font-size: 12px; font-weight: 600; color: #8a9b9d; margin-left: 6px; }
+    .zia-triage__error { color: var(--zia-red); font-size: 13px; font-weight: 700; margin: 12px 0 0; }
+
+    /* Paso 1: tarjetas seleccionables por regulador */
+    .zia-picks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .zia-pick, .zia-urg { position: relative; margin: 0; cursor: pointer; }
+    .zia-pick input, .zia-urg input { position: absolute; opacity: 0; pointer-events: none; }
+    .zia-pick > span { --c: var(--zia-teal); display: flex; flex-direction: column; align-items: flex-start; gap: 2px; height: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid var(--tj-color-border-1); transition: border-color .2s, background .2s, transform .2s; }
+    .zia-pick--asea > span { --c: var(--zia-asea); }
+    .zia-pick--cre > span { --c: var(--zia-cre); }
+    .zia-pick--sat > span { --c: var(--zia-sat); }
+    .zia-pick--stps > span { --c: var(--zia-stps); }
+    .zia-pick--pc > span { --c: var(--zia-pc); }
+    .zia-pick img, .zia-pick__q { width: 38px; height: 38px; margin-bottom: 6px; }
+    .zia-pick__q { border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-style: normal; font-weight: 900; font-size: 18px; color: var(--zia-teal); background: rgba(30,138,138,.12); }
+    .zia-pick b { font-size: 14px; color: var(--zia-ink); }
+    .zia-pick small { font-size: 12px; color: #7d8f91; line-height: 1.35; }
+    .zia-pick:hover > span { border-color: var(--c); transform: translateY(-2px); }
+    .zia-pick input:checked + span { border-color: var(--c); background: color-mix(in srgb, var(--c) 9%, #fff); box-shadow: inset 0 0 0 1px var(--c); }
+    .zia-pick input:focus-visible + span, .zia-urg input:focus-visible + span { outline: 3px solid rgba(30,138,138,.4); outline-offset: 2px; }
+
+    /* Paso 2: urgencia */
+    .zia-urgency { display: grid; gap: 10px; }
+    .zia-urg > span { display: block; padding: 16px 18px 16px 48px; border-radius: 12px; border: 1.5px solid var(--tj-color-border-1); position: relative; transition: border-color .2s, background .2s; }
+    .zia-urg > span::before { content: ""; position: absolute; left: 18px; top: 50%; width: 18px; height: 18px; margin-top: -9px; border-radius: 50%; border: 2px solid #b8c6c7; transition: border .2s; }
+    .zia-urg b { display: block; font-size: 15px; color: var(--zia-ink); }
+    .zia-urg small { font-size: 13px; color: #7d8f91; }
+    .zia-urg:hover > span { border-color: var(--zia-teal); }
+    .zia-urg input:checked + span { border-color: var(--zia-teal); background: rgba(30,138,138,.06); }
+    .zia-urg input:checked + span::before { border: 6px solid var(--zia-teal); }
+    .zia-urg--alert input:checked + span { border-color: var(--zia-red); background: rgba(236,50,55,.05); }
+    .zia-urg--alert input:checked + span::before { border-color: var(--zia-red); }
+    .zia-triage__urgent { display: flex; gap: 14px; align-items: flex-start; margin-top: 14px; padding: 14px 16px; border-radius: 12px; background: rgba(236,50,55,.08); color: #8f1d20; font-size: 14px; }
+    .zia-triage__urgent i { font-size: 20px; color: var(--zia-red); margin-top: 2px; }
+    .zia-triage__urgent p { margin: 0; }
+    .zia-triage__urgent a { color: var(--zia-red); }
+
+    /* Paso 3: campos */
+    .zia-field label { display: block; font-size: 12px; font-weight: 800; color: var(--zia-ink); margin-bottom: 6px; }
+    .zia-field input, .zia-field textarea { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--tj-color-border-1); background: #fff; font-size: 14px; color: var(--zia-ink); transition: border-color .2s; }
+    .zia-field input:focus, .zia-field textarea:focus { border-color: var(--zia-teal); outline: none; }
+    .zia-field .nice-select { width: 100%; height: 48px; line-height: 1.2; padding: 0 40px 0 14px; display: flex; align-items: center; border-radius: 10px; border: 1.5px solid var(--tj-color-border-1); float: none; font-size: 14px; color: var(--zia-ink); }
+    .zia-field .nice-select .list { width: 100%; max-height: 260px; overflow-y: auto; }
+    .zia-field__err { display: none; color: var(--zia-red); font-size: 12px; font-weight: 700; margin-top: 4px; }
+    .zia-field.is-invalid input, .zia-field.is-invalid .nice-select { border-color: var(--zia-red); }
+    .zia-field.is-invalid .zia-field__err { display: block; }
+    .zia-assign { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 12px; background: rgba(30,138,138,.07); border: 1px dashed rgba(30,138,138,.45); }
+    .zia-assign p { margin: 0; line-height: 1.35; }
+    .zia-assign small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--zia-teal); }
+    .zia-assign b { display: block; color: var(--zia-ink); }
+    .zia-assign__name { font-size: 13px; color: #6b7d7f; }
+
+    /* Navegación y éxito */
+    .zia-triage__nav { display: flex; justify-content: space-between; align-items: center; margin-top: 26px; gap: 12px; }
+    .zia-triage__next { margin-left: auto; }
+    .zia-triage__back { background: none; border: 0; font-weight: 800; font-size: 14px; color: #6b7d7f; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 0; }
+    .zia-triage__back:hover { color: var(--zia-teal); }
+    .zia-triage__done { text-align: center; padding: 20px 0 8px; }
+    .zia-triage__done h3 { font-size: 26px; font-weight: 900; color: var(--zia-ink); margin: 18px 0 10px; }
+    .zia-triage__summary { color: #5f7173; max-width: 440px; margin: 0 auto 18px; }
+    .zia-check { width: 88px; height: 88px; }
+    .zia-check circle { fill: rgba(30,138,138,.1); stroke: var(--zia-teal); stroke-width: 3; stroke-dasharray: 227; stroke-dashoffset: 227; }
+    .zia-check path { fill: none; stroke: var(--zia-teal); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 50; stroke-dashoffset: 50; }
+    .zia-triage__done.is-shown .zia-check circle { transition: stroke-dashoffset .7s ease; stroke-dashoffset: 0; }
+    .zia-triage__done.is-shown .zia-check path { transition: stroke-dashoffset .45s ease .55s; stroke-dashoffset: 0; }
+
+    /* Oficinas */
+    .zia-offices { background: linear-gradient(180deg, #f4f8f8, #fff); }
+    .zia-office-list { display: grid; gap: 12px; }
+    .zia-office { display: flex; gap: 16px; align-items: flex-start; padding: 18px 20px; border-radius: 14px; background: #fff; border: 1.5px solid var(--tj-color-border-1); cursor: pointer; transition: border-color .25s, box-shadow .25s, transform .25s; outline: none; scroll-margin-top: 120px; }
+    .zia-office.is-active, .zia-office:focus-visible { border-color: var(--zia-teal); box-shadow: 0 14px 34px rgba(30,138,138,.16); transform: translateX(-4px); }
+    .zia-office--soon { border-style: dashed; }
+    .zia-office--soon.is-active { border-color: var(--zia-gold); box-shadow: 0 14px 34px rgba(166,145,64,.18); }
+    .zia-office__region { font-size: 10.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--zia-teal); }
+    .zia-office--soon .zia-office__region { color: var(--zia-gold); }
+    .zia-office__city { font-size: 20px; font-weight: 900; color: var(--zia-ink); margin: 2px 0 2px; }
+    .zia-office__name { font-size: 13.5px; color: #5f7173; margin: 0; }
+    .zia-office__note { font-size: 12.5px; color: #8a7a3a; margin: 6px 0 0; }
+    /* Los datos de contacto se despliegan en la oficina activa */
+    .zia-office__links { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; max-height: 0; overflow: hidden; opacity: 0; transition: max-height .35s ease, opacity .3s, margin .35s; }
+    .zia-office.is-active .zia-office__links { max-height: 80px; opacity: 1; margin-top: 10px; }
+    .zia-office__links a { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 700; color: var(--zia-ink); text-decoration: none; word-break: break-all; }
+    .zia-office__links a:hover { color: var(--zia-teal); }
+    .zia-office__links i { color: var(--zia-teal); font-size: 15px; }
+
+    @media (max-width: 991px) {
+      .zia-triage { padding: 28px 22px; }
+      .zia-office.is-active { transform: none; }
+    }
+    @media (max-width: 575px) {
+      .zia-picks { grid-template-columns: repeat(2, 1fr); }
+      .zia-triage__steps li { font-size: 0; gap: 0; }
+      .zia-triage__steps li span { font-size: 11px; }
+    }
   </style>
 </head>
 <body>
@@ -119,178 +223,231 @@
         <div class="space-for-header"></div>
 
         <!-- =============================================
-             SECCIÓN 1 — Page Header
+             SECCIÓN 1 — Cabecera + formulario de diagnóstico
              ============================================= -->
-        <section class="tj-page-header section-gap-x" data-bg-image="assets/images/bg/pheader-bg.webp">
-          <div class="container"><div class="row"><div class="col-lg-12">
-            <div class="tj-page-header-content text-center">
-              <h1 class="tj-page-title">Contacto</h1>
-              <div class="tj-page-link">
-                <span><i class="tji-home"></i></span>
-                <span><a href="home.html">Inicio</a></span>
-                <span><i class="tji-arrow-right"></i></span>
-                <span>Contacto</span>
+        <section class="zia-page-hero zia-contact-hero">
+          <div class="container">
+            <div class="row align-items-center g-5">
+
+              <!-- Columna izquierda: mensaje y contacto directo -->
+              <div class="col-lg-5">
+                <span class="zia-page-hero__eyebrow"><i class="tji-phone-2"></i> Contacto</span>
+                <h1 class="zia-page-hero__title title-anim">Hablemos antes de que llegue la <span>inspección.</span></h1>
+                <p class="zia-page-hero__lead">Cuéntenos qué le preocupa y le asignamos al especialista de su región. El diagnóstico inicial no tiene costo.</p>
+
+                <ul class="zia-direct" data-zia-hero-item>
+                  <li>
+                    <a href="tel:6641594369" class="zia-direct__item">
+                      <span class="zia-direct__ico"><i class="tji-phone-2"></i></span>
+                      <span><small>Línea principal</small>664 159 4369</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://wa.me/526641594369" class="zia-direct__item">
+                      <span class="zia-direct__ico"><i class="fab fa-whatsapp"></i></span>
+                      <span><small>WhatsApp</small>Escríbanos ahora</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="mailto:contacto@ziaintegracion.com" class="zia-direct__item">
+                      <span class="zia-direct__ico"><i class="tji-envelop-2"></i></span>
+                      <span><small>Correo</small>contacto@ziaintegracion.com</span>
+                    </a>
+                  </li>
+                </ul>
+
+                <div class="zia-page-hero__crumbs">
+                  <a href="home.html">Inicio</a><i class="tji-arrow-right"></i><span>Contacto</span>
+                </div>
               </div>
+
+              <!-- Columna derecha: formulario en 3 pasos -->
+              <div class="col-lg-7">
+                <div class="zia-triage" id="zia-triage" data-zia-hero-item>
+                  <div class="zia-triage__head">
+                    <span class="zia-triage__kicker">Diagnóstico inicial sin costo</span>
+                    <h2 class="zia-triage__title">Cuéntenos su situación</h2>
+                    <ol class="zia-triage__steps" aria-label="Progreso">
+                      <li class="is-current"><span>1</span>Tema</li>
+                      <li><span>2</span>Urgencia</li>
+                      <li><span>3</span>Sus datos</li>
+                    </ol>
+                  </div>
+
+                  <!-- Sin backend en el wireframe: el envío se simula en el cliente. -->
+                  <form id="zia-triage-form" novalidate>
+
+                    <!-- Paso 1: tema -->
+                    <fieldset class="zia-triage__panel is-active" data-step="1">
+                      <legend>¿Qué le preocupa? <small>Puede elegir varios</small></legend>
+                      <div class="zia-picks">
+                        <label class="zia-pick zia-pick--asea"><input type="checkbox" name="temas" value="ASEA"><span><img src="assets/images/zia/icons/asea.svg" alt=""><b>ASEA</b><small>Seguridad y ambiente</small></span></label>
+                        <label class="zia-pick zia-pick--cre"><input type="checkbox" name="temas" value="CRE"><span><img src="assets/images/zia/icons/cre.svg" alt=""><b>CRE</b><small>Permisos y reportes</small></span></label>
+                        <label class="zia-pick zia-pick--sat"><input type="checkbox" name="temas" value="SAT"><span><img src="assets/images/zia/icons/sat.svg" alt=""><b>SAT</b><small>Control volumétrico</small></span></label>
+                        <label class="zia-pick zia-pick--stps"><input type="checkbox" name="temas" value="STPS"><span><img src="assets/images/zia/icons/stps.svg" alt=""><b>STPS</b><small>Seguridad laboral</small></span></label>
+                        <label class="zia-pick zia-pick--pc"><input type="checkbox" name="temas" value="Protección Civil"><span><img src="assets/images/zia/icons/proteccion-civil.svg" alt=""><b>Protección Civil</b><small>Emergencias</small></span></label>
+                        <label class="zia-pick"><input type="checkbox" name="temas" value="No estoy seguro"><span><i class="zia-pick__q">?</i><b>No estoy seguro</b><small>Quiero una auditoría</small></span></label>
+                      </div>
+                      <p class="zia-triage__error" data-error="temas" hidden>Elija al menos una opción para continuar.</p>
+                    </fieldset>
+
+                    <!-- Paso 2: urgencia -->
+                    <fieldset class="zia-triage__panel" data-step="2" hidden>
+                      <legend>¿Qué tan urgente es?</legend>
+                      <div class="zia-urgency">
+                        <label class="zia-urg"><input type="radio" name="urgencia" value="prevenir"><span><b>Quiero prevenir</b><small>Revisar mi cumplimiento antes de una visita.</small></span></label>
+                        <label class="zia-urg"><input type="radio" name="urgencia" value="requerimiento"><span><b>Tengo un requerimiento</b><small>Recibí un oficio o tengo una visita programada.</small></span></label>
+                        <label class="zia-urg zia-urg--alert"><input type="radio" name="urgencia" value="clausura"><span><b>Clausura o sanción en curso</b><small>Necesito defensa o regularización inmediata.</small></span></label>
+                      </div>
+                      <div class="zia-triage__urgent" hidden>
+                        <i class="tji-phone-2"></i>
+                        <p><b>Llámenos ahora: <a href="tel:6641594369">664 159 4369</a>.</b> En una clausura cada hora cuenta. También puede terminar el formulario y lo priorizamos.</p>
+                      </div>
+                      <p class="zia-triage__error" data-error="urgencia" hidden>Elija una opción para continuar.</p>
+                    </fieldset>
+
+                    <!-- Paso 3: datos -->
+                    <fieldset class="zia-triage__panel" data-step="3" hidden>
+                      <legend>¿Cómo lo contactamos?</legend>
+                      <div class="row g-3">
+                        <div class="col-sm-6 zia-field"><label for="t-nombre">Nombre *</label><input id="t-nombre" name="nombre" type="text" autocomplete="name" placeholder="Ej. Juan Ramírez" required><small class="zia-field__err">Escriba su nombre.</small></div>
+                        <div class="col-sm-6 zia-field"><label for="t-empresa">Gasolinera o empresa *</label><input id="t-empresa" name="empresa" type="text" autocomplete="organization" placeholder="Ej. Servicio Las Torres" required><small class="zia-field__err">Escriba el nombre de la estación o empresa.</small></div>
+                        <div class="col-sm-6 zia-field"><label for="t-tel">Teléfono *</label><input id="t-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="10 dígitos" required><small class="zia-field__err">Escriba un teléfono de 10 dígitos.</small></div>
+                        <div class="col-sm-6 zia-field"><label for="t-email">Correo *</label><input id="t-email" name="email" type="email" autocomplete="email" placeholder="nombre@empresa.com" required><small class="zia-field__err">Escriba un correo válido.</small></div>
+                        <div class="col-12 zia-field">
+                          <label for="t-estado">Estado donde opera *</label>
+                          <select id="t-estado" name="estado" required>
+                            <option value="">Seleccione un estado</option>
+                            <option>Aguascalientes</option><option>Baja California</option><option>Baja California Sur</option><option>Campeche</option><option>Chiapas</option><option>Chihuahua</option><option>Ciudad de México</option><option>Coahuila</option><option>Colima</option><option>Durango</option><option>Estado de México</option><option>Guanajuato</option><option>Guerrero</option><option>Hidalgo</option><option>Jalisco</option><option>Michoacán</option><option>Morelos</option><option>Nayarit</option><option>Nuevo León</option><option>Oaxaca</option><option>Puebla</option><option>Querétaro</option><option>Quintana Roo</option><option>San Luis Potosí</option><option>Sinaloa</option><option>Sonora</option><option>Tabasco</option><option>Tamaulipas</option><option>Tlaxcala</option><option>Veracruz</option><option>Yucatán</option><option>Zacatecas</option>
+                          </select>
+                          <small class="zia-field__err">Seleccione el estado.</small>
+                        </div>
+                        <div class="col-12">
+                          <div class="zia-assign" hidden>
+                            <span class="zia-monogram" style="--size:44px"></span>
+                            <p><small>Le atenderá la oficina</small><b class="zia-assign__office"></b><span class="zia-assign__name"></span></p>
+                          </div>
+                        </div>
+                        <div class="col-12 zia-field"><label for="t-msg">Detalles (opcional)</label><textarea id="t-msg" name="mensaje" rows="3" placeholder="Número de estación, oficio recibido, fechas…"></textarea></div>
+                      </div>
+                    </fieldset>
+
+                    <div class="zia-triage__nav">
+                      <button type="button" class="zia-triage__back" hidden><i class="tji-arrow-left"></i> Atrás</button>
+                      <button type="submit" class="tj-primary-btn zia-triage__next">
+                        <span class="btn-text"><span>Continuar</span></span>
+                        <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
+                      </button>
+                    </div>
+                  </form>
+
+                  <!-- Estado de éxito -->
+                  <div class="zia-triage__done" hidden>
+                    <svg class="zia-check" viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="36"/><path d="M24 41l11 11 21-23"/></svg>
+                    <h3>Recibimos su solicitud</h3>
+                    <p class="zia-triage__summary"></p>
+                    <button type="button" class="zia-triage__back zia-triage__restart">Enviar otra consulta</button>
+                  </div>
+                </div>
+              </div>
+
             </div>
-          </div></div></div>
-          <div class="page-header-overlay" data-bg-image="assets/images/shape/pheader-overlay.webp"></div>
+          </div>
         </section>
 
         <!-- =============================================
-             SECCIÓN 2 — Tarjetas de oficinas nacionales
+             SECCIÓN 2 — Oficinas: mapa + responsables
              ============================================= -->
-        <section class="tj-contact-area section-gap">
+        <section class="zia-offices section-gap" id="oficinas">
           <div class="container">
             <div class="row">
               <div class="col-12">
-                <div class="sec-heading text-center wow fadeInUp" data-wow-delay=".1s">
-                  <div class="sub-title-box">
-                    <span class="sub-title">Oficinas Nacionales</span>
-                  </div>
-                  <h2 class="sec-title title-anim">Presente en <span>todo México</span></h2>
-                  <p class="sec-text">Contamos con equipos especializados en cuatro estados de la república. Nuestra quinta oficina en Culiacán, Sinaloa, estará operando próximamente.</p>
+                <div class="sec-heading text-center">
+                  <div class="sub-title-box"><span class="sub-title">Oficinas nacionales</span></div>
+                  <h2 class="sec-title title-anim">Un especialista <span>cerca de su estación.</span></h2>
+                  <p class="sec-text">Equipos en cuatro regiones del país. Nuestra oficina en Culiacán, Sinaloa, abrirá próximamente.</p>
                 </div>
               </div>
             </div>
-            <div class="row row-gap-4 justify-content-center">
-
-              <!-- Tijuana -->
-              <div class="col-xl-3 col-lg-6 col-md-6">
-                <div class="contact-item style-2 wow fadeInUp" data-wow-delay=".2s">
-                  <div class="contact-icon"><i class="tji-location-3"></i></div>
-                  <h3 class="contact-title">Tijuana / Baja California</h3>
-                  <ul class="contact-list">
-                    <li>Mtra. Alma Estrella Domínguez</li>
-                    <li><a href="tel:6641594369">664 159 4369</a></li>
-                    <li><a href="mailto:estrella.d@ziaintegracion.com">estrella.d@ziaintegracion.com</a></li>
-                  </ul>
+            <div class="row align-items-center g-5">
+              <div class="col-lg-7">
+                <div class="zia-map" data-zia-map>
+                  <svg viewBox="-150 -40 1180 742" role="img" aria-label="Mapa de oficinas ZIA en México"><path class="zia-map__dots" d="M33 22h0M44 22h0M55 22h0M66 22h0M77 22h0M88 22h0M28 33h0M38 33h0M50 33h0M60 33h0M72 33h0M82 33h0M94 33h0M104 33h0M33 44h0M44 44h0M55 44h0M66 44h0M77 44h0M88 44h0M99 44h0M110 44h0M121 44h0M132 44h0M143 44h0M38 55h0M50 55h0M60 55h0M72 55h0M82 55h0M126 55h0M138 55h0M148 55h0M160 55h0M170 55h0M302 55h0M314 55h0M324 55h0M336 55h0M346 55h0M358 55h0M44 66h0M55 66h0M66 66h0M77 66h0M88 66h0M143 66h0M154 66h0M165 66h0M176 66h0M187 66h0M198 66h0M209 66h0M220 66h0M231 66h0M242 66h0M253 66h0M264 66h0M275 66h0M286 66h0M297 66h0M308 66h0M319 66h0M330 66h0M341 66h0M352 66h0M363 66h0M374 66h0M50 77h0M60 77h0M72 77h0M82 77h0M94 77h0M160 77h0M170 77h0M182 77h0M192 77h0M204 77h0M214 77h0M226 77h0M236 77h0M248 77h0M258 77h0M270 77h0M280 77h0M292 77h0M302 77h0M314 77h0M324 77h0M336 77h0M346 77h0M358 77h0M368 77h0M380 77h0M55 88h0M66 88h0M77 88h0M88 88h0M99 88h0M165 88h0M176 88h0M187 88h0M198 88h0M209 88h0M220 88h0M231 88h0M242 88h0M253 88h0M264 88h0M275 88h0M286 88h0M297 88h0M308 88h0M319 88h0M330 88h0M341 88h0M352 88h0M363 88h0M374 88h0M385 88h0M60 99h0M72 99h0M82 99h0M94 99h0M170 99h0M182 99h0M192 99h0M204 99h0M214 99h0M226 99h0M236 99h0M248 99h0M258 99h0M270 99h0M280 99h0M292 99h0M302 99h0M314 99h0M324 99h0M336 99h0M346 99h0M358 99h0M368 99h0M380 99h0M390 99h0M77 110h0M88 110h0M99 110h0M176 110h0M187 110h0M198 110h0M209 110h0M220 110h0M231 110h0M242 110h0M253 110h0M264 110h0M275 110h0M286 110h0M297 110h0M308 110h0M319 110h0M330 110h0M341 110h0M352 110h0M363 110h0M374 110h0M385 110h0M396 110h0M407 110h0M82 121h0M94 121h0M104 121h0M182 121h0M192 121h0M204 121h0M214 121h0M226 121h0M236 121h0M248 121h0M258 121h0M270 121h0M280 121h0M292 121h0M302 121h0M314 121h0M324 121h0M336 121h0M346 121h0M358 121h0M368 121h0M380 121h0M390 121h0M402 121h0M412 121h0M490 121h0M500 121h0M512 121h0M88 132h0M99 132h0M110 132h0M121 132h0M187 132h0M198 132h0M209 132h0M220 132h0M231 132h0M242 132h0M253 132h0M264 132h0M275 132h0M286 132h0M297 132h0M308 132h0M319 132h0M330 132h0M341 132h0M352 132h0M363 132h0M374 132h0M385 132h0M396 132h0M407 132h0M418 132h0M429 132h0M484 132h0M495 132h0M506 132h0M517 132h0M528 132h0M104 143h0M116 143h0M126 143h0M192 143h0M204 143h0M214 143h0M226 143h0M236 143h0M248 143h0M258 143h0M270 143h0M280 143h0M292 143h0M302 143h0M314 143h0M324 143h0M336 143h0M346 143h0M358 143h0M368 143h0M380 143h0M390 143h0M402 143h0M412 143h0M424 143h0M434 143h0M446 143h0M478 143h0M490 143h0M500 143h0M512 143h0M522 143h0M534 143h0M110 154h0M121 154h0M132 154h0M198 154h0M209 154h0M220 154h0M231 154h0M242 154h0M253 154h0M264 154h0M275 154h0M286 154h0M297 154h0M308 154h0M319 154h0M330 154h0M341 154h0M352 154h0M363 154h0M374 154h0M385 154h0M396 154h0M407 154h0M418 154h0M429 154h0M440 154h0M451 154h0M462 154h0M473 154h0M484 154h0M495 154h0M506 154h0M517 154h0M528 154h0M539 154h0M116 165h0M126 165h0M138 165h0M204 165h0M214 165h0M226 165h0M236 165h0M248 165h0M258 165h0M270 165h0M280 165h0M292 165h0M302 165h0M314 165h0M324 165h0M336 165h0M346 165h0M358 165h0M368 165h0M380 165h0M390 165h0M402 165h0M412 165h0M424 165h0M434 165h0M446 165h0M456 165h0M468 165h0M478 165h0M490 165h0M500 165h0M512 165h0M522 165h0M534 165h0M544 165h0M110 176h0M121 176h0M132 176h0M143 176h0M209 176h0M220 176h0M231 176h0M242 176h0M253 176h0M264 176h0M275 176h0M286 176h0M297 176h0M308 176h0M319 176h0M330 176h0M341 176h0M352 176h0M363 176h0M374 176h0M385 176h0M396 176h0M407 176h0M418 176h0M429 176h0M440 176h0M451 176h0M462 176h0M473 176h0M484 176h0M495 176h0M506 176h0M517 176h0M528 176h0M539 176h0M550 176h0M116 187h0M126 187h0M138 187h0M148 187h0M226 187h0M236 187h0M248 187h0M258 187h0M270 187h0M280 187h0M292 187h0M302 187h0M314 187h0M324 187h0M336 187h0M346 187h0M358 187h0M368 187h0M380 187h0M390 187h0M402 187h0M412 187h0M424 187h0M434 187h0M446 187h0M456 187h0M468 187h0M478 187h0M490 187h0M500 187h0M512 187h0M522 187h0M534 187h0M544 187h0M556 187h0M566 187h0M121 198h0M132 198h0M143 198h0M154 198h0M231 198h0M242 198h0M253 198h0M264 198h0M275 198h0M286 198h0M297 198h0M308 198h0M319 198h0M330 198h0M341 198h0M352 198h0M363 198h0M374 198h0M385 198h0M396 198h0M407 198h0M418 198h0M429 198h0M440 198h0M451 198h0M462 198h0M473 198h0M484 198h0M495 198h0M506 198h0M517 198h0M528 198h0M539 198h0M550 198h0M561 198h0M572 198h0M126 209h0M138 209h0M148 209h0M160 209h0M248 209h0M258 209h0M270 209h0M280 209h0M292 209h0M302 209h0M314 209h0M324 209h0M336 209h0M346 209h0M358 209h0M368 209h0M380 209h0M390 209h0M402 209h0M412 209h0M424 209h0M434 209h0M446 209h0M456 209h0M468 209h0M478 209h0M490 209h0M500 209h0M512 209h0M522 209h0M534 209h0M544 209h0M556 209h0M566 209h0M578 209h0M143 220h0M154 220h0M165 220h0M253 220h0M264 220h0M275 220h0M286 220h0M297 220h0M308 220h0M319 220h0M330 220h0M341 220h0M352 220h0M363 220h0M374 220h0M385 220h0M396 220h0M407 220h0M418 220h0M429 220h0M440 220h0M451 220h0M462 220h0M473 220h0M484 220h0M495 220h0M506 220h0M517 220h0M528 220h0M539 220h0M550 220h0M561 220h0M572 220h0M583 220h0M148 231h0M160 231h0M170 231h0M182 231h0M270 231h0M280 231h0M292 231h0M302 231h0M314 231h0M324 231h0M336 231h0M346 231h0M358 231h0M368 231h0M380 231h0M390 231h0M402 231h0M412 231h0M424 231h0M434 231h0M446 231h0M456 231h0M468 231h0M478 231h0M490 231h0M500 231h0M512 231h0M522 231h0M534 231h0M544 231h0M556 231h0M566 231h0M578 231h0M588 231h0M165 242h0M176 242h0M187 242h0M275 242h0M286 242h0M297 242h0M308 242h0M319 242h0M330 242h0M341 242h0M352 242h0M363 242h0M374 242h0M385 242h0M396 242h0M407 242h0M418 242h0M429 242h0M440 242h0M451 242h0M462 242h0M473 242h0M484 242h0M495 242h0M506 242h0M517 242h0M528 242h0M539 242h0M550 242h0M561 242h0M572 242h0M583 242h0M594 242h0M605 242h0M182 253h0M192 253h0M280 253h0M292 253h0M302 253h0M314 253h0M324 253h0M336 253h0M346 253h0M358 253h0M368 253h0M380 253h0M390 253h0M402 253h0M412 253h0M424 253h0M434 253h0M446 253h0M456 253h0M468 253h0M478 253h0M490 253h0M500 253h0M512 253h0M522 253h0M534 253h0M544 253h0M556 253h0M566 253h0M578 253h0M588 253h0M600 253h0M610 253h0M622 253h0M632 253h0M176 264h0M187 264h0M198 264h0M286 264h0M297 264h0M308 264h0M319 264h0M330 264h0M341 264h0M352 264h0M363 264h0M374 264h0M385 264h0M396 264h0M407 264h0M418 264h0M429 264h0M440 264h0M451 264h0M462 264h0M473 264h0M484 264h0M495 264h0M506 264h0M517 264h0M528 264h0M539 264h0M550 264h0M561 264h0M572 264h0M583 264h0M594 264h0M605 264h0M616 264h0M627 264h0M638 264h0M182 275h0M192 275h0M204 275h0M302 275h0M314 275h0M324 275h0M336 275h0M346 275h0M358 275h0M368 275h0M380 275h0M390 275h0M402 275h0M412 275h0M424 275h0M434 275h0M446 275h0M456 275h0M468 275h0M478 275h0M490 275h0M500 275h0M512 275h0M522 275h0M534 275h0M544 275h0M556 275h0M566 275h0M578 275h0M588 275h0M600 275h0M610 275h0M622 275h0M632 275h0M644 275h0M176 286h0M187 286h0M198 286h0M209 286h0M319 286h0M330 286h0M341 286h0M352 286h0M363 286h0M374 286h0M385 286h0M396 286h0M407 286h0M418 286h0M429 286h0M440 286h0M451 286h0M462 286h0M473 286h0M484 286h0M495 286h0M506 286h0M517 286h0M528 286h0M539 286h0M550 286h0M561 286h0M572 286h0M583 286h0M594 286h0M605 286h0M616 286h0M627 286h0M638 286h0M649 286h0M192 297h0M204 297h0M214 297h0M324 297h0M336 297h0M346 297h0M358 297h0M368 297h0M380 297h0M390 297h0M402 297h0M412 297h0M424 297h0M434 297h0M446 297h0M456 297h0M468 297h0M478 297h0M490 297h0M500 297h0M512 297h0M522 297h0M534 297h0M544 297h0M556 297h0M566 297h0M578 297h0M588 297h0M600 297h0M610 297h0M622 297h0M632 297h0M644 297h0M198 308h0M209 308h0M220 308h0M231 308h0M341 308h0M352 308h0M363 308h0M374 308h0M385 308h0M396 308h0M407 308h0M418 308h0M429 308h0M440 308h0M451 308h0M462 308h0M473 308h0M484 308h0M495 308h0M506 308h0M517 308h0M528 308h0M539 308h0M550 308h0M561 308h0M572 308h0M583 308h0M594 308h0M605 308h0M616 308h0M627 308h0M638 308h0M214 319h0M226 319h0M236 319h0M346 319h0M358 319h0M368 319h0M380 319h0M390 319h0M402 319h0M412 319h0M424 319h0M434 319h0M446 319h0M456 319h0M468 319h0M478 319h0M490 319h0M500 319h0M512 319h0M522 319h0M534 319h0M544 319h0M556 319h0M566 319h0M578 319h0M588 319h0M600 319h0M610 319h0M622 319h0M632 319h0M231 330h0M242 330h0M352 330h0M363 330h0M374 330h0M385 330h0M396 330h0M407 330h0M418 330h0M429 330h0M440 330h0M451 330h0M462 330h0M473 330h0M484 330h0M495 330h0M506 330h0M517 330h0M528 330h0M539 330h0M550 330h0M561 330h0M572 330h0M583 330h0M594 330h0M605 330h0M616 330h0M627 330h0M236 341h0M358 341h0M368 341h0M380 341h0M390 341h0M402 341h0M412 341h0M424 341h0M434 341h0M446 341h0M456 341h0M468 341h0M478 341h0M490 341h0M500 341h0M512 341h0M522 341h0M534 341h0M544 341h0M556 341h0M566 341h0M578 341h0M588 341h0M600 341h0M610 341h0M622 341h0M632 341h0M242 352h0M363 352h0M374 352h0M385 352h0M396 352h0M407 352h0M418 352h0M429 352h0M440 352h0M451 352h0M462 352h0M473 352h0M484 352h0M495 352h0M506 352h0M517 352h0M528 352h0M539 352h0M550 352h0M561 352h0M572 352h0M583 352h0M594 352h0M605 352h0M616 352h0M627 352h0M380 363h0M390 363h0M402 363h0M412 363h0M424 363h0M434 363h0M446 363h0M456 363h0M468 363h0M478 363h0M490 363h0M500 363h0M512 363h0M522 363h0M534 363h0M544 363h0M556 363h0M566 363h0M578 363h0M588 363h0M600 363h0M610 363h0M622 363h0M632 363h0M385 374h0M396 374h0M407 374h0M418 374h0M429 374h0M440 374h0M451 374h0M462 374h0M473 374h0M484 374h0M495 374h0M506 374h0M517 374h0M528 374h0M539 374h0M550 374h0M561 374h0M572 374h0M583 374h0M594 374h0M605 374h0M616 374h0M627 374h0M390 385h0M402 385h0M412 385h0M424 385h0M434 385h0M446 385h0M456 385h0M468 385h0M478 385h0M490 385h0M500 385h0M512 385h0M522 385h0M534 385h0M544 385h0M556 385h0M566 385h0M578 385h0M588 385h0M600 385h0M610 385h0M622 385h0M632 385h0M396 396h0M407 396h0M418 396h0M429 396h0M440 396h0M451 396h0M462 396h0M473 396h0M484 396h0M495 396h0M506 396h0M517 396h0M528 396h0M539 396h0M550 396h0M561 396h0M572 396h0M583 396h0M594 396h0M605 396h0M616 396h0M627 396h0M638 396h0M402 407h0M412 407h0M424 407h0M434 407h0M446 407h0M456 407h0M468 407h0M478 407h0M490 407h0M500 407h0M512 407h0M522 407h0M534 407h0M544 407h0M556 407h0M566 407h0M578 407h0M588 407h0M600 407h0M610 407h0M622 407h0M632 407h0M644 407h0M940 407h0M952 407h0M962 407h0M974 407h0M396 418h0M407 418h0M418 418h0M429 418h0M440 418h0M451 418h0M462 418h0M473 418h0M484 418h0M495 418h0M506 418h0M517 418h0M528 418h0M539 418h0M550 418h0M561 418h0M572 418h0M583 418h0M594 418h0M605 418h0M616 418h0M627 418h0M638 418h0M891 418h0M902 418h0M913 418h0M924 418h0M935 418h0M946 418h0M957 418h0M968 418h0M979 418h0M402 429h0M412 429h0M424 429h0M434 429h0M446 429h0M456 429h0M468 429h0M478 429h0M490 429h0M500 429h0M512 429h0M522 429h0M534 429h0M544 429h0M556 429h0M566 429h0M578 429h0M588 429h0M600 429h0M610 429h0M622 429h0M632 429h0M644 429h0M874 429h0M886 429h0M896 429h0M908 429h0M918 429h0M930 429h0M940 429h0M952 429h0M962 429h0M974 429h0M396 440h0M407 440h0M418 440h0M429 440h0M440 440h0M451 440h0M462 440h0M473 440h0M484 440h0M495 440h0M506 440h0M517 440h0M528 440h0M539 440h0M550 440h0M561 440h0M572 440h0M583 440h0M594 440h0M605 440h0M616 440h0M627 440h0M638 440h0M649 440h0M660 440h0M880 440h0M891 440h0M902 440h0M913 440h0M924 440h0M935 440h0M946 440h0M957 440h0M968 440h0M402 451h0M412 451h0M424 451h0M434 451h0M446 451h0M456 451h0M468 451h0M478 451h0M490 451h0M500 451h0M512 451h0M522 451h0M534 451h0M544 451h0M556 451h0M566 451h0M578 451h0M588 451h0M600 451h0M610 451h0M622 451h0M632 451h0M644 451h0M654 451h0M666 451h0M874 451h0M886 451h0M896 451h0M908 451h0M918 451h0M930 451h0M940 451h0M952 451h0M962 451h0M407 462h0M418 462h0M429 462h0M440 462h0M451 462h0M462 462h0M473 462h0M484 462h0M495 462h0M506 462h0M517 462h0M528 462h0M539 462h0M550 462h0M561 462h0M572 462h0M583 462h0M594 462h0M605 462h0M616 462h0M627 462h0M638 462h0M649 462h0M660 462h0M671 462h0M869 462h0M880 462h0M891 462h0M902 462h0M913 462h0M924 462h0M935 462h0M946 462h0M957 462h0M412 473h0M424 473h0M434 473h0M446 473h0M456 473h0M468 473h0M478 473h0M490 473h0M500 473h0M512 473h0M522 473h0M534 473h0M544 473h0M556 473h0M566 473h0M578 473h0M588 473h0M600 473h0M610 473h0M622 473h0M632 473h0M644 473h0M654 473h0M666 473h0M676 473h0M864 473h0M874 473h0M886 473h0M896 473h0M908 473h0M918 473h0M930 473h0M940 473h0M952 473h0M962 473h0M429 484h0M440 484h0M451 484h0M462 484h0M473 484h0M484 484h0M495 484h0M506 484h0M517 484h0M528 484h0M539 484h0M550 484h0M561 484h0M572 484h0M583 484h0M594 484h0M605 484h0M616 484h0M627 484h0M638 484h0M649 484h0M660 484h0M671 484h0M682 484h0M869 484h0M880 484h0M891 484h0M902 484h0M913 484h0M924 484h0M935 484h0M946 484h0M957 484h0M434 495h0M446 495h0M456 495h0M468 495h0M478 495h0M490 495h0M500 495h0M512 495h0M522 495h0M534 495h0M544 495h0M556 495h0M566 495h0M578 495h0M588 495h0M600 495h0M610 495h0M622 495h0M632 495h0M644 495h0M654 495h0M666 495h0M676 495h0M688 495h0M698 495h0M852 495h0M864 495h0M874 495h0M886 495h0M896 495h0M908 495h0M918 495h0M930 495h0M940 495h0M952 495h0M451 506h0M462 506h0M473 506h0M484 506h0M495 506h0M506 506h0M517 506h0M528 506h0M539 506h0M550 506h0M561 506h0M572 506h0M583 506h0M594 506h0M605 506h0M616 506h0M627 506h0M638 506h0M649 506h0M660 506h0M671 506h0M682 506h0M693 506h0M704 506h0M715 506h0M847 506h0M858 506h0M869 506h0M880 506h0M891 506h0M902 506h0M913 506h0M924 506h0M935 506h0M946 506h0M456 517h0M468 517h0M478 517h0M490 517h0M500 517h0M512 517h0M522 517h0M534 517h0M544 517h0M556 517h0M566 517h0M578 517h0M588 517h0M600 517h0M610 517h0M622 517h0M632 517h0M644 517h0M654 517h0M666 517h0M676 517h0M688 517h0M698 517h0M710 517h0M720 517h0M732 517h0M776 517h0M786 517h0M798 517h0M808 517h0M820 517h0M830 517h0M842 517h0M852 517h0M864 517h0M874 517h0M886 517h0M896 517h0M908 517h0M918 517h0M930 517h0M484 528h0M495 528h0M506 528h0M517 528h0M528 528h0M539 528h0M550 528h0M561 528h0M572 528h0M583 528h0M594 528h0M605 528h0M616 528h0M627 528h0M638 528h0M649 528h0M660 528h0M671 528h0M682 528h0M693 528h0M704 528h0M715 528h0M726 528h0M737 528h0M748 528h0M759 528h0M770 528h0M781 528h0M792 528h0M803 528h0M814 528h0M825 528h0M836 528h0M847 528h0M858 528h0M869 528h0M880 528h0M891 528h0M902 528h0M913 528h0M512 539h0M522 539h0M534 539h0M544 539h0M556 539h0M566 539h0M578 539h0M588 539h0M600 539h0M610 539h0M622 539h0M632 539h0M644 539h0M654 539h0M666 539h0M676 539h0M688 539h0M698 539h0M710 539h0M720 539h0M732 539h0M742 539h0M754 539h0M764 539h0M776 539h0M786 539h0M798 539h0M808 539h0M820 539h0M830 539h0M842 539h0M852 539h0M528 550h0M539 550h0M550 550h0M561 550h0M572 550h0M583 550h0M594 550h0M605 550h0M616 550h0M627 550h0M638 550h0M649 550h0M660 550h0M671 550h0M682 550h0M693 550h0M704 550h0M715 550h0M726 550h0M737 550h0M748 550h0M759 550h0M770 550h0M781 550h0M792 550h0M803 550h0M814 550h0M825 550h0M836 550h0M847 550h0M556 561h0M566 561h0M578 561h0M588 561h0M600 561h0M610 561h0M622 561h0M632 561h0M644 561h0M654 561h0M666 561h0M676 561h0M688 561h0M698 561h0M710 561h0M720 561h0M732 561h0M742 561h0M754 561h0M764 561h0M776 561h0M786 561h0M798 561h0M808 561h0M820 561h0M830 561h0M842 561h0M583 572h0M594 572h0M605 572h0M616 572h0M627 572h0M638 572h0M649 572h0M660 572h0M671 572h0M682 572h0M693 572h0M704 572h0M715 572h0M726 572h0M737 572h0M748 572h0M759 572h0M770 572h0M781 572h0M792 572h0M803 572h0M814 572h0M825 572h0M836 572h0M847 572h0M622 583h0M632 583h0M644 583h0M654 583h0M666 583h0M676 583h0M688 583h0M698 583h0M710 583h0M720 583h0M732 583h0M742 583h0M754 583h0M764 583h0M776 583h0M786 583h0M798 583h0M808 583h0M820 583h0M830 583h0M842 583h0M852 583h0M638 594h0M649 594h0M660 594h0M671 594h0M682 594h0M693 594h0M704 594h0M715 594h0M726 594h0M737 594h0M748 594h0M759 594h0M770 594h0M781 594h0M792 594h0M803 594h0M814 594h0M825 594h0M836 594h0M847 594h0M858 594h0M869 594h0M666 605h0M676 605h0M688 605h0M764 605h0M776 605h0M786 605h0M798 605h0M808 605h0M820 605h0M781 616h0M792 616h0M803 616h0M814 616h0M798 627h0M808 627h0M803 638h0"/><g class="zia-map__pins"><g class="zia-map__pin" data-office="tijuana" transform="translate(18 24)" tabindex="0" role="button" aria-label="Oficina Tijuana"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="-22" y="8" text-anchor="end">Tijuana</text></g><g class="zia-map__pin" data-office="chihuahua" transform="translate(369 159)" tabindex="0" role="button" aria-label="Oficina Chihuahua"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="22" y="8" text-anchor="start">Chihuahua</text></g><g class="zia-map__pin zia-map__pin--soon" data-office="culiacan" transform="translate(327 292)" tabindex="0" role="button" aria-label="Oficina Culiacán (próximamente)"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="-22" y="8" text-anchor="end">Culiacán</text></g><g class="zia-map__pin" data-office="morelia" transform="translate(526 470)" tabindex="0" role="button" aria-label="Oficina Morelia"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="-22" y="8" text-anchor="end">Morelia</text></g><g class="zia-map__pin" data-office="orizaba" transform="translate(657 500)" tabindex="0" role="button" aria-label="Oficina Orizaba"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="22" y="8" text-anchor="start">Orizaba</text></g></g></svg>
                 </div>
               </div>
+              <div class="col-lg-5">
+                <div class="zia-office-list">
 
-              <!-- Morelia -->
-              <div class="col-xl-3 col-lg-6 col-md-6">
-                <div class="contact-item style-2 wow fadeInUp" data-wow-delay=".3s">
-                  <div class="contact-icon"><i class="tji-location-3"></i></div>
-                  <h3 class="contact-title">Morelia / Michoacán</h3>
-                  <ul class="contact-list">
-                    <li>Ing. Edilberto Brito</li>
-                    <li><a href="tel:4433280991">443 328 0991</a></li>
-                    <li><a href="mailto:ebrito@ziaintegracion.com">ebrito@ziaintegracion.com</a></li>
-                  </ul>
-                </div>
-              </div>
-
-              <!-- Chihuahua -->
-              <div class="col-xl-3 col-lg-6 col-md-6">
-                <div class="contact-item style-2 wow fadeInUp" data-wow-delay=".4s">
-                  <div class="contact-icon"><i class="tji-phone"></i></div>
-                  <h3 class="contact-title">Chihuahua / Norte</h3>
-                  <ul class="contact-list">
-                    <li>Ing. Alejandro Vela</li>
-                    <li><a href="tel:6144718727">614 471 8727</a></li>
-                    <li><a href="mailto:a.vela@ziaintegracion.com">a.vela@ziaintegracion.com</a></li>
-                  </ul>
-                </div>
-              </div>
-
-              <!-- Orizaba -->
-              <div class="col-xl-3 col-lg-6 col-md-6">
-                <div class="contact-item style-2 wow fadeInUp" data-wow-delay=".5s">
-                  <div class="contact-icon"><i class="tji-envelop"></i></div>
-                  <h3 class="contact-title">Orizaba / Veracruz</h3>
-                  <ul class="contact-list">
-                    <li>Ing. Francisco Santos</li>
-                    <li><a href="tel:2722158160">272 215 8160</a></li>
-                    <li><a href="mailto:fco.santos@ziaintegracion.com">fco.santos@ziaintegracion.com</a></li>
-                  </ul>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        <!-- =============================================
-             SECCIÓN 3 — Formulario + Mapa
-             ============================================= -->
-        <section class="tj-contact-section-2 section-bottom-gap">
-          <div class="container">
-            <div class="row align-items-start g-5">
-
-              <!-- Columna izquierda: formulario -->
-              <div class="col-lg-6">
-                <div class="contact-form wow fadeInUp" data-wow-delay=".2s">
-                  <h3 class="contact-form-title">Cuéntenos su situación regulatoria.</h3>
-                  <form id="contact-form">
-                    <div class="row">
-                      <div class="col-sm-6">
-                        <div class="form-input">
-                          <input type="text" name="conName" placeholder="Nombre completo *" required>
-                        </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="form-input">
-                          <input type="email" name="conEmail" placeholder="Correo electrónico *" required>
-                        </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="form-input">
-                          <input type="tel" name="conPhone" placeholder="Teléfono *" required>
-                        </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="form-input">
-                          <div class="tj-nice-select-box"><div class="tj-select">
-                            <select name="conSubject">
-                              <option value="">Seleccione un servicio</option>
-                              <option value="Auditoría de Cumplimiento">Auditoría de Cumplimiento</option>
-                              <option value="Gestoría CRE/ASEA">Gestoría CRE/ASEA</option>
-                              <option value="Servicios SAT">Servicios SAT</option>
-                              <option value="Diagnóstico Infraestructura">Diagnóstico Infraestructura</option>
-                              <option value="Equipo Tecnológico">Equipo Tecnológico</option>
-                              <option value="Defensoría Jurídica">Defensoría Jurídica</option>
-                            </select>
-                          </div></div>
-                        </div>
-                      </div>
-                      <div class="col-sm-12">
-                        <div class="form-input message-input">
-                          <textarea name="conMessage" placeholder="Describa su situación *" required></textarea>
-                        </div>
-                      </div>
-                      <div class="submit-btn">
-                        <button class="tj-primary-btn" type="submit">
-                          <span class="btn-text"><span>Enviar consulta</span></span>
-                          <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
-                        </button>
-                      </div>
+                  <article class="zia-office" id="oficina-tijuana" data-office-card="tijuana" tabindex="0">
+                    <span class="zia-monogram" style="--size:52px">AE</span>
+                    <div>
+                      <span class="zia-office__region">Noroeste · Baja California</span>
+                      <h3 class="zia-office__city">Tijuana</h3>
+                      <p class="zia-office__name">Mtra. Alma Estrella Domínguez</p>
+                      <ul class="zia-office__links">
+                        <li><a href="tel:6641594369"><i class="tji-phone-2"></i>664 159 4369</a></li>
+                        <li><a href="mailto:estrella.d@ziaintegracion.com"><i class="tji-envelop-2"></i>estrella.d@ziaintegracion.com</a></li>
+                      </ul>
                     </div>
-                  </form>
+                  </article>
+
+                  <article class="zia-office" id="oficina-chihuahua" data-office-card="chihuahua" tabindex="0">
+                    <span class="zia-monogram" style="--size:52px">AV</span>
+                    <div>
+                      <span class="zia-office__region">Norte · Chihuahua</span>
+                      <h3 class="zia-office__city">Chihuahua</h3>
+                      <p class="zia-office__name">Ing. Alejandro Vela</p>
+                      <ul class="zia-office__links">
+                        <li><a href="tel:6144718727"><i class="tji-phone-2"></i>614 471 8727</a></li>
+                        <li><a href="mailto:a.vela@ziaintegracion.com"><i class="tji-envelop-2"></i>a.vela@ziaintegracion.com</a></li>
+                      </ul>
+                    </div>
+                  </article>
+
+                  <article class="zia-office" id="oficina-morelia" data-office-card="morelia" tabindex="0">
+                    <span class="zia-monogram" style="--size:52px">EB</span>
+                    <div>
+                      <span class="zia-office__region">Centro · Michoacán</span>
+                      <h3 class="zia-office__city">Morelia</h3>
+                      <p class="zia-office__name">Ing. Edilberto Brito</p>
+                      <ul class="zia-office__links">
+                        <li><a href="tel:4433280991"><i class="tji-phone-2"></i>443 328 0991</a></li>
+                        <li><a href="mailto:ebrito@ziaintegracion.com"><i class="tji-envelop-2"></i>ebrito@ziaintegracion.com</a></li>
+                      </ul>
+                    </div>
+                  </article>
+
+                  <article class="zia-office" id="oficina-orizaba" data-office-card="orizaba" tabindex="0">
+                    <span class="zia-monogram" style="--size:52px">FS</span>
+                    <div>
+                      <span class="zia-office__region">Oriente · Veracruz</span>
+                      <h3 class="zia-office__city">Orizaba</h3>
+                      <p class="zia-office__name">Ing. Francisco Santos</p>
+                      <ul class="zia-office__links">
+                        <li><a href="tel:2722158160"><i class="tji-phone-2"></i>272 215 8160</a></li>
+                        <li><a href="mailto:fco.santos@ziaintegracion.com"><i class="tji-envelop-2"></i>fco.santos@ziaintegracion.com</a></li>
+                      </ul>
+                    </div>
+                  </article>
+
+                  <article class="zia-office zia-office--soon" id="oficina-culiacan" data-office-card="culiacan" tabindex="0">
+                    <span class="zia-monogram zia-monogram--gold" style="--size:52px">CU</span>
+                    <div>
+                      <span class="zia-office__region">Sinaloa · Próximamente</span>
+                      <h3 class="zia-office__city">Culiacán</h3>
+                      <p class="zia-office__name">Ing. Jaziel Cienfuegos · Ing. Carlos Escalante</p>
+                      <p class="zia-office__note">Mientras abre, le atiende la oficina de Chihuahua.</p>
+                    </div>
+                  </article>
+
                 </div>
               </div>
-
-              <!-- Columna derecha: mapa -->
-              <div class="col-lg-6">
-                <div class="map-area wow fadeInUp" data-wow-delay=".4s">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d107289.72826!2d-117.1610!3d32.5027!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80d9451b3e305b99%3A0xa27c7ef00a843c6!2sTijuana%2C%20B.C.!5e0!3m2!1ses!2smx"
-                    width="100%"
-                    height="450"
-                    style="border:0;"
-                    allowfullscreen=""
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"
-                    title="Oficina ZIA Integración — Tijuana, Baja California">
-                  </iframe>
-                </div>
-              </div>
-
             </div>
           </div>
         </section>
 
         <!-- =============================================
-             SECCIÓN 4 — CTA
+             SECCIÓN 3 — CTA
              ============================================= -->
         <section class="tj-cta-section">
           <div class="container"><div class="row"><div class="col-12">
@@ -305,7 +462,14 @@
                 </div>
               </div>
               <div class="cta-img">
-                <img src="assets/images/about/about-5.webp" alt="">
+                <div class="zia-cta-brand">
+                  <img class="zia-cta-brand__pat zia-cta-brand__pat--1" src="assets/images/shape/pattern-2.svg" alt="">
+                  <img class="zia-cta-brand__pat zia-cta-brand__pat--2" src="assets/images/shape/pattern-3.svg" alt="">
+                  <div class="zia-cta-brand__card">
+                    <img class="zia-cta-brand__logo" src="./assets/images/logos/zia_logo_completo.svg" alt="ZIA Integración">
+                    <span class="zia-cta-brand__tag">Su aliado estratégico en el sector gasolinero</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div></div></div>
@@ -329,11 +493,11 @@
                 <div class="footer-widget widget-nav-menu wow fadeInUp" data-wow-delay=".3s">
                   <h5 class="title">Servicios</h5>
                   <ul>
-                    <li><a href="servicios.html">Auditoría Normativa</a></li>
-                    <li><a href="servicios.html">Gestoría CRE/ASEA</a></li>
-                    <li><a href="servicios.html">Fiscal SAT</a></li>
-                    <li><a href="servicios.html">Defensoría Jurídica</a></li>
-                    <li><a href="servicios.html">Equipo Tecnológico</a></li>
+                    <li><a href="servicios.html#auditoria">Auditoría Normativa</a></li>
+                    <li><a href="servicios.html#gestoria">Gestoría CRE/ASEA</a></li>
+                    <li><a href="servicios.html#fiscal">Fiscal SAT</a></li>
+                    <li><a href="servicios.html#juridico">Defensoría Jurídica</a></li>
+                    <li><a href="servicios.html#equipo">Equipo Tecnológico</a></li>
                   </ul>
                 </div>
               </div>
@@ -351,11 +515,11 @@
                 <div class="footer-widget widget-nav-menu wow fadeInUp" data-wow-delay=".6s">
                   <h5 class="title">Oficinas</h5>
                   <ul>
-                    <li><a href="contacto.html">Tijuana</a></li>
-                    <li><a href="contacto.html">Morelia</a></li>
-                    <li><a href="contacto.html">Chihuahua</a></li>
-                    <li><a href="contacto.html">Orizaba</a></li>
-                    <li><a href="contacto.html">Culiacán</a></li>
+                    <li><a href="contacto.html#oficina-tijuana">Tijuana</a></li>
+                    <li><a href="contacto.html#oficina-morelia">Morelia</a></li>
+                    <li><a href="contacto.html#oficina-chihuahua">Chihuahua</a></li>
+                    <li><a href="contacto.html#oficina-orizaba">Orizaba</a></li>
+                    <li><a href="contacto.html#oficina-culiacan">Culiacán</a></li>
                   </ul>
                 </div>
               </div>
@@ -396,5 +560,166 @@
   <script src="assets/js/wow.min.js"></script>
   <script src="assets/js/meanmenu.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/zia.js"></script>
+  <!-- Formulario de diagnóstico en 3 pasos (sin backend: el envío se simula) -->
+  <script>
+  (function () {
+    var root = document.getElementById('zia-triage');
+    if (!root) return;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var form    = document.getElementById('zia-triage-form');
+    var panels  = root.querySelectorAll('.zia-triage__panel');
+    var stepsUi = root.querySelectorAll('.zia-triage__steps li');
+    var back    = root.querySelector('.zia-triage__nav .zia-triage__back');
+    var nextTxt = root.querySelector('.zia-triage__next .btn-text span');
+    var urgent  = root.querySelector('.zia-triage__urgent');
+    var assign  = root.querySelector('.zia-assign');
+    var done    = root.querySelector('.zia-triage__done');
+    var step = 1;
+
+    // Oficina que atiende cada estado. Propuesta de cobertura: validar con el cliente.
+    var OFICINAS = {
+      tijuana:   { name: 'Tijuana',   who: 'Mtra. Alma Estrella Domínguez', ini: 'AE' },
+      chihuahua: { name: 'Chihuahua', who: 'Ing. Alejandro Vela',           ini: 'AV' },
+      morelia:   { name: 'Morelia',   who: 'Ing. Edilberto Brito',          ini: 'EB' },
+      orizaba:   { name: 'Orizaba',   who: 'Ing. Francisco Santos',         ini: 'FS' }
+    };
+    var REGION = {
+      'Baja California': 'tijuana', 'Baja California Sur': 'tijuana', 'Sonora': 'tijuana',
+      'Chihuahua': 'chihuahua', 'Coahuila': 'chihuahua', 'Durango': 'chihuahua', 'Nuevo León': 'chihuahua',
+      'Tamaulipas': 'chihuahua', 'Sinaloa': 'chihuahua',
+      'Veracruz': 'orizaba', 'Puebla': 'orizaba', 'Tlaxcala': 'orizaba', 'Oaxaca': 'orizaba', 'Tabasco': 'orizaba',
+      'Chiapas': 'orizaba', 'Campeche': 'orizaba', 'Yucatán': 'orizaba', 'Quintana Roo': 'orizaba'
+      // El resto del país: Morelia (Centro)
+    };
+    function officeFor(estado) { return estado ? OFICINAS[REGION[estado] || 'morelia'] : null; }
+
+    function checked(name) {
+      return Array.prototype.map.call(form.querySelectorAll('input[name="' + name + '"]:checked'), function (i) { return i.value; });
+    }
+    function showError(name, on) {
+      var e = root.querySelector('[data-error="' + name + '"]');
+      if (e) e.hidden = !on;
+    }
+
+    function show(n) {
+      step = n;
+      panels.forEach(function (p) {
+        var on = +p.dataset.step === n;
+        p.hidden = !on;
+        p.classList.toggle('is-active', on);
+      });
+      stepsUi.forEach(function (li, i) {
+        li.classList.toggle('is-current', i + 1 === n);
+        li.classList.toggle('is-done', i + 1 < n);
+      });
+      back.hidden = n === 1;
+      nextTxt.textContent = n === 3 ? 'Enviar solicitud' : 'Continuar';
+      if (window.gsap && !reduced) gsap.fromTo(panels[n - 1], { x: 24, opacity: 0 }, { x: 0, opacity: 1, duration: .4, ease: 'power2.out', clearProps: 'transform,opacity' });
+    }
+
+    var RULES = {
+      nombre:   function (v) { return v.trim().length >= 2; },
+      empresa:  function (v) { return v.trim().length >= 2; },
+      telefono: function (v) { return v.replace(/\D/g, '').length === 10; },
+      email:    function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); },
+      estado:   function (v) { return !!v; }
+    };
+    function validateData() {
+      var first = null;
+      Object.keys(RULES).forEach(function (n) {
+        var el = form.elements[n];
+        var ok = RULES[n](el.value);
+        el.closest('.zia-field').classList.toggle('is-invalid', !ok);
+        if (!ok && !first) first = el;
+      });
+      if (first && first.tagName !== 'SELECT') first.focus();
+      return !first;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (step === 1) {
+        var ok1 = checked('temas').length > 0;
+        showError('temas', !ok1);
+        if (ok1) show(2);
+      } else if (step === 2) {
+        var ok2 = checked('urgencia').length > 0;
+        showError('urgencia', !ok2);
+        if (ok2) show(3);
+      } else if (validateData()) {
+        finish();
+      }
+    });
+    back.addEventListener('click', function () { show(step - 1); });
+
+    form.querySelectorAll('input[name="temas"]').forEach(function (c) {
+      c.addEventListener('change', function () { showError('temas', false); });
+    });
+    form.querySelectorAll('input[name="urgencia"]').forEach(function (r) {
+      r.addEventListener('change', function () {
+        showError('urgencia', false);
+        urgent.hidden = checked('urgencia')[0] !== 'clausura';
+      });
+    });
+    form.querySelectorAll('.zia-field input').forEach(function (i) {
+      i.addEventListener('input', function () { i.closest('.zia-field').classList.remove('is-invalid'); });
+    });
+
+    // Estado → oficina asignada. nice-select (main.js) avisa del cambio por jQuery.
+    function onEstado() {
+      var sel = form.elements.estado;
+      var o = officeFor(sel.value);
+      sel.closest('.zia-field').classList.remove('is-invalid');
+      assign.hidden = !o;
+      if (!o) return;
+      assign.querySelector('.zia-monogram').textContent = o.ini;
+      assign.querySelector('.zia-assign__office').textContent = o.name;
+      assign.querySelector('.zia-assign__name').textContent = o.who;
+    }
+    if (window.jQuery) jQuery(form.elements.estado).on('change', onEstado);
+    else form.elements.estado.addEventListener('change', onEstado);
+
+    // ['CRE','SAT','STPS'] → 'CRE, SAT y STPS'
+    function enumerar(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1]; }
+
+    function finish() {
+      var o = officeFor(form.elements.estado.value);
+      var nombre = form.elements.nombre.value.trim().split(/\s+/)[0];
+      var prioridad = checked('urgencia')[0] === 'clausura' ? ' Su caso quedó marcado como urgente.' : '';
+      root.querySelector('.zia-triage__summary').textContent =
+        'Gracias, ' + nombre + '. ' + o.who + ' (oficina ' + o.name + ') revisará lo relacionado con ' +
+        enumerar(checked('temas')) + ', y le contactará por teléfono o correo.' + prioridad;
+      form.hidden = true;
+      stepsUi.forEach(function (li) { li.classList.remove('is-current'); li.classList.add('is-done'); });
+      done.hidden = false;
+      requestAnimationFrame(function () { done.classList.add('is-shown'); });
+    }
+
+    root.querySelector('.zia-triage__restart').addEventListener('click', function () {
+      form.reset();
+      if (window.jQuery && jQuery.fn.niceSelect) jQuery(form.elements.estado).niceSelect('update');
+      assign.hidden = true;
+      urgent.hidden = true;
+      done.classList.remove('is-shown');
+      done.hidden = true;
+      form.hidden = false;
+      show(1);
+    });
+
+    // Pre-llenado desde otras páginas: ?tema=ASEA,SAT  o  ?origen=calculadora&desp=4&exp=...
+    var q = new URLSearchParams(location.search);
+    var temas = (q.get('tema') || '').split(',').filter(Boolean);
+    if (q.get('origen') === 'calculadora') {
+      temas = ['ASEA', 'CRE', 'SAT', 'STPS'];
+      form.elements.mensaje.value = 'Vengo de la calculadora de exposición: ' + (q.get('desp') || '?') +
+        ' despachadores, exposición estimada ' + (q.get('exp') || 'no indicada') + '.';
+    }
+    temas.forEach(function (t) {
+      var c = form.querySelector('input[name="temas"][value="' + t + '"]');
+      if (c) c.checked = true;
+    });
+  }());
+  </script>
 </body>
 </html>
