@@ -17,3 +17,6 @@ build/
 
 # Client (private documents — never commit)
 _client/
+
+# Credenciales locales (nunca versionar)
+elevenlabs/
