@@ -50,8 +50,61 @@
   var hero = document.querySelector('.zia-page-hero');
   if (hero && hasGsap && !reduced) {
     var parts = hero.querySelectorAll('.zia-page-hero__eyebrow, .zia-page-hero__lead, .zia-page-hero__crumbs, [data-zia-hero-item]');
-    gsap.from(parts, { y: 24, opacity: 0, duration: .7, stagger: .12, ease: 'power3.out', delay: .2 });
+    // fromTo con valores finales explícitos: el template pone transition:all en <p> y un
+    // gsap.from leería un valor intermedio como destino.
+    gsap.fromTo(parts, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: .7, stagger: .12, ease: 'power3.out', delay: .2, clearProps: 'transform,opacity' });
     var art = hero.querySelector('.zia-page-hero__art');
-    if (art) gsap.from(art, { x: 40, opacity: 0, duration: 1, ease: 'power3.out', delay: .35 });
+    if (art) gsap.fromTo(art, { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: .35, clearProps: 'transform,opacity' });
+  }
+  /* ── Mapa de oficinas: pin ↔ tarjeta sincronizados ── */
+  document.querySelectorAll('[data-zia-map]').forEach(function (map) {
+    var pins  = map.querySelectorAll('[data-office]');
+    var cards = document.querySelectorAll('[data-office-card]');
+
+    function setActive(id) {
+      pins.forEach(function (p) { p.classList.toggle('is-active', p.dataset.office === id); });
+      cards.forEach(function (c) { c.classList.toggle('is-active', c.dataset.officeCard === id); });
+    }
+
+    pins.forEach(function (pin) {
+      var id = pin.dataset.office;
+      pin.addEventListener('mouseenter', function () { setActive(id); });
+      pin.addEventListener('focus', function () { setActive(id); });
+      pin.addEventListener('click', function () {
+        setActive(id);
+        // En pantallas angostas la lista queda debajo del mapa: llevar a la tarjeta.
+        var card = document.querySelector('[data-office-card="' + id + '"]');
+        if (card && window.matchMedia('(max-width: 991px)').matches) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+      pin.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pin.dispatchEvent(new Event('click')); }
+      });
+    });
+    cards.forEach(function (card) {
+      var id = card.dataset.officeCard;
+      ['mouseenter', 'focus', 'click'].forEach(function (ev) {
+        card.addEventListener(ev, function () { setActive(id); });
+      });
+    });
+
+    var fromHash = location.hash.indexOf('#oficina-') === 0 ? location.hash.slice(9) : null;
+    setActive(fromHash || (cards[0] && cards[0].dataset.officeCard));
+
+    if (hasGsap && !reduced) {
+      var st = { trigger: map, start: 'top 80%' };
+      gsap.fromTo(map.querySelector('.zia-map__dots'), { opacity: 0 }, { opacity: .45, duration: 1.2, ease: 'power1.out', scrollTrigger: st, clearProps: 'opacity' });
+      gsap.fromTo(pins, { opacity: 0 }, { opacity: 1, duration: .6, stagger: .14, ease: 'power2.out', delay: .4, scrollTrigger: st });
+    }
+  });
+
+  /* ── Ancla en la URL (p.ej. contacto.html#oficina-morelia): ScrollSmoother no la respeta sola ── */
+  if (location.hash.length > 1) {
+    window.addEventListener('load', function () {
+      var target = document.querySelector(location.hash);
+      if (!target) return;
+      var smoother = window.ScrollSmoother && ScrollSmoother.get && ScrollSmoother.get();
+      if (smoother) smoother.scrollTo(target, true, 'top 120px');
+      else target.scrollIntoView({ behavior: 'smooth' });
+    });
   }
 }());

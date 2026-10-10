@@ -1315,6 +1315,8 @@
       });
       set('r-total-min', fmt(tMin));
       set('r-total-max', fmt(tMax));
+      var cta = document.querySelector('.zia-calc-cta-row a');
+      if (cta) cta.href = 'contacto.html?origen=calculadora&desp=' + state.d + '&exp=' + encodeURIComponent(fmt(tMin) + ' a ' + fmt(tMax));
       document.getElementById('calc-disp').textContent = state.d;
     }
 
