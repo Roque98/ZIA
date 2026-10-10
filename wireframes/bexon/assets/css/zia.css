@@ -241,3 +241,7 @@
   .zia-map__core { transform: scale(1.5); }
   .zia-map__pin.is-active .zia-map__core { transform: scale(1.9); }
 }
+
+/* ── Marcadores de contenido pendiente del cliente ── */
+.testimonial-author .author-img.zia-author-ph { display: inline-flex; align-items: center; justify-content: center; background: var(--zia-teal-soft); color: var(--zia-teal); font-size: 24px; }
+.zia-note { margin: 18px 0 0; font-size: 12.5px; color: #7d8f91; text-align: center; }

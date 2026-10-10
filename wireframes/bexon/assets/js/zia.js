@@ -8,6 +8,15 @@
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (hasGsap) gsap.registerPlugin(ScrollTrigger);
 
+  // appear.min.js (template) recorre sus checks mientras se eliminan a sí mismos: si varios
+  // elementos aparecen a la vez el índice queda fuera de rango. Recorrer una copia lo evita.
+  if (window.jQuery && jQuery.fn.appear) {
+    jQuery.fn.appear.checkAll = function () {
+      var checks = jQuery.fn.appear.checks.slice();
+      for (var i = checks.length; i--;) if (typeof checks[i] === 'function') checks[i]();
+    };
+  }
+
   // Las fuentes y el SplitText del template cambian alturas después de crear los triggers:
   // recalcular posiciones cuando todo terminó de cargar.
   if (hasGsap) {
