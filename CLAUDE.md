@@ -26,10 +26,8 @@ zia/
 │   ├── index.html              # Selector de propuestas de diseño
 │   ├── flows/                  # Diagramas de flujo de usuario
 │   ├── screens/                # Propuesta 01: wireframe lo-fi HTML/CSS
-│   │   ├── home.html
-│   │   ├── nosotros.html
-│   │   ├── servicios.html
-│   │   ├── contacto.html
+│   │   ├── index.html          # Landing lo-fi de una sola página (misma estructura que Bexon)
+│   │   ├── _archivo/           # Versión v1.5 de 4 páginas, solo referencia
 │   │   ├── wireframe.css
 │   │   ├── wireframe.js
 │   │   └── assets/
@@ -66,7 +64,7 @@ Usar Conventional Commits:
 
 ## Reglas de trabajo
 - Leer `docs/client-brief.md` antes de diseñar cualquier pantalla nueva.
-- Cualquier nueva pantalla va en ambas propuestas (`wireframes/screens/` y `wireframes/bexon/`) salvo indicación contraria.
+- Cualquier nueva sección va en ambas landings (`wireframes/screens/index.html` y `wireframes/bexon/index.html`) salvo indicación contraria.
 - Los flujos de usuario van en `wireframes/flows/`.
 - No modificar nada dentro de `_client/` ni dentro de `docs/Bexon HTML Template/` — son documentos fuente de referencia.
 - El PDF del cliente es la fuente de verdad; `docs/client-brief.md` es su representación consultable.
