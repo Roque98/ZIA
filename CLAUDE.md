@@ -33,18 +33,19 @@ zia/
 │   │   ├── wireframe.css
 │   │   ├── wireframe.js
 │   │   └── assets/
-│   └── bexon/                  # Propuesta 02: wireframe hi-fi sobre template Bexon
-│       ├── home.html
-│       ├── nosotros.html
-│       ├── servicios.html
-│       ├── contacto.html
-│       └── assets/             # Copia local de assets del template Bexon
+│   └── bexon/                  # Propuesta 02: landing hi-fi sobre template Bexon
+│       ├── index.html          # Landing única (sin menú): hero con video, estación, riesgo, proceso, nosotros, cobertura, formulario
+│       ├── _archivo/           # Versión v1.5 de 4 páginas (home, servicios, nosotros, contacto), solo referencia
+│       └── assets/             # Assets locales: template Bexon + css/zia.css, css/landing.css, js/zia.js, js/landing.js, images/zia/, video/
+├── media/
+│   └── promo/                  # Video promocional (HyperFrames): composición, voz ElevenLabs y música
+├── elevenlabs/                 # API key local de ElevenLabs — ignorada por git, nunca versionar
 └── index.html                  # Punto de entrada al selector de propuestas
 ```
 
 ## Stack de wireframes
 - **Propuesta 01 (`wireframes/screens/`)** — HTML + CSS propio (`wireframe.css`) sin dependencias externas; lo-fi.
-- **Propuesta 02 (`wireframes/bexon/`)** — Template Bexon (Bootstrap 5 + GSAP + Swiper + jQuery). Los assets están copiados localmente en `wireframes/bexon/assets/` para evitar depender de rutas relativas del template original. Las páginas implementadas son: Home, Nosotros, Servicios, Contacto.
+- **Propuesta 02 (`wireframes/bexon/`)** — Template Bexon (Bootstrap 5 + GSAP + Swiper + jQuery). Los assets están copiados localmente en `wireframes/bexon/assets/` para evitar depender de rutas relativas del template original. Es una **landing de una sola página** (`index.html`, sin menú); los estilos y scripts propios viven en `assets/css/zia.css` + `landing.css` y `assets/js/zia.js` + `landing.js`. Las 4 páginas anteriores están en `_archivo/`.
 
 ## Gitflow
 - `main` — producción estable
