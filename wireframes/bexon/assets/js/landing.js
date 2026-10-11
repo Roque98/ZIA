@@ -914,10 +914,10 @@
 
   // Oficina que atiende cada estado. Propuesta de cobertura: validar con el cliente.
   var OFICINAS = {
-    tijuana:   { name: 'Tijuana',   who: 'Mtra. Alma Estrella Domínguez', ini: 'AE' },
-    chihuahua: { name: 'Chihuahua', who: 'Ing. Alejandro Vela',           ini: 'AV' },
-    morelia:   { name: 'Morelia',   who: 'Ing. Edilberto Brito',          ini: 'EB' },
-    orizaba:   { name: 'Orizaba',   who: 'Ing. Francisco Santos',         ini: 'FS' }
+    tijuana:   { key: 'tijuana',   name: 'Tijuana',   zone: 'Baja California', who: 'Mtra. Alma Estrella Domínguez', ini: 'AE' },
+    chihuahua: { key: 'chihuahua', name: 'Chihuahua', zone: 'Norte',           who: 'Ing. Alejandro Vela',           ini: 'AV' },
+    morelia:   { key: 'morelia',   name: 'Morelia',   zone: 'Centro',          who: 'Ing. Edilberto Brito',          ini: 'EB' },
+    orizaba:   { key: 'orizaba',   name: 'Orizaba',   zone: 'Oriente',         who: 'Ing. Francisco Santos',         ini: 'FS' }
   };
   var REGION = {
     'Baja California': 'tijuana', 'Baja California Sur': 'tijuana', 'Sonora': 'tijuana',
@@ -928,6 +928,8 @@
     // El resto del país: Morelia (Centro)
   };
   function officeFor(estado) { return estado ? OFICINAS[REGION[estado] || 'morelia'] : null; }
+  // La sección de Cobertura usa la misma asignación (un solo lugar para validarla con el cliente)
+  window.ziaCobertura = { officeFor: officeFor, oficinas: OFICINAS };
 
   function checked(name) {
     return Array.prototype.map.call(form.querySelectorAll('input[name="' + name + '"]:checked'), function (i) { return i.value; });
@@ -1042,10 +1044,15 @@
     show(1);
   });
 
-  // Pre-llenado: desde CTAs de la página (data-tema) o desde la URL (?tema=ASEA,SAT)
+  // Pre-llenado: desde CTAs de la página (data-tema, data-estado) o desde la URL (?tema=ASEA,SAT)
   function prefill(opts) {
     if (!form.hidden && step !== 1) show(1);
     var temas = opts.temas || [];
+    if (opts.estado) {
+      form.elements.estado.value = opts.estado;
+      if (window.jQuery && jQuery.fn.niceSelect) jQuery(form.elements.estado).niceSelect('update');
+      onEstado();
+    }
     if (temas.length) {
       form.querySelectorAll('input[name="temas"]').forEach(function (c) { c.checked = temas.indexOf(c.value) !== -1; });
       showError('temas', false);
@@ -1054,6 +1061,149 @@
   window.ziaTriage = { prefill: prefill };
   var q = new URLSearchParams(location.search);
   if (q.get('tema')) prefill({ temas: q.get('tema').split(',').filter(Boolean) });
+}());
+
+/* ── Cobertura: zonas de atención en el mapa + "¿En qué estado está su estación?" ──
+   Los puntos del mapa se reparten por la oficina más cercana (zona aproximada) y se
+   encienden desde cada oficina al verse. El buscador usa la asignación del formulario. */
+(function () {
+  var sec = document.getElementById('cobertura');
+  var map = sec && sec.querySelector('[data-zia-map]');
+  var dotsPath = map && map.querySelector('.zia-map__dots');
+  if (!dotsPath) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  var hasGsap = typeof gsap !== 'undefined';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var svg = dotsPath.ownerSVGElement;
+  var pins = map.querySelectorAll('[data-office]');
+  var cards = sec.querySelectorAll('[data-office-card]');
+
+  // Centro de cada oficina activa (Culiacán "próximamente" no tiene zona propia)
+  var centers = {};
+  pins.forEach(function (p) {
+    if (p.classList.contains('zia-map__pin--soon')) return;
+    var m = /translate\(([-\d.]+)[ ,]+([-\d.]+)\)/.exec(p.getAttribute('transform'));
+    if (m) centers[p.dataset.office] = { x: +m[1], y: +m[2] };
+  });
+  var keys = Object.keys(centers);
+
+  /* Cada punto del mapa se asigna al estado más cercano (centro aproximado de cada estado,
+     lon/lat proyectados con la misma escala que los pines) y cada estado a su oficina con la
+     asignación del formulario: así la zona iluminada coincide con quien atiende. */
+  var EDOS = {
+    'Aguascalientes': [-102.3, 21.9], 'Baja California': [-115.1, 30.5], 'Baja California Sur': [-111.9, 25.4],
+    'Campeche': [-90.4, 19.0], 'Chiapas': [-92.6, 16.5], 'Chihuahua': [-106.1, 28.8], 'Ciudad de México': [-99.13, 19.4],
+    'Coahuila': [-102.0, 27.3], 'Colima': [-103.9, 19.1], 'Durango': [-104.9, 24.6], 'Estado de México': [-99.6, 19.4],
+    'Guanajuato': [-101.0, 21.0], 'Guerrero': [-99.9, 17.6], 'Hidalgo': [-98.9, 20.5], 'Jalisco': [-103.6, 20.6],
+    'Michoacán': [-101.9, 19.2], 'Morelos': [-99.1, 18.7], 'Nayarit': [-104.9, 21.8], 'Nuevo León': [-99.9, 25.6],
+    'Oaxaca': [-96.7, 17.0], 'Puebla': [-98.0, 19.0], 'Querétaro': [-99.9, 20.9], 'Quintana Roo': [-88.0, 19.6],
+    'San Luis Potosí': [-100.4, 22.6], 'Sinaloa': [-107.5, 25.0], 'Sonora': [-110.6, 29.3], 'Tabasco': [-92.9, 17.9],
+    'Tamaulipas': [-98.6, 24.3], 'Tlaxcala': [-98.2, 19.4], 'Veracruz': [-96.4, 19.5], 'Yucatán': [-89.0, 20.7],
+    'Zacatecas': [-102.6, 23.0]
+  };
+  // Escala del mapa calculada con Tijuana y Orizaba (coincide con Morelia y Chihuahua)
+  function proj(ll) { return { x: 32.05 * ll[0] + 3769, y: 1156 - 34.8 * ll[1] }; }
+  var cob = window.ziaCobertura;
+  var edoPts = {}, edoZone = {};
+  Object.keys(EDOS).forEach(function (n) {
+    edoPts[n] = proj(EDOS[n]);
+    var o = cob && cob.officeFor(n);
+    edoZone[n] = o ? o.key : 'morelia';
+  });
+  // Un path de puntos por estado, agrupados por zona, y un círculo de recorte que crece desde la oficina
+  var segs = {}, maxR = {};
+  keys.forEach(function (k) { maxR[k] = 0; });
+  dotsPath.getAttribute('d').replace(/M([-\d.]+) ([-\d.]+)h0/g, function (_, x, y) {
+    x = +x; y = +y;
+    var best = null, bd = Infinity;
+    Object.keys(edoPts).forEach(function (n) { var d = Math.hypot(x - edoPts[n].x, y - edoPts[n].y); if (d < bd) { bd = d; best = n; } });
+    (segs[best] = segs[best] || []).push('M' + x + ' ' + y + 'h0');
+    var k = edoZone[best], r = Math.hypot(x - centers[k].x, y - centers[k].y);
+    if (r > maxR[k]) maxR[k] = r;
+    return '';
+  });
+  var defs = document.createElementNS(NS, 'defs');
+  svg.insertBefore(defs, svg.firstChild);
+  var zones = {}, clips = {}, statePaths = {};
+  keys.forEach(function (k) {
+    var cp = document.createElementNS(NS, 'clipPath');
+    cp.id = 'zia-zone-clip-' + k;
+    var c = document.createElementNS(NS, 'circle');
+    c.setAttribute('cx', centers[k].x); c.setAttribute('cy', centers[k].y);
+    c.setAttribute('r', (hasGsap && !reduced) ? 0 : maxR[k] + 20);
+    cp.appendChild(c); defs.appendChild(cp);
+    clips[k] = c;
+    var g = document.createElementNS(NS, 'g');
+    g.setAttribute('class', 'zia-map__zone zia-map__zone--' + k);
+    g.setAttribute('clip-path', 'url(#zia-zone-clip-' + k + ')');
+    g.dataset.zone = k;
+    dotsPath.parentNode.insertBefore(g, dotsPath);
+    zones[k] = g;
+  });
+  Object.keys(segs).forEach(function (n) {
+    var p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', segs[n].join(''));
+    p.setAttribute('class', 'zia-map__state');
+    zones[edoZone[n]].appendChild(p);
+    statePaths[n] = p;
+  });
+  dotsPath.remove();
+
+  // Zona, pin y tarjeta resaltados juntos (null = todas por igual); estado opcional resaltado dentro de su zona
+  function highlight(k, estado) {
+    map.classList.toggle('has-focus', !!k);
+    keys.forEach(function (z) { zones[z].classList.toggle('is-active', z === k); });
+    Object.keys(statePaths).forEach(function (n) { statePaths[n].classList.toggle('is-state', n === estado); });
+    pins.forEach(function (p) { p.classList.toggle('is-active', p.dataset.office === k); });
+    cards.forEach(function (c) { c.classList.toggle('is-active', c.dataset.officeCard === k); });
+  }
+  pins.forEach(function (p) { ['mouseenter', 'focus', 'click'].forEach(function (ev) { p.addEventListener(ev, function () { highlight(p.dataset.office); }); }); });
+  cards.forEach(function (c) { ['mouseenter', 'focus', 'click'].forEach(function (ev) { c.addEventListener(ev, function () { highlight(c.dataset.officeCard); }); }); });
+  // zia.js marca la primera oficina al cargar; aquí se arranca con todas las zonas por igual
+  highlight(null);
+
+  /* Buscador por estado */
+  var sel = document.getElementById('zia-finder-estado');
+  var formSel = document.getElementById('t-estado');
+  var result = sec.querySelector('.zia-finder__result');
+  if (sel && formSel) {
+    Array.prototype.slice.call(formSel.options, 1).forEach(function (o) { sel.add(new Option(o.text, o.value || o.text)); });
+    if (window.jQuery && jQuery.fn.niceSelect) jQuery(sel).niceSelect('update');
+    var mono = result.querySelector('.zia-monogram'), who = result.querySelector('.zia-finder__who');
+    var cta = result.querySelector('.zia-finder__cta');
+    var onPick = function () {
+      var o = window.ziaCobertura && window.ziaCobertura.officeFor(sel.value);
+      if (!o) return;
+      mono.textContent = o.ini;
+      mono.classList.remove('zia-monogram--gold');
+      who.querySelector('small').textContent = 'Le atiende en ' + sel.value;
+      who.querySelector('b').textContent = o.who;
+      who.querySelector('.zia-finder__office').textContent = 'Oficina ' + o.name + ' · ' + o.zone;
+      cta.hidden = false;
+      cta.dataset.estado = sel.value;
+      cta.querySelector('.btn-text span').textContent = 'Hablar con ' + o.who.split(' ')[1];
+      result.classList.add('is-match');
+      highlight(o.key, sel.value);
+      // Se anima el contenedor (div): main.css da transition a sus hijos y chocaría con GSAP
+      if (hasGsap && !reduced) gsap.fromTo(result, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: .4, ease: 'power2.out', clearProps: 'opacity,transform' });
+    };
+    if (window.jQuery) jQuery(sel).on('change', onPick); else sel.addEventListener('change', onPick);
+  }
+
+  // Al verse por primera vez, las zonas se encienden desde cada oficina hacia afuera
+  if (hasGsap && !reduced) {
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries.some(function (en) { return en.isIntersecting; })) return;
+      io.disconnect();
+      keys.forEach(function (k, i) {
+        gsap.to(clips[k], { attr: { r: maxR[k] + 20 }, duration: 1.8, delay: .2 + i * .18, ease: 'power2.out' });
+      });
+      // Solo opacidad y radio: los pines se ubican con transform="translate(...)" y no se deben mover
+      gsap.fromTo(pins, { opacity: 0 }, { opacity: 1, duration: .4, stagger: .12, delay: .1 });
+      gsap.fromTo(map.querySelectorAll('.zia-map__core'), { attr: { r: 0 } }, { attr: { r: 11 }, duration: .55, stagger: .12, ease: 'back.out(2.6)', delay: .1 });
+    }, { threshold: .35 });
+    io.observe(map);
+  }
 }());
 
 (function () {
@@ -1069,8 +1219,8 @@
     var a = e.target.closest('a[href^="#"]');
     if (!a || a.classList.contains('video-popup') || a.getAttribute('href').length < 2) return;
     e.preventDefault();
-    if (a.dataset.tema && window.ziaTriage) {
-      window.ziaTriage.prefill({ temas: a.dataset.tema.split(',').filter(Boolean) });
+    if ((a.dataset.tema || a.dataset.estado) && window.ziaTriage) {
+      window.ziaTriage.prefill({ temas: (a.dataset.tema || '').split(',').filter(Boolean), estado: a.dataset.estado });
     }
     goTo(a.getAttribute('href'));
   });
