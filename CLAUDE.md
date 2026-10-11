@@ -69,3 +69,5 @@ Usar Conventional Commits:
 - No modificar nada dentro de `_client/` ni dentro de `docs/Bexon HTML Template/` — son documentos fuente de referencia.
 - El PDF del cliente es la fuente de verdad; `docs/client-brief.md` es su representación consultable.
 - Al modificar la propuesta Bexon, los assets se referencian con ruta relativa `./assets/` (no apuntar a `docs/`).
+- Al cambiar `zia.css`, `landing.css`, `zia.js` o `landing.js`, actualizar el `?v=` con que los carga `wireframes/bexon/index.html`: GitHub Pages los guarda 10 min en caché y sin versión el navegador puede seguir usando el archivo viejo.
+- Las animaciones de la landing no dependen del scroll: arrancan la primera vez que se ven y siguen solas (sin pin ni scrub).

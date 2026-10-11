@@ -674,7 +674,7 @@
   var trackFill = scene.querySelector('.zia-scene__track-fill');
   var timeLbl = scene.querySelector('.zia-scene__time');
   var STARTS = [0, T.plan - .2, T.exec - .2, T.watch - .1];
-  var userPaused = false, inView = false;
+  var userPaused = false;
   tl.timeScale(.85); // ~12 s en total
 
   // Marcas de cada paso sobre la barra de progreso
@@ -725,14 +725,15 @@
     li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
   });
 
-  // Se reproduce al estar a la vista y se pausa al salir (sin perder dónde iba)
-  new IntersectionObserver(function (entries) {
+  // Arranca la primera vez que se ve y desde ahí sigue sola: el scroll ya no la pausa ni la controla
+  var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (en) {
-      inView = en.isIntersecting;
-      if (inView && !userPaused && tl.progress() < 1) play();
-      else if (!inView && !tl.paused()) pause();
+      if (!en.isIntersecting) return;
+      io.disconnect();
+      if (!userPaused && tl.progress() === 0) play();
     });
-  }, { threshold: .45 }).observe(stage);
+  }, { threshold: .45 });
+  io.observe(stage);
 }());
 
 /* ── Cifras animadas ── */

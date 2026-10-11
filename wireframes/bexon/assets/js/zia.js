@@ -53,14 +53,16 @@
     // Fallback sin GSAP o con movimiento reducido: todo lleno y activo.
     if (!hasGsap || reduced) { setFill(1); activate(1); return; }
 
-    ScrollTrigger.create({
-      trigger: tl,
-      start: 'top 78%',
-      // Completo en cuanto la línea entera está a la vista
-      end: 'bottom bottom',
-      onUpdate: function (self) { setFill(self.progress); activate(self.progress); },
-      onEnter:  function () { items[0].classList.add('is-active'); }
-    });
+    // Al verse por primera vez se llena sola en ~2.4 s; el scroll no la controla
+    var prog = { p: 0 };
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        io.disconnect();
+        gsap.to(prog, { p: 1, duration: 2.4, ease: 'power1.inOut', onUpdate: function () { setFill(prog.p); activate(prog.p); } });
+      });
+    }, { threshold: .35 });
+    io.observe(tl);
   });
 
   /* ── Cabecera de página: entrada escalonada del texto y la ilustración ── */
