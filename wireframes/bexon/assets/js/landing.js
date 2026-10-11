@@ -736,19 +736,165 @@
   io.observe(stage);
 }());
 
-/* ── Cifras animadas ── */
+/* ── Quiénes somos: los reguladores se suman alrededor de ZIA ──
+   Trayectoria de docs/client-brief.md. Cada hito enciende los reguladores que ZIA
+   sumó ese año; se reproduce sola al verse y los años se pueden tocar. */
+(function () {
+  var root = document.querySelector('#nosotros .zia-story');
+  if (!root) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  var hasGsap = typeof gsap !== 'undefined';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var HITOS = [
+    { y: 2000, e: 'Orígenes en TI', d: 'Soporte y asesoría en sistemas de información y redes.', add: [] },
+    { y: 2004, e: 'Especialización en hidrocarburos', d: 'Controles volumétricos para gasolineras.', add: ['sat'] },
+    { y: 2010, e: 'Diversificación en seguridad', d: 'Consultoría en seguridad e higiene, Protección Civil y STPS.', add: ['stps', 'pc'] },
+    { y: 2015, e: 'Adaptación regulatoria', d: 'Ampliamos el catálogo para CRE y ASEA.', add: ['cre', 'asea'] },
+    { y: 'Hoy', e: 'Liderazgo integral', d: 'De la auditoría a la defensoría jurídica, ante los cinco reguladores.', add: [] }
+  ];
+  // Posición en la órbita (grados; 0 = derecha): se encienden en el sentido del reloj desde arriba
+  var ANG = { sat: -90, stps: -18, pc: 54, cre: 126, asea: 198 };
+  var R = 40; // radio en % del lado de la órbita
+
+  var orbit = root.querySelector('.zia-orbit');
+  var lines = root.querySelector('.zia-orbit__lines');
+  var core = root.querySelector('.zia-orbit__core');
+  var now = root.querySelector('.zia-story__now');
+  var yearEl = root.querySelector('.zia-story__year');
+  var eventEl = root.querySelector('.zia-story__event');
+  var detailEl = root.querySelector('.zia-story__detail');
+  var playBtn = root.querySelector('.zia-story__play');
+  var yearBtns = root.querySelectorAll('.zia-story__years button');
+  var nodes = {}, rays = {};
+
+  root.querySelectorAll('.zia-orbit__node').forEach(function (n) {
+    var a = ANG[n.dataset.reg] * Math.PI / 180;
+    var x = 50 + R * Math.cos(a), y = 50 + R * Math.sin(a);
+    n.style.left = x + '%'; n.style.top = y + '%';
+    nodes[n.dataset.reg] = n;
+    // Línea de luz del centro al regulador (line, no path: main.css da transition a svg path)
+    var l = document.createElementNS(NS, 'line');
+    l.setAttribute('x1', 50); l.setAttribute('y1', 50); l.setAttribute('x2', x); l.setAttribute('y2', y);
+    l.setAttribute('pathLength', 1);
+    l.setAttribute('class', 'zia-orbit__ray');
+    l.style.setProperty('--c', 'var(--zia-' + n.dataset.reg + ')');
+    lines.appendChild(l);
+    rays[n.dataset.reg] = l;
+  });
+
+  // Reguladores encendidos hasta el hito i (en "Hoy" están todos)
+  function litUntil(i) {
+    var on = [];
+    HITOS.slice(0, i + 1).forEach(function (h) { on = on.concat(h.add); });
+    return i >= HITOS.length - 1 ? Object.keys(ANG) : on;
+  }
+  var shown = -1;
+  function setHito(i, animate) {
+    var on = litUntil(i);
+    Object.keys(nodes).forEach(function (k) {
+      var lit = on.indexOf(k) !== -1;
+      nodes[k].classList.toggle('is-on', lit);
+      rays[k].classList.toggle('is-on', lit);
+    });
+    orbit.classList.toggle('is-full', i === HITOS.length - 1);
+    yearBtns.forEach(function (b, j) {
+      b.classList.toggle('is-done', j < i);
+      if (j === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+    });
+    if (i === shown) return;
+    shown = i;
+    eventEl.textContent = HITOS[i].e;
+    detailEl.textContent = HITOS[i].d;
+    // Se anima el contenedor (div): main.css da transition a b/p/span y chocaría con GSAP
+    if (animate && hasGsap && !reduced) gsap.fromTo(now, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .45, ease: 'power2.out', clearProps: 'opacity,transform' });
+  }
+
+  // Sin GSAP o con movimiento reducido: estado final; los años cambian el hito sin animación
+  if (!hasGsap || reduced) {
+    setHito(HITOS.length - 1, false);
+    yearEl.textContent = 'Hoy';
+    playBtn.hidden = true;
+    yearBtns.forEach(function (b) {
+      b.addEventListener('click', function () { var i = +b.dataset.i; setHito(i, false); yearEl.textContent = HITOS[i].y; });
+    });
+    return;
+  }
+
+  /* Línea de tiempo: cada hito dura SEG; el año "cuenta" hacia el siguiente */
+  var SEG = 2.6, year = { v: 2000 };
+  var tl = gsap.timeline({ paused: true });
+  tl.set(year, { v: 2000 }, 0);
+  HITOS.forEach(function (h, i) {
+    var t = i * SEG;
+    if (typeof h.y === 'number' && i > 0) tl.to(year, { v: h.y, duration: .8, ease: 'power2.out', roundProps: 'v' }, t);
+    h.add.forEach(function (k, j) {
+      tl.fromTo(nodes[k].querySelector('.zia-orbit__dot'), { scale: .55 }, { scale: 1, duration: .6, ease: 'back.out(2.4)' }, t + .25 + j * .2)
+        .fromTo(rays[k], { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: .7, ease: 'power2.out' }, t + .15 + j * .2);
+    });
+  });
+  // "Hoy": el centro late (las líneas se intensifican por CSS con .is-full)
+  var tHoy = (HITOS.length - 1) * SEG;
+  tl.fromTo(core, { scale: 1 }, { scale: 1.12, duration: .35, yoyo: true, repeat: 1, ease: 'power1.inOut' }, tHoy + .2)
+    .to({}, { duration: 1.6 }, tHoy + .6);
+
+  function idxAt(t) { return Math.min(HITOS.length - 1, Math.floor(t / SEG + 1e-6)); }
+  function sync() {
+    var i = idxAt(tl.time());
+    setHito(i, true);
+    yearEl.textContent = i === HITOS.length - 1 ? 'Hoy' : Math.round(year.v);
+  }
+  function setState() {
+    var st = tl.progress() >= 1 ? 'ended' : tl.paused() ? 'paused' : 'playing';
+    playBtn.dataset.state = st;
+    playBtn.setAttribute('aria-label', st === 'playing' ? 'Pausar' : st === 'ended' ? 'Repetir' : 'Reproducir');
+  }
+  tl.eventCallback('onUpdate', sync);
+  tl.eventCallback('onComplete', setState);
+  // Antes de reproducirse: 2000 sin reguladores encendidos
+  tl.progress(0); sync(); setState();
+
+  playBtn.addEventListener('click', function () {
+    if (playBtn.dataset.state === 'playing') tl.pause();
+    else if (tl.progress() >= 1) tl.restart();
+    else tl.play();
+    setState();
+  });
+  yearBtns.forEach(function (b) {
+    b.addEventListener('click', function () { tl.time(+b.dataset.i * SEG); tl.play(); setState(); });
+  });
+
+  // Arranca la primera vez que se ve; el scroll no la controla
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      io.disconnect();
+      if (tl.progress() === 0) { tl.play(); setState(); }
+    });
+  }, { threshold: .4 });
+  io.observe(orbit);
+}());
+
+/* ── Cifras animadas: cuentan la primera vez que se ven ── */
 (function () {
   if (typeof gsap === 'undefined' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  document.querySelectorAll('.zia-figure b[data-count]').forEach(function (el, i) {
+  var nums = document.querySelectorAll('.zia-figure b[data-count]');
+  if (!nums.length) return;
+  var counters = [];
+  nums.forEach(function (el) {
     var end = +el.dataset.count;
     // El año arranca cerca de su valor para que no "cuente" desde cero
     var obj = { v: el.hasAttribute('data-plain') ? end - 40 : 0 };
     el.textContent = Math.round(obj.v);
-    gsap.to(obj, {
-      v: end, duration: 1.6, delay: .5 + i * .12, ease: 'power3.out',
-      onUpdate: function () { el.textContent = Math.round(obj.v); }
+    counters.push(function (i) {
+      gsap.to(obj, { v: end, duration: 1.6, delay: i * .12, ease: 'power3.out', onUpdate: function () { el.textContent = Math.round(obj.v); } });
     });
   });
+  var io = new IntersectionObserver(function (entries) {
+    if (!entries.some(function (en) { return en.isIntersecting; })) return;
+    io.disconnect();
+    counters.forEach(function (start, i) { start(i); });
+  }, { threshold: .5 });
+  io.observe(nums[0].closest('.zia-figures') || nums[0]);
 }());
 
 /* ── Formulario de diagnóstico en 3 pasos (sin backend: envío simulado) ── */
