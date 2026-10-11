@@ -83,6 +83,14 @@
 #cobertura .zia-map__dots { opacity: .55; }
 /* Zonas de atención (puntos repartidos por la oficina más cercana) */
 .zia-map__zone { fill: none; stroke-width: 6.5; stroke-linecap: round; opacity: .55; transition: opacity .35s ease; }
+/* Etiqueta flotante al pasar el mouse por el mapa: estado y oficina que lo atiende */
+#cobertura .zia-map { position: relative; }
+.zia-map__tip {
+  position: absolute; z-index: 3; transform: translate(16px, -50%); pointer-events: none; white-space: nowrap;
+  padding: 7px 12px; border-radius: 9px; background: rgba(12,30,33,.95); border: 1px solid rgba(79,209,197,.45);
+  box-shadow: 0 10px 24px rgba(0,0,0,.35); font-size: 12.5px; line-height: 1.35; color: rgba(255,255,255,.72);
+}
+.zia-map__tip b { display: block; font-size: 14px; color: #fff; }
 /* El estado elegido en el buscador se ve en blanco dentro de su zona */
 .zia-map__state.is-state { stroke: #fff; stroke-width: 7.5; }
 .zia-map__zone--tijuana { stroke: #5aa9e6; }
