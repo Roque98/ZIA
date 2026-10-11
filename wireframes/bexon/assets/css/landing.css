@@ -42,15 +42,16 @@
 }
 
 /* ── Calculadora de exposición ── */
+/* Datos en una franja sobre la tabla de resultados */
 .zia-calc-panel {
+  display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: flex-start;
   background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
-  border-radius: 12px; padding: 32px; height: 100%;
+  border-radius: 12px; padding: 20px 24px; margin-bottom: 12px;
 }
-.zia-calc-field { margin-bottom: 32px; }
-.zia-calc-field:last-of-type { margin-bottom: 0; }
+.zia-calc-field:last-child { flex: 1; min-width: 240px; }
 .zia-calc-label {
   display: block; font-size: 10px; font-weight: 800; text-transform: uppercase;
-  letter-spacing: .14em; color: rgba(255,255,255,.35); margin-bottom: 16px;
+  letter-spacing: .14em; color: rgba(255,255,255,.5); margin-bottom: 10px;
 }
 .zia-calc-stepper { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; overflow: hidden; }
 .zia-calc-step-btn {
@@ -59,17 +60,17 @@
 }
 .zia-calc-step-btn:hover { background: rgba(255,255,255,.12); }
 .zia-calc-step-val { min-width: 72px; text-align: center; font-size: 28px; font-weight: 900; color: var(--tj-color-theme-primary); line-height: 48px; }
-.zia-calc-opts { display: flex; flex-direction: column; gap: 6px; }
+.zia-calc-opts { display: flex; flex-wrap: wrap; gap: 6px; }
 .zia-calc-opt {
-  padding: 10px 16px; border-radius: 6px; border: 1px solid rgba(255,255,255,.08);
-  background: transparent; color: rgba(255,255,255,.4); font-size: 13px; font-weight: 700;
+  padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,.12);
+  background: transparent; color: rgba(255,255,255,.6); font-size: 13px; font-weight: 700; white-space: nowrap;
   cursor: pointer; text-align: left; transition: all .15s; font-family: inherit;
 }
 .zia-calc-opt:hover { border-color: rgba(30,138,138,.4); color: rgba(255,255,255,.75); }
 .zia-calc-opt.is-sel { border-color: var(--tj-color-theme-primary); background: rgba(30,138,138,.15); color: #fff; }
 .zia-calc-footnote { font-size: 11px; color: rgba(255,255,255,.18); line-height: 1.6; margin-top: 28px; }
 /* Tabla de resultados */
-.zia-calc-results { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; height: 100%; }
+.zia-calc-results { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
 .zia-calc-row { display: grid; grid-template-columns: 1fr auto auto; gap: 16px; padding: 15px 24px; border-bottom: 1px solid rgba(255,255,255,.05); align-items: center; }
 .zia-calc-row--hd { background: rgba(255,255,255,.03); }
 .zia-calc-row--hd span { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.22); }
@@ -117,9 +118,12 @@
 @media (max-width: 768px) {
   .zia-process-v2__rail { display: none; }
   .zia-process-v2__steps { flex-direction: column; gap: 32px; }
-  .zia-process-v2__step { text-align: left; opacity: 1; transform: none; display: flex; gap: 16px; align-items: flex-start; }
-  .zia-process-v2__dot { margin: 2px 0 0; flex-shrink: 0; }
-  .zia-process-v2__num { margin-bottom: 6px; }
+  /* Punto a la izquierda; número, título y descripción apilados a la derecha */
+  .zia-process-v2__step { text-align: left; opacity: 1; transform: none; display: grid; grid-template-columns: 20px 1fr; column-gap: 16px; align-items: start; padding: 0; }
+  .zia-process-v2__dot { grid-row: 1 / span 3; margin: 0; }
+  .zia-process-v2__num, .zia-process-v2__title, .zia-process-v2__desc { grid-column: 2; }
+  .zia-process-v2__num { margin-bottom: 4px; }
+  .zia-process-v2__desc { margin: 0; }
 }
 
 
@@ -318,10 +322,10 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
 .zia-station__tip-link { cursor: pointer; }
 
 /* ── 3. Riesgos compactos sobre la calculadora ── */
-.zia-lp-risks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; }
-.zia-lp-risk { padding: 22px 24px; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.09); border-top: 3px solid var(--zia-red); }
-.zia-lp-risk b { display: block; font-size: 19px; color: #fff; margin: 10px 0 6px; }
-.zia-lp-risk p { margin: 0; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,.6); }
+.zia-lp-risks { display: grid; gap: 10px; }
+.zia-lp-risk { display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 12px; padding: 14px 18px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.09); border-left: 3px solid var(--zia-red); }
+.zia-lp-risk b { font-size: 17px; color: #fff; }
+.zia-lp-risk p { grid-column: 1 / -1; margin: 6px 0 0; font-size: 14px; line-height: 1.5; color: rgba(255,255,255,.62); }
 
 /* ── 5. Quiénes somos ── */
 .zia-lp-about .zia-figures { margin-bottom: 70px; grid-template-columns: repeat(4, 1fr); }
@@ -371,4 +375,92 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
   .zia-picks { grid-template-columns: repeat(2, 1fr); }
   .zia-triage__steps li { font-size: 0; gap: 0; }
   .zia-triage__steps li span { font-size: 11px; }
+  /* Los gutters g-5 de Bootstrap exceden el padding del contenedor */
+  .zia-sec .row.g-5 { --bs-gutter-x: 1.5rem; }
+}
+
+/* ═══ Ajuste a una pantalla (laptop y escritorio) ═══
+   Desde 992px de ancho cada sección ocupa una pantalla y su contenido
+   escala con la altura disponible, para que se vea completa incluso en
+   laptops de 768px de alto con zoom del sistema. */
+@media (min-width: 992px) {
+  :root { --zia-hdr: 66px; }
+  .zia-sec {
+    min-height: 100vh; min-height: 100svh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: calc(var(--zia-hdr) + clamp(10px, 3vh, 48px)) 0 clamp(16px, 4vh, 56px);
+  }
+  .zia-sec > .container { width: 100%; }
+  .zia-sec__head { margin-bottom: clamp(16px, 4vh, 56px); }
+  .zia-sec__kicker { margin-bottom: clamp(6px, 1.4vh, 16px); }
+  .zia-sec__title { font-size: clamp(30px, min(4vw, 6.6vh), 58px); margin-bottom: clamp(6px, 1.4vh, 18px); }
+  .zia-sec__lead { font-size: clamp(15px, 2.5vh, 18px); line-height: 1.55; }
+
+  /* 1. Hero */
+  .zia-lp-hero { padding-bottom: clamp(14px, 3vh, 40px); }
+  .zia-lp-hero__title { font-size: clamp(34px, min(4.2vw, 8.2vh), 68px); margin-bottom: clamp(10px, 2vh, 22px); }
+  .zia-lp-hero__sub { font-size: clamp(15px, 2.7vh, 19px); margin-bottom: clamp(16px, 3.4vh, 34px); }
+  .zia-lp-regs { margin-top: clamp(18px, 4.5vh, 56px); }
+  .zia-lp-regs__item { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; align-content: start; padding: clamp(12px, 2.2vh, 20px) 16px 0; }
+  .zia-lp-regs__item img { grid-row: span 2; align-self: center; width: clamp(30px, 5.6vh, 40px); height: clamp(30px, 5.6vh, 40px); margin: 0; }
+  .zia-lp-regs__item + .zia-lp-regs__item::before { left: 16px; }
+
+  /* 2. Estación: la ilustración se limita por alto (proporción 1200×580 + marco) */
+  .zia-lp-station .zia-station { max-width: min(1120px, calc((100svh - var(--zia-hdr) - 340px) * 2.07 + 20px), 1080px); }
+  .zia-lp-station .zia-station__legend { margin-top: clamp(8px, 1.6vh, 16px); }
+
+  /* 3. Riesgo */
+  #riesgo .zia-sec__head { margin-bottom: clamp(14px, 3vh, 32px); }
+  .zia-lp-risk { padding: clamp(10px, 1.8vh, 16px) 18px; }
+  .zia-lp-risk p { font-size: clamp(13px, 2.2vh, 14px); }
+  .zia-calc-panel { padding: clamp(12px, 2.2vh, 20px) 22px; }
+  .zia-calc-step-btn { width: 42px; height: clamp(36px, 6vh, 48px); }
+  .zia-calc-step-val { line-height: clamp(36px, 6vh, 48px); font-size: 24px; min-width: 60px; }
+  .zia-calc-panel { column-gap: 20px; }
+  .zia-calc-opt { padding: clamp(6px, 1.2vh, 8px) 10px; font-size: 12.5px; }
+  .zia-calc-row { padding: clamp(5px, 1.1vh, 14px) 22px; }
+  .zia-calc-cta-row { padding: clamp(10px, 2vh, 20px) 22px; }
+
+  /* 4. Proceso */
+  #proceso .row.mt-5 { margin-top: clamp(8px, 3vh, 48px) !important; }
+
+  /* 5. Quiénes somos: cifras compactas y línea de tiempo en una sola fila */
+  .zia-lp-about .zia-figures { margin-bottom: clamp(16px, 4.5vh, 70px); grid-template-columns: repeat(4, 1fr); }
+  .zia-lp-about .zia-figure { padding: clamp(12px, 2.4vh, 26px) 22px; }
+  .zia-lp-about .zia-figure b { font-size: clamp(30px, 6vh, 52px); margin-bottom: clamp(4px, 1vh, 10px); }
+  .zia-lp-about .zia-tl__item { grid-template-rows: auto 44px; }
+  .zia-lp-about .zia-tl__item:nth-child(n) .zia-tl__card { grid-row: 1; align-self: stretch; }
+  .zia-lp-about .zia-tl__item:nth-child(n) .zia-tl__card::after { top: 100%; bottom: auto; }
+  .zia-lp-about .zia-tl__track { top: auto; bottom: 22px; transform: translateY(50%); }
+  .zia-lp-about .zia-tl__card { padding: clamp(12px, 2.4vh, 24px) 14px; }
+  .zia-lp-about .zia-tl__icon { font-size: clamp(22px, 4vh, 32px); margin-bottom: clamp(6px, 1.4vh, 14px); }
+  .zia-lp-about .zia-tl__year { font-size: clamp(20px, 3.6vh, 26px); margin-bottom: 6px; }
+
+  /* 6. Cobertura: el mapa se limita por alto (proporción 1180×742) */
+  #cobertura .zia-map { max-width: calc((100svh - var(--zia-hdr) - 200px) * 1.59); margin: 0 auto; }
+  #cobertura .zia-lead { padding: clamp(10px, 2vh, 18px) 20px; }
+  #cobertura .zia-person { padding: clamp(8px, 1.6vh, 14px) 14px; }
+
+  /* 7. Formulario */
+  .zia-lp-form .zia-direct { margin-top: clamp(14px, 3.4vh, 32px); margin-bottom: 0; }
+  .zia-lp-form .zia-direct__item { padding: clamp(8px, 1.5vh, 12px) 16px; }
+  .zia-triage { padding: clamp(18px, 4vh, 36px); }
+  .zia-triage__title { font-size: clamp(20px, 3.8vh, 26px); margin: 4px 0 clamp(10px, 2.4vh, 20px); }
+  .zia-triage__steps { margin-bottom: clamp(12px, 3vh, 26px); }
+  .zia-triage legend { margin-bottom: clamp(8px, 2vh, 16px); }
+  .zia-pick > span { display: grid; grid-template-columns: auto 1fr; column-gap: 10px; align-items: center; padding: clamp(8px, 1.6vh, 14px) 12px; }
+  .zia-pick img, .zia-pick__q { grid-row: span 2; width: 34px; height: 34px; margin: 0; }
+  .zia-triage__nav { margin-top: clamp(12px, 3vh, 26px); }
+}
+/* Pantallas bajas (laptop con zoom): se ocultan los íconos decorativos de la línea de tiempo */
+@media (min-width: 992px) and (max-height: 800px) {
+  .zia-lp-about .zia-tl__icon { display: none; }
+}
+/* Pantallas bajas: la estación pasa a dos columnas para que la ilustración no se encoja */
+@media (min-width: 992px) and (max-height: 800px) {
+  .zia-lp-station > .container { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.3fr); column-gap: 40px; align-items: center; }
+  .zia-lp-station .zia-sec__head { grid-row: 1 / 3; margin: 0; text-align: left; }
+  .zia-lp-station .zia-station, .zia-lp-station .zia-station__legend { grid-column: 2; }
+  .zia-lp-station .zia-station { width: 100%; max-width: calc((100svh - var(--zia-hdr) - 130px) * 2.07 + 20px); margin: 0 0 0 auto; }
+  .zia-lp-station .zia-station__legend { justify-content: flex-end; }
 }

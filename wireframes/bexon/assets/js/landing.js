@@ -80,7 +80,8 @@
     scrollTrigger: {
       trigger: '#zia-process-v2',
       start: 'top 85%',
-      end: 'center 62%',
+      // Completo en cuanto el bloque entero está a la vista (las secciones caben en una pantalla)
+      end: 'bottom bottom',
       scrub: 0.6,
       onUpdate: function (self) {
         var p = self.progress;
