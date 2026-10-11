@@ -417,4 +417,50 @@
       });
     });
   }
+
+  /* ── Móvil y tablet vertical: imán entre secciones ──
+     Dentro de una sección larga el scroll es libre; al detenerse a menos de
+     30% de pantalla del inicio de una sección, la página se alinea con ella.
+     CSS scroll-snap no aplica (ScrollSmoother mueve el contenido con transform) y
+     el snap de ScrollTrigger lee mal el avance con ScrollSmoother, así que se
+     alinea a mano cuando el scroll termina. */
+  var mq = window.matchMedia('(max-width: 991px)');
+  var secs = Array.prototype.slice.call(document.querySelectorAll('main .zia-sec'));
+  var touching = false, endTimer = null, gestureStartY = null;
+  var smootherNow = function () { return window.ScrollSmoother && ScrollSmoother.get && ScrollSmoother.get(); };
+  var sectionTop = function (el) {
+    var sm = smootherNow();
+    return sm ? sm.offset(el, 'top top') : el.getBoundingClientRect().top + window.scrollY;
+  };
+  var snapToNearest = function () {
+    var y = window.scrollY, range = window.innerHeight * 0.3, best = null;
+    // Solo atrae en la dirección del gesto: bajar un poco desde el inicio de una sección no te regresa
+    var dir = gestureStartY === null ? 0 : y - gestureStartY;
+    gestureStartY = null;
+    if (!mq.matches || touching || !secs.length) return;
+    // No mover la página mientras se escribe en el formulario (el teclado cambia el alto)
+    var a = document.activeElement;
+    if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
+    secs.forEach(function (s) {
+      var t = sectionTop(s);
+      if ((dir > 0 && t < y) || (dir < 0 && t > y)) return;
+      if (Math.abs(t - y) < range && (best === null || Math.abs(t - y) < Math.abs(best - y))) best = t;
+    });
+    if (best === null || Math.abs(best - y) < 4) return;
+    gestureStartY = best; // el propio desplazamiento del imán no cuenta como gesto nuevo
+    var sm = smootherNow();
+    if (sm) sm.scrollTo(best, true);
+    else window.scrollTo({ top: best, behavior: 'smooth' });
+  };
+  // Fin del scroll = 160ms sin eventos y sin dedo en pantalla (incluye la inercia del swipe)
+  var scheduleSnap = function () {
+    if (gestureStartY === null) gestureStartY = lastY;
+    lastY = window.scrollY;
+    clearTimeout(endTimer); endTimer = setTimeout(snapToNearest, 160);
+  };
+  var lastY = window.scrollY;
+  window.addEventListener('scroll', scheduleSnap, { passive: true });
+  window.addEventListener('touchstart', function () { touching = true; clearTimeout(endTimer); }, { passive: true });
+  window.addEventListener('touchend', function () { touching = false; scheduleSnap(); }, { passive: true });
+  window.addEventListener('touchcancel', function () { touching = false; scheduleSnap(); }, { passive: true });
 }());
