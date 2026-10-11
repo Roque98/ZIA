@@ -69,15 +69,20 @@
 .zia-figure b { display: block; font-size: 52px; font-weight: 900; line-height: 1; color: var(--zia-teal); font-variant-numeric: tabular-nums; margin-bottom: 10px; }
 .zia-figure span { font-size: 13.5px; line-height: 1.45; color: rgba(255,255,255,.7); }
 .zia-figure:first-of-type b { color: var(--zia-gold); }
-.zia-lead { display: flex; align-items: center; gap: 16px; padding: 18px 22px; border-radius: 14px; background: var(--zia-ink); color: #fff; margin-bottom: 14px; }
+/* Cobertura sobre fondo oscuro: dirección general destacada y tarjetas translúcidas */
+.zia-lp-coverage { background: #0a1719; }
+.zia-lead { display: flex; align-items: center; gap: 16px; padding: 18px 22px; border-radius: 14px; background: linear-gradient(120deg, rgba(166,145,64,.2), rgba(30,138,138,.12)); border: 1px solid rgba(166,145,64,.4); color: #fff; margin-bottom: 14px; }
 .zia-lead small { display: block; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--zia-gold); }
 .zia-lead b { font-size: 20px; }
 .zia-team__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.zia-person { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 12px; background: #fff; border: 1.5px solid var(--tj-color-border-1); text-decoration: none; transition: border-color .25s, box-shadow .25s; }
-.zia-person b { display: block; font-size: 14.5px; color: var(--zia-ink); line-height: 1.3; }
-.zia-person small { font-size: 12.5px; color: #7d8f91; }
-.zia-person.is-active, .zia-person:hover { border-color: var(--zia-teal); box-shadow: 0 10px 26px rgba(30,138,138,.14); }
-.zia-person[data-office-card="culiacan"].is-active { border-color: var(--zia-gold); }
+.zia-person { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1.5px solid rgba(255,255,255,.1); text-decoration: none; transition: border-color .25s, background .25s; }
+.zia-person b { display: block; font-size: 14.5px; color: #fff; line-height: 1.3; }
+.zia-person small { font-size: 12.5px; color: rgba(255,255,255,.6); }
+.zia-person.is-active, .zia-person:hover { border-color: var(--zia-teal); background: rgba(30,138,138,.14); }
+.zia-person[data-office-card="culiacan"].is-active { border-color: var(--zia-gold); background: rgba(166,145,64,.14); }
+/* Mapa: etiquetas claras con halo oscuro (zia.css las define para fondo claro) */
+#cobertura .zia-map__lbl { fill: #fff; stroke: #0a1719; }
+#cobertura .zia-map__dots { opacity: .55; }
 
 /* ── Contacto directo y formulario en 3 pasos (venían de contacto.html) ── */
 .zia-direct { list-style: none; padding: 0; margin: 0 0 32px; display: grid; gap: 10px; }
@@ -251,31 +256,45 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
 }
 .zia-station__tip-link { cursor: pointer; }
 
-/* ── 3. Cómo trabajamos: la estación se pone en regla (escena fija) ── */
-.zia-scene { min-height: 100vh; min-height: 100svh; }
+/* ── 3. Cómo trabajamos: la estación se pone en regla (se reproduce sola, como video) ── */
+.zia-scene { min-height: 100vh; min-height: 100svh; background: #0a1719; }
 .zia-scene__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr); column-gap: clamp(28px, 3.4vw, 60px); align-items: center; }
 .zia-scene .zia-sec__head { margin-bottom: clamp(14px, 3vh, 28px); }
-/* Pasos: el activo muestra su descripción; los demás solo el título */
+/* Pasos: el activo muestra su descripción; los demás solo el título. Se pueden tocar para saltar. */
 .zia-scene__steps { list-style: none; margin: 0; padding: 0; position: relative; display: grid; gap: 4px; }
-.zia-scene__steps::before { content: ""; position: absolute; left: 17px; top: 18px; bottom: 18px; width: 2px; background: #d3e1e1; }
-.zia-scene__steps li { position: relative; display: grid; grid-template-columns: 36px 1fr; column-gap: 14px; align-items: start; padding: 6px 0; }
-.zia-scene__num { position: relative; z-index: 1; width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #7d9496; background: #fff; border: 2px solid #d3e1e1; transition: background .3s, border-color .3s, color .3s, box-shadow .3s; }
-.zia-scene__steps b { display: block; font-size: 16px; font-weight: 800; color: #7d9496; line-height: 1.3; padding-top: 7px; transition: color .3s; }
-.zia-scene__steps p { margin: 0; max-height: 0; overflow: hidden; opacity: 0; font-size: 14px; line-height: 1.5; color: #4d6366; transition: max-height .45s ease, opacity .3s ease, margin .3s ease; }
-.zia-scene__steps li.is-done .zia-scene__num { background: var(--zia-teal-soft); border-color: var(--zia-teal); color: var(--zia-teal); }
-.zia-scene__steps li.is-done b { color: var(--zia-ink); }
-.zia-scene__steps li.is-active .zia-scene__num { background: var(--zia-teal); border-color: var(--zia-teal); color: #fff; box-shadow: 0 0 0 6px rgba(30,138,138,.16); }
-.zia-scene__steps li.is-active b { color: var(--zia-ink); }
+.zia-scene__steps::before { content: ""; position: absolute; left: 17px; top: 18px; bottom: 18px; width: 2px; background: rgba(255,255,255,.12); }
+.zia-scene__steps li { position: relative; display: grid; grid-template-columns: 36px 1fr; column-gap: 14px; align-items: start; padding: 6px 0; cursor: pointer; border-radius: 10px; }
+.zia-scene__steps li:focus-visible { outline: 2px solid var(--zia-teal); outline-offset: 2px; }
+.zia-scene__num { position: relative; z-index: 1; width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: rgba(255,255,255,.5); background: #0a1719; border: 2px solid rgba(255,255,255,.18); transition: background .3s, border-color .3s, color .3s, box-shadow .3s; }
+.zia-scene__steps b { display: block; font-size: 16px; font-weight: 800; color: rgba(255,255,255,.5); line-height: 1.3; padding-top: 7px; transition: color .3s; }
+.zia-scene__steps li:hover b { color: rgba(255,255,255,.8); }
+.zia-scene__steps p { margin: 0; max-height: 0; overflow: hidden; opacity: 0; font-size: 14px; line-height: 1.5; color: rgba(255,255,255,.68); transition: max-height .45s ease, opacity .3s ease, margin .3s ease; }
+.zia-scene__steps li.is-done .zia-scene__num { background: rgba(30,138,138,.2); border-color: var(--zia-teal); color: #4fd1c5; }
+.zia-scene__steps li.is-done b { color: rgba(255,255,255,.82); }
+.zia-scene__steps li.is-active .zia-scene__num { background: var(--zia-teal); border-color: var(--zia-teal); color: #fff; box-shadow: 0 0 0 6px rgba(30,138,138,.22); }
+.zia-scene__steps li.is-active b { color: #fff; }
 .zia-scene__steps li.is-active p { max-height: 90px; opacity: 1; margin-top: 4px; }
 /* Medidor de cumplimiento */
-.zia-scene__meter { margin-top: clamp(14px, 3vh, 26px); padding: 14px 16px; border-radius: 14px; background: #fff; border: 1px solid #dbe7e7; box-shadow: 0 10px 30px rgba(12,30,33,.06); }
+.zia-scene__meter { margin-top: clamp(14px, 3vh, 26px); padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); }
 .zia-scene__meter-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
-.zia-scene__meter-top span { font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: #7d9496; }
-.zia-scene__meter-val { font-size: 24px; font-weight: 900; color: var(--zia-teal); font-variant-numeric: tabular-nums; }
-.zia-scene__bar { height: 10px; border-radius: 6px; background: #e3eded; overflow: hidden; }
+.zia-scene__meter-top span { font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+.zia-scene__meter-val { font-size: 24px; font-weight: 900; color: #4fd1c5; font-variant-numeric: tabular-nums; }
+.zia-scene__bar { height: 10px; border-radius: 6px; background: rgba(255,255,255,.1); overflow: hidden; }
 .zia-scene__bar i { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--zia-teal), #2f9e6b); transform-origin: 0 50%; }
-/* Escenario: copia de la estación con capas de la escena */
-.zia-scene__stage { position: relative; width: 100%; max-width: calc((100svh - var(--zia-hdr, 66px) - 90px) * 2.07 + 20px); margin-left: auto; box-shadow: 0 30px 70px rgba(12,30,33,.16); }
+/* Escenario: copia de la estación con capas de la escena (deja lugar a los controles) */
+.zia-scene__stage { position: relative; width: 100%; max-width: calc((100svh - var(--zia-hdr, 66px) - 140px) * 2.07 + 20px); margin-left: auto; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+/* Controles tipo video */
+.zia-scene__controls { display: flex; align-items: center; gap: 14px; width: 100%; max-width: calc((100svh - var(--zia-hdr, 66px) - 140px) * 2.07 + 20px); margin: 14px 0 0 auto; }
+.zia-scene__play { flex: 0 0 auto; width: 42px; height: 42px; border-radius: 50%; border: 0; display: inline-flex; align-items: center; justify-content: center; background: var(--zia-teal); color: #fff; cursor: pointer; transition: background .2s, transform .2s; }
+.zia-scene__play:hover { background: #23a0a0; transform: scale(1.06); }
+.zia-scene__play svg { width: 18px; height: 18px; fill: currentColor; display: none; }
+.zia-scene__controls[data-state="paused"] .i-play, .zia-scene__controls[data-state="playing"] .i-pause, .zia-scene__controls[data-state="ended"] .i-replay { display: block; }
+.zia-scene__track { order: 2; position: relative; flex: 1; height: 6px; border-radius: 4px; background: rgba(255,255,255,.14); cursor: pointer; }
+.zia-scene__track::before { content: ""; position: absolute; inset: -10px 0; } /* zona de clic más alta */
+.zia-scene__track-fill { position: absolute; inset: 0; border-radius: 4px; background: linear-gradient(90deg, var(--zia-teal), #2f9e6b); transform: scaleX(0); transform-origin: 0 50%; }
+.zia-scene__tick { position: absolute; top: -3px; width: 2px; height: 12px; margin-left: -1px; border-radius: 1px; background: rgba(255,255,255,.5); }
+/* Junto al botón (a la derecha quedaría bajo el botón flotante de WhatsApp) */
+.zia-scene__time { order: 1; flex: 0 0 auto; min-width: 78px; font-size: 12.5px; font-weight: 800; color: rgba(255,255,255,.6); font-variant-numeric: tabular-nums; }
 .zia-scene__stage svg { display: block; width: 100%; height: auto; border-radius: 12px; }
 .zia-station--scene .pt { transition: none; cursor: default; }
 .zia-station--scene .pt-ring { display: none; }
@@ -322,10 +341,12 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
   .zia-scene .zia-sec__head { order: 1; margin-bottom: 14px; }
   .zia-scene .zia-sec__title { font-size: 30px; }
   .zia-scene__stage { order: 2; max-width: none; margin: 0; }
-  .zia-scene__steps { order: 3; margin-top: 14px; }
+  .zia-scene__controls { order: 3; max-width: none; margin: 10px 0 0; gap: 10px; }
+  .zia-scene__play { width: 36px; height: 36px; }
+  .zia-scene__steps { order: 4; margin-top: 12px; }
   .zia-scene__steps::before { display: none; }
   .zia-scene:not(.is-static) .zia-scene__steps li:not(.is-active) { display: none; }
-  .zia-scene__meter { order: 4; margin-top: 10px; padding: 10px 14px; }
+  .zia-scene__meter { order: 5; margin-top: 10px; padding: 10px 14px; }
   .zia-scene__status { top: 10px; left: 10px; padding: 5px 10px; font-size: 11px; }
   .zia-scene__result { left: 8px; right: 8px; bottom: 8px; top: 8px; grid-template-columns: 1fr; grid-template-areas: "kicker" "list" "cta"; align-content: center; gap: 8px; padding: 12px 14px; }
   .zia-scene__result ul { grid-template-columns: 1fr; gap: 6px; }

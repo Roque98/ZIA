@@ -214,10 +214,10 @@
         </section>
 
         <!-- ══ 3. CÓMO TRABAJAMOS: la estación se pone en regla ══
-             Escena fija: el scroll avanza auditoría → plan → ejecución → seguimiento sobre
-             una copia de la estación de la sección 2 (la arma landing.js). Sin JS o con
-             movimiento reducido se muestra directamente el estado final. -->
-        <section class="zia-sec zia-sec--light zia-scene" id="proceso">
+             Se reproduce sola como un video al llegar a la sección (auditoría → plan →
+             ejecución → seguimiento) sobre una copia de la estación de la sección 2; la arma
+             landing.js. Sin JS o con movimiento reducido se muestra el estado final. -->
+        <section class="zia-sec zia-scene" id="proceso">
           <div class="container zia-scene__grid">
             <div class="zia-scene__side">
               <div class="zia-sec__head">
@@ -251,6 +251,16 @@
                     <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
                   </a>
                 </div>
+              </div>
+              <!-- Controles tipo video (landing.js los conecta a la animación) -->
+              <div class="zia-scene__controls" data-state="paused">
+                <button type="button" class="zia-scene__play" aria-label="Reproducir">
+                  <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+                  <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
+                  <svg class="i-replay" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="zia-scene__track" aria-hidden="true"><i class="zia-scene__track-fill"></i></div>
+                <span class="zia-scene__time" aria-live="off">Paso 1 de 4</span>
               </div>
             </div>
           </div>
@@ -325,7 +335,7 @@
         </section>
 
         <!-- ══ 6. COBERTURA ══ -->
-        <section class="zia-sec zia-sec--light" id="cobertura">
+        <section class="zia-sec zia-lp-coverage" id="cobertura">
           <div class="container">
             <div class="zia-sec__head zia-sec__head--center">
               <span class="zia-sec__kicker">Cobertura</span>
