@@ -523,7 +523,8 @@
 }());
 
 /* ── Cómo trabajamos: la estación se pone en regla ──
-   Escena fija (pin) cuyo avance lo controla el scroll:
+   Se reproduce sola como un video al llegar a la sección (controles: play/pausa,
+   barra de progreso y pasos clicables):
    1 auditoría (escáner, hallazgos en rojo) → 2 plan (prioridades en ámbar) →
    3 ejecución (verdes con palomita, medidor a 100%) → 4 seguimiento (ondas + resultado). */
 (function () {
@@ -593,6 +594,8 @@
   // Sin GSAP o con movimiento reducido: estado final, sin escena fija
   if (!hasGsap || reduced) {
     scene.classList.add('is-static');
+    var ctl = scene.querySelector('.zia-scene__controls');
+    if (ctl) ctl.hidden = true;
     ORDER.forEach(function (id) { pts[id].style.fill = C.green; badges[id].style.display = 'none'; });
     radars.forEach(function (r) { r.style.display = 'none'; });
     scan.style.display = 'none';
@@ -664,23 +667,72 @@
     }
     setMeter(gsap.getProperty(bar, 'scaleX') * 100);
   }
-  tl.eventCallback('onUpdate', sync);
-  sync();
+  /* ── Reproducción tipo video: arranca sola al llegar a la sección ── */
+  var controls = scene.querySelector('.zia-scene__controls');
+  var playBtn = scene.querySelector('.zia-scene__play');
+  var track = scene.querySelector('.zia-scene__track');
+  var trackFill = scene.querySelector('.zia-scene__track-fill');
+  var timeLbl = scene.querySelector('.zia-scene__time');
+  var STARTS = [0, T.plan - .2, T.exec - .2, T.watch - .1];
+  var userPaused = false, inView = false;
+  tl.timeScale(.85); // ~12 s en total
 
-  ScrollTrigger.create({
-    trigger: scene,
-    start: 'top top',
-    end: function () { return '+=' + Math.round(window.innerHeight * 2.6); },
-    pin: true,
-    anticipatePin: 1,
-    scrub: .6,
-    animation: tl,
-    invalidateOnRefresh: true,
-    // Se recalcula primero: los disparadores de las secciones de abajo dependen del espacio del pin
-    refreshPriority: 1
+  // Marcas de cada paso sobre la barra de progreso
+  STARTS.forEach(function (s, i) {
+    var tick = document.createElement('span');
+    tick.className = 'zia-scene__tick';
+    tick.style.left = (s / tl.duration() * 100) + '%';
+    if (i === 0) tick.style.display = 'none';
+    track.appendChild(tick);
   });
-  ScrollTrigger.sort && ScrollTrigger.sort();
-  ScrollTrigger.refresh();
+
+  function setState() {
+    var st = tl.progress() >= 1 ? 'ended' : tl.paused() ? 'paused' : 'playing';
+    controls.dataset.state = st;
+    playBtn.setAttribute('aria-label', st === 'playing' ? 'Pausar' : st === 'ended' ? 'Repetir' : 'Reproducir');
+  }
+  function play() { if (tl.progress() >= 1) tl.restart(); else tl.play(); setState(); }
+  function pause() { tl.pause(); setState(); }
+
+  var baseSync = sync;
+  sync = function () {
+    baseSync();
+    trackFill.style.transform = 'scaleX(' + tl.progress() + ')';
+    var t = tl.time(), n = t < STARTS[1] ? 1 : t < STARTS[2] ? 2 : t < STARTS[3] ? 3 : 4;
+    timeLbl.textContent = 'Paso ' + n + ' de 4';
+  };
+  tl.eventCallback('onUpdate', sync);
+  tl.eventCallback('onComplete', setState);
+  sync();
+  setState();
+
+  playBtn.addEventListener('click', function () {
+    if (controls.dataset.state === 'playing') { userPaused = true; pause(); }
+    else { userPaused = false; play(); }
+  });
+  // Clic en la barra: salta a ese punto y sigue reproduciendo
+  track.addEventListener('click', function (e) {
+    var r = track.getBoundingClientRect();
+    tl.progress(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)));
+    userPaused = false; play();
+  });
+  // Clic en un paso: salta a su inicio
+  steps.forEach(function (li, i) {
+    li.tabIndex = 0;
+    li.setAttribute('role', 'button');
+    var go = function () { tl.time(STARTS[i]); userPaused = false; tl.play(); setState(); };
+    li.addEventListener('click', go);
+    li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+  });
+
+  // Se reproduce al estar a la vista y se pausa al salir (sin perder dónde iba)
+  new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      inView = en.isIntersecting;
+      if (inView && !userPaused && tl.progress() < 1) play();
+      else if (!inView && !tl.paused()) pause();
+    });
+  }, { threshold: .45 }).observe(stage);
 }());
 
 /* ── Cifras animadas ── */
