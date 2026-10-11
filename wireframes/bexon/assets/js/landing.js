@@ -110,13 +110,15 @@
     volumetrico:     { k: 'Dispensarios',        t: 'Control volumétrico',        d: 'Medición conforme a la Miscelánea Fiscal y dispensarios NOM-005-SCFI-2017.', tema: 'SAT' },
     telemedicion:    { k: 'Consola',             t: 'Telemedición y Anexo 30',    d: 'Consolas, archivos JSON/XML al SAT y seguridad perimetral de la red.', tema: 'SAT' },
     videovigilancia: { k: 'Cámaras',             t: 'Videovigilancia tipo C4',    d: 'Monitoreo remoto y control de acceso.', tema: 'No estoy seguro' },
-    electrica:       { k: 'Instalación eléctrica', t: 'NOM-001-SEDE-2012',        d: 'Verificación eléctrica, iluminación, ruido y energía estática.', tema: 'STPS' },
+    electrica:       { k: 'Instalación eléctrica', l: 'Eléctrica', t: 'NOM-001-SEDE-2012', d: 'Verificación eléctrica, iluminación, ruido y energía estática.', tema: 'STPS' },
     seguridad:       { k: 'Operación',           t: 'SASISOPA y emergencias',     d: 'Análisis de riesgo, protocolo de respuesta y licencia de funcionamiento.', tema: 'ASEA,Protección Civil' }
   };
   var station = document.getElementById('zia-station');
   if (station) {
     var svg = station.querySelector('svg');
-    var tip = station.querySelector('.zia-station__tip');
+    // El detalle vive en un panel fuera del diagrama para no tapar la ilustración
+    var tip = document.querySelector('#estacion .zia-station__tip');
+    var SVGNS = 'http://www.w3.org/2000/svg';
     var legend = document.querySelectorAll('.zia-station__legend button');
     var ids = Object.keys(PUNTOS);
     var current = null, timer = null, userTook = false;
@@ -134,57 +136,198 @@
       pt.setAttribute('aria-label', PUNTOS[pt.dataset.punto].k);
     });
 
-    function show(id) {
+    // Etiqueta corta junto al punto activo (solo el nombre; el detalle va en el panel)
+    var label = document.createElementNS(SVGNS, 'g');
+    label.setAttribute('class', 'pt-label');
+    label.setAttribute('aria-hidden', 'true');
+    var labelBg = document.createElementNS(SVGNS, 'rect');
+    var labelTxt = document.createElementNS(SVGNS, 'text');
+    label.appendChild(labelBg); label.appendChild(labelTxt);
+    svg.appendChild(label);
+
+    /* ── Cámara: cada punto tiene un encuadre (viewBox, proporción 1200×580) y los
+       grupos del dibujo que se quedan encendidos; el resto se atenúa ── */
+    var FULL = [0, 120, 1200, 580];
+    var FOCUS = {
+      hermeticidad:    { vb: [225, 362, 700, 338], g: ['zia-tanques'] },
+      volumetrico:     { vb: [266, 251, 500, 242], g: ['zia-dispensarios'] },
+      // Marco propio (x1, y1, x2, y2): líneas de datos + consola, no toda la tienda
+      telemedicion:    { vb: [425, 278, 640, 309], g: ['zia-telemedicion', 'zia-tienda'], box: [478, 334, 1008, 534] },
+      videovigilancia: { vb: [860, 180, 340, 164], g: ['zia-camara'] },
+      electrica:       { vb: [580, 145, 620, 300], g: ['zia-electrica'] },
+      seguridad:       { vb: [220, 120, 600, 290], g: ['zia-marquesina'] }
+    };
+    var cam = { x: FULL[0], y: FULL[1], w: FULL[2], h: FULL[3] };
+    var zoomed = false, emph = null, frameTween = null;
+    var pts = svg.querySelectorAll('.pt'), rings = svg.querySelectorAll('.pt-ring');
+    var reset = station.querySelector('.zia-station__reset');
+
+    // Marco punteado que señala el componente enfocado
+    var frame = document.createElementNS(SVGNS, 'rect');
+    frame.setAttribute('class', 'focus-frame');
+    frame.setAttribute('aria-hidden', 'true');
+    svg.insertBefore(frame, svg.querySelector('#zia-puntos'));
+
+    // Puntos, etiqueta y marco conservan su tamaño en pantalla aunque cambie el zoom
+    function applyCam() {
+      svg.setAttribute('viewBox', [cam.x, cam.y, cam.w, cam.h].join(' '));
+      var k = cam.w / FULL[2];
+      pts.forEach(function (p) { p.setAttribute('r', 11 * k); });
+      rings.forEach(function (r) { r.setAttribute('r', 11 * k); });
+      return k;
+    }
+
+    function placeLabel(pt, text) {
+      var k = cam.w / FULL[2];
+      labelTxt.textContent = text;
+      labelTxt.setAttribute('font-size', 20 * k);
+      var cx = +pt.getAttribute('cx'), cy = +pt.getAttribute('cy');
+      var w = labelTxt.getBBox().width + 30 * k, h = 38 * k, gap = 26 * k;
+      var minX = cam.x + 8 * k, maxX = cam.x + cam.w - 8 * k, minY = cam.y + 6 * k;
+      // Arriba del punto (suele haber cielo o espacio libre); debajo si no cabe en el encuadre
+      var x = Math.max(minX, Math.min(maxX - w, cx - w / 2));
+      var y = cy - gap - h < minY ? cy + gap : cy - gap - h;
+      labelBg.setAttribute('x', x); labelBg.setAttribute('y', y);
+      labelBg.setAttribute('width', w); labelBg.setAttribute('height', h); labelBg.setAttribute('rx', h / 2);
+      labelTxt.setAttribute('x', x + 15 * k); labelTxt.setAttribute('y', y + h / 2 + 7 * k);
+    }
+
+    function placeFrame(f) {
+      var k = cam.w / FULL[2], pad = 14 * k, box = null;
+      if (f.box) box = { x1: f.box[0], y1: f.box[1], x2: f.box[2], y2: f.box[3] };
+      else f.g.forEach(function (gid) {
+        var g = document.getElementById(gid);
+        if (!g) return;
+        var b = g.getBBox();
+        box = box ? { x1: Math.min(box.x1, b.x), y1: Math.min(box.y1, b.y), x2: Math.max(box.x2, b.x + b.width), y2: Math.max(box.y2, b.y + b.height) }
+                  : { x1: b.x, y1: b.y, x2: b.x + b.width, y2: b.y + b.height };
+      });
+      if (!box) return;
+      // El marco nunca se sale del encuadre
+      var inset = 5 * k;
+      var x1 = Math.max(cam.x + inset, box.x1 - pad), y1 = Math.max(cam.y + inset, box.y1 - pad);
+      var x2 = Math.min(cam.x + cam.w - inset, box.x2 + pad), y2 = Math.min(cam.y + cam.h - inset, box.y2 + pad);
+      frame.setAttribute('x', x1); frame.setAttribute('y', y1);
+      frame.setAttribute('width', x2 - x1); frame.setAttribute('height', y2 - y1);
+      frame.setAttribute('rx', 14 * k);
+      frame.setAttribute('stroke-dasharray', (10 * k) + ' ' + (7 * k));
+    }
+
+    function dim(groupIds) {
+      svg.querySelectorAll(':scope > g').forEach(function (g) {
+        if (g.id === 'zia-puntos' || g.classList.contains('pt-label')) return;
+        g.classList.toggle('is-dim', !!groupIds && groupIds.indexOf(g.id) === -1);
+      });
+    }
+
+    /* Animación de énfasis propia de cada componente (en bucle mientras está enfocado) */
+    function emphasis(id) {
+      if (emph) { emph.revert ? emph.revert() : emph.progress(0).kill(); emph = null; }
+      svg.querySelectorAll('#zia-telemedicion .dash').forEach(function (p) { p.style.animationDuration = ''; });
+      if (!hasGsap || reduced || !id) return;
+      var q = function (s) { return svg.querySelectorAll(s); };
+      emph = gsap.timeline({ repeat: -1, yoyo: true, defaults: { ease: 'sine.inOut' } });
+      if (id === 'hermeticidad') {
+        // El nivel del combustible sube y baja, como en una medición
+        emph.to('#zia-nivel-1', { attr: { y: 566, height: 74 }, duration: 1.3 }, 0)
+            .to('#zia-nivel-2', { attr: { y: 582, height: 58 }, duration: 1.3 }, .3);
+      } else if (id === 'volumetrico') {
+        // Las pantallas de los dispensarios parpadean al contar litros
+        emph.to(q('#zia-dispensarios .lt.tm'), { opacity: .3, duration: .45, stagger: .2 });
+      } else if (id === 'telemedicion') {
+        // El flujo de datos hacia la consola se acelera y la consola pulsa
+        q('#zia-telemedicion .dash').forEach(function (p) { p.style.animationDuration = '.45s'; });
+        emph.to(q('#zia-telemedicion circle'), { attr: { r: 10 }, duration: .6 }, 0)
+            .to(q('#zia-tienda path[stroke="#4fd1c5"]'), { opacity: .2, duration: .35 }, 0);
+      } else if (id === 'videovigilancia') {
+        // El cono de visión de la cámara hace un barrido
+        emph.fromTo(q('#zia-camara path[stroke-dasharray]'), { rotation: -14, svgOrigin: '1100 250' }, { rotation: 10, svgOrigin: '1100 250', duration: 1.4 });
+      } else if (id === 'electrica') {
+        // El cable "chispea" en dorado
+        emph.to(q('#zia-electrica path'), { stroke: '#A69140', strokeWidth: 4, duration: .22, stagger: .06 });
+      } else if (id === 'seguridad') {
+        // La franja de la marquesina pulsa como señal de operación segura
+        emph.to(q('#zia-marquesina rect.tm'), { opacity: .35, duration: .6 }, 0)
+            .to(q('#zia-marquesina path[stroke="#A69140"]'), { strokeWidth: 5, duration: .6 }, 0);
+      }
+    }
+
+    function zoomTo(id) {
+      var f = id ? FOCUS[id] : null;
+      var vb = f ? f.vb : FULL;
+      zoomed = !!f;
+      station.classList.toggle('is-zoomed', zoomed);
+      if (reset) reset.hidden = !zoomed;
+      dim(f ? f.g : null);
+      emphasis(id);
+      var done = function () {
+        applyCam();
+        var pt = current && svg.querySelector('.pt[data-punto="' + current + '"]');
+        if (pt) placeLabel(pt, PUNTOS[current].l || PUNTOS[current].k);
+        if (f) placeFrame(f);
+        if (hasGsap && !reduced) {
+          gsap.fromTo([label, frame], { opacity: 0 }, { opacity: 1, duration: .3, clearProps: 'opacity' });
+          // Guiones "en marcha" alrededor del componente (un ciclo = un guion + un espacio)
+          if (f) frameTween = gsap.fromTo(frame, { strokeDashoffset: 0 }, { strokeDashoffset: -17 * (cam.w / FULL[2]), duration: .7, ease: 'none', repeat: -1 });
+        }
+      };
+      if (frameTween) { frameTween.kill(); frameTween = null; }
+      frame.classList.toggle('is-on', !!f);
+      if (!hasGsap || reduced) {
+        // Sin animación: la vista general se mantiene y solo se resalta el componente
+        if (!reduced) { cam.x = vb[0]; cam.y = vb[1]; cam.w = vb[2]; cam.h = vb[3]; }
+        return done();
+      }
+      gsap.set([label, frame], { opacity: 0 });
+      gsap.to(cam, { x: vb[0], y: vb[1], w: vb[2], h: vb[3], duration: .9, ease: 'power3.inOut', overwrite: true, onUpdate: applyCam, onComplete: done });
+    }
+
+    function show(id, opts) {
       var data = PUNTOS[id];
       var pt = svg.querySelector('.pt[data-punto="' + id + '"]');
       if (!data || !pt) return;
       current = id;
-      svg.querySelectorAll('.pt').forEach(function (p) { p.classList.toggle('is-active', p === pt); });
+      pts.forEach(function (p) { p.classList.toggle('is-active', p === pt); });
       legend.forEach(function (b) { b.classList.toggle('is-active', b.dataset.punto === id); });
       tip.querySelector('.zia-station__tip-kicker').textContent = data.k;
       tip.querySelector('.zia-station__tip-title').textContent = data.t;
       tip.querySelector('.zia-station__tip-desc').textContent = data.d;
       tip.querySelector('.zia-station__tip-link').dataset.tema = data.tema;
-      tip.hidden = false;
-
-      // Posición: sobre el punto; debajo si no cabe arriba; dentro del contenedor a lo ancho
-      var box = station.getBoundingClientRect(), r = pt.getBoundingClientRect();
-      var x = r.left + r.width / 2 - box.left, y = r.top + r.height / 2 - box.top;
-      var half = tip.offsetWidth / 2, pad = 8;
-      var cx = Math.max(half + pad, Math.min(box.width - half - pad, x));
-      var below = y - tip.offsetHeight - 30 < 0;
-      tip.classList.toggle('is-below', below);
-      tip.style.left = cx + 'px';
-      tip.style.top = y + 'px';
-      tip.style.setProperty('--arrow', (half + x - cx) + 'px');
-      if (hasGsap && !reduced) gsap.fromTo(tip, { opacity: 0 }, { opacity: 1, duration: .25, clearProps: 'opacity' });
+      // Se anima el contenedor (div y g), no sus hijos: main.css da transition a span/a y chocaría con GSAP
+      if (hasGsap && !reduced) gsap.fromTo(tip, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: .3, ease: 'power2.out', clearProps: 'opacity,transform' });
+      if (opts && opts.zoom === false) { placeLabel(pt, data.l || data.k); return; }
+      zoomTo(id);
     }
-    function stopAuto() { userTook = true; clearInterval(timer); }
+    function stopAuto() { userTook = true; clearInterval(timer); clearTimeout(startTimer); }
 
-    svg.querySelectorAll('.pt').forEach(function (pt) {
-      ['mouseenter', 'focus', 'click'].forEach(function (ev) {
-        pt.addEventListener(ev, function () { stopAuto(); show(pt.dataset.punto); });
+    // Clic o teclado (no hover): con el zoom, el punto se movería bajo el cursor
+    pts.forEach(function (pt) {
+      pt.addEventListener('click', function () { stopAuto(); show(pt.dataset.punto); });
+      pt.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); stopAuto(); show(pt.dataset.punto); }
       });
     });
     legend.forEach(function (b) {
-      ['mouseenter', 'click'].forEach(function (ev) {
-        b.addEventListener(ev, function () { stopAuto(); show(b.dataset.punto); });
-      });
+      b.addEventListener('click', function () { stopAuto(); show(b.dataset.punto); });
     });
-    window.addEventListener('resize', function () { if (current) show(current); });
+    if (reset) reset.addEventListener('click', function () { stopAuto(); zoomTo(null); });
 
-    // Recorrido automático mientras la cabecera está a la vista y nadie interactúa
+    // El panel nunca queda vacío: arranca con el primer punto y la vista completa
+    applyCam();
+    show(ids[0], { zoom: false });
+
+    // Recorrido automático tipo cámara mientras el diagrama está a la vista y nadie interactúa
+    var startTimer = null;
     if (!reduced) {
       var i = 0;
       var cycle = function () { show(ids[i % ids.length]); i++; };
       new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
-          clearInterval(timer);
-          if (en.isIntersecting && !userTook) { cycle(); timer = setInterval(cycle, 3200); }
+          clearInterval(timer); clearTimeout(startTimer);
+          // Primero se ve la estación completa un momento; luego empieza el recorrido
+          if (en.isIntersecting && !userTook) startTimer = setTimeout(function () { cycle(); timer = setInterval(cycle, 4200); }, 1400);
         });
       }, { threshold: .4 }).observe(station);
-    } else {
-      show(ids[0]);
     }
   }
 }());
@@ -300,6 +443,14 @@
     var svg = src.cloneNode(true);
     svg.removeAttribute('role');
     svg.setAttribute('aria-hidden', 'true');
+    // La estación original puede estar con zoom y atenuada: la copia parte de la vista completa
+    svg.setAttribute('viewBox', '0 120 1200 580');
+    svg.querySelectorAll('.focus-frame, .pt-label').forEach(function (el) { el.remove(); });
+    svg.querySelectorAll('.is-dim').forEach(function (el) { el.classList.remove('is-dim'); });
+    svg.querySelectorAll('[style]').forEach(function (el) { el.removeAttribute('style'); });
+    var n1 = svg.querySelector('#zia-nivel-1'), n2 = svg.querySelector('#zia-nivel-2');
+    if (n1) { n1.setAttribute('y', 580); n1.setAttribute('height', 60); }
+    if (n2) { n2.setAttribute('y', 595); n2.setAttribute('height', 45); }
     svg.querySelectorAll('[id]').forEach(function (el) { el.id = 'mini-' + el.id; });
     svg.querySelectorAll('[clip-path]').forEach(function (el) {
       el.setAttribute('clip-path', el.getAttribute('clip-path').replace('url(#', 'url(#mini-'));
