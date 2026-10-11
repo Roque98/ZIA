@@ -63,7 +63,7 @@
 
 /* ── Cifras y equipo (venían de nosotros.html) ── */
 .zia-figures { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.zia-figure { position: relative; padding: 26px 24px; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(2px); }
+.zia-figure { position: relative; padding: 26px 24px; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); }
 .zia-figure b { display: block; font-size: 52px; font-weight: 900; line-height: 1; color: var(--zia-teal); font-variant-numeric: tabular-nums; margin-bottom: 10px; }
 .zia-figure span { font-size: 13.5px; line-height: 1.45; color: rgba(255,255,255,.7); }
 .zia-figure:first-of-type b { color: var(--zia-gold); }
@@ -700,4 +700,20 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
   .zia-reg-modal__foot { padding: 12px 18px calc(12px + env(safe-area-inset-bottom)); }
   .zia-reg-modal__hint { display: none; }
   .zia-reg-modal__cta { width: 100%; justify-content: space-between; }
+}
+
+/* Ícono de WhatsApp en SVG (sustituye a Font Awesome, que solo se cargaba para esto) */
+.zia-ico-wa { width: 1.15em; height: 1.15em; fill: currentColor; display: block; }
+.whatsapp-sticky .zia-ico-wa { width: 26px; height: 26px; }
+
+/* ═══ Rendimiento ═══ */
+/* Secciones fuera de pantalla (landing.js pone .is-offscreen): sus animaciones infinitas se pausan */
+.zia-sec.is-offscreen *, .zia-sec.is-offscreen *::before, .zia-sec.is-offscreen *::after { animation-play-state: paused !important; }
+/* Pantallas táctiles y angostas: sin desenfoques ni máscaras, que se recalculan al desplazar */
+@media (max-width: 991px), (hover: none) {
+  .zia-lp-header.is-solid { backdrop-filter: none; background: rgba(12,30,33,.97); }
+  .zia-sec::before { mask-image: none; -webkit-mask-image: none; opacity: .4; }
+  .zia-sec--light::before { opacity: .3; }
+  .zia-reg-modal::backdrop { backdrop-filter: none; background: rgba(6,16,18,.88); }
+  .zia-reg-modal__foot { backdrop-filter: none; background: #0f2326; }
 }

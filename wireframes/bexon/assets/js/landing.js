@@ -4,6 +4,27 @@
    Cada módulo es independiente: si su marcado no existe, no hace nada.
 ═══════════════════════════════════════════════════ */
 
+/* ── Rendimiento: lo que no se ve no se anima ──
+   Cada sección fuera de pantalla recibe .is-offscreen (landing.css pausa ahí las animaciones
+   CSS infinitas: anillos, pulsos, flujo de datos, órbita) y el video del hero se pausa. */
+(function () {
+  if (!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) { en.target.classList.toggle('is-offscreen', !en.isIntersecting); });
+  }, { rootMargin: '80px 0px' });
+  document.querySelectorAll('main .zia-sec').forEach(function (s) { io.observe(s); });
+
+  var video = document.querySelector('.zia-lp-video video');
+  if (video) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+        else video.pause();
+      });
+    }, { threshold: .1 }).observe(video);
+  }
+}());
+
 /* ── Estación interactiva (el enlace del detalle pre-llena el formulario) ── */
 (function () {
   var hasGsap = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
@@ -229,6 +250,9 @@
       new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
           clearInterval(timer); clearTimeout(startTimer);
+          // Fuera de la vista, los bucles de énfasis y del marco no gastan cuadros
+          if (emph) emph.paused(!en.isIntersecting);
+          if (frameTween) frameTween.paused(!en.isIntersecting);
           // Primero se ve la estación completa un momento; luego empieza el recorrido
           if (en.isIntersecting && !userTook) startTimer = setTimeout(function () { cycle(); timer = setInterval(cycle, 4200); }, 1400);
         });

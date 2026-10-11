@@ -75,7 +75,9 @@ Progressbar js
 		let smoother = ScrollSmoother.create({
 			smooth: 1.5,
 			effects: true,
-			smoothTouch: 0.1,
+			// ZIA: en pantallas táctiles se usa el scroll nativo. Suavizarlo por JS (antes 0.1)
+			// movía toda la página en cada cuadro y se sentía lento en teléfonos.
+			smoothTouch: false,
 			ignoreMobileResize: true,
 		});
 	}
