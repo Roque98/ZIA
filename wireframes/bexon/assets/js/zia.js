@@ -109,7 +109,8 @@
     var fromHash = location.hash.indexOf('#oficina-') === 0 ? location.hash.slice(9) : null;
     setActive(fromHash || (cards[0] && cards[0].dataset.officeCard));
 
-    if (hasGsap && !reduced) {
+    // data-zia-zones: la landing anima el mapa por zonas (landing.js); aquí no se repite la entrada
+    if (hasGsap && !reduced && !map.hasAttribute('data-zia-zones')) {
       var st = { trigger: map, start: 'top 80%' };
       gsap.fromTo(map.querySelector('.zia-map__dots'), { opacity: 0 }, { opacity: .45, duration: 1.2, ease: 'power1.out', scrollTrigger: st, clearProps: 'opacity' });
       gsap.fromTo(pins, { opacity: 0 }, { opacity: 1, duration: .6, stagger: .14, ease: 'power2.out', delay: .4, scrollTrigger: st });
