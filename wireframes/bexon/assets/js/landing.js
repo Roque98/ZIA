@@ -1111,13 +1111,14 @@
     edoZone[n] = o ? o.key : 'morelia';
   });
   // Un path de puntos por estado, agrupados por zona, y un círculo de recorte que crece desde la oficina
-  var segs = {}, maxR = {};
+  var segs = {}, maxR = {}, dotList = [];
   keys.forEach(function (k) { maxR[k] = 0; });
   dotsPath.getAttribute('d').replace(/M([-\d.]+) ([-\d.]+)h0/g, function (_, x, y) {
     x = +x; y = +y;
     var best = null, bd = Infinity;
     Object.keys(edoPts).forEach(function (n) { var d = Math.hypot(x - edoPts[n].x, y - edoPts[n].y); if (d < bd) { bd = d; best = n; } });
     (segs[best] = segs[best] || []).push('M' + x + ' ' + y + 'h0');
+    dotList.push({ x: x, y: y, n: best });
     var k = edoZone[best], r = Math.hypot(x - centers[k].x, y - centers[k].y);
     if (r > maxR[k]) maxR[k] = r;
     return '';
@@ -1157,10 +1158,65 @@
     pins.forEach(function (p) { p.classList.toggle('is-active', p.dataset.office === k); });
     cards.forEach(function (c) { c.classList.toggle('is-active', c.dataset.officeCard === k); });
   }
-  pins.forEach(function (p) { ['mouseenter', 'focus', 'click'].forEach(function (ev) { p.addEventListener(ev, function () { highlight(p.dataset.office); }); }); });
-  cards.forEach(function (c) { ['mouseenter', 'focus', 'click'].forEach(function (ev) { c.addEventListener(ev, function () { highlight(c.dataset.officeCard); }); }); });
+  // Lo elegido en el buscador se mantiene; el hover lo cambia solo mientras dura
+  var picked = null, choose = null;
+  function restore() { if (picked) highlight(picked.k, picked.n); else highlight(null); }
+  pins.forEach(function (p) {
+    ['mouseenter', 'focus', 'click'].forEach(function (ev) { p.addEventListener(ev, function () { highlight(p.dataset.office); }); });
+    p.addEventListener('mouseleave', restore);
+  });
+  cards.forEach(function (c) {
+    ['mouseenter', 'focus', 'click'].forEach(function (ev) { c.addEventListener(ev, function () { highlight(c.dataset.officeCard); }); });
+    c.addEventListener('mouseleave', restore);
+  });
   // zia.js marca la primera oficina al cargar; aquí se arranca con todas las zonas por igual
   highlight(null);
+
+  /* Hover y clic sobre cualquier parte del mapa: el estado bajo el cursor (punto más cercano)
+     resalta su zona; el clic lo elige en el buscador. Etiqueta flotante con estado y oficina. */
+  var tip = document.createElement('div');
+  tip.className = 'zia-map__tip';
+  tip.hidden = true;
+  map.appendChild(tip);
+  function stateAt(e) {
+    var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+    var ctm = svg.getScreenCTM(); if (!ctm) return null;
+    var p = pt.matrixTransform(ctm.inverse()), best = null, bd = 18 * 18; // a menos de ~1.5 puntos
+    for (var i = 0; i < dotList.length; i++) {
+      var dx = dotList[i].x - p.x, dy = dotList[i].y - p.y, d = dx * dx + dy * dy;
+      if (d < bd) { bd = d; best = dotList[i].n; }
+    }
+    return best;
+  }
+  var hoverN = null, raf = 0;
+  function hideTip() { tip.hidden = true; map.style.cursor = ''; }
+  svg.addEventListener('pointermove', function (e) {
+    if (e.pointerType === 'touch') return;
+    if (e.target.closest && e.target.closest('[data-office]')) { hoverN = null; hideTip(); return; }
+    var cx = e.clientX, cy = e.clientY, ev = { clientX: cx, clientY: cy };
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(function () {
+      var n = stateAt(ev);
+      if (!n) { if (hoverN) { hoverN = null; restore(); } hideTip(); return; }
+      if (n !== hoverN) {
+        hoverN = n;
+        highlight(edoZone[n], n);
+        var o = cob && cob.officeFor(n);
+        tip.innerHTML = '<b>' + n + '</b>' + (o ? 'Oficina ' + o.name : '');
+      }
+      var r = map.getBoundingClientRect();
+      tip.style.left = (cx - r.left) + 'px';
+      tip.style.top = (cy - r.top) + 'px';
+      tip.hidden = false;
+      map.style.cursor = 'pointer';
+    });
+  });
+  svg.addEventListener('pointerleave', function () { cancelAnimationFrame(raf); hoverN = null; hideTip(); restore(); });
+  svg.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('[data-office]')) return;
+    var n = stateAt(e);
+    if (n && choose) choose(n);
+  });
 
   /* Buscador por estado */
   var sel = document.getElementById('zia-finder-estado');
@@ -1183,11 +1239,18 @@
       cta.dataset.estado = sel.value;
       cta.querySelector('.btn-text span').textContent = 'Hablar con ' + o.who.split(' ')[1];
       result.classList.add('is-match');
+      picked = { k: o.key, n: sel.value };
       highlight(o.key, sel.value);
       // Se anima el contenedor (div): main.css da transition a sus hijos y chocaría con GSAP
       if (hasGsap && !reduced) gsap.fromTo(result, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: .4, ease: 'power2.out', clearProps: 'opacity,transform' });
     };
     if (window.jQuery) jQuery(sel).on('change', onPick); else sel.addEventListener('change', onPick);
+    // Clic en el mapa = elegir ese estado en el buscador
+    choose = function (n) {
+      sel.value = n;
+      if (window.jQuery && jQuery.fn.niceSelect) jQuery(sel).niceSelect('update');
+      onPick();
+    };
   }
 
   // Al verse por primera vez, las zonas se encienden desde cada oficina hacia afuera
