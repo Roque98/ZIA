@@ -153,10 +153,32 @@
 .zia-station__tip-desc { display: block; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,.72); }
 .zia-station__tip-link { display: inline-flex; gap: 6px; align-items: center; margin-top: 12px; font-size: 13.5px; font-weight: 800; color: #4fd1c5; text-decoration: none; }
 .zia-station__tip-link:hover { color: #fff; }
+/* Cámara con zoom: lo que no está enfocado se atenúa y un marco punteado señala el componente.
+   main.css da "transition" a svg path; aquí lo anima GSAP y la transición chocaría. */
+.zia-station svg path { transition: none; }
+.zia-station svg > g { transition: opacity .5s ease; }
+.zia-station svg > g.is-dim { opacity: .22; }
+.zia-station .pt, .zia-station .pt-ring { vector-effect: non-scaling-stroke; }
+.zia-station .focus-frame { fill: none; stroke: var(--zia-teal); stroke-width: 2.5; vector-effect: non-scaling-stroke; opacity: 0; pointer-events: none; }
+.zia-station .focus-frame.is-on { opacity: 1; }
+.zia-station__reset {
+  position: absolute; bottom: 18px; left: 18px; z-index: 2; display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 14px; border-radius: 20px; border: 0; background: rgba(12,30,33,.86); color: #fff;
+  font-size: 12.5px; font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,.2);
+}
+.zia-station__reset:hover { background: var(--zia-teal); }
+.zia-station__reset svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.zia-station--mini .focus-frame, .zia-station--mini .zia-station__reset { display: none; }
+/* En pantallas angostas el botón queda solo con el ícono para no tapar el dibujo */
+@media (max-width: 575px) {
+  .zia-station__reset { bottom: 10px; left: 10px; width: 34px; height: 34px; padding: 0; justify-content: center; font-size: 0; gap: 0; }
+  .zia-station__reset svg { width: 15px; height: 15px; }
+}
 /* Etiqueta corta junto al punto activo, dentro del SVG */
 .zia-station .pt-label { pointer-events: none; }
 .zia-station .pt-label rect { fill: #0c1e21; }
-.zia-station .pt-label text { fill: #fff; font-size: 16px; font-weight: 800; font-family: inherit; letter-spacing: .02em; }
+/* El tamaño de letra lo pone el JS como atributo, escalado con el zoom */
+.zia-station .pt-label text { fill: #fff; font-weight: 800; font-family: inherit; letter-spacing: .02em; }
 .zia-station--mini .pt-label { display: none; }
 .zia-station__legend { list-style: none; padding: 0; margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .zia-station__legend button { border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.04); color: rgba(255,255,255,.75); font-size: 12.5px; font-weight: 700; padding: 6px 12px 6px 26px; border-radius: 20px; position: relative; cursor: pointer; transition: all .2s; }
