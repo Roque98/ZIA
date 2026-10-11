@@ -494,6 +494,9 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
   background: #0f2326; color: #fff; border-radius: 22px; border: 1px solid rgba(255,255,255,.08);
   box-shadow: 0 40px 120px rgba(0,0,0,.55);
 }
+/* main.css (Bexon) da "transition: .3s" a li, span, p, h2 y svg path; con GSAP eso hace que el
+   navegador desvanezca el valor inicial y la animación termine invisible. Aquí anima solo GSAP. */
+.zia-reg-modal__head :is(li, span, p, h2, path), .zia-reg-modal__body :is(li, span, p, h2, path) { transition: none; }
 .zia-reg-modal__head {
   position: relative; display: grid; grid-template-columns: auto 1fr auto; gap: 22px; align-items: center;
   padding: 30px 32px 22px; overflow: hidden;
