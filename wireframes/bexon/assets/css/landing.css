@@ -3,48 +3,6 @@
    Cargar después de main.css y zia.css.
 ═══════════════════════════════════════════════════ */
 
-/* ── Process v2: rail animado con ScrollTrigger ── */
-.zia-process-v2 { max-width: 980px; margin: 0 auto; position: relative; }
-.zia-process-v2__steps { display: flex; position: relative; }
-.zia-process-v2__step { flex: 1; text-align: center; padding: 0 16px; opacity: .35; transform: translateY(12px); transition: opacity .45s ease, transform .45s ease; }
-.zia-process-v2__step.is-visible { opacity: 1; transform: translateY(0); }
-.zia-process-v2__rail {
-  position: absolute;
-  top: 9px;
-  left: calc(100% / 8);
-  right: calc(100% / 8);
-  height: 2px;
-  background: var(--tj-color-border-1);
-  z-index: 0;
-}
-.zia-process-v2__fill { position: absolute; left: 0; top: 0; height: 100%; width: 0; background: var(--tj-color-theme-primary); }
-.zia-process-v2__dot {
-  width: 20px; height: 20px; border-radius: 50%;
-  background: #fff; border: 2px solid var(--tj-color-border-1);
-  margin: 0 auto 20px; position: relative; z-index: 1;
-  transition: background .35s, border-color .35s, box-shadow .35s;
-}
-.zia-process-v2__dot.is-active {
-  background: var(--tj-color-theme-primary);
-  border-color: var(--tj-color-theme-primary);
-  box-shadow: 0 0 0 6px rgba(30,138,138,.18);
-}
-.zia-process-v2__num { font-size: 10px; font-weight: 900; letter-spacing: .18em; color: var(--tj-color-theme-primary); text-transform: uppercase; margin-bottom: 10px; }
-.zia-process-v2__title { font-size: 15px; font-weight: 800; color: var(--tj-color-heading-primary); margin-bottom: 8px; line-height: 1.3; }
-.zia-process-v2__desc  { font-size: 13px; color: var(--tj-color-text-body-3); line-height: 1.65; }
-
-@media (max-width: 768px) {
-  .zia-process-v2__rail { display: none; }
-  .zia-process-v2__steps { flex-direction: column; gap: 32px; }
-  /* Punto a la izquierda; número, título y descripción apilados a la derecha */
-  .zia-process-v2__step { text-align: left; opacity: 1; transform: none; display: grid; grid-template-columns: 20px 1fr; column-gap: 16px; align-items: start; padding: 0; }
-  .zia-process-v2__dot { grid-row: 1 / span 3; margin: 0; }
-  .zia-process-v2__num, .zia-process-v2__title, .zia-process-v2__desc { grid-column: 2; }
-  .zia-process-v2__num { margin-bottom: 4px; }
-  .zia-process-v2__desc { margin: 0; }
-}
-
-
 /* ── Estación interactiva (venía de servicios.html) ── */
 .zia-station { position: relative; background: #fff; border-radius: 18px; padding: 10px; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
 .zia-station svg { border-radius: 12px; }
@@ -293,36 +251,91 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
 }
 .zia-station__tip-link { cursor: pointer; }
 
-/* ── 3. Lo que gana estando en regla ── */
-.zia-lp-gains { background: #0a1719; }
-.zia-gains { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
-.zia-gain {
-  position: relative; overflow: hidden; padding: 30px 28px; border-radius: 18px;
-  background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02));
-  border: 1px solid rgba(255,255,255,.09); transition: transform .35s ease, border-color .35s ease;
+/* ── 3. Cómo trabajamos: la estación se pone en regla (escena fija) ── */
+.zia-scene { min-height: 100vh; min-height: 100svh; }
+.zia-scene__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr); column-gap: clamp(28px, 3.4vw, 60px); align-items: center; }
+.zia-scene .zia-sec__head { margin-bottom: clamp(14px, 3vh, 28px); }
+/* Pasos: el activo muestra su descripción; los demás solo el título */
+.zia-scene__steps { list-style: none; margin: 0; padding: 0; position: relative; display: grid; gap: 4px; }
+.zia-scene__steps::before { content: ""; position: absolute; left: 17px; top: 18px; bottom: 18px; width: 2px; background: #d3e1e1; }
+.zia-scene__steps li { position: relative; display: grid; grid-template-columns: 36px 1fr; column-gap: 14px; align-items: start; padding: 6px 0; }
+.zia-scene__num { position: relative; z-index: 1; width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #7d9496; background: #fff; border: 2px solid #d3e1e1; transition: background .3s, border-color .3s, color .3s, box-shadow .3s; }
+.zia-scene__steps b { display: block; font-size: 16px; font-weight: 800; color: #7d9496; line-height: 1.3; padding-top: 7px; transition: color .3s; }
+.zia-scene__steps p { margin: 0; max-height: 0; overflow: hidden; opacity: 0; font-size: 14px; line-height: 1.5; color: #4d6366; transition: max-height .45s ease, opacity .3s ease, margin .3s ease; }
+.zia-scene__steps li.is-done .zia-scene__num { background: var(--zia-teal-soft); border-color: var(--zia-teal); color: var(--zia-teal); }
+.zia-scene__steps li.is-done b { color: var(--zia-ink); }
+.zia-scene__steps li.is-active .zia-scene__num { background: var(--zia-teal); border-color: var(--zia-teal); color: #fff; box-shadow: 0 0 0 6px rgba(30,138,138,.16); }
+.zia-scene__steps li.is-active b { color: var(--zia-ink); }
+.zia-scene__steps li.is-active p { max-height: 90px; opacity: 1; margin-top: 4px; }
+/* Medidor de cumplimiento */
+.zia-scene__meter { margin-top: clamp(14px, 3vh, 26px); padding: 14px 16px; border-radius: 14px; background: #fff; border: 1px solid #dbe7e7; box-shadow: 0 10px 30px rgba(12,30,33,.06); }
+.zia-scene__meter-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+.zia-scene__meter-top span { font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: #7d9496; }
+.zia-scene__meter-val { font-size: 24px; font-weight: 900; color: var(--zia-teal); font-variant-numeric: tabular-nums; }
+.zia-scene__bar { height: 10px; border-radius: 6px; background: #e3eded; overflow: hidden; }
+.zia-scene__bar i { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--zia-teal), #2f9e6b); transform-origin: 0 50%; }
+/* Escenario: copia de la estación con capas de la escena */
+.zia-scene__stage { position: relative; width: 100%; max-width: calc((100svh - var(--zia-hdr, 66px) - 90px) * 2.07 + 20px); margin-left: auto; box-shadow: 0 30px 70px rgba(12,30,33,.16); }
+.zia-scene__stage svg { display: block; width: 100%; height: auto; border-radius: 12px; }
+.zia-station--scene .pt { transition: none; cursor: default; }
+.zia-station--scene .pt-ring { display: none; }
+.zia-station--scene .scene-badge text { font-size: 16px; font-weight: 900; font-family: inherit; }
+.zia-station--scene .scene-radar { vector-effect: non-scaling-stroke; }
+.zia-scene__status {
+  position: absolute; z-index: 2; top: 18px; left: 18px; display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 14px; border-radius: 20px; background: rgba(12,30,33,.88); color: #fff; font-size: 12.5px; font-weight: 800;
 }
-.zia-gain::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--zia-teal), var(--zia-gold)); }
-.zia-gain:hover { transform: translateY(-4px); border-color: rgba(30,138,138,.45); }
-.zia-gain__ico { width: 60px; height: 60px; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; background: rgba(30,138,138,.16); box-shadow: inset 0 0 0 1px rgba(30,138,138,.35); }
-.zia-gain__ico svg { width: 32px; height: 32px; fill: none; stroke: #4fd1c5; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-.zia-gain__title { font-size: 21px; font-weight: 900; line-height: 1.25; color: #fff; margin: 0 0 10px; }
-.zia-gain__text { font-size: 15px; line-height: 1.6; color: rgba(255,255,255,.68); margin: 0; }
-.zia-gains__close {
-  margin-top: 40px; display: flex; align-items: center; justify-content: space-between; gap: 18px 28px; flex-wrap: wrap;
-  padding: 22px 28px; border-radius: 16px; border: 1px dashed rgba(30,138,138,.45); background: rgba(30,138,138,.07);
+.zia-scene__status::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--zia-red); box-shadow: 0 0 0 4px rgba(236,50,55,.25); transition: background .3s, box-shadow .3s; }
+.zia-scene__status.is-ok::before { background: #2f9e6b; box-shadow: 0 0 0 4px rgba(47,158,107,.28); }
+/* Resultado: sube sobre la estación al terminar el recorrido */
+.zia-scene__result {
+  position: absolute; z-index: 3; left: 14px; right: 14px; bottom: 14px;
+  display: grid; grid-template-columns: 1fr auto; grid-template-areas: "kicker cta" "list list"; gap: 12px 18px; align-items: center;
+  padding: 16px 18px; border-radius: 14px; background: rgba(12,30,33,.94); color: #fff; box-shadow: 0 20px 50px rgba(0,0,0,.3);
 }
-.zia-gains__close p { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.45; color: rgba(255,255,255,.78); }
-.zia-gains__close p span { color: #4fd1c5; }
-@media (max-width: 767px) {
-  .zia-gains { grid-template-columns: 1fr; gap: 12px; }
-  /* En móvil: ícono a la izquierda y texto a la derecha, más compacto */
-  .zia-gain { display: grid; grid-template-columns: auto 1fr; column-gap: 16px; padding: 20px 18px; }
-  .zia-gain__ico { grid-row: span 2; width: 48px; height: 48px; border-radius: 14px; margin: 0; }
-  .zia-gain__ico svg { width: 26px; height: 26px; }
-  .zia-gain__title { font-size: 18px; margin-bottom: 4px; }
-  .zia-gain__text { font-size: 14px; }
-  .zia-gains__close { margin-top: 24px; padding: 18px; }
-  .zia-gains__close p { font-size: 16px; }
+.zia-scene__result-kicker { grid-area: kicker; font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: #4fd1c5; }
+.zia-scene__result .tj-primary-btn { grid-area: cta; padding-top: 6px; padding-bottom: 6px; }
+.zia-scene__result ul { grid-area: list; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.zia-scene__result li { display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: start; }
+.zia-scene__result svg { width: 30px; height: 30px; fill: none; stroke: #4fd1c5; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.zia-scene__result li b { display: block; font-size: 14px; font-weight: 800; line-height: 1.25; }
+.zia-scene__result li span { font-size: 12.5px; line-height: 1.4; color: rgba(255,255,255,.68); }
+/* Laptops bajas: pasos y medidor más compactos para que la escena quepa entera */
+@media (min-width: 992px) and (max-height: 720px) {
+  .zia-scene .zia-sec__head { margin-bottom: 10px; }
+  .zia-scene__steps li { grid-template-columns: 32px 1fr; padding: 3px 0; }
+  .zia-scene__steps::before { left: 15px; }
+  .zia-scene__num { width: 32px; height: 32px; }
+  .zia-scene__steps b { font-size: 15px; padding-top: 6px; }
+  .zia-scene__steps p { font-size: 13px; }
+  .zia-scene__meter { margin-top: 12px; padding: 9px 14px; }
+  .zia-scene__meter-val { font-size: 20px; }
+}
+/* Sin animación: lista completa visible */
+.zia-scene.is-static .zia-scene__steps p { max-height: none; opacity: 1; margin-top: 4px; }
+.zia-scene.is-static .zia-scene__result { position: static; margin-top: 12px; }
+@media (max-width: 991px) {
+  /* Móvil y tablet: título, estación, paso activo y medidor apilados */
+  .zia-sec.zia-scene { display: flex; flex-direction: column; justify-content: center; padding: 76px 0 18px; }
+  .zia-scene__grid { display: flex; flex-direction: column; align-items: stretch; }
+  .zia-scene__side, .zia-scene__main { display: contents; }
+  .zia-scene .zia-sec__head { order: 1; margin-bottom: 14px; }
+  .zia-scene .zia-sec__title { font-size: 30px; }
+  .zia-scene__stage { order: 2; max-width: none; margin: 0; }
+  .zia-scene__steps { order: 3; margin-top: 14px; }
+  .zia-scene__steps::before { display: none; }
+  .zia-scene:not(.is-static) .zia-scene__steps li:not(.is-active) { display: none; }
+  .zia-scene__meter { order: 4; margin-top: 10px; padding: 10px 14px; }
+  .zia-scene__status { top: 10px; left: 10px; padding: 5px 10px; font-size: 11px; }
+  .zia-scene__result { left: 8px; right: 8px; bottom: 8px; top: 8px; grid-template-columns: 1fr; grid-template-areas: "kicker" "list" "cta"; align-content: center; gap: 8px; padding: 12px 14px; }
+  .zia-scene__result ul { grid-template-columns: 1fr; gap: 6px; }
+  .zia-scene__result li { grid-template-columns: 22px 1fr; align-items: center; }
+  .zia-scene__result svg { width: 22px; height: 22px; }
+  /* Solo el título de cada beneficio (la frase va dentro del mismo span) */
+  .zia-scene__result li span { font-size: 0; }
+  .zia-scene__result li b { font-size: 13.5px; }
+  .zia-scene__result .tj-primary-btn { justify-self: start; font-size: 13px; }
+  .zia-scene.is-static .zia-scene__result { position: static; }
 }
 
 /* ── 5. Quiénes somos ── */
@@ -401,14 +414,6 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
 
   /* 2. Estación: la ilustración se limita por alto (proporción 1200×580 + marco) */
   .zia-lp-station .zia-station__legend { margin-top: clamp(8px, 1.6vh, 16px); }
-
-  /* 3. Beneficios */
-  .zia-gain { padding: clamp(18px, 3.4vh, 30px) clamp(20px, 2vw, 28px); }
-  .zia-gain__ico { width: clamp(46px, 7.5vh, 60px); height: clamp(46px, 7.5vh, 60px); margin-bottom: clamp(10px, 2.4vh, 20px); }
-  .zia-gains__close { margin-top: clamp(16px, 4vh, 40px); padding: clamp(14px, 2.6vh, 22px) 28px; }
-
-  /* 4. Proceso */
-  #proceso .row.mt-5 { margin-top: clamp(8px, 3vh, 48px) !important; }
 
   /* 5. Quiénes somos: cifras compactas y línea de tiempo en una sola fila */
   .zia-lp-about .zia-figures { margin-bottom: clamp(16px, 4.5vh, 70px); grid-template-columns: repeat(4, 1fr); }
