@@ -35,6 +35,8 @@ zia/
 │       ├── index.html          # Landing única (sin menú): hero con video, estación, proceso (animación tipo video: la estación se pone en regla), nosotros, cobertura, formulario
 │       ├── _archivo/           # Versión v1.5 de 4 páginas (home, servicios, nosotros, contacto), solo referencia
 │       └── assets/             # Assets locales: template Bexon + css/zia.css, css/landing.css, js/zia.js, js/landing.js, images/zia/, video/
+├── deploy/                     # Despliegue en el VPS (nginx estático en ziacentro.com); ver deploy/README.md
+├── .github/workflows/deploy.yml # Publica wireframes/bexon/ en el VPS en cada push a main
 ├── media/
 │   └── promo/                  # Video promocional (HyperFrames): composición, voz ElevenLabs y música
 ├── elevenlabs/                 # API key local de ElevenLabs — ignorada por git, nunca versionar

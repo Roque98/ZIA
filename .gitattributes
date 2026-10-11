@@ -1,0 +1,5 @@
+# Los scripts y configuraciones que corren en el servidor (Linux) van siempre con LF,
+# aunque el repo se edite en Windows: con CRLF bash y nginx fallan.
+*.sh    text eol=lf
+*.conf  text eol=lf
+*.yml   text eol=lf

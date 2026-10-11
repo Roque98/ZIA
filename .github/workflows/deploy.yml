@@ -1,0 +1,75 @@
+name: Deploy a VPS
+
+# Publica la landing (wireframes/bexon/) en el VPS cada vez que cambia en main.
+# Tambien se puede lanzar a mano desde la pestaña Actions.
+# El sitio de GitHub Pages sigue funcionando aparte; esto no lo toca.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'wireframes/bexon/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-vps
+  cancel-in-progress: false   # nunca cortar un despliegue a medias
+
+jobs:
+  desplegar:
+    runs-on: ubuntu-latest
+    env:
+      VPS_HOST: ${{ secrets.VPS_HOST }}
+      VPS_USER: ${{ secrets.VPS_USER }}
+      VPS_DOMINIO: ${{ secrets.VPS_DOMINIO }}
+
+    steps:
+      # Sin secretos (antes de configurar el VPS) el workflow termina en verde sin hacer
+      # nada, en vez de fallar en cada push a main.
+      - name: Comprobar que el despliegue esta configurado
+        id: config
+        env:
+          CLAVE: ${{ secrets.VPS_SSH_KEY }}
+          CONOCIDOS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          if [ -z "$VPS_HOST" ] || [ -z "$VPS_USER" ] || [ -z "$CLAVE" ] || [ -z "$CONOCIDOS" ]; then
+            echo "::notice::Faltan secretos del VPS (ver deploy/README.md). No se despliega."
+            echo "listo=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "listo=si" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.config.outputs.listo == 'si'
+
+      - name: Preparar clave SSH
+        if: steps.config.outputs.listo == 'si'
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          # known_hosts en vez de StrictHostKeyChecking=no: sin esto el despliegue
+          # aceptaria cualquier servidor que responda, incluido uno suplantado.
+          echo "${{ secrets.VPS_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+
+      - name: Subir la landing
+        if: steps.config.outputs.listo == 'si'
+        run: |
+          test -f wireframes/bexon/index.html
+          # Solo la landing final: _archivo/ (version anterior de 4 paginas) no se publica.
+          # --delete actua UNICAMENTE dentro de /srv/zia/web/.
+          rsync -az --delete --chmod=D755,F644 \
+            --exclude '_archivo/' \
+            -e "ssh -i ~/.ssh/id_deploy" \
+            wireframes/bexon/ "$VPS_USER@$VPS_HOST:/srv/zia/web/"
+
+      - name: Comprobar que el sitio responde
+        if: steps.config.outputs.listo == 'si' && env.VPS_DOMINIO != ''
+        run: |
+          for i in $(seq 1 10); do
+            codigo=$(curl -s -o /dev/null -w "%{http_code}" "https://$VPS_DOMINIO/" || true)
+            if [ "$codigo" = "200" ]; then echo "El sitio responde 200."; exit 0; fi
+            echo "Intento $i: HTTP $codigo"; sleep 4
+          done
+          echo "::error::https://$VPS_DOMINIO/ no respondio 200 tras el despliegue"
+          exit 1
