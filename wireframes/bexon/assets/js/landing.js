@@ -939,8 +939,38 @@
     if (e) e.hidden = !on;
   }
 
+  /* Resumen en vivo ("Su diagnóstico"): refleja temas, urgencia y especialista conforme se eligen */
+  var resumen = document.querySelector('#diagnostico .zia-resumen');
+  var URG = { prevenir: 'Quiero prevenir', requerimiento: 'Tengo un requerimiento', clausura: 'Clausura o sanción en curso' };
+  function setVal(el, txt, empty) { el.textContent = txt; el.classList.toggle('is-empty', !!empty); }
+  function updateResumen() {
+    if (!resumen) return;
+    var temas = checked('temas');
+    resumen.querySelectorAll('.zia-resumen__reg').forEach(function (r) {
+      var on = temas.indexOf(r.dataset.tema) !== -1;
+      // Aparece con un pequeño rebote (se anima la imagen: main.css da transition al span)
+      var ico = r.querySelector('img, i');
+      if (on && !r.classList.contains('is-on') && ico && window.gsap && !reduced) gsap.fromTo(ico, { scale: .5 }, { scale: 1, duration: .45, ease: 'back.out(2.6)', clearProps: 'transform' });
+      r.classList.toggle('is-on', on);
+    });
+    var u = checked('urgencia')[0], urgEl = resumen.querySelector('[data-resumen="urgencia"]');
+    setVal(urgEl, u ? URG[u] : 'Por definir', !u);
+    urgEl.dataset.urg = u || '';
+    var o = officeFor(form.elements.estado.value);
+    var mono = resumen.querySelector('.zia-resumen__who .zia-monogram');
+    mono.hidden = !o;
+    if (o) mono.textContent = o.ini;
+    setVal(resumen.querySelector('[data-resumen="atiende"]'), o ? o.who + ' · Oficina ' + o.name : 'Se asigna al elegir su estado', !o);
+  }
+  function setResumenState(txt, isDone) {
+    if (!resumen) return;
+    resumen.querySelector('.zia-resumen__state').textContent = txt;
+    resumen.classList.toggle('is-done', !!isDone);
+  }
+
   function show(n) {
     step = n;
+    setResumenState('Paso ' + n + ' de 3', false);
     panels.forEach(function (p) {
       var on = +p.dataset.step === n;
       p.hidden = !on;
@@ -1009,6 +1039,7 @@
     var o = officeFor(sel.value);
     sel.closest('.zia-field').classList.remove('is-invalid');
     assign.hidden = !o;
+    updateResumen();
     if (!o) return;
     assign.querySelector('.zia-monogram').textContent = o.ini;
     assign.querySelector('.zia-assign__office').textContent = o.name;
@@ -1016,6 +1047,9 @@
   }
   if (window.jQuery) jQuery(form.elements.estado).on('change', onEstado);
   else form.elements.estado.addEventListener('change', onEstado);
+  // Casillas y opciones de urgencia: cambio nativo
+  form.addEventListener('change', updateResumen);
+  updateResumen();
 
   // ['CRE','SAT','STPS'] → 'CRE, SAT y STPS'
   function enumerar(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1]; }
@@ -1031,6 +1065,7 @@
     stepsUi.forEach(function (li) { li.classList.remove('is-current'); li.classList.add('is-done'); });
     done.hidden = false;
     requestAnimationFrame(function () { done.classList.add('is-shown'); });
+    setResumenState('Solicitud recibida', true);
   }
 
   root.querySelector('.zia-triage__restart').addEventListener('click', function () {
@@ -1042,6 +1077,7 @@
     done.hidden = true;
     form.hidden = false;
     show(1);
+    updateResumen();
   });
 
   // Pre-llenado: desde CTAs de la página (data-tema, data-estado) o desde la URL (?tema=ASEA,SAT)
@@ -1057,6 +1093,7 @@
       form.querySelectorAll('input[name="temas"]').forEach(function (c) { c.checked = temas.indexOf(c.value) !== -1; });
       showError('temas', false);
     }
+    updateResumen();
   }
   window.ziaTriage = { prefill: prefill };
   var q = new URLSearchParams(location.search);
