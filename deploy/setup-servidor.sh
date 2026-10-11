@@ -50,10 +50,11 @@ cat <<FIN
 
 Listo. Faltan los pasos manuales (ver deploy/README.md):
 
- 1. DNS de ziacentro.com (Zone Editor de cPanel): registros A de 'ziacentro.com' y
-    'www' hacia la IP de este servidor. NO tocar los registros MX ni 'mail'.
- 2. Cuando el DNS ya resuelva aqui, emitir el certificado:
-      certbot --nginx -d ziacentro.com -d www.ziacentro.com
+ 1. Comprobar que app.ziacentro.com resuelve a este servidor (registro A en el
+    Zone Editor de cPanel; el dominio principal y el correo no se tocan):
+      curl -I http://app.ziacentro.com
+ 2. Emitir el certificado:
+      certbot --nginx -d app.ziacentro.com
  3. Clave SSH de despliegue de ZIA en /home/$USUARIO_DEPLOY/.ssh/authorized_keys
     y los secretos en el repositorio de GitHub.
 FIN
