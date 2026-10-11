@@ -20,3 +20,8 @@ _client/
 
 # Credenciales locales (nunca versionar)
 elevenlabs/
+
+# Clave SSH de despliegue del VPS: nunca se versiona (ver deploy/README.md)
+zia_deploy
+zia_deploy.pub
+known_hosts_vps.txt
