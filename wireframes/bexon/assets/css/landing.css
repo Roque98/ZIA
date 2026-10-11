@@ -142,6 +142,44 @@ button.zia-person { width: 100%; text-align: left; font: inherit; color: inherit
 .zia-direct__item small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.5); }
 .zia-direct__ico i { font-size: 18px; line-height: 1; }
 .zia-direct__ico { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: var(--zia-teal); font-size: 17px; }
+/* Contactos directos en una fila compacta bajo el resumen */
+.zia-direct--row { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0 0; }
+.zia-direct--row .zia-direct__item { gap: 10px; padding: 9px 10px; font-size: 13px; line-height: 1.25; }
+.zia-direct--row .zia-direct__ico { width: 32px; height: 32px; font-size: 14px; }
+.zia-direct--row .zia-direct__ico i { font-size: 14px; }
+.zia-direct--row .zia-direct__item small { font-size: 10px; }
+/* Resumen en vivo "Su diagnóstico": se llena con lo elegido en el formulario */
+.zia-resumen { position: relative; margin-top: clamp(12px, 3vh, 26px); border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); overflow: hidden; transition: border-color .4s, background .4s; }
+.zia-resumen__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: clamp(8px, 1.8vh, 12px) 18px; border-bottom: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03); }
+.zia-resumen__head b { font-size: 12px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; color: #4fd1c5; }
+.zia-resumen__state { font-size: 12px; font-weight: 800; padding: 3px 10px; border-radius: 20px; color: rgba(255,255,255,.75); background: rgba(255,255,255,.08); }
+.zia-resumen__row { display: grid; grid-template-columns: 84px 1fr; gap: 12px; align-items: center; padding: clamp(7px, 1.6vh, 11px) 18px; }
+.zia-resumen__row + .zia-resumen__row { border-top: 1px solid rgba(255,255,255,.06); }
+.zia-resumen__row > small { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+.zia-resumen__body { min-width: 0; }
+.zia-resumen__regs { display: flex; flex-wrap: wrap; gap: 6px; }
+/* Regulador apagado hasta que se marca en el formulario */
+.zia-resumen__reg { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px 3px 3px; border-radius: 20px; border: 1px solid rgba(255,255,255,.1); opacity: .35; filter: grayscale(1); transition: opacity .3s, filter .3s, border-color .3s, background .3s; }
+.zia-resumen__reg img { width: 22px; height: 22px; border-radius: 50%; background: #fff; }
+.zia-resumen__reg b { font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #fff; }
+.zia-resumen__reg.is-on { opacity: 1; filter: none; border-color: color-mix(in srgb, var(--c) 60%, transparent); background: color-mix(in srgb, var(--c) 18%, transparent); }
+/* "No estoy seguro" del formulario = auditoría general */
+.zia-resumen__reg--all i { width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #fff; color: var(--zia-teal); font-style: normal; font-weight: 900; font-size: 13px; }
+.zia-resumen__val { font-size: 14.5px; font-weight: 700; color: #fff; }
+.zia-resumen__val.is-empty { font-weight: 500; color: rgba(255,255,255,.45); }
+/* Punto de urgencia: el color va en una variable para que no lo pise la regla base */
+.zia-resumen__val[data-urg]:not([data-urg=""])::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 8px; border-radius: 50%; background: var(--urg, #4fd1c5); }
+.zia-resumen__val[data-urg="requerimiento"] { --urg: var(--zia-cre); }
+.zia-resumen__val[data-urg="clausura"] { --urg: var(--zia-red); }
+.zia-resumen__who { display: flex; align-items: center; gap: 10px; }
+/* Enviado: el resumen queda como comprobante */
+.zia-resumen.is-done { border-color: rgba(47,158,107,.7); background: rgba(47,158,107,.1); }
+.zia-resumen.is-done .zia-resumen__state { background: #2f9e6b; color: #fff; }
+.zia-resumen.is-done .zia-resumen__head b { color: #7dd3a8; }
+@media (max-width: 575px) {
+  .zia-direct--row { grid-template-columns: 1fr; }
+  .zia-resumen__row { grid-template-columns: 1fr; gap: 6px; }
+}
 .zia-triage { background: #fff; color: var(--tj-color-text-body); border-radius: 18px; padding: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
 .zia-triage__kicker { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--zia-teal); }
 .zia-triage__title { font-size: 26px; font-weight: 900; margin: 6px 0 20px; color: var(--zia-ink); }

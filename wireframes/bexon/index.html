@@ -16,8 +16,8 @@
   <link rel="stylesheet" href="assets/css/bexon-icons.css">
   <link rel="stylesheet" href="assets/css/meanmenu.css">
   <link rel="stylesheet" href="assets/css/main.css">
-  <link rel="stylesheet" href="assets/css/zia.css?v=20261011d">
-  <link rel="stylesheet" href="assets/css/landing.css?v=20261011d">
+  <link rel="stylesheet" href="assets/css/zia.css?v=20261011e">
+  <link rel="stylesheet" href="assets/css/landing.css?v=20261011e">
 
 </head>
 <body>
@@ -367,26 +367,38 @@
               <div class="col-lg-5">
                 <span class="zia-sec__kicker">Diagnóstico sin costo</span>
                 <h2 class="zia-sec__title">Hablemos antes de que llegue <span>la inspección.</span></h2>
-                <p class="zia-sec__lead">Cuéntenos qué le preocupa y le asignamos al especialista de su región.</p>
-<ul class="zia-direct" data-zia-hero-item>
-                  <li>
-                    <a href="tel:6641594369" class="zia-direct__item">
-                      <span class="zia-direct__ico"><i class="tji-phone-2"></i></span>
-                      <span><small>Línea principal</small>664 159 4369</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://wa.me/526641594369" class="zia-direct__item">
-                      <span class="zia-direct__ico"><i class="fab fa-whatsapp"></i></span>
-                      <span><small>WhatsApp</small>Escríbanos ahora</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="mailto:contacto@ziaintegracion.com" class="zia-direct__item">
-                      <span class="zia-direct__ico"><i class="tji-envelop-2"></i></span>
-                      <span><small>Correo</small>contacto@ziaintegracion.com</span>
-                    </a>
-                  </li>
+                <!-- Resumen en vivo: landing.js lo va llenando con lo que el cliente elige en el formulario -->
+                <div class="zia-resumen" aria-live="polite">
+                  <div class="zia-resumen__head"><b>Su diagnóstico</b><span class="zia-resumen__state">Paso 1 de 3</span></div>
+                  <div class="zia-resumen__row">
+                    <small>Temas</small>
+                    <div class="zia-resumen__body">
+                      <div class="zia-resumen__regs">
+                        <span class="zia-resumen__reg" data-tema="ASEA" style="--c: var(--zia-asea)"><img src="assets/images/zia/icons/asea.svg" alt=""><b>ASEA</b></span>
+                        <span class="zia-resumen__reg" data-tema="CRE" style="--c: var(--zia-cre)"><img src="assets/images/zia/icons/cre.svg" alt=""><b>CRE</b></span>
+                        <span class="zia-resumen__reg" data-tema="SAT" style="--c: var(--zia-sat)"><img src="assets/images/zia/icons/sat.svg" alt=""><b>SAT</b></span>
+                        <span class="zia-resumen__reg" data-tema="STPS" style="--c: var(--zia-stps)"><img src="assets/images/zia/icons/stps.svg" alt=""><b>STPS</b></span>
+                        <span class="zia-resumen__reg" data-tema="Protección Civil" style="--c: var(--zia-pc)"><img src="assets/images/zia/icons/proteccion-civil.svg" alt=""><b>P. Civil</b></span>
+                        <span class="zia-resumen__reg zia-resumen__reg--all" data-tema="No estoy seguro" style="--c: var(--zia-teal)"><i aria-hidden="true">?</i><b>Auditoría general</b></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="zia-resumen__row">
+                    <small>Urgencia</small>
+                    <div class="zia-resumen__body"><span class="zia-resumen__val is-empty" data-resumen="urgencia">Por definir</span></div>
+                  </div>
+                  <div class="zia-resumen__row">
+                    <small>Le atiende</small>
+                    <div class="zia-resumen__body zia-resumen__who">
+                      <span class="zia-monogram" style="--size:38px" hidden></span>
+                      <span class="zia-resumen__val is-empty" data-resumen="atiende">Se asigna al elegir su estado</span>
+                    </div>
+                  </div>
+                </div>
+                <ul class="zia-direct zia-direct--row" data-zia-hero-item>
+                  <li><a href="tel:6641594369" class="zia-direct__item"><span class="zia-direct__ico"><i class="tji-phone-2"></i></span><span><small>Llámenos</small>664 159 4369</span></a></li>
+                  <li><a href="https://wa.me/526641594369" class="zia-direct__item"><span class="zia-direct__ico"><i class="fab fa-whatsapp"></i></span><span><small>WhatsApp</small>Escríbanos</span></a></li>
+                  <li><a href="mailto:contacto@ziaintegracion.com" class="zia-direct__item" title="contacto@ziaintegracion.com"><span class="zia-direct__ico"><i class="tji-envelop-2"></i></span><span><small>Correo</small>Enviar correo</span></a></li>
                 </ul>
               </div>
               <div class="col-lg-7">
@@ -570,7 +582,7 @@
   <script src="assets/js/wow.min.js"></script>
   <script src="assets/js/meanmenu.js"></script>
   <script src="assets/js/main.js"></script>
-  <script src="assets/js/zia.js?v=20261011d"></script>
-  <script src="assets/js/landing.js?v=20261011d"></script>
+  <script src="assets/js/zia.js?v=20261011e"></script>
+  <script src="assets/js/landing.js?v=20261011e"></script>
 </body>
 </html>
