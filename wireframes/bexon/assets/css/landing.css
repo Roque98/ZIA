@@ -282,6 +282,9 @@ body { background: var(--zia-ink); }
 .zia-lp-header .tj-primary-btn { padding-top: 8px; padding-bottom: 8px; }
 .zia-lp-header .tj-primary-btn .btn-text .zia-short { display: none; }
 
+/* WhatsApp en la esquina: la landing no tiene botón de "volver arriba" que esquivar */
+.whatsapp-sticky { bottom: 18px; right: 18px; width: 48px; height: 48px; }
+
 /* ── Navegación lateral por puntos ── */
 .zia-dots { position: fixed; right: 26px; top: 50%; transform: translateY(-50%); z-index: 90; display: flex; flex-direction: column; gap: 14px; }
 .zia-dots a { position: relative; display: block; width: 12px; height: 12px; border-radius: 50%; border: 2px solid rgba(255,255,255,.45); transition: background .25s, border-color .25s, transform .25s; }
