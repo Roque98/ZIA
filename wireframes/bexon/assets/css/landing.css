@@ -63,8 +63,6 @@
 
 /* ── Cifras y equipo (venían de nosotros.html) ── */
 .zia-figures { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.zia-figures__mark { position: absolute; right: -60px; top: 50%; width: 420px; max-width: none; transform: translateY(-50%); opacity: .07; pointer-events: none; animation: ziaSpin 90s linear infinite; }
-@keyframes ziaSpin { to { transform: translateY(-50%) rotate(360deg); } }
 .zia-figure { position: relative; padding: 26px 24px; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(2px); }
 .zia-figure b { display: block; font-size: 52px; font-weight: 900; line-height: 1; color: var(--zia-teal); font-variant-numeric: tabular-nums; margin-bottom: 10px; }
 .zia-figure span { font-size: 13.5px; line-height: 1.45; color: rgba(255,255,255,.7); }
@@ -359,9 +357,59 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
   .zia-scene.is-static .zia-scene__result { position: static; }
 }
 
-/* ── 5. Quiénes somos ── */
-.zia-lp-about .zia-figures { margin-bottom: 70px; grid-template-columns: repeat(4, 1fr); }
-.zia-lp-about .zia-figures__mark { right: auto; left: 50%; width: 520px; opacity: .05; }
+/* ── 5. Quiénes somos: los reguladores se suman alrededor de ZIA ── */
+.zia-story { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); column-gap: clamp(28px, 4vw, 72px); row-gap: clamp(12px, 3vh, 40px); align-items: center; }
+.zia-story .zia-sec__head { margin-bottom: clamp(12px, 3vh, 28px); }
+.zia-story__now { min-height: 9.5em; }
+.zia-story__year { display: block; font-size: clamp(56px, 11vh, 96px); font-weight: 900; line-height: .95; letter-spacing: -.03em; color: var(--zia-gold); font-variant-numeric: tabular-nums; }
+.zia-story__event { display: block; font-size: 22px; font-weight: 900; line-height: 1.25; color: #fff; margin: 10px 0 6px; }
+.zia-story__detail { margin: 0; max-width: 440px; font-size: 16px; line-height: 1.55; color: rgba(255,255,255,.7); }
+/* Controles: reproducir/pausar/repetir + años clicables */
+.zia-story__nav { display: flex; align-items: center; gap: 14px; margin-top: clamp(14px, 3vh, 28px); }
+.zia-story__play { flex: 0 0 auto; width: 42px; height: 42px; border-radius: 50%; border: 0; display: inline-flex; align-items: center; justify-content: center; background: var(--zia-teal); color: #fff; cursor: pointer; transition: background .2s, transform .2s; }
+.zia-story__play:hover { background: #23a0a0; transform: scale(1.06); }
+.zia-story__play svg { width: 18px; height: 18px; fill: currentColor; display: none; }
+.zia-story__play[data-state="paused"] .i-play, .zia-story__play[data-state="playing"] .i-pause, .zia-story__play[data-state="ended"] .i-replay { display: block; }
+.zia-story__years { list-style: none; margin: 0; padding: 0; flex: 1; display: flex; justify-content: space-between; position: relative; }
+.zia-story__years::before { content: ""; position: absolute; left: 12px; right: 12px; top: 50%; height: 2px; margin-top: -1px; background: rgba(255,255,255,.14); }
+.zia-story__years button { position: relative; z-index: 1; padding: 6px 10px; border-radius: 20px; border: 1.5px solid rgba(255,255,255,.18); background: var(--zia-ink); color: rgba(255,255,255,.55); font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; cursor: pointer; transition: background .25s, border-color .25s, color .25s, box-shadow .25s; }
+.zia-story__years button:hover { color: #fff; border-color: rgba(255,255,255,.4); }
+.zia-story__years button.is-done { border-color: var(--zia-teal); color: #4fd1c5; }
+.zia-story__years button[aria-current] { background: var(--zia-teal); border-color: var(--zia-teal); color: #fff; box-shadow: 0 0 0 5px rgba(30,138,138,.22); }
+/* Órbita: ZIA al centro y los 5 reguladores alrededor (radio 40% = anillo con inset 10%) */
+.zia-orbit { position: relative; width: min(100%, 460px, calc(100svh - 250px)); aspect-ratio: 1; margin: 0 auto; }
+.zia-orbit__lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.zia-orbit__ray { stroke: var(--c); stroke-width: .6; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; transition: opacity .4s; }
+.zia-orbit__ray.is-on { opacity: .55; stroke-dashoffset: 0; }
+.zia-orbit.is-full .zia-orbit__ray { opacity: .9; stroke-width: .8; }
+.zia-orbit__ring { position: absolute; inset: 10%; border-radius: 50%; border: 1.5px dashed rgba(255,255,255,.16); animation: ziaRingSpin 60s linear infinite; }
+@keyframes ziaRingSpin { to { transform: rotate(360deg); } }
+.zia-orbit__core { position: absolute; inset: 0; margin: auto; width: 34%; height: 34%; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 35% 30%, #1c5e5c, #0a1719 75%); box-shadow: 0 0 0 1px rgba(30,138,138,.4), 0 0 60px rgba(30,138,138,.22); transition: box-shadow .6s; }
+.zia-orbit__core img { width: 62%; height: auto; }
+.zia-orbit.is-full .zia-orbit__core { box-shadow: 0 0 0 2px rgba(79,209,197,.6), 0 0 90px rgba(79,209,197,.42); }
+.zia-orbit__node { position: absolute; transform: translate(-50%, -50%); width: clamp(52px, 9vh, 70px); height: clamp(52px, 9vh, 70px); }
+.zia-orbit__dot { display: block; width: 100%; height: 100%; border-radius: 50%; background: #fff; filter: grayscale(1); opacity: .28; transition: filter .5s, opacity .5s, box-shadow .5s; }
+.zia-orbit__dot img { display: block; width: 100%; height: 100%; }
+.zia-orbit__node b { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 8px; white-space: nowrap; font-size: 12.5px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.35); transition: color .4s; }
+.zia-orbit__node.is-on .zia-orbit__dot { filter: none; opacity: 1; box-shadow: 0 0 0 5px color-mix(in srgb, var(--c) 35%, transparent), 0 0 34px color-mix(in srgb, var(--c) 55%, transparent); }
+.zia-orbit__node.is-on b { color: #fff; }
+/* Cifras a todo el ancho bajo la historia */
+.zia-story .zia-figures { grid-column: 1 / -1; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 991px) {
+  /* Móvil y tablet: título, órbita, hito, controles y cifras apilados */
+  .zia-story { display: flex; flex-direction: column; align-items: stretch; }
+  .zia-story__side, .zia-story__main { display: contents; }
+  .zia-story .zia-sec__head { order: 1; }
+  .zia-orbit { order: 2; width: min(100%, 340px); margin-bottom: 26px; }
+  .zia-story__now { order: 3; min-height: 8.5em; }
+  .zia-story__nav { order: 4; margin-top: 8px; }
+  .zia-story .zia-figures { order: 5; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .zia-story__year { font-size: 64px; }
+}
+@media (max-width: 575px) {
+  .zia-story__years button { padding: 5px 7px; font-size: 12px; }
+  .zia-story__play { width: 36px; height: 36px; }
+}
 
 /* ── 7. Formulario de cierre ── */
 .zia-lp-form .zia-direct { margin-top: 32px; }
@@ -378,7 +426,6 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
 /* ── Responsivo ── */
 @media (max-width: 1199px) {
   .zia-lp-hero__title { font-size: 56px; }
-  .zia-lp-about .zia-figures { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 991px) {
   .zia-sec { padding: 84px 0; }
@@ -387,7 +434,6 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
   .zia-lp-hero__title { font-size: 46px; }
   .zia-lp-video { margin-top: 44px; }
   .zia-dots { display: none; }
-  .zia-figures__mark { right: 50%; transform: translate(50%, -50%); }
   .zia-triage { padding: 28px 22px; }
 }
 @media (max-width: 767px) {
@@ -436,17 +482,14 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
   /* 2. Estación: la ilustración se limita por alto (proporción 1200×580 + marco) */
   .zia-lp-station .zia-station__legend { margin-top: clamp(8px, 1.6vh, 16px); }
 
-  /* 5. Quiénes somos: cifras compactas y línea de tiempo en una sola fila */
-  .zia-lp-about .zia-figures { margin-bottom: clamp(16px, 4.5vh, 70px); grid-template-columns: repeat(4, 1fr); }
-  .zia-lp-about .zia-figure { padding: clamp(12px, 2.4vh, 26px) 22px; }
-  .zia-lp-about .zia-figure b { font-size: clamp(30px, 6vh, 52px); margin-bottom: clamp(4px, 1vh, 10px); }
-  .zia-lp-about .zia-tl__item { grid-template-rows: auto 44px; }
-  .zia-lp-about .zia-tl__item:nth-child(n) .zia-tl__card { grid-row: 1; align-self: stretch; }
-  .zia-lp-about .zia-tl__item:nth-child(n) .zia-tl__card::after { top: 100%; bottom: auto; }
-  .zia-lp-about .zia-tl__track { top: auto; bottom: 22px; transform: translateY(50%); }
-  .zia-lp-about .zia-tl__card { padding: clamp(12px, 2.4vh, 24px) 14px; }
-  .zia-lp-about .zia-tl__icon { font-size: clamp(22px, 4vh, 32px); margin-bottom: clamp(6px, 1.4vh, 14px); }
-  .zia-lp-about .zia-tl__year { font-size: clamp(20px, 3.6vh, 26px); margin-bottom: 6px; }
+  /* 5. Quiénes somos: año y cifras escalan con el alto disponible */
+  .zia-story__year { font-size: clamp(46px, 9.5vh, 96px); }
+  .zia-story__now { min-height: 0; }
+  .zia-story__event { font-size: clamp(18px, 3.4vh, 22px); margin: clamp(4px, 1.4vh, 10px) 0 4px; }
+  .zia-story__detail { font-size: clamp(14px, 2.6vh, 16px); }
+  .zia-story .zia-figure { padding: clamp(10px, 2.2vh, 26px) 22px; }
+  .zia-story .zia-figure b { font-size: clamp(26px, 5.2vh, 48px); margin-bottom: clamp(2px, .8vh, 10px); }
+  .zia-story .zia-figure span { font-size: clamp(12px, 2.2vh, 13.5px); }
 
   /* 6. Cobertura: el mapa se limita por alto (proporción 1180×742) */
   #cobertura .zia-map { max-width: calc((100svh - var(--zia-hdr) - 200px) * 1.59); margin: 0 auto; }
@@ -463,10 +506,6 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
   .zia-pick > span { display: grid; grid-template-columns: auto 1fr; column-gap: 10px; align-items: center; padding: clamp(8px, 1.6vh, 14px) 12px; }
   .zia-pick img, .zia-pick__q { grid-row: span 2; width: 34px; height: 34px; margin: 0; }
   .zia-triage__nav { margin-top: clamp(12px, 3vh, 26px); }
-}
-/* Pantallas bajas (laptop con zoom): se ocultan los íconos decorativos de la línea de tiempo */
-@media (min-width: 992px) and (max-height: 800px) {
-  .zia-lp-about .zia-tl__icon { display: none; }
 }
 /* Estación desde 992px: título y detalle a la izquierda, diagrama limpio a la derecha.
    El diagrama se limita por alto (proporción 1200×580 + marco) para caber en una pantalla. */

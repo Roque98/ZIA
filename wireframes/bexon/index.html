@@ -16,8 +16,8 @@
   <link rel="stylesheet" href="assets/css/bexon-icons.css">
   <link rel="stylesheet" href="assets/css/meanmenu.css">
   <link rel="stylesheet" href="assets/css/main.css">
-  <link rel="stylesheet" href="assets/css/zia.css?v=20261011a">
-  <link rel="stylesheet" href="assets/css/landing.css?v=20261011a">
+  <link rel="stylesheet" href="assets/css/zia.css?v=20261011b">
+  <link rel="stylesheet" href="assets/css/landing.css?v=20261011b">
 
 </head>
 <body>
@@ -266,70 +266,54 @@
           </div>
         </section>
 
-        <!-- ══ 5. QUIÉNES SOMOS ══ -->
+        <!-- ══ 5. QUIÉNES SOMOS: los reguladores se suman ══
+             Se reproduce sola al verse: el año avanza (2000 → Hoy) y en cada hito se encienden
+             alrededor de ZIA los reguladores que fue sumando (trayectoria del brief). La arma
+             landing.js; sin JS o con movimiento reducido se ve el estado final ("Hoy"). -->
         <section class="zia-sec zia-lp-about" id="nosotros">
-          <div class="container">
-            <div class="zia-sec__head zia-sec__head--center">
-              <span class="zia-sec__kicker">Quiénes somos</span>
-              <h2 class="zia-sec__title">Crecimos al ritmo <span>de la regulación.</span></h2>
-              <p class="zia-sec__lead">Empezamos en tecnología en el año 2000 y acompañamos al sector gasolinero en cada cambio normativo.</p>
+          <div class="container zia-story">
+            <div class="zia-story__side">
+              <div class="zia-sec__head">
+                <span class="zia-sec__kicker">Quiénes somos</span>
+                <h2 class="zia-sec__title">Crecimos al ritmo <span>de la regulación.</span></h2>
+              </div>
+              <div class="zia-story__now" aria-live="polite">
+                <span class="zia-story__year">Hoy</span>
+                <b class="zia-story__event">Liderazgo integral</b>
+                <p class="zia-story__detail">De la auditoría a la defensoría jurídica, ante los cinco reguladores.</p>
+              </div>
+              <div class="zia-story__nav">
+                <button type="button" class="zia-story__play" aria-label="Reproducir" data-state="ended">
+                  <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+                  <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
+                  <svg class="i-replay" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <ol class="zia-story__years" aria-label="Trayectoria">
+                  <li><button type="button" data-i="0">2000</button></li>
+                  <li><button type="button" data-i="1">2004</button></li>
+                  <li><button type="button" data-i="2">2010</button></li>
+                  <li><button type="button" data-i="3">2015</button></li>
+                  <li><button type="button" data-i="4">Hoy</button></li>
+                </ol>
+              </div>
+            </div>
+            <div class="zia-story__main">
+              <div class="zia-orbit is-full" aria-hidden="true">
+                <svg class="zia-orbit__lines" viewBox="0 0 100 100"></svg>
+                <span class="zia-orbit__ring"></span>
+                <span class="zia-orbit__core"><img src="./assets/images/logos/zia_simbolo.svg" alt=""></span>
+                <span class="zia-orbit__node is-on" data-reg="sat" style="--c: var(--zia-sat)"><span class="zia-orbit__dot"><img src="assets/images/zia/icons/sat.svg" alt=""></span><b>SAT</b></span>
+                <span class="zia-orbit__node is-on" data-reg="stps" style="--c: var(--zia-stps)"><span class="zia-orbit__dot"><img src="assets/images/zia/icons/stps.svg" alt=""></span><b>STPS</b></span>
+                <span class="zia-orbit__node is-on" data-reg="pc" style="--c: var(--zia-pc)"><span class="zia-orbit__dot"><img src="assets/images/zia/icons/proteccion-civil.svg" alt=""></span><b>P. Civil</b></span>
+                <span class="zia-orbit__node is-on" data-reg="cre" style="--c: var(--zia-cre)"><span class="zia-orbit__dot"><img src="assets/images/zia/icons/cre.svg" alt=""></span><b>CRE</b></span>
+                <span class="zia-orbit__node is-on" data-reg="asea" style="--c: var(--zia-asea)"><span class="zia-orbit__dot"><img src="assets/images/zia/icons/asea.svg" alt=""></span><b>ASEA</b></span>
+              </div>
             </div>
             <div class="zia-figures">
-              <img class="zia-figures__mark" src="./assets/images/logos/zia_simbolo.svg" alt="">
               <div class="zia-figure"><b data-count="2000" data-plain>2000</b><span>Año de fundación</span></div>
               <div class="zia-figure"><b data-count="5">5</b><span>Reguladores que atendemos</span></div>
               <div class="zia-figure"><b data-count="4">4</b><span>Oficinas regionales + Culiacán próximamente</span></div>
               <div class="zia-figure"><b data-count="6">6</b><span>Líneas de servicio, de la auditoría al amparo</span></div>
-            </div>
-<div class="zia-tl">
-              <div class="zia-tl__track"><div class="zia-tl__fill"></div></div>
-              <div class="zia-tl__items">
-                <div class="zia-tl__item">
-                  <div class="zia-tl__card">
-                    <span class="zia-tl__icon"><i class="tji-innovative"></i></span>
-                    <div class="zia-tl__year">2000</div>
-                    <div class="zia-tl__event">Orígenes en TI</div>
-                    <p class="zia-tl__detail">Soporte y asesoría en sistemas de información y redes.</p>
-                  </div>
-                  <div class="zia-tl__node"></div>
-                </div>
-                <div class="zia-tl__item">
-                  <div class="zia-tl__card">
-                    <span class="zia-tl__icon"><i class="tji-service-3"></i></span>
-                    <div class="zia-tl__year">2004</div>
-                    <div class="zia-tl__event">Hidrocarburos</div>
-                    <p class="zia-tl__detail">Controles volumétricos para gasolineras.</p>
-                  </div>
-                  <div class="zia-tl__node"></div>
-                </div>
-                <div class="zia-tl__item">
-                  <div class="zia-tl__card">
-                    <span class="zia-tl__icon"><i class="tji-service-5"></i></span>
-                    <div class="zia-tl__year">2010</div>
-                    <div class="zia-tl__event">Seguridad</div>
-                    <p class="zia-tl__detail">Seguridad e higiene, Protección Civil y STPS.</p>
-                  </div>
-                  <div class="zia-tl__node"></div>
-                </div>
-                <div class="zia-tl__item">
-                  <div class="zia-tl__card">
-                    <span class="zia-tl__icon"><i class="tji-service-2"></i></span>
-                    <div class="zia-tl__year">2015</div>
-                    <div class="zia-tl__event">CRE y ASEA</div>
-                    <p class="zia-tl__detail">Ampliamos el catálogo para los nuevos reguladores.</p>
-                  </div>
-                  <div class="zia-tl__node"></div>
-                </div>
-                <div class="zia-tl__item">
-                  <div class="zia-tl__card">
-                    <span class="zia-tl__icon"><i class="tji-award"></i></span>
-                    <div class="zia-tl__year">Hoy</div>
-                    <div class="zia-tl__event">Liderazgo integral</div>
-                    <p class="zia-tl__detail">De la auditoría a la defensoría jurídica.</p>
-                  </div>
-                  <div class="zia-tl__node"></div>
-                </div>
-              </div>
             </div>
           </div>
         </section>
@@ -575,7 +559,7 @@
   <script src="assets/js/wow.min.js"></script>
   <script src="assets/js/meanmenu.js"></script>
   <script src="assets/js/main.js"></script>
-  <script src="assets/js/zia.js?v=20261011a"></script>
-  <script src="assets/js/landing.js?v=20261011a"></script>
+  <script src="assets/js/zia.js?v=20261011b"></script>
+  <script src="assets/js/landing.js?v=20261011b"></script>
 </body>
 </html>
