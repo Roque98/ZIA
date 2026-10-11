@@ -142,15 +142,44 @@
 .zia-station .pt.is-active { transform: scale(1.45); fill: #0c1e21; }
 .zia-station .pt-ring { fill: none; stroke: #EC3237; stroke-width: 2; transform-box: fill-box; transform-origin: center; animation: ziaRing 2.2s ease-out infinite; pointer-events: none; }
 @keyframes ziaRing { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(2.4); opacity: 0; } }
-.zia-station__tip { position: absolute; z-index: 3; width: 250px; padding: 14px 16px; border-radius: 12px; background: var(--zia-ink); color: #fff; box-shadow: 0 16px 40px rgba(0,0,0,.35); transform: translate(-50%, calc(-100% - 22px)); pointer-events: auto; }
-.zia-station__tip::after { content: ""; position: absolute; left: var(--arrow, 50%); bottom: -7px; width: 14px; height: 14px; margin-left: -7px; background: var(--zia-ink); transform: rotate(45deg); }
-.zia-station__tip.is-below { transform: translate(-50%, 22px); }
-.zia-station__tip.is-below::after { bottom: auto; top: -7px; }
-.zia-station__tip-kicker { display: block; font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--zia-teal); }
-.zia-station__tip-title { display: block; font-size: 16px; font-weight: 900; margin: 2px 0 4px; }
-.zia-station__tip-desc { display: block; font-size: 13px; line-height: 1.45; color: rgba(255,255,255,.72); }
-.zia-station__tip-link { display: inline-flex; gap: 6px; align-items: center; margin-top: 8px; font-size: 13px; font-weight: 800; color: #4fd1c5; text-decoration: none; }
+/* Panel de detalle: fuera del diagrama (al costado en escritorio, debajo en móvil) */
+.zia-station__tip {
+  position: relative; padding: 18px 20px 18px 22px; border-radius: 14px; color: #fff;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-left: 3px solid var(--zia-red);
+}
+.zia-station__tip-kicker { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #4fd1c5; }
+.zia-station__tip-kicker::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--zia-red); box-shadow: 0 0 0 4px rgba(236,50,55,.22); }
+.zia-station__tip-title { display: block; font-size: 19px; font-weight: 900; line-height: 1.25; margin: 6px 0 6px; }
+.zia-station__tip-desc { display: block; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,.72); }
+.zia-station__tip-link { display: inline-flex; gap: 6px; align-items: center; margin-top: 12px; font-size: 13.5px; font-weight: 800; color: #4fd1c5; text-decoration: none; }
 .zia-station__tip-link:hover { color: #fff; }
+/* Cámara con zoom: lo que no está enfocado se atenúa y un marco punteado señala el componente.
+   main.css da "transition" a svg path; aquí lo anima GSAP y la transición chocaría. */
+.zia-station svg path { transition: none; }
+.zia-station svg > g { transition: opacity .5s ease; }
+.zia-station svg > g.is-dim { opacity: .22; }
+.zia-station .pt, .zia-station .pt-ring { vector-effect: non-scaling-stroke; }
+.zia-station .focus-frame { fill: none; stroke: var(--zia-teal); stroke-width: 2.5; vector-effect: non-scaling-stroke; opacity: 0; pointer-events: none; }
+.zia-station .focus-frame.is-on { opacity: 1; }
+.zia-station__reset {
+  position: absolute; bottom: 18px; left: 18px; z-index: 2; display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 14px; border-radius: 20px; border: 0; background: rgba(12,30,33,.86); color: #fff;
+  font-size: 12.5px; font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,.2);
+}
+.zia-station__reset:hover { background: var(--zia-teal); }
+.zia-station__reset svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.zia-station--mini .focus-frame, .zia-station--mini .zia-station__reset { display: none; }
+/* En pantallas angostas el botón queda solo con el ícono para no tapar el dibujo */
+@media (max-width: 575px) {
+  .zia-station__reset { bottom: 10px; left: 10px; width: 34px; height: 34px; padding: 0; justify-content: center; font-size: 0; gap: 0; }
+  .zia-station__reset svg { width: 15px; height: 15px; }
+}
+/* Etiqueta corta junto al punto activo, dentro del SVG */
+.zia-station .pt-label { pointer-events: none; }
+.zia-station .pt-label rect { fill: #0c1e21; }
+/* El tamaño de letra lo pone el JS como atributo, escalado con el zoom */
+.zia-station .pt-label text { fill: #fff; font-weight: 800; font-family: inherit; letter-spacing: .02em; }
+.zia-station--mini .pt-label { display: none; }
 .zia-station__legend { list-style: none; padding: 0; margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .zia-station__legend button { border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.04); color: rgba(255,255,255,.75); font-size: 12.5px; font-weight: 700; padding: 6px 12px 6px 26px; border-radius: 20px; position: relative; cursor: pointer; transition: all .2s; }
 .zia-station__legend button::before { content: ""; position: absolute; left: 10px; top: 50%; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%; background: var(--zia-red); }
@@ -335,6 +364,15 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
 /* ── 2. Estación protagonista ── */
 .zia-lp-station .zia-station { max-width: 1120px; margin: 0 auto; }
 .zia-lp-station .zia-station__legend { justify-content: center; }
+/* Hasta 991px: título, diagrama, detalle y leyenda apilados en ese orden */
+@media (max-width: 991px) {
+  .zia-lp-station__grid { display: flex; flex-direction: column; }
+  .zia-lp-station__side, .zia-lp-station__main { display: contents; }
+  .zia-lp-station .zia-sec__head { order: 1; }
+  .zia-lp-station .zia-station { order: 2; width: 100%; }
+  .zia-lp-station .zia-station__tip { order: 3; margin-top: 12px; }
+  .zia-lp-station .zia-station__legend { order: 4; }
+}
 .zia-station__tip-link { cursor: pointer; }
 
 /* ── 3. Riesgos compactos sobre la calculadora ── */
@@ -376,9 +414,6 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
   .zia-triage { padding: 28px 22px; }
 }
 @media (max-width: 767px) {
-  /* En móvil el detalle de la estación va como tarjeta bajo la ilustración, no flotante */
-  .zia-station__tip, .zia-station__tip.is-below { position: static; transform: none; width: auto; margin-top: 10px; }
-  .zia-station__tip::after { display: none; }
   .zia-lp-header__tel span { display: none; }
 }
 @media (max-width: 575px) {
@@ -422,7 +457,6 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
   .zia-lp-regs__more { top: 50%; margin-top: -11px; }
 
   /* 2. Estación: la ilustración se limita por alto (proporción 1200×580 + marco) */
-  .zia-lp-station .zia-station { max-width: min(1120px, calc((100svh - var(--zia-hdr) - 340px) * 2.07 + 20px), 1080px); }
   .zia-lp-station .zia-station__legend { margin-top: clamp(8px, 1.6vh, 16px); }
 
   /* 3. Riesgo */
@@ -472,12 +506,13 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
 @media (min-width: 992px) and (max-height: 800px) {
   .zia-lp-about .zia-tl__icon { display: none; }
 }
-/* Pantallas bajas: la estación pasa a dos columnas para que la ilustración no se encoja */
-@media (min-width: 992px) and (max-height: 800px) {
-  .zia-lp-station > .container { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.3fr); column-gap: 40px; align-items: center; }
-  .zia-lp-station .zia-sec__head { grid-row: 1 / 3; margin: 0; text-align: left; }
-  .zia-lp-station .zia-station, .zia-lp-station .zia-station__legend { grid-column: 2; }
-  .zia-lp-station .zia-station { width: 100%; max-width: calc((100svh - var(--zia-hdr) - 130px) * 2.07 + 20px); margin: 0 0 0 auto; }
+/* Estación desde 992px: título y detalle a la izquierda, diagrama limpio a la derecha.
+   El diagrama se limita por alto (proporción 1200×580 + marco) para caber en una pantalla. */
+@media (min-width: 992px) {
+  .zia-lp-station__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); column-gap: clamp(28px, 3vw, 56px); align-items: center; }
+  .zia-lp-station .zia-sec__head { margin: 0 0 clamp(16px, 3.4vh, 32px); text-align: left; }
+  .zia-lp-station__main { display: flex; flex-direction: column; align-items: flex-end; }
+  .zia-lp-station .zia-station { width: 100%; max-width: calc((100svh - var(--zia-hdr) - 120px) * 2.07 + 20px); margin: 0; }
   .zia-lp-station .zia-station__legend { justify-content: flex-end; }
 }
 
