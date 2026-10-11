@@ -32,7 +32,7 @@ zia/
 │   │   ├── wireframe.js
 │   │   └── assets/
 │   └── bexon/                  # Propuesta 02: landing hi-fi sobre template Bexon
-│       ├── index.html          # Landing única (sin menú): hero con video, estación, beneficios de estar en regla, proceso, nosotros, cobertura, formulario
+│       ├── index.html          # Landing única (sin menú): hero con video, estación, proceso (escena fija: la estación se pone en regla), nosotros, cobertura, formulario
 │       ├── _archivo/           # Versión v1.5 de 4 páginas (home, servicios, nosotros, contacto), solo referencia
 │       └── assets/             # Assets locales: template Bexon + css/zia.css, css/landing.css, js/zia.js, js/landing.js, images/zia/, video/
 ├── media/
