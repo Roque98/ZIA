@@ -75,13 +75,13 @@
                 </div>
               </div>
             </div>
-            <!-- Franja de reguladores a todo el ancho del hero -->
+            <!-- Franja de reguladores a todo el ancho del hero; cada uno abre su ficha -->
             <ul class="zia-lp-regs" aria-label="Reguladores que atendemos">
-              <li class="zia-lp-regs__item" style="--c: var(--zia-asea)"><img src="assets/images/zia/icons/asea.svg" alt=""><b>ASEA</b><small>Seguridad y ambiente</small></li>
-              <li class="zia-lp-regs__item" style="--c: var(--zia-cre)"><img src="assets/images/zia/icons/cre.svg" alt=""><b>CRE</b><small>Permisos y volumen</small></li>
-              <li class="zia-lp-regs__item" style="--c: var(--zia-sat)"><img src="assets/images/zia/icons/sat.svg" alt=""><b>SAT</b><small>Control volumétrico</small></li>
-              <li class="zia-lp-regs__item" style="--c: var(--zia-stps)"><img src="assets/images/zia/icons/stps.svg" alt=""><b>STPS</b><small>Seguridad laboral</small></li>
-              <li class="zia-lp-regs__item" style="--c: var(--zia-pc)"><img src="assets/images/zia/icons/proteccion-civil.svg" alt=""><b>P. Civil</b><small>Emergencias y riesgos</small></li>
+              <li><button type="button" class="zia-lp-regs__item" data-reg="asea" style="--c: var(--zia-asea)" aria-haspopup="dialog"><img src="assets/images/zia/icons/asea.svg" alt=""><b>ASEA</b><small>Seguridad y ambiente</small><span class="zia-lp-regs__more" aria-hidden="true">+</span></button></li>
+              <li><button type="button" class="zia-lp-regs__item" data-reg="cre" style="--c: var(--zia-cre)" aria-haspopup="dialog"><img src="assets/images/zia/icons/cre.svg" alt=""><b>CRE</b><small>Permisos y volumen</small><span class="zia-lp-regs__more" aria-hidden="true">+</span></button></li>
+              <li><button type="button" class="zia-lp-regs__item" data-reg="sat" style="--c: var(--zia-sat)" aria-haspopup="dialog"><img src="assets/images/zia/icons/sat.svg" alt=""><b>SAT</b><small>Control volumétrico</small><span class="zia-lp-regs__more" aria-hidden="true">+</span></button></li>
+              <li><button type="button" class="zia-lp-regs__item" data-reg="stps" style="--c: var(--zia-stps)" aria-haspopup="dialog"><img src="assets/images/zia/icons/stps.svg" alt=""><b>STPS</b><small>Seguridad laboral</small><span class="zia-lp-regs__more" aria-hidden="true">+</span></button></li>
+              <li><button type="button" class="zia-lp-regs__item" data-reg="pc" style="--c: var(--zia-pc)" aria-haspopup="dialog"><img src="assets/images/zia/icons/proteccion-civil.svg" alt=""><b>P. Civil</b><small>Emergencias y riesgos</small><span class="zia-lp-regs__more" aria-hidden="true">+</span></button></li>
             </ul>
           </div>
         </section>
@@ -589,6 +589,48 @@
   </div>
 
   <a href="https://wa.me/526641594369" class="whatsapp-sticky" title="Escribir por WhatsApp"><i class="fab fa-whatsapp" style="font-size:24px"></i></a>
+
+  <!-- Ficha de cada regulador (la llena landing.js con los datos de ZIA_REGS) -->
+  <dialog class="zia-reg-modal" id="zia-reg-modal" aria-labelledby="zia-reg-name">
+    <div class="zia-reg-modal__card">
+      <header class="zia-reg-modal__head">
+        <span class="zia-reg-modal__badge"><img src="" alt=""></span>
+        <div class="zia-reg-modal__titles">
+          <span class="zia-reg-modal__abbr"></span>
+          <h2 class="zia-reg-modal__name" id="zia-reg-name"></h2>
+          <p class="zia-reg-modal__role"></p>
+        </div>
+        <button type="button" class="zia-reg-modal__close" aria-label="Cerrar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </header>
+      <div class="zia-reg-modal__tabs" role="tablist" aria-label="Reguladores"></div>
+      <div class="zia-reg-modal__body">
+        <section class="zia-reg-modal__where">
+          <h3 class="zia-reg-modal__h">Dónde lo revisan en su estación</h3>
+          <div class="zia-reg-modal__station"></div>
+          <ul class="zia-reg-modal__spots"></ul>
+        </section>
+        <section class="zia-reg-modal__do">
+          <h3 class="zia-reg-modal__h">Qué hacemos por usted</h3>
+          <ul class="zia-reg-modal__list"></ul>
+          <div class="zia-reg-modal__risk">
+            <b>Si no cumple</b>
+            <p class="zia-reg-modal__risk-txt"></p>
+            <p class="zia-reg-modal__exposure" hidden>Exposición estimada para su estación: <strong></strong> <a href="#riesgo" class="zia-reg-modal__calc">Ajustar en la calculadora</a></p>
+          </div>
+        </section>
+      </div>
+      <!-- Barra fija: el CTA siempre a la vista aunque la ficha tenga scroll -->
+      <footer class="zia-reg-modal__foot">
+        <p class="zia-reg-modal__hint" aria-hidden="true">Deslice o use ← → para ver otro regulador</p>
+        <a class="tj-primary-btn zia-reg-modal__cta" href="#diagnostico">
+          <span class="btn-text"><span></span></span>
+          <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
+        </a>
+      </footer>
+    </div>
+  </dialog>
 
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/bootstrap.bundle.min.js"></script>

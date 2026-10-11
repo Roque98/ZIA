@@ -189,6 +189,286 @@
   }
 }());
 
+/* ── Ficha de cada regulador (modal desde la franja del hero) ──
+   Contenido tomado de docs/client-brief.md. "spots" son los puntos de la
+   estación interactiva donde aplica cada autoridad; "calc" enlaza con la
+   fila de la calculadora de exposición. */
+(function () {
+  var modal = document.getElementById('zia-reg-modal');
+  if (!modal || typeof modal.showModal !== 'function') return;
+  var hasGsap = typeof gsap !== 'undefined';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var SPOTS = {
+    hermeticidad: 'Tanques', volumetrico: 'Dispensarios', telemedicion: 'Consola de telemedición',
+    videovigilancia: 'Cámaras', electrica: 'Instalación eléctrica', seguridad: 'Operación y emergencias'
+  };
+  var ORDER = ['asea', 'cre', 'sat', 'stps', 'pc'];
+  var REGS = {
+    asea: {
+      abbr: 'ASEA', name: 'Agencia de Seguridad, Energía y Ambiente', icon: 'asea',
+      role: 'Vigila la seguridad industrial, la operación y la protección ambiental de su estación.',
+      spots: ['hermeticidad', 'seguridad'],
+      services: [
+        'Elaboración, dictaminación e implementación de SASISOPA',
+        'Licencia de Funcionamiento y Cédula de Operación Anual',
+        'Registro en el Portal del Regulado (CURR)',
+        'Manifiesto de Impacto Ambiental o Informe Preventivo',
+        'Análisis de riesgo y Protocolo de Respuesta a Emergencias',
+        'Registro de pólizas de seguro y de generador de residuos peligrosos',
+        'Verificación conforme a NOM-005-ASEA-2016'
+      ],
+      risk: 'Sin SASISOPA o Cédula de Operación Anual vigente, la estación puede ser clausurada.',
+      calc: 'asea', tema: 'ASEA'
+    },
+    cre: {
+      abbr: 'CRE', name: 'Comisión Reguladora de Energía', icon: 'cre',
+      role: 'Otorga el permiso para vender combustible y recibe sus reportes de volumen.',
+      spots: ['volumetrico', 'telemedicion'],
+      services: [
+        'Altas y solicitudes de permiso',
+        'Modificaciones al permiso y cambio de Representante Legal',
+        'Reportes diarios, trimestrales y anuales',
+        'Reporte de Estructura Accionaria',
+        'Sistemas de Gestión de la Medición y NOM-016-CRE-2016',
+        'Regularización de trámites y obligaciones pendientes'
+      ],
+      risk: 'Sin reportes al día, el permiso para vender combustible queda en riesgo.',
+      calc: 'cre', tema: 'CRE'
+    },
+    sat: {
+      abbr: 'SAT', name: 'Servicio de Administración Tributaria', icon: 'sat',
+      role: 'Revisa el control volumétrico y las obligaciones fiscales de cada litro que vende.',
+      spots: ['volumetrico', 'telemedicion', 'hermeticidad'],
+      services: [
+        'Control volumétrico conforme a la Miscelánea Fiscal',
+        'Envío de archivos y certificados JSON o XML',
+        'Aviso de funcionamiento del control volumétrico',
+        'Seguridad perimetral de la red de datos (Anexo 30)',
+        'Verificación certificada del Anexo 30',
+        'Pruebas de hermeticidad y cubicación de tanques (Anexo 32)'
+      ],
+      risk: 'Fallas en el control volumétrico pueden derivar en multas, auditorías fiscales y embargo.',
+      calc: 'sat', tema: 'SAT'
+    },
+    stps: {
+      abbr: 'STPS', name: 'Secretaría del Trabajo y Previsión Social', icon: 'stps',
+      role: 'Cuida la seguridad e higiene de quienes trabajan en su estación.',
+      spots: ['electrica'],
+      services: [
+        'Consultoría en seguridad e higiene laboral',
+        'Estudios de iluminación y ruido',
+        'Estudios de energía estática',
+        'Verificación de instalaciones eléctricas (NOM-001-SEDE-2012)'
+      ],
+      risk: 'Incumplir las normas de seguridad e higiene genera multas por cada trabajador expuesto.',
+      calc: 'stps', tema: 'STPS'
+    },
+    pc: {
+      abbr: 'Protección Civil', name: 'Protección Civil', icon: 'proteccion-civil',
+      role: 'Evalúa la capacidad de su estación para responder ante emergencias y riesgos.',
+      spots: ['seguridad'],
+      services: [
+        'Consultoría en Protección Civil',
+        'Análisis de riesgo de la estación',
+        'Protocolo de Respuesta a Emergencias'
+      ],
+      risk: null, calc: null, tema: 'Protección Civil'
+    }
+  };
+
+  var card = modal.querySelector('.zia-reg-modal__card');
+  var $ = function (sel) { return modal.querySelector(sel); };
+  var tabs = $('.zia-reg-modal__tabs');
+  var current = null, opener = null, mini = null;
+
+  // Pestañas, una por regulador
+  ORDER.forEach(function (k) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'zia-reg-modal__tab'; b.setAttribute('role', 'tab');
+    b.dataset.reg = k; b.style.setProperty('--tc', 'var(--zia-' + k + ')');
+    b.textContent = k === 'pc' ? 'P. Civil' : REGS[k].abbr;
+    b.addEventListener('click', function () { go(k); });
+    tabs.appendChild(b);
+  });
+
+  // Mini estación: copia de la ilustración de la sección 2 (ids renombrados para no duplicarlos)
+  function buildMini() {
+    var src = document.querySelector('#zia-station svg');
+    var wrap = $('.zia-reg-modal__station');
+    if (!src || !wrap) return null;
+    var svg = src.cloneNode(true);
+    svg.removeAttribute('role');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.querySelectorAll('[id]').forEach(function (el) { el.id = 'mini-' + el.id; });
+    svg.querySelectorAll('[clip-path]').forEach(function (el) {
+      el.setAttribute('clip-path', el.getAttribute('clip-path').replace('url(#', 'url(#mini-'));
+    });
+    svg.querySelectorAll('.pt').forEach(function (pt) {
+      pt.classList.remove('is-active');
+      pt.removeAttribute('tabindex'); pt.removeAttribute('role'); pt.removeAttribute('aria-label');
+    });
+    wrap.className = 'zia-reg-modal__station zia-station zia-station--mini';
+    wrap.appendChild(svg);
+    return svg;
+  }
+
+  // El nombre se parte en palabras para animarlas una por una
+  function setWords(el, text) {
+    el.textContent = '';
+    text.split(' ').forEach(function (w, i) {
+      var s = document.createElement('span');
+      s.className = 'zia-word'; s.textContent = w;
+      el.appendChild(s);
+      if (i < text.split(' ').length - 1) el.appendChild(document.createTextNode(' '));
+    });
+  }
+
+  var CHECK = '<svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg>';
+
+  function render(k) {
+    var r = REGS[k];
+    current = k;
+    card.style.setProperty('--c', 'var(--zia-' + k + ')');
+    $('.zia-reg-modal__badge img').src = 'assets/images/zia/icons/' + r.icon + '.svg';
+    $('.zia-reg-modal__abbr').textContent = k === 'pc' ? 'P. Civil' : r.abbr;
+    setWords($('.zia-reg-modal__name'), r.name);
+    $('.zia-reg-modal__role').textContent = r.role;
+
+    if (!mini) mini = buildMini();
+    if (mini) {
+      mini.querySelectorAll('.pt').forEach(function (pt) {
+        var on = r.spots.indexOf(pt.dataset.punto) !== -1;
+        pt.classList.toggle('is-on', on);
+        // En la copia pequeña los puntos activos se agrandan para leerse; los demás se achican
+        pt.setAttribute('r', on ? 20 : 9);
+        var ring = pt.previousElementSibling;
+        if (ring && ring.classList.contains('pt-ring')) { ring.classList.toggle('is-on', on); ring.setAttribute('r', 20); }
+      });
+    }
+    $('.zia-reg-modal__spots').innerHTML = r.spots.map(function (s) { return '<li>' + SPOTS[s] + '</li>'; }).join('');
+    $('.zia-reg-modal__list').innerHTML = r.services.map(function (s) { return '<li>' + CHECK + '<span>' + s + '</span></li>'; }).join('');
+
+    var risk = $('.zia-reg-modal__risk');
+    risk.hidden = !r.risk;
+    $('.zia-reg-modal__risk-txt').textContent = r.risk || '';
+    // Exposición: la misma cifra que muestra la calculadora con sus valores actuales
+    var exp = $('.zia-reg-modal__exposure');
+    var mn = r.calc && document.getElementById('r-' + r.calc + '-min');
+    var mx = r.calc && document.getElementById('r-' + r.calc + '-max');
+    var hasExp = mn && mx && mn.textContent.indexOf('$') === 0;
+    exp.hidden = !hasExp;
+    if (hasExp) exp.querySelector('strong').textContent = mn.textContent + ' – ' + mx.textContent;
+
+    var cta = $('.zia-reg-modal__cta');
+    cta.dataset.tema = r.tema;
+    cta.querySelector('.btn-text span').textContent = 'Diagnóstico ' + (k === 'pc' ? 'de Protección Civil' : r.abbr) + ' sin costo';
+
+    tabs.querySelectorAll('.zia-reg-modal__tab').forEach(function (b) {
+      var sel = b.dataset.reg === k;
+      b.setAttribute('aria-selected', sel ? 'true' : 'false');
+      b.tabIndex = sel ? 0 : -1;
+      // Pestaña activa visible en móvil; solo se desplaza la barra (scrollIntoView movería también la página)
+      if (sel && tabs.scrollWidth > tabs.clientWidth) {
+        var l = b.offsetLeft - tabs.offsetLeft, rgt = l + b.offsetWidth;
+        if (l < tabs.scrollLeft) tabs.scrollLeft = l - 12;
+        else if (rgt > tabs.scrollLeft + tabs.clientWidth) tabs.scrollLeft = rgt - tabs.clientWidth + 12;
+      }
+    });
+  }
+
+  // Coreografía de entrada: insignia, nombre por palabras, puntos de la estación y checklist
+  var tl = null;
+  function animateIn(dir) {
+    if (!hasGsap || reduced) return;
+    // Si se cambia de pestaña a media animación, la anterior termina en su estado final
+    if (tl) tl.progress(1).kill();
+    tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    if (dir) tl.from('.zia-reg-modal__body, .zia-reg-modal__titles', { x: dir * 36, opacity: 0, duration: .4 }, 0);
+    tl.from('.zia-reg-modal__badge', { scale: .4, rotation: -25, opacity: 0, duration: .6, ease: 'back.out(1.8)' }, 0)
+      .from('.zia-reg-modal__name .zia-word', { y: 18, opacity: 0, duration: .45, stagger: .06 }, .1)
+      .from('.zia-reg-modal__role', { y: 10, opacity: 0, duration: .4 }, .3)
+      .from('.zia-station--mini .pt.is-on', { scale: 0, transformOrigin: '50% 50%', duration: .5, stagger: .15, ease: 'back.out(3)' }, .35)
+      .from('.zia-reg-modal__spots li', { y: 8, opacity: 0, duration: .3, stagger: .08 }, .5)
+      .from('.zia-reg-modal__list li', { x: 14, opacity: 0, duration: .35, stagger: .06 }, .3)
+      .fromTo('.zia-reg-modal__list path', { strokeDasharray: 20, strokeDashoffset: 20 }, { strokeDashoffset: 0, duration: .35, stagger: .06, ease: 'power1.out' }, .45)
+      .from('.zia-reg-modal__risk:not([hidden])', { y: 10, opacity: 0, duration: .4 }, .6)
+      .from('.zia-reg-modal__cta', { y: 10, opacity: 0, duration: .4 }, .7);
+  }
+
+  function go(k, dir) {
+    if (k === current) return;
+    if (dir === undefined) dir = ORDER.indexOf(k) > ORDER.indexOf(current) ? 1 : -1;
+    render(k);
+    animateIn(dir);
+  }
+  function step(d) { go(ORDER[(ORDER.indexOf(current) + d + ORDER.length) % ORDER.length], d); }
+
+  // Mientras la ficha está abierta la página de fondo no se desplaza
+  function lockScroll(lock) {
+    var sm = window.ScrollSmoother && ScrollSmoother.get && ScrollSmoother.get();
+    if (sm) sm.paused(lock);
+    document.documentElement.style.overflow = lock ? 'hidden' : '';
+  }
+
+  function open(k, btn) {
+    opener = btn || null;
+    current = null;
+    // Un cierre animado aún pendiente no debe cerrar la ficha recién abierta
+    if (hasGsap) { gsap.killTweensOf(card); gsap.set(card, { clearProps: 'transform,opacity' }); }
+    render(k);
+    modal.showModal();
+    lockScroll(true);
+    if (hasGsap && !reduced) {
+      var mobile = window.matchMedia('(max-width: 767px)').matches;
+      gsap.fromTo(card, mobile ? { yPercent: 100 } : { y: 40, scale: .97, opacity: 0 },
+        { yPercent: 0, y: 0, scale: 1, opacity: 1, duration: mobile ? .5 : .45, ease: 'power3.out', clearProps: 'transform,opacity' });
+    }
+    animateIn(0);
+  }
+  function closeNow() {
+    if (!modal.open) return;
+    if (hasGsap) gsap.killTweensOf(card);
+    modal.close();
+  }
+  function close() {
+    if (!modal.open) return;
+    if (!hasGsap || reduced) return closeNow();
+    var mobile = window.matchMedia('(max-width: 767px)').matches;
+    var to = mobile ? { yPercent: 100, duration: .3 } : { y: 24, opacity: 0, duration: .22 };
+    to.ease = 'power2.in';
+    to.onComplete = function () { closeNow(); gsap.set(card, { clearProps: 'transform,opacity' }); };
+    gsap.to(card, to);
+  }
+  modal.addEventListener('close', function () {
+    lockScroll(false);
+    if (opener) opener.focus({ preventScroll: true });
+  });
+
+  document.querySelectorAll('.zia-lp-regs__item[data-reg]').forEach(function (btn) {
+    btn.addEventListener('click', function () { open(btn.dataset.reg, btn); });
+  });
+  $('.zia-reg-modal__close').addEventListener('click', close);
+  // Clic en el fondo (fuera de la tarjeta) cierra
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal) return close();
+    // Los enlaces internos (formulario, calculadora) cierran la ficha antes de desplazar la página
+    if (e.target.closest('a[href^="#"]')) closeNow();
+  });
+  modal.addEventListener('cancel', function (e) { e.preventDefault(); close(); });
+  modal.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+  });
+  // Deslizar a los lados cambia de regulador
+  var tx = 0, ty = 0;
+  card.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  card.addEventListener('touchend', function (e) {
+    var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
+  }, { passive: true });
+}());
+
 /* ── Cifras animadas ── */
 (function () {
   if (typeof gsap === 'undefined' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
