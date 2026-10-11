@@ -63,13 +63,6 @@
                   </a>
                   <a class="tj-outline-btn" href="#estacion"><span>Qué revisamos</span><i class="tji-arrow-right-long"></i></a>
                 </div>
-                <ul class="zia-lp-regs" aria-label="Reguladores que atendemos">
-                  <li class="zia-lp-regs__item" style="--c: var(--zia-asea)"><img src="assets/images/zia/icons/asea.svg" alt=""><b>ASEA</b><small>Seguridad y ambiente</small></li>
-                  <li class="zia-lp-regs__item" style="--c: var(--zia-cre)"><img src="assets/images/zia/icons/cre.svg" alt=""><b>CRE</b><small>Permisos y volumen</small></li>
-                  <li class="zia-lp-regs__item" style="--c: var(--zia-sat)"><img src="assets/images/zia/icons/sat.svg" alt=""><b>SAT</b><small>Control volumétrico</small></li>
-                  <li class="zia-lp-regs__item" style="--c: var(--zia-stps)"><img src="assets/images/zia/icons/stps.svg" alt=""><b>STPS</b><small>Seguridad laboral</small></li>
-                  <li class="zia-lp-regs__item" style="--c: var(--zia-pc)"><img src="assets/images/zia/icons/proteccion-civil.svg" alt=""><b>P. Civil</b><small>Emergencias y riesgos</small></li>
-                </ul>
               </div>
               <div class="col-lg-6">
                 <!-- Loop sin audio; la versión con voz y música abre en VenoBox -->
@@ -82,6 +75,14 @@
                 </div>
               </div>
             </div>
+            <!-- Franja de reguladores a todo el ancho del hero -->
+            <ul class="zia-lp-regs" aria-label="Reguladores que atendemos">
+              <li class="zia-lp-regs__item" style="--c: var(--zia-asea)"><img src="assets/images/zia/icons/asea.svg" alt=""><b>ASEA</b><small>Seguridad y ambiente</small></li>
+              <li class="zia-lp-regs__item" style="--c: var(--zia-cre)"><img src="assets/images/zia/icons/cre.svg" alt=""><b>CRE</b><small>Permisos y volumen</small></li>
+              <li class="zia-lp-regs__item" style="--c: var(--zia-sat)"><img src="assets/images/zia/icons/sat.svg" alt=""><b>SAT</b><small>Control volumétrico</small></li>
+              <li class="zia-lp-regs__item" style="--c: var(--zia-stps)"><img src="assets/images/zia/icons/stps.svg" alt=""><b>STPS</b><small>Seguridad laboral</small></li>
+              <li class="zia-lp-regs__item" style="--c: var(--zia-pc)"><img src="assets/images/zia/icons/proteccion-civil.svg" alt=""><b>P. Civil</b><small>Emergencias y riesgos</small></li>
+            </ul>
           </div>
         </section>
 
@@ -206,44 +207,43 @@
         <!-- ══ 3. CUÁNTO ARRIESGA: riesgos + calculadora ══ -->
         <section class="zia-sec" id="riesgo" style="background:#0a1719">
           <div class="container">
-            <div class="zia-sec__head">
-              <span class="zia-sec__kicker">Cuánto arriesga</span>
-              <h2 class="zia-sec__title">Una inspección sorpresa <span>no avisa.</span></h2>
-            </div>
-            <div class="zia-lp-risks">
-              <div class="zia-lp-risk"><span class="zia-risk-org">SAT</span><b>Multas y embargo</b><p>Fallas en el control volumétrico pueden derivar en multas, auditorías fiscales y embargo.</p></div>
-              <div class="zia-lp-risk"><span class="zia-risk-org">ASEA</span><b>Clausura</b><p>Sin SASISOPA o Cédula de Operación Anual vigente, la estación puede ser clausurada.</p></div>
-              <div class="zia-lp-risk"><span class="zia-risk-org">CRE</span><b>Pérdida del permiso</b><p>Sin reportes al día, el permiso para vender combustible queda en riesgo.</p></div>
-            </div>
-<div class="row g-4 mt-3 align-items-stretch wow fadeInUp" data-wow-delay=".5s">
+            <div class="row g-4 g-xl-5 align-items-center">
 
-              <!-- Panel de inputs -->
-              <div class="col-lg-4">
+              <!-- Riesgos: qué puede pasar -->
+              <div class="col-lg-5">
+                <div class="zia-sec__head">
+                  <span class="zia-sec__kicker">Cuánto arriesga</span>
+                  <h2 class="zia-sec__title">Una inspección sorpresa <span>no avisa.</span></h2>
+                </div>
+                <div class="zia-lp-risks">
+                  <div class="zia-lp-risk"><span class="zia-risk-org">SAT</span><b>Multas y embargo</b><p>Fallas en el control volumétrico pueden derivar en multas, auditorías fiscales y embargo.</p></div>
+                  <div class="zia-lp-risk"><span class="zia-risk-org">ASEA</span><b>Clausura</b><p>Sin SASISOPA o Cédula de Operación Anual vigente, la estación puede ser clausurada.</p></div>
+                  <div class="zia-lp-risk"><span class="zia-risk-org">CRE</span><b>Pérdida del permiso</b><p>Sin reportes al día, el permiso para vender combustible queda en riesgo.</p></div>
+                </div>
+              </div>
+
+              <!-- Calculadora: datos arriba, resultados abajo -->
+              <div class="col-lg-7 wow fadeInUp" data-wow-delay=".3s">
                 <div class="zia-calc-panel">
                   <div class="zia-calc-field">
-                    <span class="zia-calc-label">Número de dispensarios</span>
+                    <span class="zia-calc-label">Dispensarios</span>
                     <div class="zia-calc-stepper">
-                      <button class="zia-calc-step-btn" id="calc-minus">−</button>
+                      <button class="zia-calc-step-btn" id="calc-minus" aria-label="Quitar un dispensario">−</button>
                       <span class="zia-calc-step-val" id="calc-disp">4</span>
-                      <button class="zia-calc-step-btn" id="calc-plus">+</button>
+                      <button class="zia-calc-step-btn" id="calc-plus" aria-label="Agregar un dispensario">+</button>
                     </div>
                   </div>
                   <div class="zia-calc-field">
                     <span class="zia-calc-label">Ventas mensuales aproximadas</span>
                     <div class="zia-calc-opts" id="calc-ventas">
-                      <button class="zia-calc-opt" data-v="1">Menos de $500,000</button>
-                      <button class="zia-calc-opt is-sel" data-v="2">$500,000 – $1,000,000</button>
-                      <button class="zia-calc-opt" data-v="3">$1,000,000 – $3,000,000</button>
-                      <button class="zia-calc-opt" data-v="4">$3,000,000 – $5,000,000</button>
-                      <button class="zia-calc-opt" data-v="5">Más de $5,000,000</button>
+                      <button class="zia-calc-opt" data-v="1" aria-label="Menos de 500 mil pesos">&lt; $500 mil</button>
+                      <button class="zia-calc-opt is-sel" data-v="2" aria-label="De 500 mil a 1 millón de pesos">$500 mil–1 M</button>
+                      <button class="zia-calc-opt" data-v="3" aria-label="De 1 a 3 millones de pesos">$1–3 M</button>
+                      <button class="zia-calc-opt" data-v="4" aria-label="De 3 a 5 millones de pesos">$3–5 M</button>
+                      <button class="zia-calc-opt" data-v="5" aria-label="Más de 5 millones de pesos">&gt; $5 M</button>
                     </div>
                   </div>
-                  <p class="zia-calc-footnote">Estimación basada en rangos del CFF, LGDCC y reglamentos CRE / ASEA vigentes. No constituye asesoría legal.</p>
                 </div>
-              </div>
-
-              <!-- Tabla de resultados -->
-              <div class="col-lg-8">
                 <div class="zia-calc-results">
                   <div class="zia-calc-row zia-calc-row--hd">
                     <span>Organismo / Obligación</span>
@@ -276,7 +276,7 @@
                     <span class="zia-calc-num" id="r-total-max">—</span>
                   </div>
                   <div class="zia-calc-cta-row">
-                    <p class="zia-calc-cta-note">Esta estimación es conservadora. Su exposición real depende del historial de cumplimiento y puede ser significativamente mayor.</p>
+                    <p class="zia-calc-cta-note">Estimación conservadora (CFF, LGDCC, CRE y ASEA); su exposición real puede ser mayor. No es asesoría legal.</p>
                     <a href="#diagnostico" class="tj-primary-btn">
                       <span class="btn-text"><span>Solicitar auditoría sin costo</span></span>
                       <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
