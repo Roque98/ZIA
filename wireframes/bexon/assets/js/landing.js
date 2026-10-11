@@ -4,40 +4,6 @@
    Cada módulo es independiente: si su marcado no existe, no hace nada.
 ═══════════════════════════════════════════════════ */
 
-/* ── Proceso: rail animado ── */
-(function () {
-  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-  gsap.registerPlugin(ScrollTrigger);
-  var fill  = document.getElementById('process-fill');
-  var dots  = document.querySelectorAll('.zia-process-v2__dot');
-  var steps = document.querySelectorAll('.zia-process-v2__step');
-  if (!fill || !dots.length) return;
-  var thresholds = [0, 0.32, 0.64, 0.97];
-  gsap.to(fill, {
-    width: '100%',
-    ease: 'none',
-    scrollTrigger: {
-      trigger: '#zia-process-v2',
-      start: 'top 85%',
-      // Completo en cuanto el bloque entero está a la vista (las secciones caben en una pantalla)
-      end: 'bottom bottom',
-      scrub: 0.6,
-      onUpdate: function (self) {
-        var p = self.progress;
-        dots.forEach(function (dot, i) {
-          var active = p >= thresholds[i];
-          dot.classList.toggle('is-active', active);
-          steps[i].classList.toggle('is-visible', active);
-        });
-      },
-      onEnter: function () {
-        dots[0].classList.add('is-active');
-        steps[0].classList.add('is-visible');
-      }
-    }
-  });
-}());
-
 /* ── Estación interactiva (el enlace del detalle pre-llena el formulario) ── */
 (function () {
   var hasGsap = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
@@ -268,6 +234,31 @@
         });
       }, { threshold: .4 }).observe(station);
     }
+
+    // Copia limpia del diagrama para la ficha de regulador y la escena de "Cómo trabajamos":
+    // vista completa, sin zoom, marco, etiqueta ni animaciones a medias; ids con prefijo.
+    window.ziaCloneStation = function (prefix) {
+      var c = svg.cloneNode(true);
+      c.removeAttribute('role');
+      c.setAttribute('aria-hidden', 'true');
+      c.setAttribute('viewBox', FULL.join(' '));
+      c.querySelectorAll('.focus-frame, .pt-label').forEach(function (el) { el.remove(); });
+      c.querySelectorAll('.is-dim, .is-active').forEach(function (el) { el.classList.remove('is-dim', 'is-active'); });
+      c.querySelectorAll('[style]').forEach(function (el) { el.removeAttribute('style'); });
+      c.querySelectorAll('#zia-camara path[stroke-dasharray]').forEach(function (el) { el.removeAttribute('transform'); });
+      var n1 = c.querySelector('#zia-nivel-1'), n2 = c.querySelector('#zia-nivel-2');
+      if (n1) { n1.setAttribute('y', 580); n1.setAttribute('height', 60); }
+      if (n2) { n2.setAttribute('y', 595); n2.setAttribute('height', 45); }
+      c.querySelectorAll('.pt, .pt-ring').forEach(function (el) { el.setAttribute('r', 11); });
+      c.querySelectorAll('.pt').forEach(function (pt) {
+        pt.removeAttribute('tabindex'); pt.removeAttribute('role'); pt.removeAttribute('aria-label');
+      });
+      c.querySelectorAll('[id]').forEach(function (el) { el.id = prefix + el.id; });
+      c.querySelectorAll('[clip-path]').forEach(function (el) {
+        el.setAttribute('clip-path', el.getAttribute('clip-path').replace('url(#', 'url(#' + prefix));
+      });
+      return c;
+    };
   }
 }());
 
@@ -373,30 +364,11 @@
     tabs.appendChild(b);
   });
 
-  // Mini estación: copia de la ilustración de la sección 2 (ids renombrados para no duplicarlos)
+  // Mini estación: copia limpia de la ilustración de la sección 2
   function buildMini() {
-    var src = document.querySelector('#zia-station svg');
     var wrap = $('.zia-reg-modal__station');
-    if (!src || !wrap) return null;
-    var svg = src.cloneNode(true);
-    svg.removeAttribute('role');
-    svg.setAttribute('aria-hidden', 'true');
-    // La estación original puede estar con zoom y atenuada: la copia parte de la vista completa
-    svg.setAttribute('viewBox', '0 120 1200 580');
-    svg.querySelectorAll('.focus-frame, .pt-label').forEach(function (el) { el.remove(); });
-    svg.querySelectorAll('.is-dim').forEach(function (el) { el.classList.remove('is-dim'); });
-    svg.querySelectorAll('[style]').forEach(function (el) { el.removeAttribute('style'); });
-    var n1 = svg.querySelector('#zia-nivel-1'), n2 = svg.querySelector('#zia-nivel-2');
-    if (n1) { n1.setAttribute('y', 580); n1.setAttribute('height', 60); }
-    if (n2) { n2.setAttribute('y', 595); n2.setAttribute('height', 45); }
-    svg.querySelectorAll('[id]').forEach(function (el) { el.id = 'mini-' + el.id; });
-    svg.querySelectorAll('[clip-path]').forEach(function (el) {
-      el.setAttribute('clip-path', el.getAttribute('clip-path').replace('url(#', 'url(#mini-'));
-    });
-    svg.querySelectorAll('.pt').forEach(function (pt) {
-      pt.classList.remove('is-active');
-      pt.removeAttribute('tabindex'); pt.removeAttribute('role'); pt.removeAttribute('aria-label');
-    });
+    if (!wrap || !window.ziaCloneStation) return null;
+    var svg = window.ziaCloneStation('mini-');
     wrap.className = 'zia-reg-modal__station zia-station zia-station--mini';
     wrap.appendChild(svg);
     return svg;
@@ -548,6 +520,167 @@
     var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
     if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
   }, { passive: true });
+}());
+
+/* ── Cómo trabajamos: la estación se pone en regla ──
+   Escena fija (pin) cuyo avance lo controla el scroll:
+   1 auditoría (escáner, hallazgos en rojo) → 2 plan (prioridades en ámbar) →
+   3 ejecución (verdes con palomita, medidor a 100%) → 4 seguimiento (ondas + resultado). */
+(function () {
+  var scene = document.getElementById('proceso');
+  if (!scene || !scene.classList.contains('zia-scene') || !window.ziaCloneStation) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  var hasGsap = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var stage = scene.querySelector('.zia-scene__stage');
+  var steps = scene.querySelectorAll('.zia-scene__steps li');
+  var meterVal = scene.querySelector('.zia-scene__meter-val');
+  var bar = scene.querySelector('.zia-scene__bar i');
+  var status = scene.querySelector('.zia-scene__status');
+  var result = scene.querySelector('.zia-scene__result');
+
+  var svg = window.ziaCloneStation('esc-');
+  stage.insertBefore(svg, stage.firstChild);
+
+  var C = { gray: '#c9d6d6', red: '#EC3237', amber: '#d99a1e', green: '#2f9e6b', teal: '#1e8a8a' };
+  // Orden del plan: primero lo que puede clausurar u originar multas mayores
+  var ORDER = ['seguridad', 'volumetrico', 'telemedicion', 'hermeticidad', 'electrica', 'videovigilancia'];
+  var pts = {};
+  svg.querySelectorAll('.pt').forEach(function (p) { pts[p.dataset.punto] = p; });
+
+  function el(tag, attrs, parent) {
+    var n = document.createElementNS(NS, tag);
+    Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  var layer = el('g', { 'class': 'scene-layer' }, svg);
+
+  // Escáner: franja con degradado que recorre la estación de izquierda a derecha
+  var defs = el('defs', {}, svg);
+  var grad = el('linearGradient', { id: 'esc-scan', x1: 0, x2: 1, y1: 0, y2: 0 }, defs);
+  el('stop', { offset: 0, 'stop-color': C.teal, 'stop-opacity': 0 }, grad);
+  el('stop', { offset: 1, 'stop-color': C.teal, 'stop-opacity': .32 }, grad);
+  var scan = el('g', { 'class': 'scene-scan' }, layer);
+  el('rect', { x: -110, y: 120, width: 110, height: 580, fill: 'url(#esc-scan)' }, scan);
+  el('path', { d: 'M0 120V700', stroke: C.teal, 'stroke-width': 3 }, scan);
+
+  // Insignia de prioridad (número) y palomita junto a cada punto
+  var badges = {}, checks = {};
+  ORDER.forEach(function (id, i) {
+    var p = pts[id];
+    var x = +p.getAttribute('cx') + 20, y = +p.getAttribute('cy') - 20;
+    var b = el('g', { 'class': 'scene-badge', transform: 'translate(' + x + ' ' + y + ')' }, layer);
+    el('circle', { r: 15, fill: C.amber, stroke: '#fff', 'stroke-width': 3 }, b);
+    var t = el('text', { 'text-anchor': 'middle', y: 6, fill: '#fff' }, b);
+    t.textContent = i + 1;
+    var k = el('g', { 'class': 'scene-check', transform: 'translate(' + x + ' ' + y + ')' }, layer);
+    el('circle', { r: 15, fill: C.green, stroke: '#fff', 'stroke-width': 3 }, k);
+    el('path', { d: 'M-6.5 0.5l4.5 4.5 8.5-9.5', fill: 'none', stroke: '#fff', 'stroke-width': 3.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, k);
+    badges[id] = b; checks[id] = k;
+  });
+
+  // Ondas de monitoreo continuo desde el centro de la estación
+  var radars = [0, 1, 2].map(function () {
+    return el('circle', { 'class': 'scene-radar', cx: 600, cy: 420, r: 20, fill: 'none', stroke: C.teal, 'stroke-width': 3 }, layer);
+  });
+
+  function setMeter(v) {
+    meterVal.textContent = Math.round(v) + '%';
+    bar.style.transform = 'scaleX(' + (v / 100) + ')';
+  }
+
+  // Sin GSAP o con movimiento reducido: estado final, sin escena fija
+  if (!hasGsap || reduced) {
+    scene.classList.add('is-static');
+    ORDER.forEach(function (id) { pts[id].style.fill = C.green; badges[id].style.display = 'none'; });
+    radars.forEach(function (r) { r.style.display = 'none'; });
+    scan.style.display = 'none';
+    steps.forEach(function (li) { li.classList.add('is-done'); });
+    setMeter(100);
+    return;
+  }
+
+  /* Línea de tiempo en unidades arbitrarias (0–10); el scroll la recorre completa */
+  var T = { scan: .3, scanDur: 2.6, plan: 3.3, exec: 5.4, execStep: .42, watch: 8.2, result: 9.1 };
+  var revealAt = {}, doneAt = {};
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
+  gsap.set(svg.querySelectorAll('.pt'), { fill: C.gray });
+  gsap.set([].concat(ORDER.map(function (id) { return badges[id]; }), ORDER.map(function (id) { return checks[id]; })), { scale: 0, transformOrigin: '50% 50%' });
+  gsap.set(radars, { opacity: 0 });
+  gsap.set(scan, { opacity: 0, x: 0 });
+  gsap.set(result, { autoAlpha: 0, y: 30 });
+  gsap.set(bar, { scaleX: 0, transformOrigin: '0% 50%' });
+
+  // 1. Auditoría: el escáner pasa y cada punto se enciende en rojo al cruzarlo
+  tl.to(scan, { opacity: 1, duration: .15 }, T.scan)
+    .to(scan, { x: 1310, duration: T.scanDur, ease: 'none' }, T.scan)
+    .to(scan, { opacity: 0, duration: .2 }, T.scan + T.scanDur - .2);
+  Object.keys(pts).forEach(function (id) {
+    var p = pts[id], t = T.scan + T.scanDur * (+p.getAttribute('cx') + 10) / 1310;
+    revealAt[id] = t;
+    tl.to(p, { fill: C.red, duration: .12 }, t)
+      .fromTo(p, { attr: { r: 11 } }, { attr: { r: 18 }, duration: .14, yoyo: true, repeat: 1, ease: 'power1.inOut' }, t);
+  });
+  // 2. Estrategia: cada hallazgo recibe su número de prioridad
+  ORDER.forEach(function (id, i) {
+    var t = T.plan + i * .22;
+    tl.to(badges[id], { scale: 1, duration: .3, ease: 'back.out(2.2)' }, t)
+      .to(pts[id], { fill: C.amber, duration: .2 }, t);
+  });
+  // 3. Ejecución: en orden de prioridad, cada punto pasa a verde con palomita
+  ORDER.forEach(function (id, i) {
+    var t = T.exec + i * T.execStep;
+    doneAt[id] = t + .1;
+    tl.to(badges[id], { scale: 0, duration: .18, ease: 'power1.in' }, t)
+      .to(checks[id], { scale: 1, duration: .32, ease: 'back.out(2.2)' }, t + .1)
+      .to(pts[id], { fill: C.green, duration: .2 }, t);
+  });
+  tl.to(bar, { scaleX: 1, duration: ORDER.length * T.execStep + .3, ease: 'none' }, T.exec);
+  // 4. Seguimiento: ondas de monitoreo y, al final, el resultado
+  radars.forEach(function (r, i) {
+    tl.fromTo(r, { attr: { r: 20 }, opacity: .75 }, { attr: { r: 640 }, opacity: 0, duration: 1.3, ease: 'power1.out' }, T.watch + i * .35);
+  });
+  tl.to(result, { autoAlpha: 1, y: 0, duration: .6 }, T.result)
+    .to({}, { duration: .5 }, T.result + .6); // pausa final antes de soltar la escena
+
+  // Pasos, estado y medidor según el punto de la línea de tiempo
+  var lastKey = '';
+  function sync() {
+    var t = tl.time();
+    var step = t < T.plan - .2 ? 0 : t < T.exec - .2 ? 1 : t < T.watch - .1 ? 2 : 3;
+    var txt;
+    if (t < T.scan) txt = 'Su estación hoy';
+    else if (step === 0) txt = 'Auditoría: ' + Object.keys(revealAt).filter(function (id) { return t >= revealAt[id]; }).length + ' hallazgos';
+    else if (step === 1) txt = 'Plan priorizado: ' + ORDER.length + ' acciones';
+    else if (step === 2) txt = 'Resueltos: ' + ORDER.filter(function (id) { return t >= doneAt[id]; }).length + ' de ' + ORDER.length;
+    else txt = t < T.result ? 'Monitoreo continuo activo' : 'Estación en regla';
+    var key = step + '|' + txt;
+    if (key !== lastKey) {
+      lastKey = key;
+      steps.forEach(function (li, i) { li.classList.toggle('is-active', i === step); li.classList.toggle('is-done', i < step); });
+      status.textContent = txt;
+      status.classList.toggle('is-ok', step >= 2);
+    }
+    setMeter(gsap.getProperty(bar, 'scaleX') * 100);
+  }
+  tl.eventCallback('onUpdate', sync);
+  sync();
+
+  ScrollTrigger.create({
+    trigger: scene,
+    start: 'top top',
+    end: function () { return '+=' + Math.round(window.innerHeight * 2.6); },
+    pin: true,
+    anticipatePin: 1,
+    scrub: .6,
+    animation: tl,
+    invalidateOnRefresh: true,
+    // Se recalcula primero: los disparadores de las secciones de abajo dependen del espacio del pin
+    refreshPriority: 1
+  });
+  ScrollTrigger.sort && ScrollTrigger.sort();
+  ScrollTrigger.refresh();
 }());
 
 /* ── Cifras animadas ── */

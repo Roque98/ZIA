@@ -37,7 +37,6 @@
   <nav class="zia-dots" aria-label="Secciones">
     <a href="#inicio"><span>Inicio</span></a>
     <a href="#estacion"><span>Qué revisamos</span></a>
-    <a href="#beneficios"><span>Por qué estar en regla</span></a>
     <a href="#proceso"><span>Cómo trabajamos</span></a>
     <a href="#nosotros"><span>Quiénes somos</span></a>
     <a href="#cobertura"><span>Cobertura</span></a>
@@ -214,84 +213,43 @@
           </div>
         </section>
 
-        <!-- ══ 3. LO QUE GANA ESTANDO EN REGLA ══ -->
-        <section class="zia-sec zia-lp-gains" id="beneficios">
-          <div class="container">
-            <div class="zia-sec__head zia-sec__head--center">
-              <span class="zia-sec__kicker">Por qué estar en regla</span>
-              <h2 class="zia-sec__title">Lo que gana <span>estando en regla.</span></h2>
+        <!-- ══ 3. CÓMO TRABAJAMOS: la estación se pone en regla ══
+             Escena fija: el scroll avanza auditoría → plan → ejecución → seguimiento sobre
+             una copia de la estación de la sección 2 (la arma landing.js). Sin JS o con
+             movimiento reducido se muestra directamente el estado final. -->
+        <section class="zia-sec zia-sec--light zia-scene" id="proceso">
+          <div class="container zia-scene__grid">
+            <div class="zia-scene__side">
+              <div class="zia-sec__head">
+                <span class="zia-sec__kicker">Cómo trabajamos</span>
+                <h2 class="zia-sec__title">Así ponemos su estación <span>en regla.</span></h2>
+              </div>
+              <ol class="zia-scene__steps">
+                <li data-step="1"><span class="zia-scene__num">01</span><div><b>Auditoría inicial</b><p>Evaluamos el estado real de su gasolinera ante los 5 reguladores. Sin costo y sin compromiso.</p></div></li>
+                <li data-step="2"><span class="zia-scene__num">02</span><div><b>Estrategia personalizada</b><p>Diseñamos un plan priorizado según sus riesgos, plazos y el grado de exposición ante cada autoridad.</p></div></li>
+                <li data-step="3"><span class="zia-scene__num">03</span><div><b>Ejecución y gestoría</b><p>Tramitamos, auditamos y supervisamos todo el proceso. Usted opera; nosotros gestionamos.</p></div></li>
+                <li data-step="4"><span class="zia-scene__num">04</span><div><b>Seguimiento continuo</b><p>Monitoreamos obligaciones periódicas, vencimientos y cambios normativos de forma permanente.</p></div></li>
+              </ol>
+              <div class="zia-scene__meter" aria-hidden="true">
+                <div class="zia-scene__meter-top"><span>Cumplimiento</span><b class="zia-scene__meter-val">100%</b></div>
+                <div class="zia-scene__bar"><i></i></div>
+              </div>
             </div>
-            <div class="zia-gains">
-              <article class="zia-gain wow fadeInUp" data-wow-delay=".1s">
-                <span class="zia-gain__ico" aria-hidden="true">
-                  <svg viewBox="0 0 48 48"><rect x="9" y="7" width="20" height="35" rx="3"/><path d="M14 13h10v8H14z"/><path d="M6 42h26"/><path d="M29 17h4l5 5v13a3 3 0 0 1-6 0v-5h-3"/></svg>
-                </span>
-                <h3 class="zia-gain__title">Opera sin interrupciones</h3>
-                <p class="zia-gain__text">Su estación sigue vendiendo mientras nosotros atendemos los trámites, las auditorías y la gestoría ante cada autoridad.</p>
-              </article>
-              <article class="zia-gain wow fadeInUp" data-wow-delay=".25s">
-                <span class="zia-gain__ico" aria-hidden="true">
-                  <svg viewBox="0 0 48 48"><rect x="11" y="7" width="26" height="35" rx="3"/><path d="M18 7V4h12v3"/><path d="M17 25l5 5 9-10"/></svg>
-                </span>
-                <h3 class="zia-gain__title">Inspecciones sin sorpresas</h3>
-                <p class="zia-gain__text">Cuando llega la autoridad, su documentación, pruebas y reportes ya están en orden y a la mano.</p>
-              </article>
-              <article class="zia-gain wow fadeInUp" data-wow-delay=".4s">
-                <span class="zia-gain__ico" aria-hidden="true">
-                  <svg viewBox="0 0 48 48"><rect x="7" y="10" width="34" height="31" rx="3"/><path d="M7 19h34M16 6v8M32 6v8"/><path d="M17 30l5 5 9-9"/></svg>
-                </span>
-                <h3 class="zia-gain__title">Permisos siempre al día</h3>
-                <p class="zia-gain__text">Damos seguimiento a vencimientos, reportes periódicos y cambios normativos antes de que se vuelvan un problema.</p>
-              </article>
-            </div>
-            <div class="zia-gains__close wow fadeInUp" data-wow-delay=".5s">
-              <p>La autoridad puede llegar sin aviso; <span>con ZIA, su estación ya está preparada.</span></p>
-              <a class="tj-outline-btn" href="#diagnostico"><span>Solicitar diagnóstico sin costo</span><i class="tji-arrow-right-long"></i></a>
-            </div>
-          </div>
-        </section>
-
-        <!-- ══ 4. CÓMO TRABAJAMOS ══ -->
-        <section class="zia-sec zia-sec--light" id="proceso">
-          <div class="container">
-            <div class="zia-sec__head zia-sec__head--center">
-              <span class="zia-sec__kicker">Cómo trabajamos</span>
-              <h2 class="zia-sec__title">Cuatro pasos, <span>usted sigue operando.</span></h2>
-            </div>
-<div class="row mt-5">
-              <div class="col-12">
-                <div class="zia-process-v2" id="zia-process-v2">
-                  <!-- Rail de progreso (detrás de los dots) -->
-                  <div class="zia-process-v2__rail">
-                    <div class="zia-process-v2__fill" id="process-fill"></div>
-                  </div>
-                  <!-- Pasos -->
-                  <div class="zia-process-v2__steps">
-                    <div class="zia-process-v2__step">
-                      <div class="zia-process-v2__dot"></div>
-                      <div class="zia-process-v2__num">01</div>
-                      <div class="zia-process-v2__title">Auditoría inicial</div>
-                      <p class="zia-process-v2__desc">Evaluamos el estado real de su gasolinera ante los 5 reguladores. Sin costo y sin compromiso.</p>
-                    </div>
-                    <div class="zia-process-v2__step">
-                      <div class="zia-process-v2__dot"></div>
-                      <div class="zia-process-v2__num">02</div>
-                      <div class="zia-process-v2__title">Estrategia personalizada</div>
-                      <p class="zia-process-v2__desc">Diseñamos un plan priorizado según sus riesgos, plazos y el grado de exposición ante cada autoridad.</p>
-                    </div>
-                    <div class="zia-process-v2__step">
-                      <div class="zia-process-v2__dot"></div>
-                      <div class="zia-process-v2__num">03</div>
-                      <div class="zia-process-v2__title">Ejecución y gestoría</div>
-                      <p class="zia-process-v2__desc">Tramitamos, auditamos y supervisamos todo el proceso. Usted opera; nosotros gestionamos.</p>
-                    </div>
-                    <div class="zia-process-v2__step">
-                      <div class="zia-process-v2__dot"></div>
-                      <div class="zia-process-v2__num">04</div>
-                      <div class="zia-process-v2__title">Seguimiento continuo</div>
-                      <p class="zia-process-v2__desc">Monitoreamos obligaciones periódicas, vencimientos y cambios normativos de forma permanente.</p>
-                    </div>
-                  </div>
+            <div class="zia-scene__main">
+              <div class="zia-scene__stage zia-station zia-station--scene">
+                <span class="zia-scene__status" aria-hidden="true">Estación en regla</span>
+                <!-- Resultado: aparece al final del recorrido -->
+                <div class="zia-scene__result">
+                  <b class="zia-scene__result-kicker">Lo que gana estando en regla</b>
+                  <ul>
+                    <li><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="7" width="20" height="35" rx="3"/><path d="M14 13h10v8H14z"/><path d="M6 42h26"/><path d="M29 17h4l5 5v13a3 3 0 0 1-6 0v-5h-3"/></svg><span><b>Opera sin interrupciones</b>Su estación sigue vendiendo mientras gestionamos.</span></li>
+                    <li><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="11" y="7" width="26" height="35" rx="3"/><path d="M18 7V4h12v3"/><path d="M17 25l5 5 9-10"/></svg><span><b>Inspecciones sin sorpresas</b>Documentación y pruebas en orden y a la mano.</span></li>
+                    <li><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="10" width="34" height="31" rx="3"/><path d="M7 19h34M16 6v8M32 6v8"/><path d="M17 30l5 5 9-9"/></svg><span><b>Permisos siempre al día</b>Vencimientos y reportes antes de que sean problema.</span></li>
+                  </ul>
+                  <a class="tj-primary-btn" href="#diagnostico">
+                    <span class="btn-text"><span>Solicitar diagnóstico sin costo</span></span>
+                    <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
+                  </a>
                 </div>
               </div>
             </div>
