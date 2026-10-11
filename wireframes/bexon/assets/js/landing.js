@@ -392,8 +392,7 @@
       .from('.zia-reg-modal__spots li', { y: 8, opacity: 0, duration: .3, stagger: .08 }, .5)
       .from('.zia-reg-modal__list li', { x: 14, opacity: 0, duration: .35, stagger: .06 }, .3)
       .fromTo('.zia-reg-modal__list path', { strokeDasharray: 20, strokeDashoffset: 20 }, { strokeDashoffset: 0, duration: .35, stagger: .06, ease: 'power1.out' }, .45)
-      .from('.zia-reg-modal__risk:not([hidden])', { y: 10, opacity: 0, duration: .4 }, .6)
-      .from('.zia-reg-modal__cta', { y: 10, opacity: 0, duration: .4 }, .7);
+      .from('.zia-reg-modal__risk:not([hidden])', { y: 10, opacity: 0, duration: .4 }, .6);
   }
 
   function go(k, dir) {
