@@ -56,7 +56,8 @@
     ScrollTrigger.create({
       trigger: tl,
       start: 'top 78%',
-      end: 'center 58%',
+      // Completo en cuanto la línea entera está a la vista
+      end: 'bottom bottom',
       onUpdate: function (self) { setFill(self.progress); activate(self.progress); },
       onEnter:  function () { items[0].classList.add('is-active'); }
     });
