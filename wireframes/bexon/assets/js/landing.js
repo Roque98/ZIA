@@ -116,7 +116,9 @@
   var station = document.getElementById('zia-station');
   if (station) {
     var svg = station.querySelector('svg');
-    var tip = station.querySelector('.zia-station__tip');
+    // El detalle vive en un panel fuera del diagrama para no tapar la ilustración
+    var tip = document.querySelector('#estacion .zia-station__tip');
+    var SVGNS = 'http://www.w3.org/2000/svg';
     var legend = document.querySelectorAll('.zia-station__legend button');
     var ids = Object.keys(PUNTOS);
     var current = null, timer = null, userTook = false;
@@ -134,6 +136,27 @@
       pt.setAttribute('aria-label', PUNTOS[pt.dataset.punto].k);
     });
 
+    // Etiqueta corta junto al punto activo (solo el nombre; el detalle va en el panel)
+    var label = document.createElementNS(SVGNS, 'g');
+    label.setAttribute('class', 'pt-label');
+    label.setAttribute('aria-hidden', 'true');
+    var labelBg = document.createElementNS(SVGNS, 'rect');
+    var labelTxt = document.createElementNS(SVGNS, 'text');
+    label.appendChild(labelBg); label.appendChild(labelTxt);
+    svg.appendChild(label);
+
+    function placeLabel(pt, text) {
+      labelTxt.textContent = text;
+      var cx = +pt.getAttribute('cx'), cy = +pt.getAttribute('cy');
+      var w = labelTxt.getBBox().width + 28, h = 34;
+      // Arriba del punto (suele haber cielo o espacio libre); debajo si no cabe. viewBox: 0 120 1200 580
+      var x = Math.max(8, Math.min(1192 - w, cx - w / 2));
+      var y = cy - 26 - h < 126 ? cy + 26 : cy - 26 - h;
+      labelBg.setAttribute('x', x); labelBg.setAttribute('y', y);
+      labelBg.setAttribute('width', w); labelBg.setAttribute('height', h); labelBg.setAttribute('rx', h / 2);
+      labelTxt.setAttribute('x', x + 14); labelTxt.setAttribute('y', y + h / 2 + 6);
+    }
+
     function show(id) {
       var data = PUNTOS[id];
       var pt = svg.querySelector('.pt[data-punto="' + id + '"]');
@@ -145,19 +168,12 @@
       tip.querySelector('.zia-station__tip-title').textContent = data.t;
       tip.querySelector('.zia-station__tip-desc').textContent = data.d;
       tip.querySelector('.zia-station__tip-link').dataset.tema = data.tema;
-      tip.hidden = false;
-
-      // Posición: sobre el punto; debajo si no cabe arriba; dentro del contenedor a lo ancho
-      var box = station.getBoundingClientRect(), r = pt.getBoundingClientRect();
-      var x = r.left + r.width / 2 - box.left, y = r.top + r.height / 2 - box.top;
-      var half = tip.offsetWidth / 2, pad = 8;
-      var cx = Math.max(half + pad, Math.min(box.width - half - pad, x));
-      var below = y - tip.offsetHeight - 30 < 0;
-      tip.classList.toggle('is-below', below);
-      tip.style.left = cx + 'px';
-      tip.style.top = y + 'px';
-      tip.style.setProperty('--arrow', (half + x - cx) + 'px');
-      if (hasGsap && !reduced) gsap.fromTo(tip, { opacity: 0 }, { opacity: 1, duration: .25, clearProps: 'opacity' });
+      placeLabel(pt, data.k);
+      // Se anima el contenedor (div y g), no sus hijos: main.css da transition a span/a y chocaría con GSAP
+      if (hasGsap && !reduced) {
+        gsap.fromTo(tip, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: .3, ease: 'power2.out', clearProps: 'opacity,transform' });
+        gsap.fromTo(label, { opacity: 0 }, { opacity: 1, duration: .25, clearProps: 'opacity' });
+      }
     }
     function stopAuto() { userTook = true; clearInterval(timer); }
 
@@ -171,7 +187,8 @@
         b.addEventListener(ev, function () { stopAuto(); show(b.dataset.punto); });
       });
     });
-    window.addEventListener('resize', function () { if (current) show(current); });
+    // El panel nunca queda vacío: arranca con el primer punto
+    show(ids[0]);
 
     // Recorrido automático mientras la cabecera está a la vista y nadie interactúa
     if (!reduced) {

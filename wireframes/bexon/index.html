@@ -88,12 +88,23 @@
 
         <!-- ══ 2. ESTACIÓN INTERACTIVA ══ -->
         <section class="zia-sec zia-lp-station" id="estacion">
-          <div class="container">
-            <div class="zia-sec__head zia-sec__head--center">
-              <span class="zia-sec__kicker">Qué revisamos</span>
-              <h2 class="zia-sec__title">Del tanque al trámite, <span>toda su estación.</span></h2>
-              <p class="zia-sec__lead">Explore los puntos rojos: cada uno es algo que una autoridad puede inspeccionar.</p>
+          <!-- Desde 992px: título y detalle a la izquierda, diagrama limpio a la derecha.
+               En móvil: título, diagrama, detalle y leyenda, en ese orden. -->
+          <div class="container zia-lp-station__grid">
+            <div class="zia-lp-station__side">
+              <div class="zia-sec__head zia-sec__head--center">
+                <span class="zia-sec__kicker">Qué revisamos</span>
+                <h2 class="zia-sec__title">Del tanque al trámite, <span>toda su estación.</span></h2>
+                <p class="zia-sec__lead">Explore los puntos rojos: cada uno es algo que una autoridad puede inspeccionar.</p>
+              </div>
+              <div class="zia-station__tip" role="status" aria-live="polite">
+                <span class="zia-station__tip-kicker"></span>
+                <b class="zia-station__tip-title"></b>
+                <span class="zia-station__tip-desc"></span>
+                <a class="zia-station__tip-link" href="#diagnostico">Solicitar revisión <i class="tji-arrow-right-long"></i></a>
+              </div>
             </div>
+            <div class="zia-lp-station__main">
             <div class="zia-station" id="zia-station">
 <svg role="img" aria-label="Corte de una estación de servicio con puntos de inspección" xmlns="http://www.w3.org/2000/svg" viewBox="0 120 1200 580" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <g id="zia-suelo">
@@ -186,12 +197,6 @@
     <circle class="pt" data-punto="seguridad" cx="520" cy="172" r="11"/>
   </g>
 </svg>
-              <div class="zia-station__tip" role="status" aria-live="polite" hidden>
-                <span class="zia-station__tip-kicker"></span>
-                <b class="zia-station__tip-title"></b>
-                <span class="zia-station__tip-desc"></span>
-                <a class="zia-station__tip-link" href="#diagnostico">Solicitar revisión <i class="tji-arrow-right-long"></i></a>
-              </div>
             </div>
             <ul class="zia-station__legend" aria-label="Puntos de inspección">
               <li><button type="button" data-punto="hermeticidad">Tanques</button></li>
@@ -201,6 +206,7 @@
               <li><button type="button" data-punto="electrica">Eléctrica</button></li>
               <li><button type="button" data-punto="seguridad">Seguridad</button></li>
             </ul>
+            </div>
           </div>
         </section>
 
