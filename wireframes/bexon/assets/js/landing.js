@@ -4,67 +4,6 @@
    Cada módulo es independiente: si su marcado no existe, no hace nada.
 ═══════════════════════════════════════════════════ */
 
-/* ── Calculadora de exposición ── */
-(function () {
-  var state = { d: 4, v: 2 };
-  var VM = [250000, 750000, 2000000, 4000000, 7000000];
-
-  function calc() {
-    var d = state.d, v = VM[state.v - 1];
-    return {
-      sat:  { mn: 500000 + d * 100000,          mx: 3000000 + d * 250000 + v * 0.03 },
-      asea: { mn: 200000 + d * 80000,            mx: 1500000 + d * 200000 },
-      cre:  { mn: 100000 + v * 0.02,             mx: Math.min(3000000 + v * 0.05, 8000000) },
-      stps: { mn: d * 5 * 5000,                  mx: d * 5 * 25000 }
-    };
-  }
-
-  function fmt(n) {
-    if (n >= 1000000) return '$' + (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-    return '$' + Math.round(n / 1000) + 'K';
-  }
-
-  function render() {
-    var r = calc();
-    var ids = { sat: r.sat, asea: r.asea, cre: r.cre, stps: r.stps };
-    var tMin = 0, tMax = 0;
-    Object.keys(ids).forEach(function (k) {
-      tMin += ids[k].mn; tMax += ids[k].mx;
-      set('r-' + k + '-min', fmt(ids[k].mn));
-      set('r-' + k + '-max', fmt(ids[k].mx));
-    });
-    set('r-total-min', fmt(tMin));
-    set('r-total-max', fmt(tMax));
-    var cta = document.querySelector('.zia-calc-cta-row a');
-    // El CTA lleva la estimación al formulario de la misma página (ver ziaTriage.prefill)
-    if (cta) { cta.dataset.origen = 'calculadora'; cta.dataset.desp = state.d; cta.dataset.exp = fmt(tMin) + ' a ' + fmt(tMax); }
-    document.getElementById('calc-disp').textContent = state.d;
-  }
-
-  function set(id, val) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    el.textContent = val;
-    el.classList.add('is-live');
-  }
-
-  var minus = document.getElementById('calc-minus');
-  var plus  = document.getElementById('calc-plus');
-  if (minus) minus.addEventListener('click', function () { if (state.d > 1)  { state.d--; render(); } });
-  if (plus)  plus.addEventListener('click',  function () { if (state.d < 30) { state.d++; render(); } });
-
-  document.querySelectorAll('#calc-ventas .zia-calc-opt').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      document.querySelectorAll('#calc-ventas .zia-calc-opt').forEach(function (b) { b.classList.remove('is-sel'); });
-      btn.classList.add('is-sel');
-      state.v = parseInt(btn.dataset.v, 10);
-      render();
-    });
-  });
-
-  render();
-}());
-
 /* ── Proceso: rail animado ── */
 (function () {
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
@@ -334,8 +273,7 @@
 
 /* ── Ficha de cada regulador (modal desde la franja del hero) ──
    Contenido tomado de docs/client-brief.md. "spots" son los puntos de la
-   estación interactiva donde aplica cada autoridad; "calc" enlaza con la
-   fila de la calculadora de exposición. */
+   estación interactiva donde aplica cada autoridad. */
 (function () {
   var modal = document.getElementById('zia-reg-modal');
   if (!modal || typeof modal.showModal !== 'function') return;
@@ -362,7 +300,7 @@
         'Verificación conforme a NOM-005-ASEA-2016'
       ],
       risk: 'Sin SASISOPA o Cédula de Operación Anual vigente, la estación puede ser clausurada.',
-      calc: 'asea', tema: 'ASEA'
+      tema: 'ASEA'
     },
     cre: {
       abbr: 'CRE', name: 'Comisión Reguladora de Energía', icon: 'cre',
@@ -377,7 +315,7 @@
         'Regularización de trámites y obligaciones pendientes'
       ],
       risk: 'Sin reportes al día, el permiso para vender combustible queda en riesgo.',
-      calc: 'cre', tema: 'CRE'
+      tema: 'CRE'
     },
     sat: {
       abbr: 'SAT', name: 'Servicio de Administración Tributaria', icon: 'sat',
@@ -392,7 +330,7 @@
         'Pruebas de hermeticidad y cubicación de tanques (Anexo 32)'
       ],
       risk: 'Fallas en el control volumétrico pueden derivar en multas, auditorías fiscales y embargo.',
-      calc: 'sat', tema: 'SAT'
+      tema: 'SAT'
     },
     stps: {
       abbr: 'STPS', name: 'Secretaría del Trabajo y Previsión Social', icon: 'stps',
@@ -405,7 +343,7 @@
         'Verificación de instalaciones eléctricas (NOM-001-SEDE-2012)'
       ],
       risk: 'Incumplir las normas de seguridad e higiene genera multas por cada trabajador expuesto.',
-      calc: 'stps', tema: 'STPS'
+      tema: 'STPS'
     },
     pc: {
       abbr: 'Protección Civil', name: 'Protección Civil', icon: 'proteccion-civil',
@@ -416,7 +354,7 @@
         'Análisis de riesgo de la estación',
         'Protocolo de Respuesta a Emergencias'
       ],
-      risk: null, calc: null, tema: 'Protección Civil'
+      risk: null, tema: 'Protección Civil'
     }
   };
 
@@ -503,13 +441,6 @@
     var risk = $('.zia-reg-modal__risk');
     risk.hidden = !r.risk;
     $('.zia-reg-modal__risk-txt').textContent = r.risk || '';
-    // Exposición: la misma cifra que muestra la calculadora con sus valores actuales
-    var exp = $('.zia-reg-modal__exposure');
-    var mn = r.calc && document.getElementById('r-' + r.calc + '-min');
-    var mx = r.calc && document.getElementById('r-' + r.calc + '-max');
-    var hasExp = mn && mx && mn.textContent.indexOf('$') === 0;
-    exp.hidden = !hasExp;
-    if (hasExp) exp.querySelector('strong').textContent = mn.textContent + ' – ' + mx.textContent;
 
     var cta = $('.zia-reg-modal__cta');
     cta.dataset.tema = r.tema;
@@ -602,7 +533,7 @@
   // Clic en el fondo (fuera de la tarjeta) cierra
   modal.addEventListener('click', function (e) {
     if (e.target === modal) return close();
-    // Los enlaces internos (formulario, calculadora) cierran la ficha antes de desplazar la página
+    // Los enlaces internos (formulario) cierran la ficha antes de desplazar la página
     if (e.target.closest('a[href^="#"]')) closeNow();
   });
   modal.addEventListener('cancel', function (e) { e.preventDefault(); close(); });
@@ -779,15 +710,10 @@
     show(1);
   });
 
-  // Pre-llenado: desde CTAs de la página (data-tema / data-origen) o desde la URL (?tema=ASEA,SAT)
+  // Pre-llenado: desde CTAs de la página (data-tema) o desde la URL (?tema=ASEA,SAT)
   function prefill(opts) {
     if (!form.hidden && step !== 1) show(1);
     var temas = opts.temas || [];
-    if (opts.origen === 'calculadora') {
-      temas = ['ASEA', 'CRE', 'SAT', 'STPS'];
-      form.elements.mensaje.value = 'Vengo de la calculadora de exposición: ' + (opts.desp || '?') +
-        ' dispensarios, exposición estimada ' + (opts.exp || 'no indicada') + '.';
-    }
     if (temas.length) {
       form.querySelectorAll('input[name="temas"]').forEach(function (c) { c.checked = temas.indexOf(c.value) !== -1; });
       showError('temas', false);
@@ -795,9 +721,7 @@
   }
   window.ziaTriage = { prefill: prefill };
   var q = new URLSearchParams(location.search);
-  if (q.get('tema') || q.get('origen')) {
-    prefill({ temas: (q.get('tema') || '').split(',').filter(Boolean), origen: q.get('origen'), desp: q.get('desp'), exp: q.get('exp') });
-  }
+  if (q.get('tema')) prefill({ temas: q.get('tema').split(',').filter(Boolean) });
 }());
 
 (function () {
@@ -813,11 +737,8 @@
     var a = e.target.closest('a[href^="#"]');
     if (!a || a.classList.contains('video-popup') || a.getAttribute('href').length < 2) return;
     e.preventDefault();
-    if ((a.dataset.tema || a.dataset.origen) && window.ziaTriage) {
-      window.ziaTriage.prefill({
-        temas: (a.dataset.tema || '').split(',').filter(Boolean),
-        origen: a.dataset.origen, desp: a.dataset.desp, exp: a.dataset.exp
-      });
+    if (a.dataset.tema && window.ziaTriage) {
+      window.ziaTriage.prefill({ temas: a.dataset.tema.split(',').filter(Boolean) });
     }
     goTo(a.getAttribute('href'));
   });
