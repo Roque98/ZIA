@@ -318,7 +318,7 @@
       tema: 'ASEA'
     },
     cre: {
-      abbr: 'CRE', name: 'Comisión Reguladora de Energía', icon: 'cre',
+      abbr: 'CNE', name: 'Comisión Nacional de Energía', icon: 'cre',
       role: 'Otorga el permiso para vender combustible y recibe sus reportes de volumen.',
       spots: ['volumetrico', 'telemedicion'],
       services: [
@@ -330,7 +330,7 @@
         'Regularización de trámites y obligaciones pendientes'
       ],
       risk: 'Sin reportes al día, el permiso para vender combustible queda en riesgo.',
-      tema: 'CRE'
+      tema: 'CNE'
     },
     sat: {
       abbr: 'SAT', name: 'Servicio de Administración Tributaria', icon: 'sat',
@@ -773,7 +773,7 @@
     { y: 2000, e: 'Orígenes en TI', d: 'Soporte y asesoría en sistemas de información y redes.', add: [] },
     { y: 2004, e: 'Especialización en hidrocarburos', d: 'Controles volumétricos para gasolineras.', add: ['sat'] },
     { y: 2010, e: 'Diversificación en seguridad', d: 'Consultoría en seguridad e higiene, Protección Civil y STPS.', add: ['stps', 'pc'] },
-    { y: 2015, e: 'Adaptación regulatoria', d: 'Ampliamos el catálogo para CRE y ASEA.', add: ['cre', 'asea'] },
+    { y: 2015, e: 'Adaptación regulatoria', d: 'Ampliamos el catálogo para la CRE (hoy CNE) y ASEA.', add: ['cre', 'asea'] },
     { y: 'Hoy', e: 'Liderazgo integral', d: 'De la auditoría a la defensoría jurídica, ante los cinco reguladores.', add: [] }
   ];
   // Posición en la órbita (grados; 0 = derecha): se encienden en el sentido del reloj desde arriba
@@ -1075,7 +1075,7 @@
   form.addEventListener('change', updateResumen);
   updateResumen();
 
-  // ['CRE','SAT','STPS'] → 'CRE, SAT y STPS'
+  // ['CNE','SAT','STPS'] → 'CNE, SAT y STPS'
   function enumerar(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1]; }
 
   function finish() {
