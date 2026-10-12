@@ -15,8 +15,8 @@
   <link rel="stylesheet" href="assets/css/bexon-icons.css">
   <link rel="stylesheet" href="assets/css/meanmenu.css">
   <link rel="stylesheet" href="assets/css/main.css">
-  <link rel="stylesheet" href="assets/css/zia.css?v=20261012a">
-  <link rel="stylesheet" href="assets/css/landing.css?v=20261012a">
+  <link rel="stylesheet" href="assets/css/zia.css?v=20261012b">
+  <link rel="stylesheet" href="assets/css/landing.css?v=20261012b">
 
 </head>
 <body>
@@ -65,8 +65,8 @@
               <div class="col-lg-6">
                 <!-- Loop sin audio; la versión con voz y música abre en VenoBox -->
                 <div class="zia-lp-video">
-                  <video src="assets/video/zia-promo-loop.mp4?v=20261012a" autoplay muted loop playsinline preload="auto" aria-label="Video promocional de ZIA (sin sonido)"></video>
-                  <a class="zia-play-btn video-popup" href="assets/video/zia-promo.mp4?v=20261012a" data-vbtype="video" data-autoplay="true">
+                  <video src="assets/video/zia-promo-loop.mp4?v=20261012b" autoplay muted loop playsinline preload="auto" aria-label="Video promocional de ZIA (sin sonido)"></video>
+                  <a class="zia-play-btn video-popup" href="assets/video/zia-promo.mp4?v=20261012b" data-vbtype="video" data-autoplay="true">
                     <span class="zia-play-btn__ico"><i class="tji-play"></i></span>
                     <span>Ver con sonido <small>31 s</small></span>
                   </a>
@@ -362,8 +362,8 @@
         <!-- ══ 7. DIAGNÓSTICO (formulario de cierre) ══ -->
         <section class="zia-sec zia-lp-form" id="diagnostico">
           <div class="container">
-            <div class="row align-items-center g-5">
-              <div class="col-lg-5">
+            <div class="row align-items-center g-5 zia-form-row">
+              <div class="col-lg-5 zia-form-side">
                 <span class="zia-sec__kicker">Diagnóstico sin costo</span>
                 <h2 class="zia-sec__title">Hablemos antes de que llegue <span>la inspección.</span></h2>
                 <!-- Resumen en vivo: landing.js lo va llenando con lo que el cliente elige en el formulario -->
@@ -373,12 +373,12 @@
                     <small>Temas</small>
                     <div class="zia-resumen__body">
                       <div class="zia-resumen__regs">
-                        <span class="zia-resumen__reg" data-tema="ASEA" style="--c: var(--zia-asea)"><img src="assets/images/zia/icons/asea.svg" alt=""><b>ASEA</b></span>
-                        <span class="zia-resumen__reg" data-tema="CNE" style="--c: var(--zia-cre)"><img src="assets/images/zia/icons/cre.svg" alt=""><b>CNE</b></span>
-                        <span class="zia-resumen__reg" data-tema="SAT" style="--c: var(--zia-sat)"><img src="assets/images/zia/icons/sat.svg" alt=""><b>SAT</b></span>
-                        <span class="zia-resumen__reg" data-tema="STPS" style="--c: var(--zia-stps)"><img src="assets/images/zia/icons/stps.svg" alt=""><b>STPS</b></span>
-                        <span class="zia-resumen__reg" data-tema="Protección Civil" style="--c: var(--zia-pc)"><img src="assets/images/zia/icons/proteccion-civil.svg" alt=""><b>P. Civil</b></span>
-                        <span class="zia-resumen__reg zia-resumen__reg--all" data-tema="No estoy seguro" style="--c: var(--zia-teal)"><i aria-hidden="true">?</i><b>Auditoría general</b></span>
+                        <button type="button" class="zia-resumen__reg" data-tema="ASEA" style="--c: var(--zia-asea)" aria-pressed="false"><img src="assets/images/zia/icons/asea.svg" alt=""><b>ASEA</b></button>
+                        <button type="button" class="zia-resumen__reg" data-tema="CNE" style="--c: var(--zia-cre)" aria-pressed="false"><img src="assets/images/zia/icons/cre.svg" alt=""><b>CNE</b></button>
+                        <button type="button" class="zia-resumen__reg" data-tema="SAT" style="--c: var(--zia-sat)" aria-pressed="false"><img src="assets/images/zia/icons/sat.svg" alt=""><b>SAT</b></button>
+                        <button type="button" class="zia-resumen__reg" data-tema="STPS" style="--c: var(--zia-stps)" aria-pressed="false"><img src="assets/images/zia/icons/stps.svg" alt=""><b>STPS</b></button>
+                        <button type="button" class="zia-resumen__reg" data-tema="Protección Civil" style="--c: var(--zia-pc)" aria-pressed="false"><img src="assets/images/zia/icons/proteccion-civil.svg" alt=""><b>P. Civil</b></button>
+                        <button type="button" class="zia-resumen__reg zia-resumen__reg--all" data-tema="No estoy seguro" style="--c: var(--zia-teal)" aria-pressed="false"><i aria-hidden="true">?</i><b>Auditoría general</b></button>
                       </div>
                     </div>
                   </div>
@@ -400,7 +400,7 @@
                   <li><a href="mailto:contacto@ziaintegracion.com" class="zia-direct__item" title="contacto@ziaintegracion.com"><span class="zia-direct__ico"><i class="tji-envelop-2"></i></span><span><small>Correo</small>Enviar correo</span></a></li>
                 </ul>
               </div>
-              <div class="col-lg-7">
+              <div class="col-lg-7 zia-form-main">
 <div class="zia-triage" id="zia-triage" data-zia-hero-item>
                   <div class="zia-triage__head">
                     <span class="zia-triage__kicker">Diagnóstico inicial sin costo</span>
@@ -580,8 +580,8 @@
   <script src="assets/js/appear.min.js"></script>
   <script src="assets/js/wow.min.js"></script>
   <script src="assets/js/meanmenu.js"></script>
-  <script src="assets/js/main.js?v=20261012a"></script>
-  <script src="assets/js/zia.js?v=20261012a"></script>
-  <script src="assets/js/landing.js?v=20261012a"></script>
+  <script src="assets/js/main.js?v=20261012b"></script>
+  <script src="assets/js/zia.js?v=20261012b"></script>
+  <script src="assets/js/landing.js?v=20261012b"></script>
 </body>
 </html>
