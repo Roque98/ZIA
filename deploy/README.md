@@ -44,7 +44,14 @@ El sitio vive en el subdominio `app.ziacentro.com`. En **Zone Editor** de cPanel
 
 | Tipo | Nombre | Valor |
 |---|---|---|
-| A | `app` | IP del VPS |
+| A | `app` | IPv4 del VPS |
+| AAAA | `app` | IPv6 del VPS (`ip -6 addr show scope global`) |
+
+**El registro AAAA no es opcional.** Telcel conecta sus celulares solo por IPv6; sin AAAA
+tienen que pasar por su traductor a IPv4 y la conexión hacia este VPS expira ("La conexión
+ha expirado"), aunque desde wifi o computadora el sitio cargue bien. nginx ya escucha en
+`[::]` y el firewall permite IPv6: solo falta publicarla en el DNS. Lo mismo aplica a los
+dominios de igas-console.
 
 El dominio principal (`ziacentro.com`, `www`) y los registros de correo (`MX`, `mail`,
 `TXT` de SPF/DKIM) **no se tocan**: siguen en el hosting de cPanel.

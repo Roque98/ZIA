@@ -158,8 +158,10 @@ button.zia-person { width: 100%; text-align: left; font: inherit; color: inherit
 .zia-resumen__row > small { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.5); }
 .zia-resumen__body { min-width: 0; }
 .zia-resumen__regs { display: flex; flex-wrap: wrap; gap: 6px; }
-/* Regulador apagado hasta que se marca en el formulario */
-.zia-resumen__reg { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px 3px 3px; border-radius: 20px; border: 1px solid rgba(255,255,255,.1); opacity: .35; filter: grayscale(1); transition: opacity .3s, filter .3s, border-color .3s, background .3s; }
+/* Botones: tocar uno marca ese tema en el formulario. Apagado se ve disponible, no deshabilitado */
+.zia-resumen__reg { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px 3px 3px; border-radius: 20px; border: 1px solid rgba(255,255,255,.22); background: none; font: inherit; cursor: pointer; opacity: .8; filter: grayscale(1); transition: opacity .3s, filter .3s, border-color .3s, background .3s; }
+.zia-resumen__reg:hover, .zia-resumen__reg:focus-visible { opacity: 1; filter: none; border-color: color-mix(in srgb, var(--c) 60%, transparent); }
+.zia-resumen.is-done .zia-resumen__reg { cursor: default; }
 .zia-resumen__reg img { width: 22px; height: 22px; border-radius: 50%; background: #fff; }
 .zia-resumen__reg b { font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #fff; }
 .zia-resumen__reg.is-on { opacity: 1; filter: none; border-color: color-mix(in srgb, var(--c) 60%, transparent); background: color-mix(in srgb, var(--c) 18%, transparent); }
@@ -179,6 +181,17 @@ button.zia-person { width: 100%; text-align: left; font: inherit; color: inherit
 @media (max-width: 575px) {
   .zia-direct--row { grid-template-columns: 1fr; }
   .zia-resumen__row { grid-template-columns: 1fr; gap: 6px; }
+}
+/* Móvil y tablet: primero el formulario (lo que hay que hacer); el resumen y los contactos después.
+   La columna izquierda se "disuelve" (display: contents) para poder intercalar el formulario. */
+@media (max-width: 991px) {
+  .zia-form-row > .zia-form-side { display: contents; }
+  .zia-form-row > .zia-form-side > * { width: calc(100% - var(--bs-gutter-x)); margin-inline: calc(var(--bs-gutter-x) * .5); }
+  .zia-form-row > .zia-form-side > .zia-sec__kicker { order: 1; margin-top: var(--bs-gutter-y); }
+  .zia-form-row > .zia-form-side > .zia-sec__title { order: 2; }
+  .zia-form-row > .zia-form-main { order: 3; margin-top: 6px; }
+  .zia-form-row > .zia-form-side > .zia-resumen { order: 4; margin-top: 22px; }
+  .zia-form-row > .zia-form-side > .zia-direct { order: 5; margin-top: 12px; }
 }
 .zia-triage { background: #fff; color: var(--tj-color-text-body); border-radius: 18px; padding: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
 .zia-triage__kicker { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--zia-teal); }
