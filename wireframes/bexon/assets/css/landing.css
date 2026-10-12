@@ -437,7 +437,7 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
 .zia-scene.is-static .zia-scene__result { position: static; margin-top: 12px; }
 @media (max-width: 991px) {
   /* Móvil y tablet: título, estación, paso activo y medidor apilados */
-  .zia-sec.zia-scene { display: flex; flex-direction: column; justify-content: center; padding: 76px 0 18px; }
+  .zia-sec.zia-scene { display: flex; flex-direction: column; justify-content: flex-start; padding: 76px 0 18px; }
   .zia-scene__grid { display: flex; flex-direction: column; align-items: stretch; }
   .zia-scene__side, .zia-scene__main { display: contents; }
   .zia-scene .zia-sec__head { order: 1; margin-bottom: 14px; }
@@ -445,20 +445,25 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
   .zia-scene__stage { order: 2; max-width: none; margin: 0; }
   .zia-scene__controls { order: 3; max-width: none; margin: 10px 0 0; gap: 10px; }
   .zia-scene__play { width: 36px; height: 36px; }
-  .zia-scene__steps { order: 4; margin-top: 12px; }
+  .zia-scene__steps { order: 5; margin-top: 12px; }
   .zia-scene__steps::before { display: none; }
   .zia-scene:not(.is-static) .zia-scene__steps li:not(.is-active) { display: none; }
-  .zia-scene__meter { order: 5; margin-top: 10px; padding: 10px 14px; }
-  .zia-scene__status { top: 10px; left: 10px; padding: 5px 10px; font-size: 11px; }
-  .zia-scene__result { left: 8px; right: 8px; bottom: 8px; top: 8px; grid-template-columns: 1fr; grid-template-areas: "kicker" "list" "cta"; align-content: center; gap: 8px; padding: 12px 14px; }
+  .zia-scene__meter { order: 6; margin-top: 10px; padding: 10px 14px; }
+  /* El resultado no cabe sobre la estación: sale de ella y ocupa el lugar del medidor al terminar */
+  .zia-scene__stage { display: contents; }
+  .zia-scene__stage > svg { order: 3; box-shadow: 0 20px 50px rgba(0,0,0,.4); }
+  .zia-scene__status { position: relative; top: auto; left: auto; order: 2; align-self: flex-start; margin: 10px 0 -36px 10px; padding: 5px 10px; font-size: 11px; }
+  .zia-scene__result { position: static; order: 6; margin-top: 10px; grid-template-columns: 1fr; grid-template-areas: "kicker" "list" "cta"; gap: 8px; padding: 12px 14px; box-shadow: none; border: 1px solid rgba(255,255,255,.1); }
+  .zia-scene:not(.is-static):not(.is-result) .zia-scene__result { display: none; }
+  .zia-scene.is-result .zia-scene__meter { display: none; }
   .zia-scene__result ul { grid-template-columns: 1fr; gap: 6px; }
-  .zia-scene__result li { grid-template-columns: 22px 1fr; align-items: center; }
-  .zia-scene__result svg { width: 22px; height: 22px; }
+  .zia-scene__result li { grid-template-columns: 24px 1fr; align-items: center; }
+  .zia-scene__result svg { width: 24px; height: 24px; }
   /* Solo el título de cada beneficio (la frase va dentro del mismo span) */
   .zia-scene__result li span { font-size: 0; }
-  .zia-scene__result li b { font-size: 13.5px; }
-  .zia-scene__result .tj-primary-btn { justify-self: start; font-size: 13px; }
-  .zia-scene.is-static .zia-scene__result { position: static; }
+  .zia-scene__result li b { font-size: 14.5px; }
+  .zia-scene__result .tj-primary-btn { justify-self: start; font-size: 13.5px; margin-top: 2px; padding-top: 4px; padding-bottom: 4px; }
+  .zia-scene__result .tj-primary-btn .btn-icon { width: 36px; height: 36px; }
 }
 
 /* ── 5. Quiénes somos: los reguladores se suman alrededor de ZIA ── */
