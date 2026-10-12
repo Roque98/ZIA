@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>ZIA Integración — Presentación corporativa</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700;800;900&display=swap");
+@page { size: 1280px 720px; margin: 0; }
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+:root { --ink:#0c1e21; --teal:#1e8a8a; --teal2:#4fd1c5; --gold:#A69140; --red:#EC3237; }
+html, body { margin: 0; padding: 0; background: var(--ink); font-family: 'Mona Sans', 'Segoe UI', Arial, sans-serif; color: #fff; }
+.pg { position: relative; width: 1280px; height: 720px; padding: 58px 72px 64px; overflow: hidden; page-break-after: always; break-after: page;
+  background: radial-gradient(900px 560px at 78% 34%, rgba(30,138,138,.20), transparent 70%), var(--ink); }
+.pg::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background-image: radial-gradient(rgba(30,138,138,.34) 1.3px, transparent 1.5px); background-size: 30px 30px; }
+.pg > * { position: relative; }
+/* Encabezado arriba y el cuerpo centrado en el espacio restante */
+.pg:not(.portada):not(.cierre) { display: flex; flex-direction: column; }
+.pg:not(.portada):not(.cierre) > .cab { flex: 0 0 auto; margin-bottom: 0; }
+.pg:not(.portada):not(.cierre) > .cab + * { margin-top: auto; margin-bottom: auto; }
+.pg:not(.portada):not(.cierre) > .gana { margin-top: 0; margin-bottom: auto; }
+.pg:not(.portada):not(.cierre) > .pasos { margin-bottom: 22px; }
+.pg:last-child { page-break-after: auto; break-after: auto; }
+.kicker { display: block; font-size: 13px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; color: var(--teal2); margin-bottom: 14px; }
+h1 { font-size: 66px; font-weight: 900; line-height: 1.02; letter-spacing: -.025em; margin: 0 0 22px; }
+h2 { font-size: 46px; font-weight: 900; line-height: 1.05; letter-spacing: -.02em; margin: 0; }
+h1 span, h2 span { color: var(--teal2); }
+h3 { font-size: 21px; font-weight: 900; line-height: 1.25; margin: 0 0 8px; }
+.lead { font-size: 19px; line-height: 1.55; color: rgba(255,255,255,.72); margin: 12px 0 0; max-width: 820px; }
+.cab { margin-bottom: 34px; }
+.pie { position: absolute; left: 72px; right: 72px; bottom: 24px; display: flex; align-items: center; gap: 10px; font-size: 11.5px; color: rgba(255,255,255,.45); border-top: 1px solid rgba(255,255,255,.1); padding-top: 12px; }
+.pie img { width: 18px; height: 18px; }
+.pie b { margin-left: auto; font-weight: 800; letter-spacing: .08em; color: rgba(255,255,255,.6); }
+.dos { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+.tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.cuatro { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.texto { font-size: 21px; line-height: 1.6; color: rgba(255,255,255,.8); margin: 0 0 26px; }
+.texto b { color: #fff; }
+.tarjeta, .panel, .cifra, .eje, .paso, .oficina { background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; }
+.tarjeta { position: relative; padding: 28px 26px 30px; overflow: hidden; min-height: 210px; }
+.tarjeta::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--teal), var(--gold)); }
+.tarjeta .num { display: block; font-size: 15px; font-weight: 900; letter-spacing: .14em; color: var(--teal2); margin-bottom: 18px; }
+.tarjeta p, .eje p, .paso p { margin: 0; font-size: 16px; line-height: 1.55; color: rgba(255,255,255,.7); }
+.panel { padding: 24px 26px 26px; border-top: 3px solid var(--c, var(--teal)); }
+.panel h3 { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
+.lista li { display: grid; grid-template-columns: 22px 1fr; gap: 11px; align-items: start; font-size: 16px; line-height: 1.45; color: rgba(255,255,255,.86); }
+.lista b { color: #fff; }
+.chk { width: 22px; height: 22px; }
+.chk circle { fill: color-mix(in srgb, var(--c, var(--teal)) 26%, transparent); }
+.chk path { fill: none; stroke: var(--teal2); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.chip { display: inline-flex; align-items: center; gap: 7px; padding: 3px 11px 3px 3px; border-radius: 20px; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #fff;
+  background: color-mix(in srgb, var(--c) 20%, transparent); border: 1px solid color-mix(in srgb, var(--c) 60%, transparent); }
+.chip img { width: 22px; height: 22px; border-radius: 50%; background: #fff; }
+
+/* Portada y cierre */
+.portada, .cierre { padding: 64px 80px; background: radial-gradient(1000px 640px at 84% 26%, rgba(30,138,138,.30), transparent 68%), var(--ink); }
+.portada__marca, .cierre__marca { display: flex; align-items: center; gap: 12px; }
+.portada__marca { margin-bottom: 74px; }
+.portada__marca img, .cierre__marca img { width: 44px; height: 44px; }
+.portada__marca span, .cierre__marca span { font-size: 30px; font-weight: 900; letter-spacing: 6px; color: var(--teal2); }
+.portada .lead { max-width: 640px; }
+.portada__regs { display: flex; gap: 34px; margin-top: 46px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.12); max-width: 760px; }
+.reg { display: flex; align-items: center; gap: 10px; }
+.reg img { width: 40px; height: 40px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 30%, transparent); }
+.reg b { font-size: 14px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+.portada__pie { position: absolute; left: 80px; right: 80px; bottom: 34px; display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+.cierre { display: flex; flex-direction: column; justify-content: center; }
+.cierre h1 { max-width: 900px; }
+.contactos { display: flex; gap: 18px; margin-top: 40px; }
+.contactos div { padding: 18px 24px; border-radius: 14px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); }
+.contactos small { display: block; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--teal2); margin-bottom: 4px; }
+.contactos b { font-size: 21px; font-weight: 800; }
+.cierre__marca { position: absolute; left: 80px; bottom: 40px; }
+.cierre__marca em { font-style: normal; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-left: 10px; }
+
+/* Quiénes somos */
+.cita { display: inline-block; padding: 16px 22px; border-radius: 14px; background: linear-gradient(120deg, rgba(166,145,64,.22), rgba(30,138,138,.12)); border: 1px solid rgba(166,145,64,.45); }
+.cita small { display: block; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.cita b { font-size: 22px; }
+.cifras { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cifra { padding: 22px 24px; }
+.cifra b { display: block; font-size: 54px; font-weight: 900; line-height: 1; color: var(--teal2); margin-bottom: 8px; }
+.cifra.oro b { color: var(--gold); }
+.cifra span { font-size: 14.5px; line-height: 1.45; color: rgba(255,255,255,.72); }
+
+/* Trayectoria */
+.linea { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 10px; }
+.linea::before { content: ""; position: absolute; left: 4%; right: 4%; top: 79px; height: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--teal), var(--teal2)); }
+.hito { position: relative; text-align: center; padding: 0 6px; }
+.hito__anio { display: block; font-size: 46px; font-weight: 900; line-height: 1; color: var(--gold); letter-spacing: -.02em; height: 60px; }
+.hito__nodo { display: block; width: 18px; height: 18px; margin: 10px auto 22px; border-radius: 50%; background: var(--teal2); box-shadow: 0 0 0 6px rgba(79,209,197,.2); }
+.hito strong { display: block; font-size: 18px; font-weight: 900; line-height: 1.25; margin-bottom: 8px; }
+.hito p { margin: 0 0 14px; font-size: 14.5px; line-height: 1.5; color: rgba(255,255,255,.68); }
+.hito__regs { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.hito__regs .chip { font-size: 10.5px; padding: 2px 9px 2px 2px; }
+.hito__regs .chip img { width: 18px; height: 18px; }
+
+/* Ejes */
+.ejes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.eje { padding: 26px 20px; border-top: 3px solid var(--c); text-align: left; min-height: 300px; }
+.eje img { width: 64px; height: 64px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px color-mix(in srgb, var(--c) 30%, transparent); margin-bottom: 20px; }
+.eje h3 { font-size: 24px; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 4px; }
+.eje small { display: block; font-size: 12.5px; line-height: 1.4; color: color-mix(in srgb, var(--c) 55%, #fff); min-height: 36px; margin-bottom: 12px; }
+.eje p { font-size: 14.5px; }
+
+/* Estación (misma ilustración de la landing) */
+.dos--estacion { grid-template-columns: 1.35fr 1fr; align-items: center; }
+.estacion { background: #fff; border-radius: 18px; padding: 10px; box-shadow: 0 30px 70px rgba(0,0,0,.4); }
+.estacion svg { display: block; width: 100%; height: auto; border-radius: 12px; }
+.estacion .ln { stroke: #0c1e21; stroke-width: 3; } .estacion .lt { stroke: #0c1e21; stroke-width: 2; }
+.estacion .tl { fill: #d8e5e5; } .estacion .tm { fill: #1e8a8a; } .estacion .wh { fill: #fff; } .estacion .gd { fill: #A69140; }
+.estacion .dash { stroke: #1e8a8a; stroke-width: 2.5; stroke-dasharray: 6 8; }
+.estacion .pt { fill: #EC3237; stroke: #fff; stroke-width: 3; }
+
+/* Pasos */
+.pasos { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.paso { padding: 24px 22px 26px; }
+.paso b { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 50%; background: var(--teal); font-size: 15px; font-weight: 900; margin-bottom: 18px; box-shadow: 0 0 0 6px rgba(30,138,138,.22); }
+.paso p { font-size: 15px; }
+.gana { margin-top: 24px; display: flex; align-items: center; gap: 12px; padding: 16px 22px; border-radius: 14px; border: 1px dashed rgba(79,209,197,.5); background: rgba(30,138,138,.1); }
+.gana b { font-size: 12px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; color: var(--teal2); margin-right: 8px; }
+.gana span { font-size: 15.5px; font-weight: 800; padding: 6px 14px; border-radius: 20px; background: rgba(255,255,255,.07); }
+
+/* Cobertura */
+.dos--mapa { grid-template-columns: 1fr 1.05fr; align-items: center; gap: 30px; }
+.mapa svg { display: block; width: 100%; height: auto; overflow: visible; }
+.zia-map__dots { stroke: var(--teal2); stroke-width: 6.5; stroke-linecap: round; fill: none; opacity: .5; }
+.zia-map__pulse { fill: var(--teal2); opacity: .2; }
+.zia-map__core { fill: var(--teal); stroke: #fff; stroke-width: 4; }
+.zia-map__lbl { font: 800 26px/1 'Mona Sans', sans-serif; fill: #fff; paint-order: stroke; stroke: var(--ink); stroke-width: 7px; stroke-linejoin: round; }
+.zia-map__pin--soon .zia-map__core { fill: #fff; stroke: var(--gold); stroke-dasharray: 5 4; }
+.zia-map__pin--soon .zia-map__pulse { fill: var(--gold); }
+.oficinas { display: grid; gap: 9px; }
+.oficina { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: center; padding: 11px 16px; }
+.oficina i { width: 44px; height: 44px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-style: normal; font-size: 14px; font-weight: 900; background: linear-gradient(135deg, var(--teal), #14403f); box-shadow: inset 0 0 0 2px rgba(255,255,255,.18); }
+.oficina--pronto i { background: linear-gradient(135deg, var(--gold), #6e5f24); }
+.oficina b { display: block; font-size: 16.5px; font-weight: 900; }
+.oficina b small { font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--teal2); margin-left: 6px; }
+.oficina--pronto b small { color: var(--gold); }
+.oficina span { display: block; font-size: 14px; color: rgba(255,255,255,.85); }
+.oficina em { display: block; font-style: normal; font-size: 12.5px; color: rgba(255,255,255,.55); }
+</style>
+</head>
+<body>
+<section class="pg portada">
+    <div class="portada__marca"><img src="../../wireframes/bexon/assets/images/logos/zia_simbolo.svg" alt=""><span>ZIA</span></div>
+    <span class="kicker">Su aliado estratégico en el sector gasolinero</span>
+    <h1>Una gasolinera.<br>Cinco reguladores.<br><span>Un solo aliado.</span></h1>
+    <p class="lead">Más de 20 años poniendo en regla estaciones de servicio ante ASEA, CNE, SAT, STPS y Protección Civil, de la auditoría a la defensa jurídica.</p>
+    <div class="portada__regs"><div class="reg" style="--c:#2f9e6b"><img src="../../wireframes/bexon/assets/images/zia/icons/asea.svg" alt=""><b>ASEA</b></div><div class="reg" style="--c:#d99a1e"><img src="../../wireframes/bexon/assets/images/zia/icons/cre.svg" alt=""><b>CNE</b></div><div class="reg" style="--c:#2b6cb0"><img src="../../wireframes/bexon/assets/images/zia/icons/sat.svg" alt=""><b>SAT</b></div><div class="reg" style="--c:#e8742a"><img src="../../wireframes/bexon/assets/images/zia/icons/stps.svg" alt=""><b>STPS</b></div><div class="reg" style="--c:#EC3237"><img src="../../wireframes/bexon/assets/images/zia/icons/proteccion-civil.svg" alt=""><b>P. Civil</b></div></div>
+    <div class="portada__pie"><span>Presentación corporativa</span><span>www.ziaintegracion.com</span></div></section>
+<section class="pg ">
+  <header class="cab"><span class="kicker">Quiénes somos</span><h2>El socio clave de las <span>gasolineras en México.</span></h2></header>
+    <div class="dos">
+      <div>
+        <p class="texto">Nuestra misión es ser el socio clave para el éxito y la seguridad de las gasolineras en México, <b>simplificando la complejidad regulatoria y técnica</b> para que nuestros clientes se enfoquen en el crecimiento de su negocio con total tranquilidad.</p>
+        <div class="cita"><small>Dirección general</small><b>Ing. Daniel Ponce</b></div>
+      </div>
+      <div class="cifras">
+        <div class="cifra oro"><b>2000</b><span>Año de fundación: más de dos décadas de experiencia</span></div>
+        <div class="cifra"><b>5</b><span>Reguladores que atendemos</span></div>
+        <div class="cifra"><b>4</b><span>Oficinas regionales, y Culiacán próximamente</span></div>
+        <div class="cifra"><b>6</b><span>Líneas de servicio, de la auditoría a la defensoría jurídica</span></div>
+      </div>
+    </div>
+    <footer class="pie"><img src="../../wireframes/bexon/assets/images/logos/zia_simbolo.svg" alt=""><span>ZIA Integración · Su aliado estratégico en el sector gasolinero</span><b>02 / 13</b></footer></section>
+<section class="pg ">
+  <header class="cab"><span class="kicker">Trayectoria</span><h2>Crecimos al ritmo <span>de la regulación.</span></h2><p class="lead">Cada etapa sumó a un regulador: hoy acompañamos a su estación ante los cinco.</p></header>
+    <div class="linea">
+      <div class="hito">
+        <b class="hito__anio">2000</b><i class="hito__nodo"></i>
+        <strong>Orígenes en TI</strong><p>Soporte y asesoría en sistemas de información y redes.</p>
+        <div class="hito__regs"></div>
+      </div>
+      <div class="hito">
+        <b class="hito__anio">2004</b><i class="hito__nodo"></i>
+        <strong>Especialización en hidrocarburos</strong><p>Controles volumétricos para gasolineras.</p>
+        <div class="hito__regs"><span class="chip" style="--c:#2b6cb0"><img src="../../wireframes/bexon/assets/images/zia/icons/sat.svg" alt="">SAT</span></div>
+      </div>
+      <div class="hito">
+        <b class="hito__anio">2010</b><i class="hito__nodo"></i>
+        <strong>Diversificación en seguridad</strong><p>Seguridad e higiene, Protección Civil y STPS.</p>
+        <div class="hito__regs"><span class="chip" style="--c:#e8742a"><img src="../../wireframes/bexon/assets/images/zia/icons/stps.svg" alt="">STPS</span><span class="chip" style="--c:#EC3237"><img src="../../wireframes/bexon/assets/images/zia/icons/proteccion-civil.svg" alt="">Protección Civil</span></div>
+      </div>
+      <div class="hito">
+        <b class="hito__anio">2015</b><i class="hito__nodo"></i>
+        <strong>Adaptación regulatoria</strong><p>Ampliación del catálogo para la CRE (hoy CNE) y ASEA.</p>
+        <div class="hito__regs"><span class="chip" style="--c:#d99a1e"><img src="../../wireframes/bexon/assets/images/zia/icons/cre.svg" alt="">CNE</span><span class="chip" style="--c:#2f9e6b"><img src="../../wireframes/bexon/assets/images/zia/icons/asea.svg" alt="">ASEA</span></div>
+      </div>
+      <div class="hito">
+        <b class="hito__anio">Hoy</b><i class="hito__nodo"></i>
+        <strong>Liderazgo integral</strong><p>De la auditoría a la defensoría jurídica.</p>
+        <div class="hito__regs"><span class="chip" style="--c:#2f9e6b"><img src="../../wireframes/bexon/assets/images/zia/icons/asea.svg" alt="">ASEA</span><span class="chip" style="--c:#d99a1e"><img src="../../wireframes/bexon/assets/images/zia/icons/cre.svg" alt="">CNE</span><span class="chip" style="--c:#2b6cb0"><img src="../../wireframes/bexon/assets/images/zia/icons/sat.svg" alt="">SAT</span><span class="chip" style="--c:#e8742a"><img src="../../wireframes/bexon/assets/images/zia/icons/stps.svg" alt="">STPS</span><span class="chip" style="--c:#EC3237"><img src="../../wireframes/bexon/assets/images/zia/icons/proteccion-civil.svg" alt="">Protección Civil</span></div>
+      </div></div>
+    <footer class="pie"><img src="../../wireframes/bexon/assets/images/logos/zia_simbolo.svg" alt=""><span>ZIA Integración · Su aliado estratégico en el sector gasolinero</span><b>03 / 13</b></footer></section>
+<section class="pg ">
+  <header class="cab"><span class="kicker">Servicio 1</span><h2>Auditoría de <span>cumplimiento normativo.</span></h2><p class="lead">La primera línea de defensa de su estación, y la base para diseñar una estrategia de cumplimiento a su medida.</p></header>
+    <div class="tres">
+      <article class="tarjeta"><span class="num">01</span><h3>Revisión física y técnica</h3><p>Evaluación del equipamiento y las instalaciones de la estación.</p></article>
+      <article class="tarjeta"><span class="num">02</span><h3>Análisis documental exhaustivo</h3><p>Verificación de toda la documentación que requieren las autoridades.</p></article>
+      <article class="tarjeta"><span class="num">03</span><h3>Ponderación de riesgos</h3><p>Priorización del cumplimiento ante sanciones o clausuras inminentes.</p></article>
+    </div>
+    <footer class="pie"><img src="../../wireframes/bexon/assets/images/logos/zia_simbolo.svg" alt=""><span>ZIA Integración · Su aliado estratégico en el sector gasolinero</span><b>04 / 13</b></footer></section>
+<section class="pg ">
+  <header class="cab"><span class="kicker">Ejes de cumplimiento</span><h2>Cinco reguladores, <span>un solo aliado.</span></h2></header>
+    <div class="ejes">
+      <article class="eje" style="--c:#2f9e6b"><img src="../../wireframes/bexon/assets/images/zia/icons/asea.svg" alt=""><h3>ASEA</h3><small>Agencia de Seguridad, Energía y Ambiente</small><p>Seguridad industrial, operativa y protección ambiental.</p></article>
+      <article class="eje" style="--c:#d99a1e"><img src="../../wireframes/bexon/assets/images/zia/icons/cre.svg" alt=""><h3>CNE</h3><small>Comisión Nacional de Energía</small><p>Permisos y reportes de volumen; desarrollo eficiente.</p></article>
+      <article class="eje" style="--c:#2b6cb0"><img src="../../wireframes/bexon/assets/images/zia/icons/sat.svg" alt=""><h3>SAT</h3><small>Servicio de Administración Tributaria</small><p>Control volumétrico y obligaciones fiscales.</p></article>
+      <article class="eje" style="--c:#e8742a"><img src="../../wireframes/bexon/assets/images/zia/icons/stps.svg" alt=""><h3>STPS</h3><small>Secretaría del Trabajo y Previsión Social</small><p>Seguridad e higiene laboral.</p></article>
+      <article class="eje" style="--c:#EC3237"><img src="../../wireframes/bexon/assets/images/zia/icons/proteccion-civil.svg" alt=""><h3>P. Civil</h3><small>Protección Civil</small><p>Capacidad de respuesta ante emergencias y riesgos.</p></article></div>
+    <footer class="pie"><img src="../../wireframes/bexon/assets/images/logos/zia_simbolo.svg" alt=""><span>ZIA Integración · Su aliado estratégico en el sector gasolinero</span><b>05 / 13</b></footer></section>
+<section class="pg ">
+  <header class="cab"><span class="kicker">Servicio 2</span><h2>Gestoría integral <span>ante autoridades.</span></h2><p class="lead">Usted opera; nosotros tramitamos.</p></header>
+    <div class="dos">
+      <article class="panel" style="--c:#d99a1e"><h3><span class="chip" style="--c:#d99a1e"><img src="../../wireframes/bexon/assets/images/zia/icons/cre.svg" alt="">CNE</span> Ante la CNE</h3><ul class="lista"><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Altas y solicitudes de permiso</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Modificaciones al permiso y cambios de Representante Legal</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Reportes anuales, diarios y trimestrales</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Reporte de Estructura Accionaria</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Regularización de trámites y obligaciones pendientes</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Sistemas de Gestión de la Medición y NOM-016-CRE-2016</span></li></ul></article>
+      <article class="panel" style="--c:#2f9e6b"><h3><span class="chip" style="--c:#2f9e6b"><img src="../../wireframes/bexon/assets/images/zia/icons/asea.svg" alt="">ASEA</span> Ante la ASEA</h3><ul class="lista"><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Registro en el Portal del Regulado (obtención de CURR)</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Registro de pólizas de seguros y generador de residuos peligrosos</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Manifiesto de Impacto Ambiental o Informe Preventivo</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Análisis de riesgo y Protocolo de Respuesta a Emergencias</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Licencia de Funcionamiento y Cédula de Operación Anual</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Elaboración, dictaminación e implementación de SASISOPA</span></li></ul></article>
+    </div>
+    <footer class="pie"><img src="../../wireframes/bexon/assets/images/logos/zia_simbolo.svg" alt=""><span>ZIA Integración · Su aliado estratégico en el sector gasolinero</span><b>06 / 13</b></footer></section>
+<section class="pg ">
+  <header class="cab"><span class="kicker">Servicio 3</span><h2>Servicios fiscales <span>y de supervisión.</span></h2></header>
+    <div class="dos">
+      <article class="panel" style="--c:#2b6cb0"><h3><span class="chip" style="--c:#2b6cb0"><img src="../../wireframes/bexon/assets/images/zia/icons/sat.svg" alt="">SAT</span> Cumplimiento SAT</h3><ul class="lista"><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Control volumétrico acorde a la Miscelánea Fiscal</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Seguridad perimetral para la red de datos (Anexo 30)</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Asistencia fiscal para el aplicativo de controles volumétricos: envío de archivos y certificados JSON o XML</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Aviso de funcionamiento del control volumétrico</span></li></ul></article>
+      <article class="panel"><h3>Supervisión y auditoría</h3><ul class="lista"><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Supervisión técnica con visitas trimestrales o mensuales</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Verificación NOM-005-ASEA-2016: diseño, construcción, operación y mantenimiento</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Verificación NOM-016-CRE-2016 y Anexo 30 certificado</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Verificación NOM-001-SEDE-2012 de instalaciones eléctricas</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span>Estudios de iluminación, ruido y energía estática</span></li></ul></article>
+    </div>
+    <footer class="pie"><img src="../../wireframes/bexon/assets/images/logos/zia_simbolo.svg" alt=""><span>ZIA Integración · Su aliado estratégico en el sector gasolinero</span><b>07 / 13</b></footer></section>
+<section class="pg ">
+  <header class="cab"><span class="kicker">Servicio 4</span><h2>Diagnóstico y mantenimiento <span>de infraestructura.</span></h2></header>
+    <div class="dos dos--estacion">
+      <div class="estacion"><svg role="img" aria-label="Corte de una estación de servicio con puntos de inspección" xmlns="http://www.w3.org/2000/svg" viewBox="0 120 1200 580" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <g id="zia-suelo">
+    <rect x="0" y="440" width="1200" height="260" fill="#eef4f4"/>
+    <path class="ln" d="M20 440H1180"/>
+    <path d="M60 470h40M160 500h30M300 480h50M520 520h40M760 470h30M900 510h50M1080 480h40M120 640h40M420 660h30M980 650h40" stroke="#c4d6d6" stroke-width="3"/>
+  </g>
+  <g id="zia-tanques">
+    <g id="zia-tanque-1">
+      <rect class="ln wh" x="250" y="540" width="300" height="100" rx="50"/>
+      <clipPath id="zia-t1"><rect x="252" y="542" width="296" height="96" rx="48"/></clipPath>
+      <rect id="zia-nivel-1" class="gd" x="250" y="580" width="300" height="60" clip-path="url(#zia-t1)" opacity=".85"/>
+      <path class="lt" d="M300 540v-14h20v14M480 540v-14h20v14"/>
+    </g>
+    <g id="zia-tanque-2">
+      <rect class="ln wh" x="600" y="540" width="300" height="100" rx="50"/>
+      <clipPath id="zia-t2"><rect x="602" y="542" width="296" height="96" rx="48"/></clipPath>
+      <rect id="zia-nivel-2" class="tm" x="600" y="595" width="300" height="45" clip-path="url(#zia-t2)" opacity=".75"/>
+      <path class="lt" d="M650 540v-14h20v14M830 540v-14h20v14"/>
+    </g>
+  </g>
+  <g id="zia-tuberias">
+    <path class="ln" d="M310 526V480H430V440"/>
+    <path class="ln" d="M660 526V490H600V440"/>
+  </g>
+  <g id="zia-telemedicion">
+    <path class="dash" d="M490 526V470H983V362"/>
+    <path class="dash" d="M840 526V470"/>
+    <circle class="tm" cx="490" cy="526" r="6"/>
+    <circle class="tm" cx="840" cy="526" r="6"/>
+  </g>
+  <g id="zia-marquesina">
+    <rect class="ln tl" x="300" y="150" width="440" height="44" rx="6"/>
+    <rect class="tm" x="302" y="176" width="436" height="16"/>
+    <path class="ln" d="M300 194h440"/>
+    <path class="ln" d="M360 194V440M680 194V440"/>
+    <path class="lt" d="M420 202h60M560 202h60" stroke="#A69140"/>
+  </g>
+  <g id="zia-dispensarios">
+    <g id="zia-disp-1">
+      <rect class="ln wh" x="400" y="300" width="60" height="140" rx="6"/>
+      <rect class="lt tm" x="410" y="314" width="40" height="24" rx="3"/>
+      <path class="lt" d="M416 352h28M416 362h28"/>
+      <path class="ln" d="M460 360c22 0 22 40 6 50"/>
+      <rect class="ln tl" x="392" y="432" width="76" height="8" rx="2"/>
+    </g>
+    <g id="zia-disp-2">
+      <rect class="ln wh" x="570" y="300" width="60" height="140" rx="6"/>
+      <rect class="lt tm" x="580" y="314" width="40" height="24" rx="3"/>
+      <path class="lt" d="M586 352h28M586 362h28"/>
+      <path class="ln" d="M630 360c22 0 22 40 6 50"/>
+      <rect class="ln tl" x="562" y="432" width="76" height="8" rx="2"/>
+    </g>
+  </g>
+  <g id="zia-tienda">
+    <rect class="ln wh" x="820" y="250" width="300" height="190" rx="4"/>
+    <rect class="ln tm" x="810" y="232" width="320" height="22" rx="4"/>
+    <rect class="lt tl" x="850" y="290" width="110" height="80" rx="3"/>
+    <path class="lt" d="M905 290v80M850 330h110"/>
+    <rect class="lt tl" x="1010" y="320" width="70" height="120"/>
+    <circle cx="1068" cy="384" r="3" fill="#0c1e21"/>
+    <rect class="lt" x="967" y="340" width="32" height="22" rx="3" fill="#0c1e21"/>
+    <path d="M973 351h20" stroke="#4fd1c5" stroke-width="2"/>
+  </g>
+  <g id="zia-camara">
+    <path class="ln" d="M1120 262h26v-30"/>
+    <rect class="ln tl" x="1126" y="214" width="40" height="20" rx="4" transform="rotate(-18 1146 224)"/>
+    <path d="M1100 250l-60 40M1100 250l-20 70" stroke="#1e8a8a" stroke-width="2" stroke-dasharray="2 6" opacity=".7"/>
+  </g>
+  <g id="zia-totem">
+    <path class="ln" d="M110 440V300"/>
+    <rect class="ln tl" x="60" y="140" width="100" height="160" rx="6"/>
+    <rect class="tm" x="70" y="152" width="80" height="34" rx="3"/>
+    <rect class="lt wh" x="72" y="198" width="76" height="22" rx="2"/>
+    <rect class="lt wh" x="72" y="228" width="76" height="22" rx="2"/>
+    <rect class="lt wh" x="72" y="258" width="76" height="22" rx="2"/>
+    <path d="M80 209h22M80 239h22M80 269h22" stroke="#A69140" stroke-width="4"/>
+  </g>
+  <g id="zia-electrica">
+    <path class="ln" d="M1160 440V150"/>
+    <path class="lt" d="M1145 170h30M1150 182h20"/>
+    <path d="M1160 176C1150 200 1140 215 1130 232" stroke="#0c1e21" stroke-width="2"/>
+  </g>
+  <g id="zia-puntos">
+    <circle class="pt" data-punto="hermeticidad" cx="400" cy="590" r="11"/>
+    <circle class="pt" data-punto="volumetrico" cx="430" cy="326" r="11"/>
+    <circle class="pt" data-punto="telemedicion" cx="983" cy="351" r="11"/>
+    <circle class="pt" data-punto="videovigilancia" cx="1146" cy="224" r="11"/>
+    <circle class="pt" data-punto="electrica" cx="1160" cy="300" r="11"/>
+    <circle class="pt" data-punto="seguridad" cx="520" cy="172" r="11"/>
+  </g>
+</svg></div>
+      <div><ul class="lista"><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span><b>Integridad de tanques.</b> Análisis de integridad y grosor para prevenir fugas.</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span><b>Pruebas no destructivas.</b> Hermeticidad, cubicación y ensayos (Anexo 32 del SAT).</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span><b>Pruebas de calidad.</b> Laboratorios NOM-016-CRE-2016 y estudios de aguas residuales.</span></li><li><svg class="chk" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11"/><path d="M6.5 11.5l3 3 6-6.5"/></svg><span><b>Análisis documental exhaustivo.</b> Verificación de la documentación ante autoridades.</span></li></ul></div>
+    </div>
+    <footer class="pie"><img src="../../wireframes/bexon/assets/images/logos/zia_simbolo.svg" alt=""><span>ZIA Integración · Su aliado estratégico en el sector gasolinero</span><b>08 / 13</b></footer></section>
+<section class="pg ">
+  <header class="cab"><span class="kicker">Servicio 5</span><h2>Suministro de <span>equipo tecnológico.</span></h2><p class="lead">El equipo que su estación necesita para medir, reportar y vigilar conforme a la norma.</p></header>
+    <div class="cuatro">
+      <article class="tarjeta"><span class="num">01</span><h3>Dispensarios</h3><p>Acordes a la NOM-005-SCFI-2017.</p></article>
+      <article class="tarjeta"><span class="num">02</span><h3>Telemedición</h3><p>Consolas de telemedición y jarras patrón.</p></article>
+      <article class="tarjeta"><span class="num">03</span><h3>Cómputo y acceso</h3><p>Equipos de cómputo y sistemas de control de acceso.</p></article>
+      <article class="tarjeta"><span class="num">04</span><h3>Videovigilancia</h3><p>Sistemas de videovigilancia y monitoreo remoto tipo C4.</p></article>
+    </div>
+    <footer class="pie"><img src="../../wireframes/bexon/assets/images/logos/zia_simbolo.svg" alt=""><span>ZIA Integración · Su aliado estratégico en el sector gasolinero</span><b>09 / 13</b></footer></section>
+<section class="pg ">
+  <header class="cab"><span class="kicker">Servicio 6</span><h2>Defensoría jurídica <span>especializada.</span></h2><p class="lead">Cuando la autoridad ya actuó, lo acompañamos hasta resolverlo.</p></header>
+    <div class="tres">
+      <article class="tarjeta"><span class="num">01</span><h3>Acompañamiento y abogacía</h3><p>Ante SAT, CNE, ASEA, IMSS e INFONAVIT.</p></article>
+      <article class="tarjeta"><span class="num">02</span><h3>Juicios contenciosos</h3><p>Juicios Contenciosos Administrativos.</p></article>
+      <article class="tarjeta"><span class="num">03</span><h3>Recursos y amparos</h3><p>Recursos de Revisión y Amparos.</p></article>
+    </div>
+    <footer class="pie"><img src="../../wireframes/bexon/assets/images/logos/zia_simbolo.svg" alt=""><span>ZIA Integración · Su aliado estratégico en el sector gasolinero</span><b>10 / 13</b></footer></section>
+<section class="pg ">
+  <header class="cab"><span class="kicker">Cómo trabajamos</span><h2>Así ponemos su estación <span>en regla.</span></h2></header>
+    <div class="pasos">
+      <article class="paso"><b>01</b><h3>Auditoría inicial</h3><p>Evaluamos el estado real de su gasolinera ante los 5 reguladores. Sin costo y sin compromiso.</p></article>
+      <article class="paso"><b>02</b><h3>Estrategia personalizada</h3><p>Diseñamos un plan priorizado según sus riesgos, plazos y el grado de exposición ante cada autoridad.</p></article>
+      <article class="paso"><b>03</b><h3>Ejecución y gestoría</h3><p>Tramitamos, auditamos y supervisamos todo el proceso. Usted opera; nosotros gestionamos.</p></article>
+      <article class="paso"><b>04</b><h3>Seguimiento continuo</h3><p>Monitoreamos obligaciones periódicas, vencimientos y cambios normativos de forma permanente.</p></article>
+    </div>
+    <div class="gana"><b>Lo que gana estando en regla</b><span>Opera sin interrupciones</span><span>Inspecciones sin sorpresas</span><span>Permisos siempre al día</span></div>
+    <footer class="pie"><img src="../../wireframes/bexon/assets/images/logos/zia_simbolo.svg" alt=""><span>ZIA Integración · Su aliado estratégico en el sector gasolinero</span><b>11 / 13</b></footer></section>
+<section class="pg ">
+  <header class="cab"><span class="kicker">Cobertura</span><h2>Un especialista <span>cerca de su estación.</span></h2></header>
+    <div class="dos dos--mapa">
+      <div class="mapa"><svg viewBox="-150 -40 1180 742" role="img" aria-label="Mapa de oficinas ZIA en México"><path class="zia-map__dots" d="M33 22h0M44 22h0M55 22h0M66 22h0M77 22h0M88 22h0M28 33h0M38 33h0M50 33h0M60 33h0M72 33h0M82 33h0M94 33h0M104 33h0M33 44h0M44 44h0M55 44h0M66 44h0M77 44h0M88 44h0M99 44h0M110 44h0M121 44h0M132 44h0M143 44h0M38 55h0M50 55h0M60 55h0M72 55h0M82 55h0M126 55h0M138 55h0M148 55h0M160 55h0M170 55h0M302 55h0M314 55h0M324 55h0M336 55h0M346 55h0M358 55h0M44 66h0M55 66h0M66 66h0M77 66h0M88 66h0M143 66h0M154 66h0M165 66h0M176 66h0M187 66h0M198 66h0M209 66h0M220 66h0M231 66h0M242 66h0M253 66h0M264 66h0M275 66h0M286 66h0M297 66h0M308 66h0M319 66h0M330 66h0M341 66h0M352 66h0M363 66h0M374 66h0M50 77h0M60 77h0M72 77h0M82 77h0M94 77h0M160 77h0M170 77h0M182 77h0M192 77h0M204 77h0M214 77h0M226 77h0M236 77h0M248 77h0M258 77h0M270 77h0M280 77h0M292 77h0M302 77h0M314 77h0M324 77h0M336 77h0M346 77h0M358 77h0M368 77h0M380 77h0M55 88h0M66 88h0M77 88h0M88 88h0M99 88h0M165 88h0M176 88h0M187 88h0M198 88h0M209 88h0M220 88h0M231 88h0M242 88h0M253 88h0M264 88h0M275 88h0M286 88h0M297 88h0M308 88h0M319 88h0M330 88h0M341 88h0M352 88h0M363 88h0M374 88h0M385 88h0M60 99h0M72 99h0M82 99h0M94 99h0M170 99h0M182 99h0M192 99h0M204 99h0M214 99h0M226 99h0M236 99h0M248 99h0M258 99h0M270 99h0M280 99h0M292 99h0M302 99h0M314 99h0M324 99h0M336 99h0M346 99h0M358 99h0M368 99h0M380 99h0M390 99h0M77 110h0M88 110h0M99 110h0M176 110h0M187 110h0M198 110h0M209 110h0M220 110h0M231 110h0M242 110h0M253 110h0M264 110h0M275 110h0M286 110h0M297 110h0M308 110h0M319 110h0M330 110h0M341 110h0M352 110h0M363 110h0M374 110h0M385 110h0M396 110h0M407 110h0M82 121h0M94 121h0M104 121h0M182 121h0M192 121h0M204 121h0M214 121h0M226 121h0M236 121h0M248 121h0M258 121h0M270 121h0M280 121h0M292 121h0M302 121h0M314 121h0M324 121h0M336 121h0M346 121h0M358 121h0M368 121h0M380 121h0M390 121h0M402 121h0M412 121h0M490 121h0M500 121h0M512 121h0M88 132h0M99 132h0M110 132h0M121 132h0M187 132h0M198 132h0M209 132h0M220 132h0M231 132h0M242 132h0M253 132h0M264 132h0M275 132h0M286 132h0M297 132h0M308 132h0M319 132h0M330 132h0M341 132h0M352 132h0M363 132h0M374 132h0M385 132h0M396 132h0M407 132h0M418 132h0M429 132h0M484 132h0M495 132h0M506 132h0M517 132h0M528 132h0M104 143h0M116 143h0M126 143h0M192 143h0M204 143h0M214 143h0M226 143h0M236 143h0M248 143h0M258 143h0M270 143h0M280 143h0M292 143h0M302 143h0M314 143h0M324 143h0M336 143h0M346 143h0M358 143h0M368 143h0M380 143h0M390 143h0M402 143h0M412 143h0M424 143h0M434 143h0M446 143h0M478 143h0M490 143h0M500 143h0M512 143h0M522 143h0M534 143h0M110 154h0M121 154h0M132 154h0M198 154h0M209 154h0M220 154h0M231 154h0M242 154h0M253 154h0M264 154h0M275 154h0M286 154h0M297 154h0M308 154h0M319 154h0M330 154h0M341 154h0M352 154h0M363 154h0M374 154h0M385 154h0M396 154h0M407 154h0M418 154h0M429 154h0M440 154h0M451 154h0M462 154h0M473 154h0M484 154h0M495 154h0M506 154h0M517 154h0M528 154h0M539 154h0M116 165h0M126 165h0M138 165h0M204 165h0M214 165h0M226 165h0M236 165h0M248 165h0M258 165h0M270 165h0M280 165h0M292 165h0M302 165h0M314 165h0M324 165h0M336 165h0M346 165h0M358 165h0M368 165h0M380 165h0M390 165h0M402 165h0M412 165h0M424 165h0M434 165h0M446 165h0M456 165h0M468 165h0M478 165h0M490 165h0M500 165h0M512 165h0M522 165h0M534 165h0M544 165h0M110 176h0M121 176h0M132 176h0M143 176h0M209 176h0M220 176h0M231 176h0M242 176h0M253 176h0M264 176h0M275 176h0M286 176h0M297 176h0M308 176h0M319 176h0M330 176h0M341 176h0M352 176h0M363 176h0M374 176h0M385 176h0M396 176h0M407 176h0M418 176h0M429 176h0M440 176h0M451 176h0M462 176h0M473 176h0M484 176h0M495 176h0M506 176h0M517 176h0M528 176h0M539 176h0M550 176h0M116 187h0M126 187h0M138 187h0M148 187h0M226 187h0M236 187h0M248 187h0M258 187h0M270 187h0M280 187h0M292 187h0M302 187h0M314 187h0M324 187h0M336 187h0M346 187h0M358 187h0M368 187h0M380 187h0M390 187h0M402 187h0M412 187h0M424 187h0M434 187h0M446 187h0M456 187h0M468 187h0M478 187h0M490 187h0M500 187h0M512 187h0M522 187h0M534 187h0M544 187h0M556 187h0M566 187h0M121 198h0M132 198h0M143 198h0M154 198h0M231 198h0M242 198h0M253 198h0M264 198h0M275 198h0M286 198h0M297 198h0M308 198h0M319 198h0M330 198h0M341 198h0M352 198h0M363 198h0M374 198h0M385 198h0M396 198h0M407 198h0M418 198h0M429 198h0M440 198h0M451 198h0M462 198h0M473 198h0M484 198h0M495 198h0M506 198h0M517 198h0M528 198h0M539 198h0M550 198h0M561 198h0M572 198h0M126 209h0M138 209h0M148 209h0M160 209h0M248 209h0M258 209h0M270 209h0M280 209h0M292 209h0M302 209h0M314 209h0M324 209h0M336 209h0M346 209h0M358 209h0M368 209h0M380 209h0M390 209h0M402 209h0M412 209h0M424 209h0M434 209h0M446 209h0M456 209h0M468 209h0M478 209h0M490 209h0M500 209h0M512 209h0M522 209h0M534 209h0M544 209h0M556 209h0M566 209h0M578 209h0M143 220h0M154 220h0M165 220h0M253 220h0M264 220h0M275 220h0M286 220h0M297 220h0M308 220h0M319 220h0M330 220h0M341 220h0M352 220h0M363 220h0M374 220h0M385 220h0M396 220h0M407 220h0M418 220h0M429 220h0M440 220h0M451 220h0M462 220h0M473 220h0M484 220h0M495 220h0M506 220h0M517 220h0M528 220h0M539 220h0M550 220h0M561 220h0M572 220h0M583 220h0M148 231h0M160 231h0M170 231h0M182 231h0M270 231h0M280 231h0M292 231h0M302 231h0M314 231h0M324 231h0M336 231h0M346 231h0M358 231h0M368 231h0M380 231h0M390 231h0M402 231h0M412 231h0M424 231h0M434 231h0M446 231h0M456 231h0M468 231h0M478 231h0M490 231h0M500 231h0M512 231h0M522 231h0M534 231h0M544 231h0M556 231h0M566 231h0M578 231h0M588 231h0M165 242h0M176 242h0M187 242h0M275 242h0M286 242h0M297 242h0M308 242h0M319 242h0M330 242h0M341 242h0M352 242h0M363 242h0M374 242h0M385 242h0M396 242h0M407 242h0M418 242h0M429 242h0M440 242h0M451 242h0M462 242h0M473 242h0M484 242h0M495 242h0M506 242h0M517 242h0M528 242h0M539 242h0M550 242h0M561 242h0M572 242h0M583 242h0M594 242h0M605 242h0M182 253h0M192 253h0M280 253h0M292 253h0M302 253h0M314 253h0M324 253h0M336 253h0M346 253h0M358 253h0M368 253h0M380 253h0M390 253h0M402 253h0M412 253h0M424 253h0M434 253h0M446 253h0M456 253h0M468 253h0M478 253h0M490 253h0M500 253h0M512 253h0M522 253h0M534 253h0M544 253h0M556 253h0M566 253h0M578 253h0M588 253h0M600 253h0M610 253h0M622 253h0M632 253h0M176 264h0M187 264h0M198 264h0M286 264h0M297 264h0M308 264h0M319 264h0M330 264h0M341 264h0M352 264h0M363 264h0M374 264h0M385 264h0M396 264h0M407 264h0M418 264h0M429 264h0M440 264h0M451 264h0M462 264h0M473 264h0M484 264h0M495 264h0M506 264h0M517 264h0M528 264h0M539 264h0M550 264h0M561 264h0M572 264h0M583 264h0M594 264h0M605 264h0M616 264h0M627 264h0M638 264h0M182 275h0M192 275h0M204 275h0M302 275h0M314 275h0M324 275h0M336 275h0M346 275h0M358 275h0M368 275h0M380 275h0M390 275h0M402 275h0M412 275h0M424 275h0M434 275h0M446 275h0M456 275h0M468 275h0M478 275h0M490 275h0M500 275h0M512 275h0M522 275h0M534 275h0M544 275h0M556 275h0M566 275h0M578 275h0M588 275h0M600 275h0M610 275h0M622 275h0M632 275h0M644 275h0M176 286h0M187 286h0M198 286h0M209 286h0M319 286h0M330 286h0M341 286h0M352 286h0M363 286h0M374 286h0M385 286h0M396 286h0M407 286h0M418 286h0M429 286h0M440 286h0M451 286h0M462 286h0M473 286h0M484 286h0M495 286h0M506 286h0M517 286h0M528 286h0M539 286h0M550 286h0M561 286h0M572 286h0M583 286h0M594 286h0M605 286h0M616 286h0M627 286h0M638 286h0M649 286h0M192 297h0M204 297h0M214 297h0M324 297h0M336 297h0M346 297h0M358 297h0M368 297h0M380 297h0M390 297h0M402 297h0M412 297h0M424 297h0M434 297h0M446 297h0M456 297h0M468 297h0M478 297h0M490 297h0M500 297h0M512 297h0M522 297h0M534 297h0M544 297h0M556 297h0M566 297h0M578 297h0M588 297h0M600 297h0M610 297h0M622 297h0M632 297h0M644 297h0M198 308h0M209 308h0M220 308h0M231 308h0M341 308h0M352 308h0M363 308h0M374 308h0M385 308h0M396 308h0M407 308h0M418 308h0M429 308h0M440 308h0M451 308h0M462 308h0M473 308h0M484 308h0M495 308h0M506 308h0M517 308h0M528 308h0M539 308h0M550 308h0M561 308h0M572 308h0M583 308h0M594 308h0M605 308h0M616 308h0M627 308h0M638 308h0M214 319h0M226 319h0M236 319h0M346 319h0M358 319h0M368 319h0M380 319h0M390 319h0M402 319h0M412 319h0M424 319h0M434 319h0M446 319h0M456 319h0M468 319h0M478 319h0M490 319h0M500 319h0M512 319h0M522 319h0M534 319h0M544 319h0M556 319h0M566 319h0M578 319h0M588 319h0M600 319h0M610 319h0M622 319h0M632 319h0M231 330h0M242 330h0M352 330h0M363 330h0M374 330h0M385 330h0M396 330h0M407 330h0M418 330h0M429 330h0M440 330h0M451 330h0M462 330h0M473 330h0M484 330h0M495 330h0M506 330h0M517 330h0M528 330h0M539 330h0M550 330h0M561 330h0M572 330h0M583 330h0M594 330h0M605 330h0M616 330h0M627 330h0M236 341h0M358 341h0M368 341h0M380 341h0M390 341h0M402 341h0M412 341h0M424 341h0M434 341h0M446 341h0M456 341h0M468 341h0M478 341h0M490 341h0M500 341h0M512 341h0M522 341h0M534 341h0M544 341h0M556 341h0M566 341h0M578 341h0M588 341h0M600 341h0M610 341h0M622 341h0M632 341h0M242 352h0M363 352h0M374 352h0M385 352h0M396 352h0M407 352h0M418 352h0M429 352h0M440 352h0M451 352h0M462 352h0M473 352h0M484 352h0M495 352h0M506 352h0M517 352h0M528 352h0M539 352h0M550 352h0M561 352h0M572 352h0M583 352h0M594 352h0M605 352h0M616 352h0M627 352h0M380 363h0M390 363h0M402 363h0M412 363h0M424 363h0M434 363h0M446 363h0M456 363h0M468 363h0M478 363h0M490 363h0M500 363h0M512 363h0M522 363h0M534 363h0M544 363h0M556 363h0M566 363h0M578 363h0M588 363h0M600 363h0M610 363h0M622 363h0M632 363h0M385 374h0M396 374h0M407 374h0M418 374h0M429 374h0M440 374h0M451 374h0M462 374h0M473 374h0M484 374h0M495 374h0M506 374h0M517 374h0M528 374h0M539 374h0M550 374h0M561 374h0M572 374h0M583 374h0M594 374h0M605 374h0M616 374h0M627 374h0M390 385h0M402 385h0M412 385h0M424 385h0M434 385h0M446 385h0M456 385h0M468 385h0M478 385h0M490 385h0M500 385h0M512 385h0M522 385h0M534 385h0M544 385h0M556 385h0M566 385h0M578 385h0M588 385h0M600 385h0M610 385h0M622 385h0M632 385h0M396 396h0M407 396h0M418 396h0M429 396h0M440 396h0M451 396h0M462 396h0M473 396h0M484 396h0M495 396h0M506 396h0M517 396h0M528 396h0M539 396h0M550 396h0M561 396h0M572 396h0M583 396h0M594 396h0M605 396h0M616 396h0M627 396h0M638 396h0M402 407h0M412 407h0M424 407h0M434 407h0M446 407h0M456 407h0M468 407h0M478 407h0M490 407h0M500 407h0M512 407h0M522 407h0M534 407h0M544 407h0M556 407h0M566 407h0M578 407h0M588 407h0M600 407h0M610 407h0M622 407h0M632 407h0M644 407h0M940 407h0M952 407h0M962 407h0M974 407h0M396 418h0M407 418h0M418 418h0M429 418h0M440 418h0M451 418h0M462 418h0M473 418h0M484 418h0M495 418h0M506 418h0M517 418h0M528 418h0M539 418h0M550 418h0M561 418h0M572 418h0M583 418h0M594 418h0M605 418h0M616 418h0M627 418h0M638 418h0M891 418h0M902 418h0M913 418h0M924 418h0M935 418h0M946 418h0M957 418h0M968 418h0M979 418h0M402 429h0M412 429h0M424 429h0M434 429h0M446 429h0M456 429h0M468 429h0M478 429h0M490 429h0M500 429h0M512 429h0M522 429h0M534 429h0M544 429h0M556 429h0M566 429h0M578 429h0M588 429h0M600 429h0M610 429h0M622 429h0M632 429h0M644 429h0M874 429h0M886 429h0M896 429h0M908 429h0M918 429h0M930 429h0M940 429h0M952 429h0M962 429h0M974 429h0M396 440h0M407 440h0M418 440h0M429 440h0M440 440h0M451 440h0M462 440h0M473 440h0M484 440h0M495 440h0M506 440h0M517 440h0M528 440h0M539 440h0M550 440h0M561 440h0M572 440h0M583 440h0M594 440h0M605 440h0M616 440h0M627 440h0M638 440h0M649 440h0M660 440h0M880 440h0M891 440h0M902 440h0M913 440h0M924 440h0M935 440h0M946 440h0M957 440h0M968 440h0M402 451h0M412 451h0M424 451h0M434 451h0M446 451h0M456 451h0M468 451h0M478 451h0M490 451h0M500 451h0M512 451h0M522 451h0M534 451h0M544 451h0M556 451h0M566 451h0M578 451h0M588 451h0M600 451h0M610 451h0M622 451h0M632 451h0M644 451h0M654 451h0M666 451h0M874 451h0M886 451h0M896 451h0M908 451h0M918 451h0M930 451h0M940 451h0M952 451h0M962 451h0M407 462h0M418 462h0M429 462h0M440 462h0M451 462h0M462 462h0M473 462h0M484 462h0M495 462h0M506 462h0M517 462h0M528 462h0M539 462h0M550 462h0M561 462h0M572 462h0M583 462h0M594 462h0M605 462h0M616 462h0M627 462h0M638 462h0M649 462h0M660 462h0M671 462h0M869 462h0M880 462h0M891 462h0M902 462h0M913 462h0M924 462h0M935 462h0M946 462h0M957 462h0M412 473h0M424 473h0M434 473h0M446 473h0M456 473h0M468 473h0M478 473h0M490 473h0M500 473h0M512 473h0M522 473h0M534 473h0M544 473h0M556 473h0M566 473h0M578 473h0M588 473h0M600 473h0M610 473h0M622 473h0M632 473h0M644 473h0M654 473h0M666 473h0M676 473h0M864 473h0M874 473h0M886 473h0M896 473h0M908 473h0M918 473h0M930 473h0M940 473h0M952 473h0M962 473h0M429 484h0M440 484h0M451 484h0M462 484h0M473 484h0M484 484h0M495 484h0M506 484h0M517 484h0M528 484h0M539 484h0M550 484h0M561 484h0M572 484h0M583 484h0M594 484h0M605 484h0M616 484h0M627 484h0M638 484h0M649 484h0M660 484h0M671 484h0M682 484h0M869 484h0M880 484h0M891 484h0M902 484h0M913 484h0M924 484h0M935 484h0M946 484h0M957 484h0M434 495h0M446 495h0M456 495h0M468 495h0M478 495h0M490 495h0M500 495h0M512 495h0M522 495h0M534 495h0M544 495h0M556 495h0M566 495h0M578 495h0M588 495h0M600 495h0M610 495h0M622 495h0M632 495h0M644 495h0M654 495h0M666 495h0M676 495h0M688 495h0M698 495h0M852 495h0M864 495h0M874 495h0M886 495h0M896 495h0M908 495h0M918 495h0M930 495h0M940 495h0M952 495h0M451 506h0M462 506h0M473 506h0M484 506h0M495 506h0M506 506h0M517 506h0M528 506h0M539 506h0M550 506h0M561 506h0M572 506h0M583 506h0M594 506h0M605 506h0M616 506h0M627 506h0M638 506h0M649 506h0M660 506h0M671 506h0M682 506h0M693 506h0M704 506h0M715 506h0M847 506h0M858 506h0M869 506h0M880 506h0M891 506h0M902 506h0M913 506h0M924 506h0M935 506h0M946 506h0M456 517h0M468 517h0M478 517h0M490 517h0M500 517h0M512 517h0M522 517h0M534 517h0M544 517h0M556 517h0M566 517h0M578 517h0M588 517h0M600 517h0M610 517h0M622 517h0M632 517h0M644 517h0M654 517h0M666 517h0M676 517h0M688 517h0M698 517h0M710 517h0M720 517h0M732 517h0M776 517h0M786 517h0M798 517h0M808 517h0M820 517h0M830 517h0M842 517h0M852 517h0M864 517h0M874 517h0M886 517h0M896 517h0M908 517h0M918 517h0M930 517h0M484 528h0M495 528h0M506 528h0M517 528h0M528 528h0M539 528h0M550 528h0M561 528h0M572 528h0M583 528h0M594 528h0M605 528h0M616 528h0M627 528h0M638 528h0M649 528h0M660 528h0M671 528h0M682 528h0M693 528h0M704 528h0M715 528h0M726 528h0M737 528h0M748 528h0M759 528h0M770 528h0M781 528h0M792 528h0M803 528h0M814 528h0M825 528h0M836 528h0M847 528h0M858 528h0M869 528h0M880 528h0M891 528h0M902 528h0M913 528h0M512 539h0M522 539h0M534 539h0M544 539h0M556 539h0M566 539h0M578 539h0M588 539h0M600 539h0M610 539h0M622 539h0M632 539h0M644 539h0M654 539h0M666 539h0M676 539h0M688 539h0M698 539h0M710 539h0M720 539h0M732 539h0M742 539h0M754 539h0M764 539h0M776 539h0M786 539h0M798 539h0M808 539h0M820 539h0M830 539h0M842 539h0M852 539h0M528 550h0M539 550h0M550 550h0M561 550h0M572 550h0M583 550h0M594 550h0M605 550h0M616 550h0M627 550h0M638 550h0M649 550h0M660 550h0M671 550h0M682 550h0M693 550h0M704 550h0M715 550h0M726 550h0M737 550h0M748 550h0M759 550h0M770 550h0M781 550h0M792 550h0M803 550h0M814 550h0M825 550h0M836 550h0M847 550h0M556 561h0M566 561h0M578 561h0M588 561h0M600 561h0M610 561h0M622 561h0M632 561h0M644 561h0M654 561h0M666 561h0M676 561h0M688 561h0M698 561h0M710 561h0M720 561h0M732 561h0M742 561h0M754 561h0M764 561h0M776 561h0M786 561h0M798 561h0M808 561h0M820 561h0M830 561h0M842 561h0M583 572h0M594 572h0M605 572h0M616 572h0M627 572h0M638 572h0M649 572h0M660 572h0M671 572h0M682 572h0M693 572h0M704 572h0M715 572h0M726 572h0M737 572h0M748 572h0M759 572h0M770 572h0M781 572h0M792 572h0M803 572h0M814 572h0M825 572h0M836 572h0M847 572h0M622 583h0M632 583h0M644 583h0M654 583h0M666 583h0M676 583h0M688 583h0M698 583h0M710 583h0M720 583h0M732 583h0M742 583h0M754 583h0M764 583h0M776 583h0M786 583h0M798 583h0M808 583h0M820 583h0M830 583h0M842 583h0M852 583h0M638 594h0M649 594h0M660 594h0M671 594h0M682 594h0M693 594h0M704 594h0M715 594h0M726 594h0M737 594h0M748 594h0M759 594h0M770 594h0M781 594h0M792 594h0M803 594h0M814 594h0M825 594h0M836 594h0M847 594h0M858 594h0M869 594h0M666 605h0M676 605h0M688 605h0M764 605h0M776 605h0M786 605h0M798 605h0M808 605h0M820 605h0M781 616h0M792 616h0M803 616h0M814 616h0M798 627h0M808 627h0M803 638h0"/><g class="zia-map__pins"><g class="zia-map__pin" data-office="tijuana" transform="translate(18 24)" tabindex="0" role="button" aria-label="Oficina Tijuana"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="-22" y="8" text-anchor="end">Tijuana</text></g><g class="zia-map__pin" data-office="chihuahua" transform="translate(369 159)" tabindex="0" role="button" aria-label="Oficina Chihuahua"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="22" y="8" text-anchor="start">Chihuahua</text></g><g class="zia-map__pin zia-map__pin--soon" data-office="culiacan" transform="translate(327 292)" tabindex="0" role="button" aria-label="Oficina Culiacán (próximamente)"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="-22" y="8" text-anchor="end">Culiacán</text></g><g class="zia-map__pin" data-office="morelia" transform="translate(526 470)" tabindex="0" role="button" aria-label="Oficina Morelia"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="-22" y="8" text-anchor="end">Morelia</text></g><g class="zia-map__pin" data-office="orizaba" transform="translate(657 500)" tabindex="0" role="button" aria-label="Oficina Orizaba"><circle class="zia-map__pulse" r="26"/><circle class="zia-map__core" r="11"/><text class="zia-map__lbl" x="22" y="8" text-anchor="start">Orizaba</text></g></g></svg></div>
+      <div class="oficinas">
+        <article class="oficina"><i>AE</i><div><b>Tijuana <small>Baja California</small></b><span>Mtra. Alma Estrella Domínguez</span><em>664 159 4369 · estrella.d@ziaintegracion.com</em></div></article>
+        <article class="oficina"><i>AV</i><div><b>Chihuahua <small>Norte</small></b><span>Ing. Alejandro Vela</span><em>614 471 8727 · a.vela@ziaintegracion.com</em></div></article>
+        <article class="oficina"><i>EB</i><div><b>Morelia <small>Centro</small></b><span>Ing. Edilberto Brito</span><em>443 328 0991 · ebrito@ziaintegracion.com</em></div></article>
+        <article class="oficina"><i>FS</i><div><b>Orizaba <small>Oriente</small></b><span>Ing. Francisco Santos</span><em>272 215 8160 · fco.santos@ziaintegracion.com</em></div></article>
+        <article class="oficina oficina--pronto"><i>JC</i><div><b>Culiacán <small>Sinaloa · Próximamente</small></b><span>Ing. Jaziel Cienfuegos · Ing. Carlos Escalante</span></div></article></div>
+    </div>
+    <footer class="pie"><img src="../../wireframes/bexon/assets/images/logos/zia_simbolo.svg" alt=""><span>ZIA Integración · Su aliado estratégico en el sector gasolinero</span><b>12 / 13</b></footer></section>
+<section class="pg cierre">
+    <span class="kicker">Diagnóstico sin costo</span>
+    <h1>Hablemos antes de que llegue <span>la inspección.</span></h1>
+    <p class="lead">Cuéntenos qué le preocupa y le asignamos al especialista de su región.</p>
+    <div class="contactos">
+      <div><small>Línea principal</small><b>664 159 4369</b></div>
+      <div><small>Correo</small><b>contacto@ziaintegracion.com</b></div>
+      <div><small>Sitio web</small><b>www.ziaintegracion.com</b></div>
+    </div>
+    <div class="cierre__marca"><img src="../../wireframes/bexon/assets/images/logos/zia_simbolo.svg" alt=""><span>ZIA</span><em>Integración · Seguridad y tecnología</em></div></section>
+</body>
+</html>

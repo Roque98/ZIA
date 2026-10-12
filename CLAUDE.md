@@ -13,6 +13,8 @@ zia/
 ├── docs/                       # Documentación técnica y de producto
 │   ├── client-brief.md         # Resumen extraído del briefing del cliente
 │   ├── ux-review-2026-06-04.md # Revisión UX del wireframe
+│   ├── ZIA-presentacion.pdf    # Presentación corporativa con la estética de la landing (13 páginas, 16:9)
+│   ├── presentacion/           # Fuente del PDF: generar.js arma presentacion.html desde el brief y la landing
 │   └── Bexon HTML Template/    # Template de referencia original (no modificar)
 │       ├── Documentation/
 │       └── Template/           # HTML/CSS/JS fuente del template Bexon

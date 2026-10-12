@@ -52,6 +52,9 @@ ZIA atiende cinco organismos reguladores clave:
 |-----------|-----|
 | **ASEA** (Agencia de Seguridad, Energía y Ambiente) | Seguridad industrial, operativa y protección ambiental |
 | **CRE** (Comisión Reguladora de Energía) | Permisos y reportes de volumen, desarrollo eficiente |
+
+> **Nota (2026-10-12):** la CRE cambió de nombre a **CNE (Comisión Nacional de Energía)**. El PDF del cliente es anterior al cambio, por eso este resumen conserva "CRE"; la landing y la presentación ya dicen CNE. La norma NOM-016-CRE-2016 conserva su nombre.
+
 | **SAT** (Sistema de Administración Tributaria) | Control volumétrico y obligaciones fiscales |
 | **STPS** (Secretaría del Trabajo y Previsión Social) | Seguridad e higiene laboral |
 | **Protección Civil** | Capacidad de respuesta ante emergencias y riesgos |
