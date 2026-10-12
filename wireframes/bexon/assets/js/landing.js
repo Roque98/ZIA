@@ -688,6 +688,7 @@
       steps.forEach(function (li, i) { li.classList.toggle('is-active', i === step); li.classList.toggle('is-done', i < step); });
       status.textContent = txt;
       status.classList.toggle('is-ok', step >= 2);
+      scene.classList.toggle('is-result', t >= T.result); // en móvil el resultado sale de la estación
     }
     setMeter(gsap.getProperty(bar, 'scaleX') * 100);
   }
