@@ -23,7 +23,7 @@ if (!estacion || !mapa) throw new Error('No se encontró la estación o el mapa 
 
 const REGS = [
   { k: 'asea', c: '#2f9e6b', n: 'ASEA', full: 'Agencia de Seguridad, Energía y Ambiente', rol: 'Seguridad industrial, operativa y protección ambiental.' },
-  { k: 'cre', c: '#d99a1e', n: 'CRE', full: 'Comisión Reguladora de Energía', rol: 'Permisos y reportes de volumen; desarrollo eficiente.' },
+  { k: 'cre', c: '#d99a1e', n: 'CNE', full: 'Comisión Nacional de Energía', rol: 'Permisos y reportes de volumen; desarrollo eficiente.' },
   { k: 'sat', c: '#2b6cb0', n: 'SAT', full: 'Servicio de Administración Tributaria', rol: 'Control volumétrico y obligaciones fiscales.' },
   { k: 'stps', c: '#e8742a', n: 'STPS', full: 'Secretaría del Trabajo y Previsión Social', rol: 'Seguridad e higiene laboral.' },
   { k: 'proteccion-civil', c: '#EC3237', n: 'Protección Civil', full: 'Protección Civil', rol: 'Capacidad de respuesta ante emergencias y riesgos.' }
@@ -32,7 +32,7 @@ const HITOS = [
   { y: '2000', e: 'Orígenes en TI', d: 'Soporte y asesoría en sistemas de información y redes.', r: [] },
   { y: '2004', e: 'Especialización en hidrocarburos', d: 'Controles volumétricos para gasolineras.', r: ['sat'] },
   { y: '2010', e: 'Diversificación en seguridad', d: 'Seguridad e higiene, Protección Civil y STPS.', r: ['stps', 'proteccion-civil'] },
-  { y: '2015', e: 'Adaptación regulatoria', d: 'Ampliación del catálogo para CRE y ASEA.', r: ['cre', 'asea'] },
+  { y: '2015', e: 'Adaptación regulatoria', d: 'Ampliación del catálogo para la CRE (hoy CNE) y ASEA.', r: ['cre', 'asea'] },
   { y: 'Hoy', e: 'Liderazgo integral', d: 'De la auditoría a la defensoría jurídica.', r: ['asea', 'cre', 'sat', 'stps', 'proteccion-civil'] }
 ];
 const OFICINAS = [
@@ -64,7 +64,7 @@ const paginas = [
     <div class="portada__marca"><img src="${A}/images/logos/zia_simbolo.svg" alt=""><span>ZIA</span></div>
     <span class="kicker">Su aliado estratégico en el sector gasolinero</span>
     <h1>Una gasolinera.<br>Cinco reguladores.<br><span>Un solo aliado.</span></h1>
-    <p class="lead">Más de 20 años poniendo en regla estaciones de servicio ante ASEA, CRE, SAT, STPS y Protección Civil, de la auditoría a la defensa jurídica.</p>
+    <p class="lead">Más de 20 años poniendo en regla estaciones de servicio ante ASEA, CNE, SAT, STPS y Protección Civil, de la auditoría a la defensa jurídica.</p>
     <div class="portada__regs">${REGS.map(r => `<div class="reg" style="--c:${r.c}"><img src="${ICO(r.k)}" alt=""><b>${r.n === 'Protección Civil' ? 'P. Civil' : r.n}</b></div>`).join('')}</div>
     <div class="portada__pie"><span>Presentación corporativa</span><span>www.ziaintegracion.com</span></div>`),
 
@@ -108,7 +108,7 @@ const paginas = [
   // 6. Gestoría
   pagina('', `${cab('Servicio 2', 'Gestoría integral <span>ante autoridades.</span>', 'Usted opera; nosotros tramitamos.')}
     <div class="dos">
-      <article class="panel" style="--c:#d99a1e"><h3>${chip('cre')} Ante la CRE</h3>${lista(['Altas y solicitudes de permiso', 'Modificaciones al permiso y cambios de Representante Legal', 'Reportes anuales, diarios y trimestrales', 'Reporte de Estructura Accionaria', 'Regularización de trámites y obligaciones pendientes', 'Sistemas de Gestión de la Medición y NOM-016-CRE-2016'])}</article>
+      <article class="panel" style="--c:#d99a1e"><h3>${chip('cre')} Ante la CNE</h3>${lista(['Altas y solicitudes de permiso', 'Modificaciones al permiso y cambios de Representante Legal', 'Reportes anuales, diarios y trimestrales', 'Reporte de Estructura Accionaria', 'Regularización de trámites y obligaciones pendientes', 'Sistemas de Gestión de la Medición y NOM-016-CRE-2016'])}</article>
       <article class="panel" style="--c:#2f9e6b"><h3>${chip('asea')} Ante la ASEA</h3>${lista(['Registro en el Portal del Regulado (obtención de CURR)', 'Registro de pólizas de seguros y generador de residuos peligrosos', 'Manifiesto de Impacto Ambiental o Informe Preventivo', 'Análisis de riesgo y Protocolo de Respuesta a Emergencias', 'Licencia de Funcionamiento y Cédula de Operación Anual', 'Elaboración, dictaminación e implementación de SASISOPA'])}</article>
     </div>`),
 
@@ -138,7 +138,7 @@ const paginas = [
   // 10. Defensoría
   pagina('', `${cab('Servicio 6', 'Defensoría jurídica <span>especializada.</span>', 'Cuando la autoridad ya actuó, lo acompañamos hasta resolverlo.')}
     <div class="tres">
-      <article class="tarjeta"><span class="num">01</span><h3>Acompañamiento y abogacía</h3><p>Ante SAT, CRE, ASEA, IMSS e INFONAVIT.</p></article>
+      <article class="tarjeta"><span class="num">01</span><h3>Acompañamiento y abogacía</h3><p>Ante SAT, CNE, ASEA, IMSS e INFONAVIT.</p></article>
       <article class="tarjeta"><span class="num">02</span><h3>Juicios contenciosos</h3><p>Juicios Contenciosos Administrativos.</p></article>
       <article class="tarjeta"><span class="num">03</span><h3>Recursos y amparos</h3><p>Recursos de Revisión y Amparos.</p></article>
     </div>`),
