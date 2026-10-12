@@ -976,6 +976,7 @@
       var ico = r.querySelector('img, i');
       if (on && !r.classList.contains('is-on') && ico && window.gsap && !reduced) gsap.fromTo(ico, { scale: .5 }, { scale: 1, duration: .45, ease: 'back.out(2.6)', clearProps: 'transform' });
       r.classList.toggle('is-on', on);
+      r.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
     var u = checked('urgencia')[0], urgEl = resumen.querySelector('[data-resumen="urgencia"]');
     setVal(urgEl, u ? URG[u] : 'Por definir', !u);
@@ -1074,6 +1075,19 @@
   // Casillas y opciones de urgencia: cambio nativo
   form.addEventListener('change', updateResumen);
   updateResumen();
+  // Los distintivos del resumen son botones: tocar uno marca ese tema en el formulario
+  if (resumen) {
+    resumen.querySelectorAll('.zia-resumen__reg').forEach(function (r) {
+      r.addEventListener('click', function () {
+        if (form.hidden) return; // ya se envió: el resumen quedó como comprobante
+        var box = Array.prototype.filter.call(form.querySelectorAll('input[name="temas"]'), function (c) { return c.value === r.dataset.tema; })[0];
+        if (!box) return;
+        box.checked = !box.checked;
+        showError('temas', false);
+        updateResumen();
+      });
+    });
+  }
 
   // ['CNE','SAT','STPS'] → 'CNE, SAT y STPS'
   function enumerar(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1]; }
