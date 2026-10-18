@@ -1026,6 +1026,11 @@
       el.closest('.zia-field').classList.toggle('is-invalid', !ok);
       if (!ok && !first) first = el;
     });
+    // Consentimiento del aviso de privacidad: casilla obligatoria antes de enviar
+    var priv = form.elements.privacidad;
+    var okPriv = priv.checked;
+    priv.closest('.zia-field').classList.toggle('is-invalid', !okPriv);
+    if (!okPriv && !first) first = priv;
     if (first && first.tagName !== 'SELECT') first.focus();
     return !first;
   }
@@ -1057,6 +1062,9 @@
   });
   form.querySelectorAll('.zia-field input').forEach(function (i) {
     i.addEventListener('input', function () { i.closest('.zia-field').classList.remove('is-invalid'); });
+  });
+  form.elements.privacidad.addEventListener('change', function () {
+    if (this.checked) this.closest('.zia-field').classList.remove('is-invalid');
   });
 
   // Estado → oficina asignada. nice-select (main.js) avisa del cambio por jQuery.

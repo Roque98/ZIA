@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="assets/css/meanmenu.css">
   <link rel="stylesheet" href="assets/css/main.css">
   <link rel="stylesheet" href="assets/css/zia.css?v=20261012c">
-  <link rel="stylesheet" href="assets/css/landing.css?v=20261012c">
+  <link rel="stylesheet" href="assets/css/landing.css?v=20261018a">
 
 </head>
 <body>
@@ -467,6 +467,10 @@
                           </div>
                         </div>
                         <div class="col-12 zia-field"><label for="t-msg">Detalles (opcional)</label><textarea id="t-msg" name="mensaje" rows="3" placeholder="Número de estación, oficio recibido, fechas…"></textarea></div>
+                        <div class="col-12 zia-field">
+                          <label class="zia-consent" for="t-privacidad"><input id="t-privacidad" name="privacidad" type="checkbox" value="acepto" required><span>He leído y acepto el <a href="aviso-privacidad.html" target="_blank" rel="noopener">Aviso de privacidad</a>.</span></label>
+                          <small class="zia-field__err">Debe aceptar el aviso de privacidad para continuar.</small>
+                        </div>
                       </div>
                     </fieldset>
 
@@ -516,8 +520,7 @@
           </div>
           <div class="zia-lp-footer__bottom">
             <span>&copy; 2026 ZIA Integración</span>
-            <!-- Pendiente: texto del aviso de privacidad del cliente -->
-            <span>Aviso de privacidad (pendiente del cliente)</span>
+            <a class="zia-lp-footer__legal" href="aviso-privacidad.html">Aviso de privacidad</a>
           </div>
         </div>
       </footer>
@@ -582,6 +585,6 @@
   <script src="assets/js/meanmenu.js"></script>
   <script src="assets/js/main.js?v=20261012c"></script>
   <script src="assets/js/zia.js?v=20261012c"></script>
-  <script src="assets/js/landing.js?v=20261012c"></script>
+  <script src="assets/js/landing.js?v=20261018a"></script>
 </body>
 </html>

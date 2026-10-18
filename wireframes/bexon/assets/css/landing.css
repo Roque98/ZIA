@@ -735,3 +735,37 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
   .zia-reg-modal::backdrop { backdrop-filter: none; background: rgba(6,16,18,.88); }
   .zia-reg-modal__foot { backdrop-filter: none; background: #0f2326; }
 }
+
+/* ═══ Privacidad ═══ */
+/* Casilla de consentimiento del formulario (paso 3) */
+.zia-consent { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; line-height: 1.5; color: #4d6366; cursor: pointer; }
+.zia-consent input { flex: none; width: 18px; height: 18px; margin-top: 2px; accent-color: var(--zia-teal); cursor: pointer; }
+.zia-consent a { color: var(--zia-teal); font-weight: 800; text-decoration: underline; }
+.zia-field.is-invalid .zia-consent input { outline: 2px solid var(--zia-red); outline-offset: 2px; }
+/* Enlace del pie */
+.zia-lp-footer__bottom a.zia-lp-footer__legal { text-decoration: none; }
+.zia-lp-footer__bottom a.zia-lp-footer__legal:hover { color: var(--zia-teal); }
+
+/* Página del aviso de privacidad (aviso-privacidad.html) */
+.zia-legal { padding: 150px 0 90px; }
+.zia-legal__doc { max-width: 860px; }
+.zia-legal__meta { font-size: 14px; color: rgba(255,255,255,.55); margin: 0 0 28px; }
+.zia-legal__doc h2 { font-size: 22px; font-weight: 900; color: #fff; margin: 44px 0 14px; letter-spacing: -.01em; }
+.zia-legal__doc h3 { font-size: 16px; font-weight: 800; color: #fff; margin: 24px 0 10px; }
+.zia-legal__doc p, .zia-legal__doc li { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,.74); }
+.zia-legal__doc ul, .zia-legal__doc ol { padding-left: 22px; margin: 0 0 16px; }
+.zia-legal__doc li { margin-bottom: 6px; }
+.zia-legal__doc ul li { list-style: disc; }
+.zia-legal__doc ol li { list-style: decimal; }
+.zia-legal__doc strong { color: #fff; }
+.zia-legal__doc a { color: var(--zia-teal); font-weight: 700; }
+.zia-legal__doc .zia-note { text-align: left; }
+/* Texto pendiente de confirmar con el cliente: visible a propósito */
+.zia-pending { display: inline; padding: 2px 8px; border-radius: 6px; background: rgba(166,145,64,.16); border: 1px dashed var(--zia-gold); color: #e6d48c; font-weight: 800; font-size: .95em; }
+.zia-legal__box { margin: 18px 0; padding: 18px 22px; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-left: 3px solid var(--zia-teal); }
+.zia-legal__box--warn { border-left-color: var(--zia-gold); }
+.zia-legal__box p:last-child { margin-bottom: 0; }
+.zia-legal__back { display: inline-flex; align-items: center; gap: 8px; margin-top: 40px; color: var(--zia-teal); font-weight: 800; text-decoration: none; }
+.zia-legal__back:hover { color: #fff; }
+@media (max-width: 991px) { .zia-legal { padding: 120px 0 70px; } }
+.zia-legal__doc .zia-note { padding: 8px 12px; border-left: 3px dashed var(--zia-gold); background: rgba(166,145,64,.08); color: #e6d48c; font-weight: 700; }
