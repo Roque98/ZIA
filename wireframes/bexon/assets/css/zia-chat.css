@@ -1,0 +1,108 @@
+/* ═══ Asistente de chat (zia-chat.js) ═══
+   Botón flotante encima del de WhatsApp (.whatsapp-sticky: bottom 18px, right 18px, 48px)
+   y panel de conversación. Todo con prefijo .zchat- para no chocar con el template. */
+.zchat-fab {
+  position: fixed; right: 18px; bottom: 78px; z-index: 89;
+  width: 48px; height: 48px; border-radius: 50%; border: 2px solid rgba(255,255,255,.22);
+  background: var(--zia-ink, #0c1e21); color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; padding: 0;
+  box-shadow: 0 4px 20px rgba(12,30,33,.35); transition: transform .2s, background .2s;
+}
+.zchat-fab:hover { background: var(--zia-teal, #1e8a8a); transform: translateY(-2px); }
+.zchat-fab:focus-visible { outline: 3px solid var(--zia-teal, #1e8a8a); outline-offset: 3px; }
+.zchat-fab svg { width: 24px; height: 24px; fill: currentColor; }
+.zchat-fab[aria-expanded="true"] { background: var(--zia-teal, #1e8a8a); }
+
+.zchat-invite {
+  position: fixed; right: 78px; bottom: 82px; z-index: 89; max-width: 250px;
+  background: #fff; color: var(--zia-ink, #0c1e21); border-radius: 12px 12px 2px 12px;
+  padding: 12px 34px 12px 14px; font-size: 14px; font-weight: 700; line-height: 1.4;
+  box-shadow: 0 10px 30px rgba(12,30,33,.22); cursor: pointer;
+  animation: zchat-in .35s ease-out;
+}
+.zchat-invite__close {
+  position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border: 0; border-radius: 50%;
+  background: transparent; color: #6b7f82; font-size: 18px; line-height: 1; cursor: pointer;
+}
+.zchat-invite__close:hover { background: #eef3f3; }
+
+.zchat-panel {
+  position: fixed; right: 18px; bottom: 138px; z-index: 1010; /* encima del encabezado fijo (.zia-lp-header: 1003) */
+  width: min(380px, calc(100vw - 36px)); height: min(580px, calc(100vh - 160px));
+  display: flex; flex-direction: column; overflow: hidden;
+  background: #fff; color: var(--zia-ink, #0c1e21); border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(12,30,33,.35); font-size: 14.5px; line-height: 1.5;
+  animation: zchat-in .25s ease-out;
+}
+.zchat-panel[hidden] { display: none; }
+.zchat-head {
+  display: flex; align-items: center; gap: 10px; padding: 14px 14px 14px 16px;
+  background: var(--zia-ink, #0c1e21); color: #fff;
+}
+.zchat-head__dot { width: 10px; height: 10px; border-radius: 50%; background: #3ccf8e; flex: none; }
+.zchat-head__title { margin: 0; font-size: 15px; font-weight: 800; color: #fff; flex: 1; line-height: 1.3; }
+.zchat-head__title small { display: block; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.65); }
+.zchat-head__close {
+  width: 32px; height: 32px; border: 0; border-radius: 50%; background: rgba(255,255,255,.1);
+  color: #fff; font-size: 20px; line-height: 1; cursor: pointer;
+}
+.zchat-head__close:hover { background: rgba(255,255,255,.2); }
+
+.zchat-log { flex: 1; overflow-y: auto; padding: 16px 14px; background: #f4f7f7; display: flex; flex-direction: column; gap: 10px; }
+.zchat-msg { max-width: 88%; padding: 10px 13px; border-radius: 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.zchat-msg--bot { align-self: flex-start; background: #fff; border: 1px solid #e1eaea; border-bottom-left-radius: 4px; }
+.zchat-msg--user { align-self: flex-end; background: var(--zia-teal, #1e8a8a); color: #fff; border-bottom-right-radius: 4px; }
+.zchat-msg--error { align-self: stretch; background: #fdecec; color: #8a1c1f; font-size: 13.5px; }
+.zchat-msg a { color: var(--zia-teal, #1e8a8a); font-weight: 700; text-decoration: underline; }
+.zchat-msg--typing::after { content: "…"; animation: zchat-blink 1s infinite; }
+
+.zchat-actions { align-self: stretch; display: flex; flex-wrap: wrap; gap: 8px; }
+.zchat-chip {
+  border: 1.5px solid var(--zia-teal, #1e8a8a); background: #fff; color: var(--zia-teal, #1e8a8a);
+  border-radius: 999px; padding: 7px 13px; font-size: 13.5px; font-weight: 700; cursor: pointer; line-height: 1.2;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+}
+.zchat-chip:hover, .zchat-chip[aria-pressed="true"] { background: var(--zia-teal, #1e8a8a); color: #fff; }
+.zchat-chip:disabled { opacity: .5; cursor: default; }
+.zchat-chip--solid { background: var(--zia-teal, #1e8a8a); color: #fff; }
+.zchat-chip--urgent { border-color: var(--zia-red, #EC3237); background: var(--zia-red, #EC3237); color: #fff; }
+.zchat-chip--urgent:hover { background: #c4262b; border-color: #c4262b; color: #fff; }
+.zchat-chip--wa { border-color: #25a366; background: #25a366; color: #fff; }
+.zchat-chip--wa:hover { background: #1d8752; border-color: #1d8752; color: #fff; }
+
+.zchat-form { align-self: stretch; background: #fff; border: 1px solid #e1eaea; border-radius: 14px; padding: 12px; display: grid; gap: 8px; }
+.zchat-form label { display: grid; gap: 3px; font-size: 12.5px; font-weight: 700; color: #4d6366; }
+.zchat-form input[type="text"], .zchat-form input[type="tel"], .zchat-form input[type="email"], .zchat-form select, .zchat-form textarea {
+  width: 100%; border: 1px solid #cfdcdc; border-radius: 8px; padding: 8px 10px; font: inherit; font-size: 14px; color: var(--zia-ink, #0c1e21); background: #fff;
+}
+.zchat-form textarea { min-height: 60px; resize: vertical; }
+.zchat-form .zchat-consent { display: flex; gap: 8px; align-items: flex-start; font-weight: 600; }
+.zchat-form .zchat-consent input { margin-top: 3px; accent-color: var(--zia-teal, #1e8a8a); }
+.zchat-form a { color: var(--zia-teal, #1e8a8a); text-decoration: underline; }
+.zchat-form .is-invalid input, .zchat-form .is-invalid select { border-color: var(--zia-red, #EC3237); }
+.zchat-form__err { color: #b3262a; font-size: 12px; font-weight: 600; }
+
+.zchat-compose { display: flex; gap: 8px; padding: 10px; border-top: 1px solid #e1eaea; background: #fff; }
+.zchat-compose textarea {
+  flex: 1; resize: none; border: 1px solid #cfdcdc; border-radius: 10px; padding: 9px 11px;
+  font: inherit; font-size: 14.5px; max-height: 110px; min-height: 40px; color: var(--zia-ink, #0c1e21);
+}
+.zchat-compose textarea:focus, .zchat-form :is(input, select, textarea):focus { outline: 2px solid var(--zia-teal, #1e8a8a); outline-offset: 0; border-color: transparent; }
+.zchat-send {
+  flex: none; width: 42px; border: 0; border-radius: 10px; background: var(--zia-teal, #1e8a8a); color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.zchat-send:disabled { opacity: .5; cursor: default; }
+.zchat-send svg { width: 20px; height: 20px; fill: currentColor; }
+.zchat-foot { padding: 0 12px 10px; background: #fff; font-size: 11.5px; color: #6b7f82; text-align: center; }
+.zchat-foot a { color: inherit; text-decoration: underline; }
+
+@keyframes zchat-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes zchat-blink { 50% { opacity: .2; } }
+@media (prefers-reduced-motion: reduce) { .zchat-panel, .zchat-invite { animation: none; } .zchat-fab { transition: none; } }
+
+/* Teléfono: el panel ocupa la pantalla (deja ver el encabezado del sitio detrás no aporta) */
+@media (max-width: 575px) {
+  .zchat-panel { right: 0; bottom: 0; width: 100vw; height: 100dvh; max-height: 100dvh; border-radius: 0; }
+  .zchat-invite { max-width: calc(100vw - 110px); }
+}
