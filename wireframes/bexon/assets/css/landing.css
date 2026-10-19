@@ -189,6 +189,7 @@ button.zia-person { width: 100%; text-align: left; font: inherit; color: inherit
   .zia-form-row > .zia-form-side > * { width: calc(100% - var(--bs-gutter-x)); margin-inline: calc(var(--bs-gutter-x) * .5); }
   .zia-form-row > .zia-form-side > .zia-sec__kicker { order: 1; margin-top: var(--bs-gutter-y); }
   .zia-form-row > .zia-form-side > .zia-sec__title { order: 2; }
+  .zia-form-row > .zia-form-side > .zia-sec__seo { order: 2; margin-top: -4px; }
   .zia-form-row > .zia-form-main { order: 3; margin-top: 6px; }
   .zia-form-row > .zia-form-side > .zia-resumen { order: 4; margin-top: 22px; }
   .zia-form-row > .zia-form-side > .zia-direct { order: 5; margin-top: 12px; }
@@ -769,3 +770,69 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
 .zia-legal__back:hover { color: #fff; }
 @media (max-width: 991px) { .zia-legal { padding: 120px 0 70px; } }
 .zia-legal__doc .zia-note { padding: 8px 12px; border-left: 3px dashed var(--zia-gold); background: rgba(166,145,64,.08); color: #e6d48c; font-weight: 700; }
+
+/* ═══ Auditoría 2026-10: accesibilidad, formulario nativo, FAQ y SEO ═══ */
+/* Contraste AA del botón principal (blanco sobre #1b8282 = 4.6:1; antes 4.15:1) */
+.tj-primary-btn { background-color: #1b8282; }
+
+/* Pasos de "Cómo trabajamos": un <button> real dentro de cada <li> */
+.zia-scene__stepbtn { grid-column: 1 / -1; display: grid; grid-template-columns: inherit; column-gap: inherit; align-items: inherit; width: 100%; padding: 0; margin: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; border-radius: 10px; }
+.zia-scene__stepbtn:focus-visible { outline: 2px solid var(--zia-teal); outline-offset: 2px; }
+
+/* Subtítulo descriptivo bajo los títulos creativos (palabras clave sin cambiar el diseño) */
+.zia-sec__seo { margin: 10px 0 0; font-size: 14px; font-weight: 600; line-height: 1.5; letter-spacing: .01em; color: rgba(255,255,255,.62); }
+.zia-sec__head--center .zia-sec__seo { margin-left: auto; margin-right: auto; max-width: 640px; }
+.zia-sec--light .zia-sec__seo { color: #4d6366; }
+.zia-sec__head .zia-sec__seo + .zia-sec__lead { margin-top: 14px; }
+
+/* Selects nativos (antes nice-select): mismo aspecto, accesibles y con la lista del sistema */
+.zia-field select, .zia-finder__select { -webkit-appearance: none; appearance: none; display: block; width: 100%; height: 48px; padding: 0 40px 0 14px; border-radius: 10px; border: 1.5px solid var(--tj-color-border-1); background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23999' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 16px center / 11px 8px; font: inherit; font-size: 14px; color: var(--zia-ink); cursor: pointer; transition: border-color .2s; }
+.zia-field select:focus, .zia-finder__select:focus { border-color: var(--zia-teal); outline: none; }
+.zia-field select:focus-visible, .zia-finder__select:focus-visible { box-shadow: 0 0 0 3px rgba(30,138,138,.25); }
+.zia-field.is-invalid select { border-color: var(--zia-red); }
+.zia-finder__select { padding-left: 16px; background-color: rgba(255,255,255,.06); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E"); border-color: rgba(255,255,255,.18); color: #fff; font-size: 15px; font-weight: 700; }
+.zia-finder__select:hover { border-color: var(--zia-teal); }
+.zia-finder__select option { color: var(--zia-ink); background: #fff; }
+@media (max-width: 575px) { .zia-finder__select { height: 42px; } }
+
+/* Error de envío del formulario (con salida a WhatsApp) */
+.zia-triage__fail { margin: 16px 0 0; padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(220,53,69,.35); background: rgba(220,53,69,.06); font-size: 14px; line-height: 1.5; color: var(--zia-ink); }
+.zia-triage__fail p { margin: 0; }
+.zia-triage__fail p + p { margin-top: 4px; }
+.zia-triage__fail-msg { font-weight: 800; color: var(--zia-red); }
+.zia-triage__fail a { color: var(--zia-teal); font-weight: 800; }
+.zia-triage__next[disabled] { opacity: .7; cursor: progress; }
+.zia-triage__done:focus { outline: none; }
+
+/* Áreas táctiles: teléfono del encabezado, enlaces del pie, "Solicitar revisión" y puntos laterales */
+.zia-lp-header__tel { min-height: 44px; min-width: 44px; justify-content: center; }
+.zia-station__tip-link { min-height: 24px; padding: 2px 0; }
+.zia-lp-footer__offices a, .zia-lp-footer__legal { display: inline-flex; align-items: center; min-height: 24px; }
+@media (max-width: 991px) {
+  .zia-station__tip-link { min-height: 44px; margin-top: 2px; }
+  .zia-lp-footer__offices a, .zia-lp-footer__legal { min-height: 44px; }
+  .zia-lp-footer__offices { row-gap: 0; }
+  .zia-lp-footer__offices span { display: inline-flex; align-items: center; }
+}
+.zia-dots { gap: 2px; }
+.zia-dots a { width: 24px; height: 24px; border: 0; border-radius: 50%; background: none; transform: none; }
+.zia-dots a::before { content: ""; position: absolute; left: 6px; top: 6px; width: 12px; height: 12px; box-sizing: border-box; border-radius: 50%; border: 2px solid rgba(255,255,255,.45); transition: background .25s, border-color .25s, transform .25s; }
+.zia-dots a span { right: 30px; }
+.zia-dots a.is-active { background: none; transform: none; }
+.zia-dots a.is-active::before { background: var(--zia-teal); border-color: var(--zia-teal); transform: scale(1.25); }
+body.zia-on-light .zia-dots a::before { border-color: rgba(12,30,33,.35); }
+body.zia-on-light .zia-dots a.is-active::before { border-color: var(--zia-teal); }
+.zia-dots { right: 20px; }
+
+/* ── 8. Preguntas frecuentes ── */
+.zia-faq__list { max-width: 880px; margin: 40px auto 0; display: grid; gap: 12px; }
+.zia-faq__item { border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); transition: border-color .25s, background .25s; }
+.zia-faq__item[open] { border-color: rgba(30,138,138,.55); background: rgba(30,138,138,.08); }
+.zia-faq__item summary { list-style: none; display: flex; align-items: center; gap: 16px; padding: 18px 22px; min-height: 44px; cursor: pointer; }
+.zia-faq__item summary::-webkit-details-marker { display: none; }
+.zia-faq__item summary:focus-visible { outline: 2px solid var(--zia-teal); outline-offset: 2px; border-radius: 14px; }
+.zia-faq__item h3 { flex: 1; margin: 0; font-size: 17px; line-height: 1.4; font-weight: 800; color: #fff; }
+.zia-faq__ico { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.3); color: #fff; font-weight: 800; transition: transform .25s, background .25s; }
+.zia-faq__item[open] .zia-faq__ico { transform: rotate(45deg); background: var(--zia-teal); border-color: var(--zia-teal); }
+.zia-faq__item p { margin: 0; padding: 0 22px 20px; font-size: 15px; line-height: 1.65; color: rgba(255,255,255,.74); }
+@media (max-width: 575px) { .zia-faq__item summary { padding: 16px; } .zia-faq__item p { padding: 0 16px 16px; } .zia-faq__item h3 { font-size: 15.5px; } }
