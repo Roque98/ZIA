@@ -54,7 +54,7 @@ Listo. Faltan los pasos manuales (ver deploy/README.md):
     Zone Editor de cPanel; el dominio principal y el correo no se tocan):
       curl -I http://app.ziacentro.com
  2. Emitir el certificado:
-      certbot --nginx -d app.ziacentro.com
+      certbot certonly --webroot -w /var/www/acme --cert-name ziacentro.mx -d ziacentro.mx -d www.ziacentro.mx -d console.ziacentro.mx -d api.ziacentro.mx
  3. Clave SSH de despliegue de ZIA en /home/$USUARIO_DEPLOY/.ssh/authorized_keys
     y los secretos en el repositorio de GitHub.
 FIN

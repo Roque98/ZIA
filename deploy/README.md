@@ -1,11 +1,17 @@
 # Despliegue de ZIA en el VPS
 
+> **2026-10-19: dominio propio.** La landing vive en `https://ziacentro.mx` (Cloudflare, registros A
+> `@`, `www`, `console`, `api` → VPS, solo DNS). `www.ziacentro.mx` y `app.ziacentro.com` redirigen 301
+> a `https://ziacentro.mx` (el segundo sigue sirviendo `/api/chat/` durante la transición). Las
+> secciones de abajo sobre cPanel/`app.ziacentro.com` quedan como historia.
+
+
 ZIA es un sitio estático. En el VPS convive con `igas-console` y `abt-template` como un
 sitio más de nginx: no usa puerto interno, servicio de systemd ni base de datos.
 
 ```
 GitHub (push a main)                    VPS
-  wireframes/bexon/  ──rsync──>  /srv/zia/web/  ──nginx──>  https://app.ziacentro.com
+  wireframes/bexon/  ──rsync──>  /srv/zia/web/  ──nginx──>  https://ziacentro.mx
 ```
 
 | | igas-console | zia |
@@ -67,7 +73,7 @@ Comprobar que ya resuelve al VPS: `nslookup app.ziacentro.com`.
 Con el DNS ya apuntando al VPS:
 
 ```bash
-ssh root@IP_DEL_VPS "certbot --nginx -d app.ziacentro.com"
+ssh root@IP_DEL_VPS "certbot certonly --webroot -w /var/www/acme --cert-name ziacentro.mx -d ziacentro.mx -d www.ziacentro.mx -d console.ziacentro.mx -d api.ziacentro.mx"
 ```
 
 Certbot añade el bloque `listen 443` al sitio `zia` y la redirección de HTTP a HTTPS. La
@@ -93,7 +99,7 @@ En el repositorio de ZIA: **Settings → Secrets and variables → Actions → N
 | `VPS_USER` | `deploy` |
 | `VPS_SSH_KEY` | contenido completo de `zia_deploy` (la clave **privada**) |
 | `VPS_KNOWN_HOSTS` | salida de `ssh-keyscan -H IP_DEL_VPS` |
-| `VPS_DOMINIO` | `app.ziacentro.com` |
+| `VPS_DOMINIO` | `ziacentro.mx` |
 
 Después, borrar `zia_deploy` y `zia_deploy.pub` de la computadora o guardarlos en un lugar seguro.
 
