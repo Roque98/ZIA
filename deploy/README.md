@@ -124,3 +124,17 @@ Solo `wireframes/bexon/` (la landing final), sin `_archivo/`. No se publican `do
   ```bash
   rm /etc/nginx/sites-enabled/zia && nginx -t && systemctl reload nginx
   ```
+
+## Cloudflare delante de *.ziacentro.mx (solo tráfico desde Cloudflare)
+
+ziacentro.mx, www, console y api están proxificados por Cloudflare (SSL Full strict). En el origen:
+
+- `/etc/nginx/conf.d/cloudflare-geo.conf` (generado): `geo $realip_remote_addr $desde_cloudflare` con los rangos oficiales de Cloudflare + 127.0.0.1/::1. Solo define una variable.
+- `/etc/nginx/snippets/cloudflare-realip.conf` (generado): `set_real_ip_from` + `real_ip_header CF-Connecting-IP`. Se incluye **solo** en los `server{}` de *.ziacentro.mx, así `$remote_addr`, los logs, `limit_req` y `X-Real-IP`/`X-Forwarded-For` hacia los backends llevan la IP real del visitante.
+- `/etc/nginx/snippets/cloudflare-solo.conf` (fijo): `if ($desde_cloudflare = 0) { return 403; }`. Se usa `geo` sobre `$realip_remote_addr` porque `allow/deny` evaluaría la IP ya reescrita por realip (bloquearía a todos).
+- Puerto 80 también restringido; el reto HTTP-01 de Let's Encrypt llega por Cloudflare (`certbot renew --dry-run` OK).
+- `cf-actualizar-ips` (`/usr/local/sbin`) + `cf-actualizar-ips.timer` (semanal, lunes): descarga ips-v4/ips-v6, valida CIDR, regenera geo+realip, `nginx -t` y recarga solo si pasa (si falla, restaura).
+- Los hosts antiguos (api.console.igasmorelia.com, app.ziacentro.com, duckdns) NO pasan por Cloudflare y siguen abiertos.
+- fail2ban: los logs muestran la IP real, pero un ban por iptables no frena a un visitante que entra por Cloudflare (la conexión TCP viene de IPs de Cloudflare). Para eso habría que usar reglas/WAF de Cloudflare.
+
+Rollback: quitar las dos líneas `include .../cloudflare-*.conf` de los sitios, `nginx -t && systemctl reload nginx`; `systemctl disable --now cf-actualizar-ips.timer`.

@@ -1,0 +1,7 @@
+[Unit]
+Description=Actualiza rangos IP de Cloudflare en nginx (ziacentro.mx)
+After=network-online.target
+Wants=network-online.target
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/cf-actualizar-ips
