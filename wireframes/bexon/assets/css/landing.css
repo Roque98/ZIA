@@ -836,3 +836,16 @@ body.zia-on-light .zia-dots a.is-active::before { border-color: var(--zia-teal);
 .zia-faq__item[open] .zia-faq__ico { transform: rotate(45deg); background: var(--zia-teal); border-color: var(--zia-teal); }
 .zia-faq__item p { margin: 0; padding: 0 22px 20px; font-size: 15px; line-height: 1.65; color: rgba(255,255,255,.74); }
 @media (max-width: 575px) { .zia-faq__item summary { padding: 16px; } .zia-faq__item p { padding: 0 16px 16px; } .zia-faq__item h3 { font-size: 15.5px; } }
+
+/* Botón de llamada visible en móvil y CTA "Diagnóstico" sin recortes */
+@media (max-width: 767px) {
+  .zia-lp-header .container { gap: 10px; }
+  .zia-lp-header__tel { width: 44px; height: 44px; flex: 0 0 44px; padding: 0; border-radius: 50%; border: 2px solid var(--zia-teal); background: rgba(12,30,33,.55); color: #fff; }
+  .zia-lp-header__tel i { font-size: 21px; line-height: 1; }
+  .zia-lp-header__tel:hover, .zia-lp-header__tel:focus-visible { background: var(--zia-teal); color: #fff; }
+}
+@media (max-width: 575px) {
+  .zia-lp-header .tj-primary-btn { padding: 8px 18px; gap: 0; white-space: nowrap; flex: 0 0 auto; }
+  .zia-lp-header .tj-primary-btn .btn-icon { display: none; }
+  .zia-lp-header .tj-primary-btn .btn-text { font-size: 15px; overflow: visible; }
+}
