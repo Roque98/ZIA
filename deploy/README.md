@@ -138,3 +138,13 @@ ziacentro.mx, www, console y api están proxificados por Cloudflare (SSL Full st
 - fail2ban: los logs muestran la IP real, pero un ban por iptables no frena a un visitante que entra por Cloudflare (la conexión TCP viene de IPs de Cloudflare). Para eso habría que usar reglas/WAF de Cloudflare.
 
 Rollback: quitar las dos líneas `include .../cloudflare-*.conf` de los sitios, `nginx -t && systemctl reload nginx`; `systemctl disable --now cf-actualizar-ips.timer`.
+
+## Cabeceras de seguridad de ziacentro.mx (2026-10-19)
+
+- `deploy/nginx/ziacentro-mx` = copia de `/etc/nginx/sites-available/ziacentro-mx` en el VPS.
+- `deploy/nginx/ziacentro-seguridad.conf` = `/etc/nginx/snippets/ziacentro-seguridad.conf`
+  (HSTS 1 año, X-Frame-Options, nosniff, Referrer-Policy, Permissions-Policy y CSP en **solo reporte**).
+  Se incluye en el server y en cada `location` con `add_header` propio.
+- Respaldo previo: `/root/backups/landing-headers-20261019-165233/ziacentro-mx`.
+- Revertir: `cp /root/backups/landing-headers-20261019-165233/ziacentro-mx /etc/nginx/sites-available/ziacentro-mx && nginx -t && systemctl reload nginx`.
+- Cuando la CSP no muestre violaciones en consola, se puede pasar a `Content-Security-Policy` (bloqueante).

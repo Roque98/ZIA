@@ -1,0 +1,103 @@
+# Landing de ZIA en el dominio propio ziacentro.mx (DNS en Cloudflare, nube gris).
+# www.ziacentro.mx -> 301 a https://ziacentro.mx. app.ziacentro.com sigue en el sitio 'zia'
+# redirigiendo aqui (salvo /api/chat/, que se sigue sirviendo durante la transicion).
+
+server {
+    server_name ziacentro.mx;
+    include /etc/nginx/snippets/cloudflare-realip.conf;  # IP real del visitante (CF-Connecting-IP)
+    include /etc/nginx/snippets/cloudflare-solo.conf;    # solo trafico desde Cloudflare
+    # Cabeceras de seguridad (HSTS, XFO, nosniff, Referrer, Permissions, CSP solo-reporte).
+    # Se repite en cada location con add_header propio. Revertir: quitar estos include.
+    include /etc/nginx/snippets/ziacentro-seguridad.conf;
+
+    # Lo que publica el workflow: el contenido de wireframes/bexon/ (sin _archivo).
+    root  /srv/zia/web;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # La pagina NUNCA se cachea: es la que apunta a los assets con su ?v= nuevo.
+    location = /index.html {
+        add_header Cache-Control "no-cache";
+        include /etc/nginx/snippets/ziacentro-seguridad.conf;
+    }
+
+    # Manifest de la app (favicons): tipo correcto y la misma cache corta que las imagenes
+    location = /site.webmanifest {
+        default_type application/manifest+json;
+        expires 7d;
+        add_header Cache-Control "public";
+        include /etc/nginx/snippets/ziacentro-seguridad.conf;
+        try_files $uri =404;
+    }
+
+    # CSS y JS: los propios se cargan con ?v=AAAAMMDDx (la URL cambia en cada
+    # publicacion), asi que cachearlos un mes es seguro; los del template no cambian.
+    location ~* \.(?:css|js)$ {
+        expires 30d;
+        add_header Cache-Control "public";
+        include /etc/nginx/snippets/ziacentro-seguridad.conf;
+        try_files $uri =404;
+    }
+
+    location ~* \.(?:woff2?|ttf|otf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        include /etc/nginx/snippets/ziacentro-seguridad.conf;
+        try_files $uri =404;
+    }
+
+    # Imagenes y video conservan su nombre al cambiar: cache corta.
+    location ~* \.(?:png|jpe?g|svg|webp|ico|mp4|webm)$ {
+        expires 7d;
+        add_header Cache-Control "public";
+        include /etc/nginx/snippets/ziacentro-seguridad.conf;
+        try_files $uri =404;
+    }
+
+    # Nada que empiece por punto (.git, .env) se sirve, salvo el reto de certbot.
+    location ~ /\.(?!well-known) {
+        deny all;
+    }
+
+    # Asistente de chat (servicio zia-chatbot en 127.0.0.1:5020). Revertir: quitar esta linea.
+    include /etc/nginx/snippets/zia-chat.conf;
+
+    gzip on;
+    gzip_types text/plain text/css application/javascript application/json application/xml application/manifest+json image/svg+xml;
+    gzip_min_length 1024;
+
+    listen [::]:443 ssl; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/ziacentro.mx/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/ziacentro.mx/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name www.ziacentro.mx;
+    include /etc/nginx/snippets/cloudflare-realip.conf;  # IP real del visitante (CF-Connecting-IP)
+    include /etc/nginx/snippets/cloudflare-solo.conf;    # solo trafico desde Cloudflare
+    ssl_certificate /etc/letsencrypt/live/ziacentro.mx/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/ziacentro.mx/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+    return 301 https://ziacentro.mx$request_uri;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name ziacentro.mx www.ziacentro.mx;
+    include /etc/nginx/snippets/cloudflare-realip.conf;  # IP real del visitante (CF-Connecting-IP)
+    include /etc/nginx/snippets/cloudflare-solo.conf;    # solo trafico desde Cloudflare
+    location ^~ /.well-known/acme-challenge/ { root /var/www/acme; default_type text/plain; }
+    location / { return 301 https://ziacentro.mx$request_uri; }
+}
