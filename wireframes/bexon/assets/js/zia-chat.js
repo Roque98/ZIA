@@ -16,6 +16,12 @@
   var K_VISITANTE = 'zia-chat-visitante';
   var cfg = null, sesion = null, ocupado = false;
   var fab, panel, log, entrada, enviar, invite;
+  var volverFoco = false, cierre = null, scrollGuardado = 0, conHistorial = false;
+  function mq(q) { return window.matchMedia ? window.matchMedia(q) : { matches: false }; }
+  var TACTIL = mq('(pointer: coarse)'), MOVIL = mq('(max-width: 575px)'), SIN_MOV = mq('(prefers-reduced-motion: reduce)');
+  function pantallaCompleta() { return MOVIL.matches; }
+  function alFinal() { log.scrollTop = log.scrollHeight; }
+  function cercaDelFinal() { return log.scrollHeight - log.scrollTop - log.clientHeight < 80; }
 
   function el(tag, cls, texto) {
     var n = document.createElement(tag);
@@ -61,7 +67,7 @@
     var b = el('div', 'zchat-msg zchat-msg--' + rol);
     if (texto) pintar(b, texto);
     log.appendChild(b);
-    log.scrollTop = log.scrollHeight;
+    alFinal();
     if (recordar !== false && texto && (rol === 'bot' || rol === 'user')) {
       var h = leer(sessionStorage, K_LOG) || [];
       h.push([rol, texto]);
@@ -79,7 +85,10 @@
     ocupado = si;
     enviar.disabled = si;
     entrada.disabled = si;
-    if (!si) entrada.focus();
+    if (si || panel.hidden) return;
+    if (volverFoco) entrada.focus({ preventScroll: true });
+    // El botón pulsado quedó desactivado: el foco vuelve al panel (sin abrir el teclado).
+    else if (!panel.contains(document.activeElement)) panel.focus({ preventScroll: true });
   }
 
   function api(ruta, cuerpo) {
@@ -108,13 +117,25 @@
     api('/handoff', { conversationId: sesion.id, token: sesion.token, canal: canal }).catch(function () {});
   }
 
+  /* Indicador de «escribiendo» (tres puntos) hasta que llega el primer token. */
+  function escribiendo(b) {
+    b.classList.add('zchat-msg--typing');
+    b.setAttribute('aria-busy', 'true');
+    var d = el('span', 'zchat-dots');
+    d.setAttribute('role', 'img'); d.setAttribute('aria-label', 'El asistente está escribiendo');
+    d.appendChild(el('i')); d.appendChild(el('i')); d.appendChild(el('i'));
+    b.appendChild(d);
+  }
+
   /* Envía texto o una elección; lee la respuesta SSE y la va pintando. */
   function mandar(texto, eleccion, etiqueta, reintento) {
     if (ocupado) return;
+    // En teléfono solo se devuelve el foco (y el teclado) si la persona estaba escribiendo.
+    if (!reintento) volverFoco = !TACTIL.matches || document.activeElement === entrada;
     if (!reintento) burbuja('user', etiqueta || texto);
     bloquear(true);
     var bot = burbuja('bot', '', false);
-    bot.classList.add('zchat-msg--typing');
+    escribiendo(bot);
     var acumulado = '';
 
     asegurarSesion().then(function (s) {
@@ -144,8 +165,10 @@
             var d = {}; try { d = JSON.parse(datos || '{}'); } catch (e) { /* ignora */ }
             if (ev === 'token') {
               bot.classList.remove('zchat-msg--typing');
-              acumulado += d.t || ''; bot.textContent = acumulado; log.scrollTop = log.scrollHeight;
+              var seguir = cercaDelFinal();
+              acumulado += d.t || ''; bot.textContent = acumulado; if (seguir) alFinal();
             } else if (ev === 'replace') {
+              bot.classList.remove('zchat-msg--typing');
               acumulado = d.text || ''; bot.textContent = acumulado;
             } else if (ev === 'action') {
               accion(d);
@@ -159,6 +182,7 @@
       }
       return paso().then(function () {
         bot.classList.remove('zchat-msg--typing');
+        bot.removeAttribute('aria-busy');
         if (!acumulado) { bot.remove(); } else { pintar(bot, acumulado); recordarBot(acumulado); }
         // Las acciones se pintaron después de la burbuja del bot: van al final del registro.
       });
@@ -169,7 +193,7 @@
     }).then(function () { if (ocupado) bloquear(false); });
   }
 
-  function caja() { var c = el('div', 'zchat-actions'); log.appendChild(c); log.scrollTop = log.scrollHeight; return c; }
+  function caja() { var c = el('div', 'zchat-actions'); log.appendChild(c); setTimeout(alFinal, 0); return c; }
   function chip(texto, cls, fn) {
     var b = el('button', 'zchat-chip' + (cls ? ' ' + cls : ''), texto);
     b.type = 'button'; b.addEventListener('click', fn); return b;
@@ -268,8 +292,10 @@
 
     var boton = el('button', 'zchat-chip zchat-chip--solid', 'Enviar solicitud'); boton.type = 'submit';
     f.appendChild(boton);
-    log.appendChild(f); log.scrollTop = log.scrollHeight;
-    nombre.focus();
+    log.appendChild(f);
+    // Que se vea el inicio del formulario; en teléfono no se abre el teclado sin que lo pidan.
+    log.scrollTop = Math.max(0, f.offsetTop - 12);
+    if (!TACTIL.matches) nombre.focus({ preventScroll: true });
 
     function marcar(input, msg) {
       var l = input.closest('label');
@@ -320,25 +346,99 @@
     });
   }
 
+  /* Mientras el panel ocupa la pantalla (teléfono), la página de fondo no se desplaza.
+     Se sigue el mismo patrón que la ficha de reguladores (ScrollSmoother + overflow). */
+  function bloquearFondo(si) {
+    var sm = window.ScrollSmoother && ScrollSmoother.get && ScrollSmoother.get();
+    if (si) {
+      scrollGuardado = window.pageYOffset || 0;
+      if (sm) sm.paused(true);
+      document.documentElement.classList.add('zchat-abierto');
+    } else {
+      document.documentElement.classList.remove('zchat-abierto');
+      if (sm) sm.paused(false);
+      if (Math.abs((window.pageYOffset || 0) - scrollGuardado) > 1) {
+        var html = document.documentElement, prev = html.style.scrollBehavior;
+        html.style.scrollBehavior = 'auto'; window.scrollTo(0, scrollGuardado); html.style.scrollBehavior = prev;
+      }
+    }
+  }
+
+  /* Teclado en pantalla: el panel se ajusta al área visible (visualViewport) para que la
+     caja de texto quede siempre encima del teclado, también en iOS. */
+  function ajustarVista() {
+    var vv = window.visualViewport;
+    if (panel.hidden || !vv || !pantallaCompleta()) { panel.style.height = ''; panel.style.top = ''; return; }
+    var seguir = cercaDelFinal();
+    panel.style.height = Math.round(vv.height) + 'px';
+    panel.style.top = Math.round(vv.offsetTop) + 'px';
+    if (seguir) alFinal();
+  }
+
   function abrir() {
     if (invite) { invite.remove(); invite = null; }
+    fab.classList.remove('zchat-fab--attn');
     guardar(localStorage, K_INVITADO, 1);
+    if (cierre) { clearTimeout(cierre); cierre = null; }
+    panel.classList.remove('is-closing');
     panel.hidden = false;
     fab.setAttribute('aria-expanded', 'true');
+    var completa = pantallaCompleta();
+    panel.classList.toggle('is-full', completa);
+    if (completa) {
+      panel.setAttribute('aria-modal', 'true');
+      bloquearFondo(true);
+      // El botón «atrás» del teléfono cierra el chat en lugar de salir de la página.
+      if (window.history && history.pushState && !(history.state && history.state.zchat)) {
+        try { history.pushState({ zchat: 1 }, ''); conHistorial = true; } catch (e) { /* ignora */ }
+      }
+    } else {
+      panel.removeAttribute('aria-modal');
+    }
     if (!log.childNodes.length) {
       var h = leer(sessionStorage, K_LOG);
-      if (h && h.length) h.forEach(function (m) { burbuja(m[0], m[1], false); });
+      if (h && h.length) h.forEach(function (m) { burbuja(m[0], m[1], false).classList.add('zchat-quieto'); });
       else {
         burbuja('bot', cfg.bienvenida);
         accion({ type: 'quick', options: ['¿Qué revisa la ASEA?', '¿Qué es el control volumétrico?', 'Tengo una clausura', 'Quiero un diagnóstico'] });
       }
     }
-    setTimeout(function () { entrada.focus(); }, 50);
+    ajustarVista();
+    alFinal();
+    // En escritorio se escribe de inmediato; en teléfono no se abre el teclado sin que lo pidan.
+    setTimeout(function () {
+      if (TACTIL.matches) panel.focus({ preventScroll: true }); else entrada.focus({ preventScroll: true });
+    }, 50);
   }
-  function cerrar() {
-    panel.hidden = true;
+  function cerrar(desdeHistorial) {
+    if (panel.hidden || panel.classList.contains('is-closing')) return;
     fab.setAttribute('aria-expanded', 'false');
-    fab.focus();
+    var completa = panel.classList.contains('is-full');
+    if (completa) bloquearFondo(false);
+    if (conHistorial) {
+      conHistorial = false;
+      if (desdeHistorial !== true && history.state && history.state.zchat) history.back();
+    }
+    function ocultar() {
+      cierre = null;
+      panel.classList.remove('is-closing');
+      panel.hidden = true;
+      panel.style.height = ''; panel.style.top = '';
+    }
+    if (SIN_MOV.matches) ocultar();
+    else { panel.classList.add('is-closing'); cierre = setTimeout(ocultar, completa ? 240 : 170); }
+    fab.focus({ preventScroll: true });
+  }
+
+  /* Tab no sale del panel cuando ocupa toda la pantalla (es modal). */
+  function atraparFoco(ev) {
+    if (ev.key !== 'Tab' || panel.hidden || !panel.classList.contains('is-full')) return;
+    var f = Array.prototype.filter.call(panel.querySelectorAll('a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled])'),
+      function (n) { return n.offsetParent !== null; });
+    if (!f.length) return;
+    var primero = f[0], ultimo = f[f.length - 1];
+    if (ev.shiftKey && (document.activeElement === primero || document.activeElement === panel)) { ev.preventDefault(); ultimo.focus(); }
+    else if (!ev.shiftKey && document.activeElement === ultimo) { ev.preventDefault(); primero.focus(); }
   }
 
   function construir() {
@@ -349,11 +449,12 @@
     fab.setAttribute('aria-controls', 'zchat-panel');
     fab.title = 'Asistente: dudas sobre ASEA, CNE, SAT…';
     fab.appendChild(svg('M4 3h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H9l-5 4v-4H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm3 6.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm5 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm5 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z'));
-    fab.addEventListener('click', function () { panel.hidden ? abrir() : cerrar(); });
+    fab.addEventListener('click', function () { (panel.hidden || panel.classList.contains('is-closing')) ? abrir() : cerrar(); });
 
     panel = el('section', 'zchat-panel');
     panel.id = 'zchat-panel';
     panel.hidden = true;
+    panel.tabIndex = -1;
     panel.setAttribute('role', 'dialog');
     panel.setAttribute('aria-labelledby', 'zchat-titulo');
 
@@ -364,11 +465,11 @@
     titulo.appendChild(el('small', null, 'ASEA · CNE · SAT · STPS · Protección Civil'));
     head.appendChild(titulo);
     var x = el('button', 'zchat-head__close', '×'); x.type = 'button'; x.setAttribute('aria-label', 'Cerrar el asistente');
-    x.addEventListener('click', cerrar);
+    x.addEventListener('click', function () { cerrar(); });
     head.appendChild(x);
 
     log = el('div', 'zchat-log');
-    log.setAttribute('role', 'log'); log.setAttribute('aria-live', 'polite');
+    log.setAttribute('role', 'log'); log.setAttribute('aria-live', 'polite'); log.setAttribute('aria-relevant', 'additions');
 
     var form = el('form', 'zchat-compose');
     entrada = el('textarea');
@@ -376,6 +477,7 @@
     entrada.maxLength = cfg.maxCaracteres || 1000;
     entrada.placeholder = 'Escriba su pregunta…';
     entrada.setAttribute('aria-label', 'Su mensaje');
+    entrada.setAttribute('enterkeyhint', 'send');
     enviar = el('button', 'zchat-send'); enviar.type = 'submit'; enviar.setAttribute('aria-label', 'Enviar');
     enviar.appendChild(svg('M3 20.5v-6l8-2.5-8-2.5v-6L22 12z'));
     form.appendChild(entrada); form.appendChild(enviar);
@@ -384,6 +486,7 @@
       var t = entrada.value.trim();
       if (!t || ocupado) return;
       entrada.value = ''; entrada.style.height = '';
+      volverFoco = true;
       mandar(t);
     });
     entrada.addEventListener('keydown', function (ev) {
@@ -399,7 +502,26 @@
     document.body.appendChild(fab);
     document.body.appendChild(panel);
 
-    document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && !panel.hidden) cerrar(); });
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' && !panel.hidden) cerrar();
+      else atraparFoco(ev);
+    });
+    window.addEventListener('popstate', function () { if (conHistorial && !panel.hidden) { conHistorial = false; cerrar(true); } });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', ajustarVista);
+      window.visualViewport.addEventListener('scroll', ajustarVista);
+    }
+    // Al girar el teléfono o cambiar de tamaño con el panel abierto.
+    window.addEventListener('resize', function () {
+      if (panel.hidden) return;
+      var completa = pantallaCompleta();
+      if (completa !== panel.classList.contains('is-full')) {
+        panel.classList.toggle('is-full', completa);
+        if (completa) { panel.setAttribute('aria-modal', 'true'); bloquearFondo(true); }
+        else { panel.removeAttribute('aria-modal'); bloquearFondo(false); }
+      }
+      ajustarVista();
+    });
 
     // Invitación: una sola vez por navegador, a los 8 s, si no abrió el chat.
     if (!leer(localStorage, K_INVITADO) && cfg.invitacion) {
@@ -409,10 +531,11 @@
         invite = el('div', 'zchat-invite', cfg.invitacion);
         invite.setAttribute('role', 'status');
         var cx = el('button', 'zchat-invite__close', '×'); cx.type = 'button'; cx.setAttribute('aria-label', 'Cerrar invitación');
-        cx.addEventListener('click', function (ev) { ev.stopPropagation(); invite.remove(); invite = null; });
+        cx.addEventListener('click', function (ev) { ev.stopPropagation(); invite.remove(); invite = null; fab.classList.remove('zchat-fab--attn'); });
         invite.appendChild(cx);
         invite.addEventListener('click', abrir);
         document.body.appendChild(invite);
+        fab.classList.add('zchat-fab--attn');
       }, 8000);
     }
   }
