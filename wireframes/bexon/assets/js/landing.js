@@ -14,12 +14,23 @@
   }, { rootMargin: '80px 0px' });
   document.querySelectorAll('main .zia-sec').forEach(function (s) { io.observe(s); });
 
+  /* Video del hero: sin autoplay ni descarga inicial (preload=none + póster). Se carga al verse;
+     en teléfono espera a que termine de cargar la página, y con ahorro de datos o movimiento
+     reducido se queda en el póster (el botón "Ver con sonido" sigue disponible). */
   var video = document.querySelector('.zia-lp-video video');
-  if (video) {
+  var conn = navigator.connection || {};
+  var soloPoster = conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '') ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (video && !soloPoster) {
+    var cargar = function () { if (!video.src && video.dataset.src) { video.src = video.dataset.src; video.preload = 'auto'; } };
+    var listo = !window.matchMedia('(max-width: 991px)').matches || document.readyState === 'complete';
+    var visible = false;
+    if (!listo) window.addEventListener('load', function () { listo = true; if (visible) { cargar(); var p0 = video.play(); if (p0 && p0.catch) p0.catch(function () {}); } });
     new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
-        if (en.isIntersecting) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
-        else video.pause();
+        visible = en.isIntersecting;
+        if (en.isIntersecting) { if (!listo) return; cargar(); var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+        else if (video.src) video.pause();
       });
     }, { threshold: .1 }).observe(video);
   }
@@ -742,12 +753,15 @@
     userPaused = false; play();
   });
   // Clic en un paso: salta a su inicio
+  // Cada paso es un <button> dentro de su <li> (la lista conserva su semántica)
   steps.forEach(function (li, i) {
-    li.tabIndex = 0;
-    li.setAttribute('role', 'button');
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'zia-scene__stepbtn';
+    while (li.firstChild) btn.appendChild(li.firstChild);
+    li.appendChild(btn);
     var go = function () { tl.time(STARTS[i]); userPaused = false; tl.play(); setState(); };
-    li.addEventListener('click', go);
-    li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    btn.addEventListener('click', go);
   });
 
   // Arranca la primera vez que se ve y desde ahí sigue sola: el scroll ya no la pausa ni la controla
@@ -922,7 +936,8 @@
   io.observe(nums[0].closest('.zia-figures') || nums[0]);
 }());
 
-/* ── Formulario de diagnóstico en 3 pasos (sin backend: envío simulado) ── */
+/* ── Formulario de diagnóstico en 3 pasos: guarda la solicitud en zia-chatbot
+   (/api/chat/session + /api/chat/lead, fuente 'landing'). Si falla, ofrece WhatsApp. ── */
 (function () {
   var root = document.getElementById('zia-triage');
   if (!root) return;
@@ -1024,6 +1039,7 @@
       var el = form.elements[n];
       var ok = RULES[n](el.value);
       el.closest('.zia-field').classList.toggle('is-invalid', !ok);
+      el.setAttribute('aria-invalid', ok ? 'false' : 'true');
       if (!ok && !first) first = el;
     });
     // Consentimiento del aviso de privacidad: casilla obligatoria antes de enviar
@@ -1061,7 +1077,15 @@
     });
   });
   form.querySelectorAll('.zia-field input').forEach(function (i) {
-    i.addEventListener('input', function () { i.closest('.zia-field').classList.remove('is-invalid'); });
+    i.addEventListener('input', function () { i.closest('.zia-field').classList.remove('is-invalid'); i.removeAttribute('aria-invalid'); });
+  });
+  // Cada campo anuncia su mensaje de error (lectores de pantalla) cuando se muestra
+  form.querySelectorAll('.zia-field').forEach(function (f, n) {
+    var c = f.querySelector('input, select, textarea'), e = f.querySelector('.zia-field__err');
+    if (!c || !e) return;
+    e.id = e.id || 'zia-err-' + n;
+    e.setAttribute('aria-live', 'polite');
+    c.setAttribute('aria-describedby', e.id);
   });
   form.elements.privacidad.addEventListener('change', function () {
     if (this.checked) this.closest('.zia-field').classList.remove('is-invalid');
@@ -1101,7 +1125,88 @@
   // ['CNE','SAT','STPS'] → 'CNE, SAT y STPS'
   function enumerar(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1]; }
 
+  // Los temas del formulario usan etiquetas visibles; el servicio, claves cortas
+  var TEMA_API = { 'ASEA': 'ASEA', 'CNE': 'CNE', 'SAT': 'SAT', 'STPS': 'STPS', 'Protección Civil': 'PC' };
+  var API = '/api/chat';
+  var WA = 'https://wa.me/526641594369';
+  var nextBtn = root.querySelector('.zia-triage__next');
+  var failBox = root.querySelector('.zia-triage__fail');
+  var sending = false;
+
+  function post(ruta, body) {
+    return fetch(API + ruta, {
+      method: 'POST', credentials: 'omit',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (!r.ok) { var e = new Error(j.error || ('HTTP ' + r.status)); e.campos = j.campos; e.status = r.status; throw e; }
+        return j;
+      });
+    });
+  }
+  function uuid() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) { var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); });
+  }
+  // Mismo identificador anónimo de visitante que usa el chat
+  function visitante() {
+    var k = 'zia-chat-visitante', v = null;
+    try { v = localStorage.getItem(k); if (!v) { v = uuid(); localStorage.setItem(k, v); } } catch (e) { v = uuid(); }
+    return v;
+  }
+  function waTexto() {
+    var f = form.elements;
+    return WA + '?text=' + encodeURIComponent('Hola, quiero un diagnóstico sin costo. Soy ' + f.nombre.value.trim() +
+      ' (' + f.empresa.value.trim() + '), estación en ' + f.estado.value + '. Temas: ' + enumerar(checked('temas')) + '.');
+  }
+  function setSending(on) {
+    sending = on;
+    nextBtn.disabled = on;
+    nextBtn.setAttribute('aria-busy', on ? 'true' : 'false');
+    nextTxt.textContent = on ? 'Enviando…' : 'Enviar solicitud';
+  }
+  function showFail(msg) {
+    if (!failBox) return;
+    failBox.querySelector('.zia-triage__fail-msg').textContent = msg;
+    failBox.querySelector('a').href = waTexto();
+    failBox.hidden = false;
+  }
+  var CAMPO = { nombre: 'nombre', telefono: 'telefono', correo: 'email', estado: 'estado', empresa: 'empresa', consentimiento: 'privacidad' };
+
   function finish() {
+    if (sending) return;
+    if (failBox) failBox.hidden = true;
+    var f = form.elements;
+    var temas = checked('temas').map(function (t) { return TEMA_API[t]; }).filter(Boolean);
+    setSending(true);
+    post('/session', { visitanteId: visitante() }).then(function (s) {
+      return post('/lead', {
+        conversationId: s.conversationId, token: s.token,
+        nombre: f.nombre.value.trim(), empresa: f.empresa.value.trim(),
+        telefono: f.telefono.value.trim(), correo: f.email.value.trim(),
+        estado: f.estado.value, detalles: f.mensaje.value.trim() || null,
+        temas: temas, urgencia: checked('urgencia')[0] || null,
+        consentimiento: f.privacidad.checked, fuente: 'landing'
+      });
+    }).then(function () {
+      setSending(false);
+      showDone();
+    }).catch(function (err) {
+      setSending(false);
+      if (err && err.campos) {
+        var first = null;
+        Object.keys(err.campos).forEach(function (k) {
+          var el = f[CAMPO[k] || k];
+          if (el && el.closest && el.closest('.zia-field')) { el.closest('.zia-field').classList.add('is-invalid'); if (!first) first = el; }
+        });
+        if (first) { first.focus(); return; }
+      }
+      showFail(err && err.status === 429 && err.message ? err.message : 'No pudimos enviar su solicitud en este momento.');
+    });
+  }
+
+  function showDone() {
     var o = officeFor(form.elements.estado.value);
     var nombre = form.elements.nombre.value.trim().split(/\s+/)[0];
     var prioridad = checked('urgencia')[0] === 'clausura' ? ' Su caso quedó marcado como urgente.' : '';
@@ -1113,11 +1218,12 @@
     done.hidden = false;
     requestAnimationFrame(function () { done.classList.add('is-shown'); });
     setResumenState('Solicitud recibida', true);
+    done.focus({ preventScroll: true });
   }
 
   root.querySelector('.zia-triage__restart').addEventListener('click', function () {
     form.reset();
-    if (window.jQuery && jQuery.fn.niceSelect) jQuery(form.elements.estado).niceSelect('update');
+    if (failBox) failBox.hidden = true;
     assign.hidden = true;
     urgent.hidden = true;
     done.classList.remove('is-shown');
