@@ -2,8 +2,8 @@
 	font-family: "bexon-icons";
 	src: url("../fonts/bexon-icons.eot?yu4jya");
 	src: url("../fonts/bexon-icons.eot?yu4jya#iefix") format("embedded-opentype"),
-		url("../fonts/bexon-icons.ttf?yu4jya") format("truetype"),
 		url("../fonts/bexon-icons.woff?yu4jya") format("woff"),
+		url("../fonts/bexon-icons.ttf?yu4jya") format("truetype"),
 		url("../fonts/bexon-icons.svg?yu4jya#bexon-icons") format("svg");
 	font-weight: normal;
 	font-style: normal;
