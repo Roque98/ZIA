@@ -807,10 +807,10 @@ body.zia-on-light .zia-dots a.is-active { border-color: var(--zia-teal); }
 /* Áreas táctiles: teléfono del encabezado, enlaces del pie, "Solicitar revisión" y puntos laterales */
 .zia-lp-header__tel { min-height: 44px; min-width: 44px; justify-content: center; }
 .zia-station__tip-link { min-height: 24px; padding: 2px 0; }
-.zia-lp-footer__offices a, .zia-lp-footer__legal { display: inline-flex; align-items: center; min-height: 24px; }
+.zia-lp-footer__offices a, .zia-lp-footer__legal, .zia-lp-footer__mail { display: inline-flex; align-items: center; min-height: 24px; }
 @media (max-width: 991px) {
   .zia-station__tip-link { min-height: 44px; margin-top: 2px; }
-  .zia-lp-footer__offices a, .zia-lp-footer__legal { min-height: 44px; }
+  .zia-lp-footer__offices a, .zia-lp-footer__legal, .zia-lp-footer__mail { min-height: 44px; }
   .zia-lp-footer__offices { row-gap: 0; }
   .zia-lp-footer__offices span { display: inline-flex; align-items: center; }
 }
