@@ -1,0 +1,53 @@
+<%- include('partials/start', { title: device.name, nav: 'devices', csrf, currentUser, aviso, error: '' }) %>
+<header class="page-head">
+  <div>
+    <p class="crumb"><a href="/">Equipos</a></p>
+    <h1><%= device.name %></h1>
+    <p>ID <code><%= device.rustdesk_id %></code>
+      <% if (passwordStored) { %> · contraseña guardada<% } else { %> · sin contraseña guardada<% } %>
+    </p>
+  </div>
+</header>
+
+<section class="session" data-device-id="<%= device.id %>" data-web-client="<%= webClientReady ? '1' : '0' %>">
+  <div class="viewport" id="viewport">
+    <div class="viewport-bar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <strong id="viewport-title"><%= device.name %> · <%= device.rustdesk_id %></strong>
+    </div>
+    <% if (webClientReady) { %>
+      <iframe id="rustdesk-frame" title="Cliente web RustDesk" hidden src="/cliente-rustdesk/index.html"></iframe>
+    <% } %>
+    <div class="viewport-body" id="viewport-body">
+      <h2>Sesión desde el navegador</h2>
+      <p>
+        El servidor libre de RustDesk no trae cliente web. El que existe en el código abierto
+        es una build de Flutter que habla por WebSocket con hbbs (21118) y hbbr (21119)
+        y decodifica el video en el navegador. Compilarla pide Flutter 3.44, los parches
+        del propio repositorio y el códec VP9. Esta consola no la incluye.
+      </p>
+      <p>
+        Al iniciar, esta pantalla abre una sesión auditada, pregunta al servidor de IDs
+        si el equipo está en línea y mantiene el canal WebSocket para poder cerrarla
+        y guardar la duración. La imagen del escritorio se abre con la app RustDesk.
+      </p>
+      <ol id="probe-log" class="probe-log"></ol>
+    </div>
+  </div>
+
+  <div class="session-actions">
+    <button type="button" class="primary" id="start-session">Iniciar sesión</button>
+    <button type="button" class="primary" id="open-app" disabled>Abrir en la app RustDesk</button>
+    <button type="button" class="ghost" id="end-session" disabled>Terminar sesión</button>
+  </div>
+  <p id="session-status" class="hint" role="status">La sesión todavía no empieza.</p>
+
+  <section class="panel">
+    <h2>Configuración de la app, una sola vez</h2>
+    <p class="hint">En RustDesk: Ajustes → Red → Servidor de ID y Clave. El enlace de abajo no cambia ese servidor.</p>
+    <textarea readonly rows="5" id="server-config"><%= JSON.stringify(serverConfig, null, 2) %></textarea>
+  </section>
+  <% if (device.notes) { %><p class="notes"><%= device.notes %></p><% } %>
+</section>
+<script src="/estaticos/js/session.js"></script>
+<%- include('partials/end') %>

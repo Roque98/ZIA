@@ -1,0 +1,68 @@
+<% const isNew = !group.id; %>
+<%- include('partials/start', { title: isNew ? 'Nuevo grupo' : group.name, nav: 'groups', csrf, currentUser, aviso, error }) %>
+<header class="page-head">
+  <div>
+    <p class="crumb"><a href="/grupos">Grupos</a></p>
+    <h1><%= isNew ? 'Nuevo grupo' : group.name %></h1>
+  </div>
+</header>
+<form class="panel" method="post" action="<%= isNew ? '/grupos' : '/grupos/' + group.id %>">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <div class="grid-2">
+    <label>Nombre
+      <input name="name" required maxlength="80" value="<%= group.name %>">
+    </label>
+    <label>Descripción
+      <input name="description" maxlength="400" value="<%= group.description %>">
+    </label>
+  </div>
+  <fieldset>
+    <legend>Equipos del grupo</legend>
+    <div class="checks">
+      <% for (const device of devices) { %>
+        <label class="check">
+          <input type="checkbox" name="device_ids" value="<%= device.id %>" <%= group.device_ids.includes(device.id) ? 'checked' : '' %>>
+          <%= device.name %> <code><%= device.rustdesk_id %></code>
+        </label>
+      <% } %>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Quién ve todos los equipos del grupo</legend>
+    <div class="split">
+      <div>
+        <h2>Personas</h2>
+        <div class="checks">
+          <% for (const person of users) { if (person.role === 'admin') continue; %>
+            <label class="check">
+              <input type="checkbox" name="user_ids" value="<%= person.id %>" <%= group.user_ids.includes(person.id) ? 'checked' : '' %>>
+              <%= person.display_name %>
+            </label>
+          <% } %>
+        </div>
+      </div>
+      <div>
+        <h2>Grupos de personas</h2>
+        <div class="checks">
+          <% for (const ug of userGroups) { %>
+            <label class="check">
+              <input type="checkbox" name="user_group_ids" value="<%= ug.id %>" <%= group.user_group_ids.includes(ug.id) ? 'checked' : '' %>>
+              <%= ug.name %>
+            </label>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <div class="row-actions">
+    <button class="primary" type="submit">Guardar</button>
+    <a class="ghost" href="/grupos">Volver</a>
+  </div>
+</form>
+<% if (!isNew) { %>
+  <form class="danger-zone" method="post" action="/grupos/<%= group.id %>/eliminar" data-confirm="¿Eliminar este grupo? Los equipos no se borran.">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <button class="danger" type="submit">Eliminar grupo</button>
+  </form>
+<% } %>
+<%- include('partials/end') %>

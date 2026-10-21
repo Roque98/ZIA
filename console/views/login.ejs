@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Entrar · Consola ZIA</title>
+  <link rel="icon" href="/estaticos/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/estaticos/css/console.css">
+</head>
+<body class="login-body">
+  <main class="login-card">
+    <p class="brand-mark">ZIA</p>
+    <h1>Consola de escritorios</h1>
+    <p class="lede">Entra para ver los equipos que te asignaron y abrir una sesión remota.</p>
+    <% if (error) { %><p class="banner banner-bad" role="alert"><%= error %></p><% } %>
+    <form method="post" action="/login">
+      <input type="hidden" name="next" value="<%= next %>">
+      <label>Correo
+        <input name="email" type="email" autocomplete="username" required autofocus>
+      </label>
+      <label>Contraseña
+        <input name="password" type="password" autocomplete="current-password" required>
+      </label>
+      <button type="submit" class="primary">Entrar</button>
+    </form>
+  </main>
+</body>
+</html>

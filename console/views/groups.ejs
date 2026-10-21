@@ -1,0 +1,23 @@
+<%- include('partials/start', { title: 'Grupos', nav: 'groups', csrf, currentUser, aviso, error: '' }) %>
+<header class="page-head">
+  <div>
+    <h1>Grupos de equipos</h1>
+    <p>Un grupo junta PCs y define quién puede verlos todos.</p>
+  </div>
+  <a class="primary" href="/grupos/nuevo">Nuevo grupo</a>
+</header>
+<% if (!groups.length) { %>
+  <section class="empty"><h2>Sin grupos</h2><p>Crea uno para asignar varias estaciones de una vez.</p></section>
+<% } else { %>
+  <ul class="list">
+    <% for (const group of groups) { %>
+      <li>
+        <a href="/grupos/<%= group.id %>">
+          <strong><%= group.name %></strong>
+          <span><%= group.devices %> equipos · <%= group.users %> personas · <%= group.user_groups %> grupos de personas</span>
+        </a>
+      </li>
+    <% } %>
+  </ul>
+<% } %>
+<%- include('partials/end') %>

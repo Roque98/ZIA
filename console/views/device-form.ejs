@@ -1,0 +1,92 @@
+<% const isNew = !device.id; %>
+<%- include('partials/start', { title: isNew ? 'Nuevo equipo' : device.name, nav: 'devices', csrf, currentUser, aviso, error }) %>
+<header class="page-head">
+  <div>
+    <p class="crumb"><a href="/">Equipos</a></p>
+    <h1><%= isNew ? 'Nuevo equipo' : device.name %></h1>
+  </div>
+</header>
+
+<form class="panel" method="post" action="<%= isNew ? '/equipos' : '/equipos/' + device.id %>">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <div class="grid-2">
+    <label>Nombre
+      <input name="name" required maxlength="80" value="<%= device.name %>">
+    </label>
+    <label>ID de RustDesk
+      <input name="rustdesk_id" required maxlength="32" value="<%= device.rustdesk_id %>" autocomplete="off" spellcheck="false">
+    </label>
+  </div>
+  <label>Etiquetas
+    <input name="tags" value="<%= (device.tags || []).join(', ') %>" placeholder="tijuana, dispensario">
+  </label>
+  <label>Notas
+    <textarea name="notes" rows="4" maxlength="2000"><%= device.notes %></textarea>
+  </label>
+  <fieldset>
+    <legend>Contraseña de acceso</legend>
+    <p class="hint">Se guarda cifrada. No vuelve a mostrarse en esta ficha. Quien conecte puede pedir el enlace de la app, que la incluye.</p>
+    <% if (device.has_password) { %><p class="pill">Hay una contraseña guardada</p><% } %>
+    <label>Nueva contraseña
+      <input name="access_password" type="password" autocomplete="new-password" minlength="4" maxlength="64">
+    </label>
+    <% if (device.has_password) { %>
+      <label class="check"><input type="checkbox" name="clear_password" value="1"> Quitar la contraseña guardada</label>
+    <% } %>
+  </fieldset>
+
+  <fieldset>
+    <legend>Grupos de equipos</legend>
+    <% if (!groups.length) { %><p class="hint">Todavía no hay grupos. Puedes crearlos en Grupos.</p><% } %>
+    <div class="checks">
+      <% for (const group of groups) { %>
+        <label class="check">
+          <input type="checkbox" name="group_ids" value="<%= group.id %>" <%= device.group_ids.includes(group.id) ? 'checked' : '' %>>
+          <%= group.name %>
+        </label>
+      <% } %>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Quién puede ver este equipo</legend>
+    <p class="hint">Además de los accesos del grupo. Un administrador siempre ve todos.</p>
+    <div class="split">
+      <div>
+        <h2>Personas</h2>
+        <div class="checks">
+          <% for (const person of users) { if (person.role === 'admin') continue; %>
+            <label class="check">
+              <input type="checkbox" name="user_ids" value="<%= person.id %>" <%= device.user_ids.includes(person.id) ? 'checked' : '' %>>
+              <%= person.display_name %> <span class="muted"><%= person.email %></span>
+            </label>
+          <% } %>
+        </div>
+      </div>
+      <div>
+        <h2>Grupos de personas</h2>
+        <div class="checks">
+          <% for (const group of userGroups) { %>
+            <label class="check">
+              <input type="checkbox" name="user_group_ids" value="<%= group.id %>" <%= device.user_group_ids.includes(group.id) ? 'checked' : '' %>>
+              <%= group.name %>
+            </label>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="row-actions">
+    <button class="primary" type="submit">Guardar</button>
+    <a class="ghost" href="/">Volver</a>
+  </div>
+</form>
+
+<% if (!isNew) { %>
+  <form class="danger-zone" method="post" action="/equipos/<%= device.id %>/eliminar" data-confirm="¿Eliminar este equipo? La auditoría conserva el historial.">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <button type="submit" class="danger">Eliminar equipo</button>
+  </form>
+<% } %>
+<%- include('partials/end') %>

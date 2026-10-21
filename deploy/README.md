@@ -139,6 +139,17 @@ ziacentro.mx, www, console y api están proxificados por Cloudflare (SSL Full st
 
 Rollback: quitar las dos líneas `include .../cloudflare-*.conf` de los sitios, `nginx -t && systemctl reload nginx`; `systemctl disable --now cf-actualizar-ips.timer`.
 
+## Consola de escritorios remotos
+
+El módulo está en `console/` (Node 22, PostgreSQL, puerto `5030`). Sustituye AnyDesk
+con el RustDesk OSS que ya corre en el VPS y no modifica la landing, `igas-console`
+ni los procesos de los puertos 5000, 5010 y 5020. El sitio de nginx va aparte, para
+`console.ziacentro.mx`.
+
+La guía de variables, el admin inicial, el ejemplo de nginx y el límite del cliente
+web están en `console/README.md`. El ejemplo de sitio es
+`console/deploy/nginx-console.conf.example`.
+
 ## Cabeceras de seguridad de ziacentro.mx (2026-10-19)
 
 - `deploy/nginx/ziacentro-mx` = copia de `/etc/nginx/sites-available/ziacentro-mx` en el VPS.

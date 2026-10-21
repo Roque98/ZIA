@@ -1,0 +1,86 @@
+<%- include('partials/start', { title: 'Personas', nav: 'users', csrf, currentUser, aviso, error }) %>
+<header class="page-head">
+  <div>
+    <h1>Personas</h1>
+    <p>Administración ve todo. Operación solo ve los equipos y grupos que le asignes.</p>
+  </div>
+</header>
+
+<section class="panel">
+  <h2>Nueva persona</h2>
+  <form method="post" action="/usuarios" class="grid-form">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Nombre <input name="display_name" required maxlength="80"></label>
+    <label>Correo <input name="email" type="email" required></label>
+    <label>Contraseña <input name="password" type="password" required minlength="10" autocomplete="new-password"></label>
+    <label>Rol
+      <select name="role">
+        <option value="operator">Operación</option>
+        <option value="admin">Administración</option>
+      </select>
+    </label>
+    <label class="check"><input type="checkbox" name="active" value="1" checked> Activa</label>
+    <button class="primary" type="submit">Crear</button>
+  </form>
+</section>
+
+<ul class="people">
+  <% for (const person of users) { %>
+    <li class="panel">
+      <form method="post" action="/usuarios/<%= person.id %>" class="grid-form">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <label>Nombre <input name="display_name" value="<%= person.display_name %>" required></label>
+        <label>Correo <input value="<%= person.email %>" disabled></label>
+        <label>Rol
+          <select name="role">
+            <option value="operator" <%= person.role === 'operator' ? 'selected' : '' %>>Operación</option>
+            <option value="admin" <%= person.role === 'admin' ? 'selected' : '' %>>Administración</option>
+          </select>
+        </label>
+        <label class="check"><input type="checkbox" name="active" value="1" <%= person.active ? 'checked' : '' %>> Activa</label>
+        <button class="ghost" type="submit">Guardar</button>
+      </form>
+      <form method="post" action="/usuarios/<%= person.id %>/clave" class="inline-form">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <label>Nueva contraseña <input name="password" type="password" minlength="10" required autocomplete="new-password"></label>
+        <button class="ghost" type="submit">Cambiar contraseña</button>
+      </form>
+    </li>
+  <% } %>
+</ul>
+
+<section class="panel">
+  <h2>Grupos de personas</h2>
+  <p class="hint">Sirven para dar acceso de una vez a un turno o a una oficina.</p>
+  <form method="post" action="/grupos-usuario" class="grid-form">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Nombre <input name="name" required maxlength="80"></label>
+    <label>Descripción <input name="description" maxlength="400"></label>
+    <fieldset class="span-2">
+      <legend>Miembros</legend>
+      <div class="checks">
+        <% for (const person of users) { %>
+          <label class="check"><input type="checkbox" name="member_ids" value="<%= person.id %>"> <%= person.display_name %></label>
+        <% } %>
+      </div>
+    </fieldset>
+    <button class="primary" type="submit">Crear grupo</button>
+  </form>
+  <% for (const group of groups) { %>
+    <form method="post" action="/grupos-usuario/<%= group.id %>" class="subpanel">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <label>Nombre <input name="name" value="<%= group.name %>" required></label>
+      <label>Descripción <input name="description" value="<%= group.description %>"></label>
+      <div class="checks">
+        <% for (const person of users) { %>
+          <label class="check">
+            <input type="checkbox" name="member_ids" value="<%= person.id %>" <%= (group.member_ids || []).includes(person.id) ? 'checked' : '' %>>
+            <%= person.display_name %>
+          </label>
+        <% } %>
+      </div>
+      <button class="ghost" type="submit">Actualizar grupo</button>
+    </form>
+  <% } %>
+</section>
+<%- include('partials/end') %>

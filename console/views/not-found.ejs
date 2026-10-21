@@ -1,0 +1,7 @@
+<%- include('partials/start', { title: 'No encontrado', nav: '', csrf: typeof csrf !== 'undefined' ? csrf : '', currentUser, aviso: '', error: '' }) %>
+<section class="empty">
+  <h1>No encontramos esa página</h1>
+  <p>El equipo no existe o no está en tus accesos.</p>
+  <a class="primary" href="/">Volver a equipos</a>
+</section>
+<%- include('partials/end') %>

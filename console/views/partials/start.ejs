@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title><%= title %> · Consola ZIA</title>
+  <link rel="icon" href="/estaticos/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/estaticos/css/console.css">
+  <% if (typeof csrf !== 'undefined' && csrf) { %>
+  <meta name="csrf-token" content="<%= csrf %>">
+  <% } %>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <a class="brand" href="/">
+        <span class="brand-mark">ZIA</span>
+        <span class="brand-sub">Consola</span>
+      </a>
+      <nav>
+        <a href="/" <%= nav === 'devices' ? 'aria-current="page"' : '' %>>Equipos</a>
+        <% if (currentUser && currentUser.role === 'admin') { %>
+          <a href="/grupos" <%= nav === 'groups' ? 'aria-current="page"' : '' %>>Grupos</a>
+          <a href="/usuarios" <%= nav === 'users' ? 'aria-current="page"' : '' %>>Personas</a>
+          <a href="/auditoria" <%= nav === 'audit' ? 'aria-current="page"' : '' %>>Auditoría</a>
+        <% } %>
+      </nav>
+      <div class="side-user">
+        <strong><%= currentUser.display_name %></strong>
+        <span><%= currentUser.role === 'admin' ? 'Administración' : 'Operación' %></span>
+        <form method="post" action="/logout">
+          <input type="hidden" name="_csrf" value="<%= csrf %>">
+          <button type="submit" class="linkish">Cerrar sesión</button>
+        </form>
+      </div>
+    </aside>
+    <main class="main">
+      <% if (aviso) { %><p class="banner" role="status"><%= aviso %></p><% } %>
+      <% if (typeof error !== 'undefined' && error) { %><p class="banner banner-bad" role="alert"><%= error %></p><% } %>

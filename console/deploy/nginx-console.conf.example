@@ -1,0 +1,70 @@
+# Sitio NUEVO. No reemplaza a zia ni a igas-console.
+# Destino sugerido: /etc/nginx/sites-available/zia-console
+# y un enlace en sites-enabled. nginx -t antes de recargar.
+#
+# La consola escucha solo en 127.0.0.1:5030.
+# /ws/id y /ws/relay van a la consola (ahí está el control de acceso),
+# no directo a 21118/21119.
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name console.ziacentro.mx;
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/acme;
+    }
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name console.ziacentro.mx;
+
+    # Mismo certificado que el resto de *.ziacentro.mx, si ya incluye este nombre.
+    ssl_certificate     /etc/letsencrypt/live/ziacentro.mx/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/ziacentro.mx/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+
+    # Los mismos includes que el resto de *.ziacentro.mx, si existen:
+    # include /etc/nginx/snippets/cloudflare-realip.conf;
+    # include /etc/nginx/snippets/cloudflare-solo.conf;
+    # include /etc/nginx/snippets/ziacentro-seguridad.conf;
+
+    client_max_body_size 1m;
+
+    location /ws/id {
+        proxy_pass http://127.0.0.1:5030;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 1d;
+    }
+
+    location /ws/relay {
+        proxy_pass http://127.0.0.1:5030;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 1d;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:5030;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "zia-console",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Consola ZIA: equipos RustDesk, accesos y auditoría.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node --test --test-concurrency=1 test/*.test.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "pg": "^8.16.3",
+    "ws": "^8.18.3"
+  }
+}

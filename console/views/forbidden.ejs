@@ -1,0 +1,7 @@
+<%- include('partials/start', { title: 'Sin permiso', nav: '', csrf, currentUser, aviso: '', error: '' }) %>
+<section class="empty">
+  <h1>No tienes permiso para esta página</h1>
+  <p>Pide a administración el acceso si lo necesitas.</p>
+  <a class="primary" href="/">Volver a equipos</a>
+</section>
+<%- include('partials/end') %>
