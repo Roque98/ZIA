@@ -45,8 +45,10 @@ export default function RootLayout() {
   );
 }
 
+const storePreview = process.env.EXPO_PUBLIC_STORE_PREVIEW === '1';
+
 function Frame({ children }: { children: React.ReactNode }) {
-  if (Platform.OS !== 'web') {
+  if (Platform.OS !== 'web' || storePreview) {
     return <View style={styles.native}>{children}</View>;
   }
   return (

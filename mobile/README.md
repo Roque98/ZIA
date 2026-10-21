@@ -88,6 +88,8 @@ cd android && ./gradlew assembleRelease
 
 El keystore de release no se versiona. El APK firmado de esta entrega está fuera del repositorio.
 
+La versión de la primera ficha de Play es **0.1.0** (versionCode 1), con targetSdk 36. El AAB se arma con `./gradlew bundleRelease` y la misma llave. Los textos, el ícono, el gráfico y la lista de Play Console están en `store/`. La política pública de la app vive en `wireframes/bexon/privacidad/` y, al publicar el sitio, queda en `https://ziacentro.mx/privacidad/`.
+
 ## Cambio que haría falta en el backend
 
 No se desplegó nada. El cliente `IgasConsole_App` rechaza `password` (OpenIddict ID2064), rechaza el device code (ID2056) y responde 400 si `redirect_uri` no es `https://console.ziacentro.mx`. El código de autorización y el refresh sí están permitidos para ese cliente.

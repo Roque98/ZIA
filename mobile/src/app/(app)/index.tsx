@@ -48,6 +48,11 @@ export default function HomeScreen() {
         <AppText color="rgba(255,255,255,0.72)" style={styles.role}>
           {session?.organization ?? user?.email}
         </AppText>
+        {process.env.EXPO_PUBLIC_STORE_PREVIEW === '1' ? (
+          <AppText weight="700" color={colors.gold} style={styles.role}>
+            Cifras de ejemplo · no son de un cliente
+          </AppText>
+        ) : null}
       </View>
 
       <View style={styles.body}>

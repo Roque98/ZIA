@@ -2,7 +2,7 @@
   "expo": {
     "name": "ZIA",
     "slug": "zia",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "zia",
@@ -12,6 +12,7 @@
       "bundleIdentifier": "mx.ziaintegracion.app"
     },
     "android": {
+      "versionCode": 1,
       "package": "mx.ziaintegracion.app",
       "adaptiveIcon": {
         "backgroundColor": "#0c1e21",
@@ -34,7 +35,8 @@
           "imageWidth": 220
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "./plugins/with-play-permissions"
     ],
     "experiments": {
       "typedRoutes": true,

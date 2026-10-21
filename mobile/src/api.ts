@@ -1,5 +1,6 @@
 import { API_URL, OAUTH_CLIENT_ID, OAUTH_REDIRECT_URI, REVOCATION_URL, TOKEN_URL } from '@/config';
 import { getAuthBridge } from '@/auth-bridge';
+import { previewGet, STORE_PREVIEW } from '@/preview-data';
 import type {
   Acceso,
   AlarmaEnOperacion,
@@ -148,12 +149,14 @@ async function request(path: string, init: RequestInit | undefined, token: strin
 }
 
 async function apiGet(path: string): Promise<unknown> {
+  if (STORE_PREVIEW) return previewGet(path);
   const session = getAuthBridge().getSession();
   if (!session) throw new ApiError(401, 'La sesión expiró. Entra de nuevo.');
   return request(path, undefined, session.accessToken, true);
 }
 
 async function apiPost(path: string): Promise<unknown> {
+  if (STORE_PREVIEW) return null;
   const session = getAuthBridge().getSession();
   if (!session) throw new ApiError(401, 'La sesión expiró. Entra de nuevo.');
   return request(path, { method: 'POST' }, session.accessToken, true);

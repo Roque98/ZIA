@@ -21,6 +21,7 @@ type Pending = {
 export default function LoginScreen() {
   const { session, isLoading, signInWithToken } = useSession();
   const insets = useSafeAreaInsets();
+  const preview = process.env.EXPO_PUBLIC_STORE_PREVIEW === '1';
   const [pending, setPending] = useState<Pending | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -105,11 +106,11 @@ export default function LoginScreen() {
           ) : null}
           <Pressable
             accessibilityRole="button"
-            disabled={submitting || Platform.OS === 'web'}
+            disabled={submitting || (Platform.OS === 'web' && !preview)}
             onPress={() => {
               void start();
             }}
-            style={[styles.button, (submitting || Platform.OS === 'web') && styles.buttonDisabled]}
+            style={[styles.button, (submitting || (Platform.OS === 'web' && !preview)) && styles.buttonDisabled]}
           >
             {submitting ? (
               <ActivityIndicator color={colors.white} />
@@ -119,7 +120,9 @@ export default function LoginScreen() {
               </AppText>
             )}
           </Pressable>
-          {Platform.OS === 'web' ? <LoginBrowser url="" onCancel={() => undefined} onResult={() => undefined} /> : null}
+          {Platform.OS === 'web' && !preview ? (
+            <LoginBrowser url="" onCancel={() => undefined} onResult={() => undefined} />
+          ) : null}
         </View>
       </ScrollView>
       {pending && Platform.OS !== 'web' ? (
