@@ -1,9 +1,8 @@
 import { ActivityIndicator, Pressable, StyleSheet, Text, type TextProps, View } from 'react-native';
-import Svg, { Circle } from 'react-native-svg';
+import { useRouter } from 'expo-router';
 
-import { levelFor, levelLabel } from '@/format';
+import { BackIcon } from '@/components/icons';
 import { colors, space } from '@/theme';
-import type { Level } from '@/types';
 
 type Weight = '400' | '500' | '600' | '700' | '800';
 
@@ -56,6 +55,30 @@ export function ErrorBlock({ message, onRetry }: { message: string; onRetry: () 
   );
 }
 
+export function DeniedBlock({ title, body }: { title: string; body: string }) {
+  return (
+    <View style={styles.centered}>
+      <AppText weight="700" style={styles.errorTitle}>
+        {title}
+      </AppText>
+      <AppText color={colors.muted} style={styles.errorBody}>
+        {body}
+      </AppText>
+    </View>
+  );
+}
+
+export function EmptyBlock({ title, body }: { title: string; body: string }) {
+  return (
+    <View style={styles.empty}>
+      <AppText weight="700">{title}</AppText>
+      <AppText color={colors.muted} style={styles.errorBody}>
+        {body}
+      </AppText>
+    </View>
+  );
+}
+
 export function Card({ children }: { children: React.ReactNode }) {
   return <View style={styles.card}>{children}</View>;
 }
@@ -68,71 +91,51 @@ export function Eyebrow({ children, light = false }: { children: string; light?:
   );
 }
 
-export function ScoreRing({ score, size = 96 }: { score: number; size?: number }) {
-  const stroke = 8;
-  const radius = (size - stroke) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const color = levelColor(levelFor(score));
-  const offset = circumference * (1 - Math.max(0, Math.min(score, 100)) / 100);
-
-  return (
-    <View style={{ width: size, height: size }} accessibilityLabel={`Cumplimiento ${score} por ciento`}>
-      <Svg width={size} height={size}>
-        <Circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          stroke={colors.tealSoft}
-          strokeWidth={stroke}
-          fill="none"
-        />
-        <Circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          stroke={color}
-          strokeWidth={stroke}
-          fill="none"
-          strokeDasharray={`${circumference} ${circumference}`}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-          transform={`rotate(-90 ${size / 2} ${size / 2})`}
-        />
-      </Svg>
-      <View style={styles.ringLabel} pointerEvents="none">
-        <AppText weight="800" style={styles.ringValue}>
-          {score}
-        </AppText>
-      </View>
-    </View>
-  );
-}
-
-export function Meter({ score, color }: { score: number; color?: string }) {
-  const width = `${Math.max(0, Math.min(score, 100))}%` as const;
+export function Meter({ value, color }: { value: number; color?: string }) {
+  const width = `${Math.max(0, Math.min(value, 100))}%` as const;
   return (
     <View style={styles.meter}>
-      <View style={[styles.meterFill, { width, backgroundColor: color ?? levelColor(levelFor(score)) }]} />
+      <View style={[styles.meterFill, { width, backgroundColor: color ?? colors.teal }]} />
     </View>
   );
 }
 
-export function LevelPill({ level }: { level: Level }) {
-  const color = levelColor(level);
+export function StatusPill({ label, color }: { label: string; color: string }) {
   return (
     <View style={[styles.pill, { backgroundColor: `${color}1A` }]}>
       <View style={[styles.pillDot, { backgroundColor: color }]} />
       <AppText weight="700" color={color} style={styles.pillText}>
-        {levelLabel(level)}
+        {label}
       </AppText>
     </View>
   );
 }
 
-export function levelColor(level: Level): string {
-  if (level === 'al_dia') return colors.asea;
-  if (level === 'atencion') return colors.cne;
-  return colors.red;
+export function ScreenHeader({ title, subtitle }: { title: string; subtitle?: string }) {
+  const router = useRouter();
+  return (
+    <View style={styles.header}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Volver"
+        onPress={() => router.back()}
+        hitSlop={8}
+        style={styles.back}
+      >
+        <BackIcon color={colors.ink} />
+      </Pressable>
+      <View style={styles.headerCopy}>
+        <AppText weight="800" numberOfLines={2} style={styles.headerTitle}>
+          {title}
+        </AppText>
+        {subtitle ? (
+          <AppText color={colors.muted} numberOfLines={2} style={styles.headerSub}>
+            {subtitle}
+          </AppText>
+        ) : null}
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -150,7 +153,15 @@ const styles = StyleSheet.create({
     padding: space.xl,
     backgroundColor: colors.paper,
   },
-  errorTitle: { fontSize: 18 },
+  empty: {
+    backgroundColor: colors.card,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: space.lg,
+    gap: space.sm,
+  },
+  errorTitle: { fontSize: 18, textAlign: 'center' },
   errorBody: { textAlign: 'center', lineHeight: 20 },
   retry: {
     marginTop: space.sm,
@@ -172,12 +183,6 @@ const styles = StyleSheet.create({
     letterSpacing: 1.4,
     textTransform: 'uppercase',
   },
-  ringLabel: {
-    ...StyleSheet.absoluteFill,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  ringValue: { fontSize: 26, lineHeight: 30 },
   meter: {
     height: 6,
     borderRadius: 99,
@@ -196,4 +201,25 @@ const styles = StyleSheet.create({
   },
   pillDot: { width: 6, height: 6, borderRadius: 99 },
   pillText: { fontSize: 11, letterSpacing: 0.2 },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: space.lg,
+    paddingTop: space.md,
+    paddingBottom: space.sm,
+  },
+  back: {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.card,
+    borderWidth: 1,
+    borderColor: colors.line,
+  },
+  headerCopy: { flex: 1, gap: 2 },
+  headerTitle: { fontSize: 20, lineHeight: 24 },
+  headerSub: { fontSize: 13 },
 });

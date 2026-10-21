@@ -4,26 +4,33 @@ import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { fetchDeadlines } from '@/api';
+import { fetchLicencias } from '@/api';
 import { CalendarIcon, FolderIcon, HomeIcon, StationIcon } from '@/components/icons';
 import { AppText, BootScreen } from '@/components/ui';
-import { daysUntil } from '@/format';
+import { licenciaPorVencer } from '@/format';
 import { useSession } from '@/session';
 import { colors } from '@/theme';
 
 export default function AppLayout() {
   const { session, isLoading, signOut } = useSession();
-  const [overdue, setOverdue] = useState(0);
+  const [attention, setAttention] = useState(0);
 
   useEffect(() => {
     if (!session) return;
     let active = true;
-    fetchDeadlines(session.token)
-      .then((rows) => {
-        if (active) setOverdue(rows.filter((row) => daysUntil(row.due) < 0).length);
+    fetchLicencias()
+      .then((result) => {
+        if (!active) return;
+        if (result.access !== 'ok') {
+          setAttention(0);
+          return;
+        }
+        setAttention(
+          result.data.licencias.filter((item) => licenciaPorVencer(item.estado, item.vigenteHasta)).length,
+        );
       })
       .catch(() => {
-        if (active) setOverdue(0);
+        if (active) setAttention(0);
       });
     return () => {
       active = false;
@@ -33,18 +40,13 @@ export default function AppLayout() {
   if (isLoading) return <BootScreen />;
   if (!session) return <Redirect href="/login" />;
 
-  const mock = session.source === 'mock';
+  const title = session.organization || session.user.name;
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      <View style={[styles.bar, mock ? styles.barMock : styles.barLive]}>
-        <AppText
-          weight="700"
-          color={mock ? colors.ink : colors.white}
-          numberOfLines={1}
-          style={styles.barText}
-        >
-          {mock ? 'Demostración · sin servidor de acceso' : session.user.company}
+      <View style={styles.bar}>
+        <AppText weight="700" color={colors.white} numberOfLines={1} style={styles.barText}>
+          {title}
         </AppText>
         <Pressable
           accessibilityRole="button"
@@ -54,7 +56,7 @@ export default function AppLayout() {
           }}
           hitSlop={8}
         >
-          <AppText weight="800" color={mock ? colors.ink : colors.gold} style={styles.barAction}>
+          <AppText weight="800" color={colors.gold} style={styles.barAction}>
             Salir
           </AppText>
         </Pressable>
@@ -84,17 +86,17 @@ export default function AppLayout() {
           }}
         />
         <Tabs.Screen
-          name="tramites"
+          name="auditorias"
           options={{
-            title: 'Trámites',
+            title: 'Auditorías',
             tabBarIcon: ({ color, size }) => <FolderIcon color={tint(color)} size={size} />,
           }}
         />
         <Tabs.Screen
-          name="vencimientos"
+          name="licencias"
           options={{
-            title: 'Agenda',
-            tabBarBadge: overdue > 0 ? overdue : undefined,
+            title: 'Licencias',
+            tabBarBadge: attention > 0 ? attention : undefined,
             tabBarBadgeStyle: styles.badge,
             tabBarIcon: ({ color, size }) => <CalendarIcon color={tint(color)} size={size} />,
           }}
@@ -116,9 +118,10 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingHorizontal: 16,
     paddingVertical: 8,
+    backgroundColor: colors.ink,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.inkRaised,
   },
-  barMock: { backgroundColor: colors.gold },
-  barLive: { backgroundColor: colors.ink, borderBottomWidth: 1, borderBottomColor: colors.inkRaised },
   barText: { flex: 1, fontSize: 12 },
   barAction: { fontSize: 13 },
   tabBar: {

@@ -4,6 +4,6 @@ export const unstable_settings = {
   anchor: 'index',
 };
 
-export default function TramitesLayout() {
+export default function AuditoriasLayout() {
   return <Stack screenOptions={{ headerShown: false }} />;
 }

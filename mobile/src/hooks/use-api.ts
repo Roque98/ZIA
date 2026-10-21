@@ -10,9 +10,9 @@ type State<T> = {
   refresh: () => void;
 };
 
-export function useApi<T>(load: (token: string) => Promise<T>): State<T> {
+export function useApi<T>(load: () => Promise<T>): State<T> {
   const { session } = useSession();
-  const token = session?.token ?? null;
+  const token = session?.accessToken ?? '';
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -24,7 +24,7 @@ export function useApi<T>(load: (token: string) => Promise<T>): State<T> {
       if (mode === 'refresh') setRefreshing(true);
       else setLoading(true);
       try {
-        const next = await load(token);
+        const next = await load();
         setData(next);
         setError(null);
       } catch (err) {

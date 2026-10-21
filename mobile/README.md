@@ -1,30 +1,28 @@
 # ZIA — consola móvil
 
-App de Expo (React Native, TypeScript y Expo Router) para el cliente de **ZIA Integración**: el aliado de las gasolineras en México ante ASEA, CNE, SAT, STPS y Protección Civil.
+App de Expo (React Native, TypeScript y Expo Router) conectada a la consola real de **ZIA Integración** en `https://api.ziacentro.mx`.
 
-Esta carpeta es la primera versión. La landing del repositorio no trae consola, modelos ni un servicio de acceso: el único API que existe es el chatbot público de la landing (`/api/chat`). Por eso el acceso y los expedientes de esta app son una **demostración local**, con el contrato listo por si después hay un backend.
+La interfaz está en español y usa la marca de la landing: tinta `#0c1e21`, verde `#1e8a8a`, oro `#A69140`, rojo `#EC3237` y Mona Sans.
 
 ## Qué incluye
 
-| Pantalla | Para qué |
+| Pantalla | De dónde sale |
 | --- | --- |
-| Acceso | Entra a la cuenta. Hoy valida contra un usuario de demostración. |
-| Inicio | Cumplimiento del grupo, lo que urge y el avance de la gestoría. |
-| Estaciones | Cada gasolinera, sus cinco reguladores y los puntos que se inspeccionan (tanques, dispensarios, consola, cámaras, eléctrica, operación). |
-| Trámites | Expedientes en curso: revisión, gestoría, espera de la autoridad o listo. |
-| Agenda | Vencimientos de pólizas, cédulas, reportes y certificados. |
+| Acceso | OpenIddict de la consola: código de autorización + PKCE del cliente `IgasConsole_App`, y luego `refresh_token`. |
+| Inicio | Contexto de estaciones, operación del día, cuenta y avisos. |
+| Estaciones | Tanques, dispensarios, ventas, balance, alarmas y enlace del nodo. |
+| Auditorías | Expedientes de control volumétrico. |
+| Licencias | Vigencia y conexión de los nodos. Es el equivalente real de una agenda de vencimientos. |
 
-La interfaz está en español y usa la marca de la landing: tinta `#0c1e21`, verde `#1e8a8a`, oro `#A69140`, rojo `#EC3237` y Mona Sans.
+No hay trámites ni vencimientos de pólizas en el API. Esas pantallas de la primera versión se quitaron.
 
 ## Requisitos
 
 - Node.js 22 o superior
-- [Expo Go](https://expo.dev/go) actualizado a **SDK 58** en el teléfono, o un navegador para la versión web
-- Para el APK, una cuenta de [Expo](https://expo.dev)
+- Para desarrollo, [Expo Go](https://expo.dev/go) en SDK 58, o un navegador para la vista web
+- Una cuenta de `https://console.ziacentro.mx`
 
 ## Correrla
-
-Desde esta carpeta:
 
 ```bash
 cd mobile
@@ -32,40 +30,37 @@ npm install
 npx expo start
 ```
 
-En la terminal de Expo:
-
-- escanea el QR con Expo Go (Android) o con la cámara (iOS) para abrir el proyecto;
-- pulsa `w` para abrirla en el navegador.
-
-La versión web se presenta en una columna de teléfono, centrada, para revisar el mismo diseño.
-
-### Usuario de demostración
-
-El formulario ya trae el correo. La contraseña es:
-
-- Correo: `laura.mendez@demo.zia`
-- Contraseña: `zia-demo`
-
-La sesión queda en el dispositivo (SecureStore en el teléfono, `localStorage` en la web). Los expedientes —Grupo Estaciones del Pacífico y sus cuatro estaciones— son ficticios. La franja dorada «Demostración · sin servidor de acceso» lo recuerda dentro de la app. El teléfono de la oficina Centro es el de contacto público de ZIA en Tijuana.
-
-Cualquier otro correo o contraseña se rechaza.
-
-## Si más adelante hay API
-
-Sin configuración, no se llama a ningún servidor. Para usar un backend propio:
+El API por defecto es `https://api.ziacentro.mx`. Para apuntar a otro host:
 
 ```bash
 EXPO_PUBLIC_API_URL=https://api.ejemplo.mx npx expo start
 ```
 
-Contrato esperado, con `Authorization: Bearer <token>` en las lecturas:
+### Acceso
 
-- `POST /auth/login` con `{ "email", "password" }` responde `{ "token", "user" }`. `user` incluye `id`, `name`, `email` y, si existen, `firstName`, `role`, `company`, `office`, `phone`.
-- `GET /estaciones` y `GET /estaciones/:id`
-- `GET /tramites` y `GET /tramites/:id`
-- `GET /vencimientos`
+En Android e iOS, «Iniciar sesión» abre el acceso oficial de `api.ziacentro.mx` (la misma página que usa la consola). La contraseña no se teclea en la app: se teclea en ese sitio. Al terminar, el servidor redirige a `https://console.ziacentro.mx` con un código; la app lo intercepta, lo cambia por tokens y no carga la consola web.
 
-Las formas están en `src/types.ts`. Un 401 en el acceso muestra el error; un 404 en un detalle se trata como «no encontrado». El chatbot `/api/chat` de la landing no entra en este contrato: no identifica al cliente ni devuelve expedientes.
+Ese cliente público no acepta contraseña directa ni `zia://auth`. Por eso el APK usa el redirect que ya está registrado. La vista web de Expo no puede cerrar ese ciclo y lo dice en pantalla.
+
+La sesión (access token y refresh token) queda en el dispositivo, partida en SecureStore porque un token puede pasar de 2 KB. En la web, si algún día el redirect estuviera permitido, iría a `localStorage`.
+
+Al salir se revoca el token en `/connect/revocat` (es el `revocation_endpoint` que publica el discovery de producción).
+
+## Endpoints
+
+Todas las lecturas van con `Authorization: Bearer`.
+
+- `GET /connect/authorize` y `POST /connect/token`
+- `GET /api/abp/application-configuration`
+- `GET /api/app/estaciones/contexto`
+- `GET /api/app/estaciones/operacion/{organizacionId}`
+- `POST /api/app/estaciones/reconocer-alarma/{alarmaId}`
+- `GET /api/app/mi-cuenta`
+- `GET /api/app/notification`
+- `GET /api/app/auditoria-volumetrica` y `GET /api/app/auditoria-volumetrica/{id}`
+- `GET /api/app/nodos/panel`
+
+Un 403 en auditorías o licencias muestra que la cuenta no tiene ese permiso, en lugar de inventar datos.
 
 ## Comprobar el proyecto
 
@@ -74,43 +69,47 @@ npx tsc --noEmit
 npx expo export
 ```
 
-`expo export` genera el bundle web (SPA) y los bundles nativos en `dist/`. Esa carpeta no se versiona.
+## APK de Android
 
-## APK de Android con EAS
-
-El perfil `preview` de `eas.json` pide un APK instalable (`android.buildType: apk`), no el AAB de Play Store. El perfil `production` sí genera el app bundle.
-
-Hay que ejecutar EAS **desde `mobile/`**, porque el resto del repositorio no es la app:
+El perfil `preview` de `eas.json` sigue sirviendo para un APK en la nube de EAS:
 
 ```bash
 cd mobile
-npm install -g eas-cli
-eas login
-eas build -p android --profile preview
+npx eas-cli build -p android --profile preview
 ```
 
-La primera vez, EAS pide crear el proyecto en Expo y lo liga a esta app (`slug` `zia`, paquete `mx.ziaintegracion.app`). Al terminar, la CLI da la URL del APK. Ábrela en el teléfono Android e instala el archivo. También puedes bajar el APK y pasarlo con `adb install ruta/al/archivo.apk`.
-
-El perfil `preview` firma el APK para distribución interna. No hace falta Android Studio ni un proyecto `android/` en el repo: EAS lo genera en la nube a partir de `app.json`.
-
-Para un AAB de Play Store:
+También se puede generar en local, después de instalar JDK 17 y el Android SDK:
 
 ```bash
-eas build -p android --profile production
+cd mobile
+npx expo prebuild -p android
+cd android && ./gradlew assembleRelease
 ```
+
+El keystore de release no se versiona. El APK firmado de esta entrega está fuera del repositorio.
+
+## Cambio que haría falta en el backend
+
+No se desplegó nada. El cliente `IgasConsole_App` rechaza `password` (OpenIddict ID2064), rechaza el device code (ID2056) y responde 400 si `redirect_uri` no es `https://console.ziacentro.mx`. El código de autorización y el refresh sí están permitidos para ese cliente.
+
+Para dejar el WebView y usar Chrome Custom Tabs con `zia://auth`, en el seed de OpenIddict (no está en un repositorio accesible desde aquí) haría falta un cliente público nuevo, por ejemplo `IgasConsole_Mobile`:
+
+- tipo público, sin secreto, con PKCE obligatorio
+- redirect `zia://auth`
+- grants `authorization_code` y `refresh_token`
+- scopes `offline_access` e `IgasConsole`
+- sin pantalla de consentimiento, igual que la consola
+
+El código de esta app ya intercambia el código en `/connect/token`; solo cambiaría la URL de autorización y el redirect.
 
 ## Estructura
 
 ```
 mobile/
-├── app.json              # nombre, icono, esquema zia://, paquetes nativos
-├── eas.json              # preview (APK) y production (AAB)
-├── src/app/              # rutas de Expo Router
-│   ├── login.tsx
-│   └── (app)/            # inicio, estaciones, trámites, agenda
-├── src/api.ts            # acceso real si hay EXPO_PUBLIC_API_URL; si no, demo
-├── src/data.ts           # expedientes ficticios
-└── assets/               # símbolo de ZIA y Mona Sans (OFL, ver assets/fonts/OFL.txt)
+├── app.json
+├── eas.json
+├── src/app/                 # login, inicio, estaciones, auditorías, licencias
+├── src/api.ts               # cliente del API de producción
+├── src/oauth.ts             # URL de autorización y lectura del redirect
+└── assets/                  # símbolo de ZIA y Mona Sans (OFL)
 ```
-
-Mona Sans es la misma familia de la landing y se carga en el arranque con `useFonts`, así que funciona en Expo Go sin un development build.

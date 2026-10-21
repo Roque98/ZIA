@@ -1,40 +1,67 @@
 import { Redirect } from 'expo-router';
 import { useState } from 'react';
-import {
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { DEMO_EMAIL, DEMO_PASSWORD } from '@/api';
+import { LoginBrowser } from '@/auth/login-browser';
+import { createPkce } from '@/auth/pkce';
+import { exchangeCode } from '@/api';
 import { ZiaMark } from '@/components/zia-mark';
 import { AppText, BootScreen } from '@/components/ui';
+import { authorizeUrl, oauthErrorMessage, parseConsoleRedirect } from '@/oauth';
 import { useSession } from '@/session';
 import { colors, space } from '@/theme';
 
+type Pending = {
+  url: string;
+  verifier: string;
+  state: string;
+};
+
 export default function LoginScreen() {
-  const { session, isLoading, signIn } = useSession();
+  const { session, isLoading, signInWithToken } = useSession();
   const insets = useSafeAreaInsets();
-  const [email, setEmail] = useState(DEMO_EMAIL);
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [pending, setPending] = useState<Pending | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   if (isLoading) return <BootScreen />;
   if (session) return <Redirect href="/" />;
 
-  async function onSubmit() {
-    setSubmitting(true);
+  async function start() {
     setError(null);
+    setSubmitting(true);
     try {
-      await signIn(email, password);
+      const pkce = await createPkce();
+      setPending({
+        url: authorizeUrl(pkce.challenge, pkce.state),
+        verifier: pkce.verifier,
+        state: pkce.state,
+      });
+    } catch {
+      setError('No se pudo preparar el acceso.');
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function onResult(url: string) {
+    const current = pending;
+    setPending(null);
+    if (!current) return;
+    const result = parseConsoleRedirect(url);
+    if (!result || result.error || !result.code) {
+      setError(oauthErrorMessage(result?.error, result?.errorDescription));
+      return;
+    }
+    if (result.state && result.state !== current.state) {
+      setError('La respuesta de acceso no corresponde a esta solicitud.');
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const tokens = await exchangeCode(result.code, current.verifier);
+      await signInWithToken(tokens);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'No se pudo entrar.');
     } finally {
@@ -43,15 +70,11 @@ export default function LoginScreen() {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={styles.screen}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
+    <View style={styles.screen}>
       <ScrollView
-        keyboardShouldPersistTaps="handled"
         contentContainerStyle={[
           styles.content,
-          { paddingTop: insets.top + 28, paddingBottom: insets.bottom + 28 },
+          { paddingTop: insets.top + 36, paddingBottom: insets.bottom + 28 },
         ]}
       >
         <View style={styles.brand}>
@@ -67,152 +90,73 @@ export default function LoginScreen() {
           </AppText>
         </View>
 
-        <View style={styles.form}>
-          <Field label="Correo">
-            <TextInput
-              value={email}
-              onChangeText={setEmail}
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect={false}
-              keyboardType="email-address"
-              inputMode="email"
-              textContentType="emailAddress"
-              placeholder="correo@estacion.mx"
-              placeholderTextColor="rgba(255,255,255,0.35)"
-              style={styles.input}
-              accessibilityLabel="Correo"
-            />
-          </Field>
-          <Field label="Contraseña">
-            <View>
-              <TextInput
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!showPassword}
-                autoComplete="password"
-                textContentType="password"
-                placeholder="Contraseña"
-                placeholderTextColor="rgba(255,255,255,0.35)"
-                style={[styles.input, styles.passwordInput]}
-                accessibilityLabel="Contraseña"
-                onSubmitEditing={() => {
-                  void onSubmit();
-                }}
-              />
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={showPassword ? 'Ocultar contraseña' : 'Ver contraseña'}
-                onPress={() => setShowPassword((value) => !value)}
-                style={styles.reveal}
-              >
-                <AppText weight="700" color={colors.gold} style={styles.revealText}>
-                  {showPassword ? 'Ocultar' : 'Ver'}
-                </AppText>
-              </Pressable>
-            </View>
-          </Field>
-
+        <View style={styles.panel}>
+          <AppText weight="800" style={styles.title}>
+            Consola
+          </AppText>
+          <AppText color={colors.muted} style={styles.copy}>
+            Entra con la misma cuenta de console.ziacentro.mx. El acceso lo hace el servidor de ZIA: aquí no se
+            guarda la contraseña.
+          </AppText>
           {error ? (
-            <AppText color={colors.red} style={styles.error} accessibilityRole="alert">
+            <AppText color={colors.red} style={styles.error}>
               {error}
             </AppText>
           ) : null}
-
           <Pressable
             accessibilityRole="button"
-            disabled={submitting}
+            disabled={submitting || Platform.OS === 'web'}
             onPress={() => {
-              void onSubmit();
+              void start();
             }}
-            style={({ pressed }) => [styles.submit, pressed && styles.pressed, submitting && styles.disabled]}
+            style={[styles.button, (submitting || Platform.OS === 'web') && styles.buttonDisabled]}
           >
             {submitting ? (
               <ActivityIndicator color={colors.white} />
             ) : (
-              <AppText weight="700" color={colors.white} style={styles.submitText}>
-                Entrar
+              <AppText weight="800" color={colors.white}>
+                Iniciar sesión
               </AppText>
             )}
           </Pressable>
-        </View>
-
-        <View style={styles.demo}>
-          <AppText weight="800" color={colors.gold} style={styles.demoKicker}>
-            Acceso de demostración
-          </AppText>
-          <AppText color="rgba(255,255,255,0.78)" style={styles.demoBody}>
-            Este repositorio no incluye servicio de autenticación. La sesión se guarda en el
-            dispositivo y los expedientes son ficticios.
-          </AppText>
-          <AppText color={colors.white} style={styles.credential}>
-            {DEMO_EMAIL}
-          </AppText>
-          <AppText color={colors.white} style={styles.credential}>
-            {DEMO_PASSWORD}
-          </AppText>
+          {Platform.OS === 'web' ? <LoginBrowser url="" onCancel={() => undefined} onResult={() => undefined} /> : null}
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
-  );
-}
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <View style={styles.field}>
-      <AppText weight="700" color="rgba(255,255,255,0.7)" style={styles.label}>
-        {label}
-      </AppText>
-      {children}
+      {pending && Platform.OS !== 'web' ? (
+        <LoginBrowser
+          url={pending.url}
+          onCancel={() => setPending(null)}
+          onResult={(url) => {
+            void onResult(url);
+          }}
+        />
+      ) : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.ink },
-  content: { flexGrow: 1, paddingHorizontal: 22, gap: 22 },
-  brand: { alignItems: 'center', gap: 6 },
-  wordmark: { fontSize: 36, letterSpacing: 3, marginTop: 8 },
-  integracion: { fontSize: 14, letterSpacing: 2.4, textTransform: 'uppercase', marginTop: -4 },
-  slogan: { textAlign: 'center', lineHeight: 21, marginTop: 8, maxWidth: 280 },
-  form: { gap: space.md },
-  field: { gap: 6 },
-  label: { fontSize: 12, letterSpacing: 0.4 },
-  input: {
-    backgroundColor: colors.inkRaised,
-    borderWidth: 1,
-    borderColor: '#2c4c50',
-    borderRadius: 14,
-    color: colors.white,
-    fontFamily: 'MonaSans',
-    fontSize: 16,
-    paddingHorizontal: 14,
-    paddingVertical: 14,
+  content: { flexGrow: 1, paddingHorizontal: space.xl, gap: 28 },
+  brand: { alignItems: 'center', gap: 4 },
+  wordmark: { fontSize: 40, letterSpacing: 1, marginTop: 8 },
+  integracion: { fontSize: 16, letterSpacing: 3, textTransform: 'uppercase' },
+  slogan: { textAlign: 'center', marginTop: 8, lineHeight: 20 },
+  panel: {
+    backgroundColor: colors.card,
+    borderRadius: 24,
+    padding: space.xl,
+    gap: space.md,
   },
-  passwordInput: { paddingRight: 84 },
-  reveal: { position: 'absolute', right: 14, top: 0, bottom: 0, justifyContent: 'center' },
-  revealText: { fontSize: 13 },
-  error: { fontSize: 14, lineHeight: 20 },
-  submit: {
+  title: { fontSize: 22 },
+  copy: { lineHeight: 21 },
+  error: { lineHeight: 20 },
+  button: {
     backgroundColor: colors.teal,
     borderRadius: 14,
     minHeight: 52,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 4,
   },
-  submitText: { fontSize: 16 },
-  pressed: { opacity: 0.85 },
-  disabled: { opacity: 0.7 },
-  demo: {
-    borderWidth: 1,
-    borderColor: 'rgba(166,145,64,0.45)',
-    backgroundColor: 'rgba(166,145,64,0.08)',
-    borderRadius: 16,
-    padding: space.lg,
-    gap: 6,
-  },
-  demoKicker: { fontSize: 12, letterSpacing: 0.8, textTransform: 'uppercase' },
-  demoBody: { fontSize: 13, lineHeight: 19, marginBottom: 4 },
-  credential: { fontSize: 14, fontFamily: 'MonaSans', fontWeight: '700' },
+  buttonDisabled: { opacity: 0.55 },
 });
