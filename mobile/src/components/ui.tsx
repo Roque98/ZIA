@@ -1,5 +1,5 @@
 import { ActivityIndicator, Pressable, StyleSheet, Text, type TextProps, View } from 'react-native';
-import Svg, { Circle, G } from 'react-native-svg';
+import Svg, { Circle } from 'react-native-svg';
 
 import { levelFor, levelLabel } from '@/format';
 import { colors, space } from '@/theme';
@@ -86,19 +86,18 @@ export function ScoreRing({ score, size = 96 }: { score: number; size?: number }
           strokeWidth={stroke}
           fill="none"
         />
-        <G rotation={-90} origin={`${size / 2}, ${size / 2}`}>
-          <Circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke={color}
-            strokeWidth={stroke}
-            fill="none"
-            strokeDasharray={`${circumference} ${circumference}`}
-            strokeDashoffset={offset}
-            strokeLinecap="round"
-          />
-        </G>
+        <Circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={color}
+          strokeWidth={stroke}
+          fill="none"
+          strokeDasharray={`${circumference} ${circumference}`}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+          transform={`rotate(-90 ${size / 2} ${size / 2})`}
+        />
       </Svg>
       <View style={styles.ringLabel} pointerEvents="none">
         <AppText weight="800" style={styles.ringValue}>

@@ -8,13 +8,7 @@ export function ZiaMark({ size = 40 }: Props) {
   const clipId = `zia${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
 
   return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="795.5 -21 740 740"
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
-    >
+    <Svg width={size} height={size} viewBox="795.5 -21 740 740" aria-hidden>
       <G fill="#A69140">
         <Rect x={1086.5} y={58} width={26} height={291} rx={13} />
         <Rect x={1086.5} y={349} width={26} height={290} rx={13} />
