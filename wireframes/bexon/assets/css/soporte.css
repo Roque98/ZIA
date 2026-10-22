@@ -1,0 +1,99 @@
+/* Página de soporte remoto (soporte/index.html). Sobre el fondo oscuro de la landing (.zia-sec). */
+
+.zs { padding: 150px 0 100px; }
+.zs-cabeza { max-width: 760px; margin-bottom: 40px; }
+
+/* Botón propio pequeño (copiar, compartir). */
+.zs-boton {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 18px; border-radius: 6px; border: 1.5px solid rgba(255,255,255,.28);
+  background: transparent; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.zs-boton:hover, .zs-boton:focus-visible { border-color: var(--zia-teal); color: var(--zia-teal); }
+.zs-boton:focus-visible { outline: 2px solid var(--zia-teal); outline-offset: 2px; }
+
+/* Aviso para quien entra desde el teléfono. */
+.zs-aviso {
+  display: grid; gap: 10px; justify-items: start;
+  padding: 20px 22px; margin-bottom: 28px; border-radius: 14px;
+  background: rgba(166,145,64,.14); border: 1px solid rgba(166,145,64,.45); color: #fff;
+}
+.zs-aviso[hidden] { display: none; }
+.zs-aviso span { color: rgba(255,255,255,.78); }
+
+/* El código, lo primero que se ve. */
+.zs-codigo {
+  display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center;
+  padding: 30px 34px; margin-bottom: 28px; border-radius: 18px;
+  background: linear-gradient(135deg, rgba(30,138,138,.22), rgba(30,138,138,.06));
+  border: 1px solid rgba(30,138,138,.55);
+}
+.zs-codigo__rotulo { display: block; font-size: 13px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--zia-teal); margin-bottom: 6px; }
+.zs-codigo__numero {
+  display: block; font-size: 54px; font-weight: 900; line-height: 1; color: #fff;
+  letter-spacing: .06em; font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.zs-codigo__lado p { margin: 0 0 14px; color: rgba(255,255,255,.76); font-size: 16px; line-height: 1.6; }
+
+/* Las dos modalidades. */
+.zs-opciones { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 56px; }
+.zs-opcion {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+  padding: 30px; border-radius: 18px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12);
+}
+.zs-opcion h2 { font-size: 28px; font-weight: 900; color: #fff; margin: 0; letter-spacing: -.01em; }
+.zs-opcion p { margin: 0; color: rgba(255,255,255,.72); font-size: 16px; line-height: 1.6; }
+.zs-opcion .zs-descarga { margin-top: auto; }
+.zs-opcion .zs-descarga[hidden] { display: none; }
+.zs-etiqueta {
+  font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 999px; background: rgba(30,138,138,.2); color: #7fd3d3;
+}
+.zs-nota { font-size: 14px !important; color: rgba(255,255,255,.55) !important; }
+.tj-primary-btn.is-desactivado { opacity: .4; pointer-events: none; }
+
+.zs-linux { display: grid; gap: 10px; justify-items: start; width: 100%; margin-top: auto; }
+.zs-linux[hidden] { display: none; }
+.zs-linux code {
+  display: block; width: 100%; padding: 12px 14px; border-radius: 8px; overflow-wrap: anywhere;
+  background: rgba(0,0,0,.35); color: #e6f4f4; font-size: 14px;
+}
+
+.zs-otras { width: 100%; font-size: 15px; color: rgba(255,255,255,.7); }
+.zs-otras summary { cursor: pointer; font-weight: 700; color: rgba(255,255,255,.85); }
+.zs-otras ul { list-style: none; padding: 10px 0 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.zs-otras a { color: var(--zia-teal); font-weight: 700; }
+
+/* Cómo funciona / confianza. */
+.zs-filas { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; }
+.zs-bloque h2 { font-size: 26px; font-weight: 900; color: #fff; margin: 0 0 18px; }
+.zs-pasos { padding-left: 22px; margin: 0; }
+.zs-pasos li { list-style: decimal; margin-bottom: 14px; color: rgba(255,255,255,.74); font-size: 16px; line-height: 1.65; }
+.zs-pasos strong, .zs-confianza strong { color: #fff; }
+.zs-pasos em { color: #fff; font-style: normal; font-weight: 700; }
+.zs-confianza { list-style: none; padding: 0; margin: 0 0 22px; display: grid; gap: 14px; }
+.zs-confianza li { display: flex; gap: 12px; align-items: flex-start; color: rgba(255,255,255,.74); font-size: 16px; line-height: 1.6; }
+.zs-palomita {
+  flex: none; width: 20px; height: 20px; margin-top: 3px; border-radius: 50%; position: relative;
+  background: rgba(30,138,138,.25);
+}
+.zs-palomita::after {
+  content: ""; position: absolute; left: 7px; top: 4px; width: 6px; height: 10px;
+  border: solid var(--zia-teal); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg);
+}
+.zs-contacto { color: rgba(255,255,255,.65); font-size: 15px; }
+.zs-contacto a { color: var(--zia-teal); font-weight: 700; }
+
+@media (max-width: 991px) {
+  .zs { padding: 120px 0 70px; }
+  .zs-opciones, .zs-filas { grid-template-columns: 1fr; }
+  .zs-filas { gap: 36px; }
+}
+
+@media (max-width: 767px) {
+  .zs-codigo { grid-template-columns: 1fr; gap: 16px; padding: 24px 20px; }
+  .zs-codigo__numero { font-size: 40px; }
+  .zs-opcion { padding: 24px 20px; }
+  .zs-opcion h2 { font-size: 24px; }
+}

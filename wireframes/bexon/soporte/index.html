@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Soporte remoto — ZIA Integración</title>
+  <meta name="description" content="Descarga el programa de soporte remoto de ZIA Integración, dicta tu Código ZIA a tu técnico y autoriza la conexión desde tu pantalla.">
+  <link rel="canonical" href="https://ziacentro.mx/soporte/">
+  <meta name="theme-color" content="#0c1e21">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:site_name" content="ZIA Integración">
+  <meta property="og:url" content="https://ziacentro.mx/soporte/">
+  <meta property="og:title" content="Soporte remoto — ZIA Integración">
+  <meta property="og:description" content="Descarga el programa, dicta tu Código ZIA y autoriza la conexión. Tú decides cuándo entramos.">
+  <meta property="og:image" content="https://ziacentro.mx/assets/images/zia/og-ziacentro.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preload" href="../assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/base.min.css?v=20261019a">
+  <link rel="stylesheet" href="../assets/css/zia.css?v=20261019a">
+  <link rel="stylesheet" href="../assets/css/landing.css?v=20261019b">
+  <link rel="stylesheet" href="../assets/css/soporte.css?v=20261023a">
+</head>
+<body>
+  <header class="zia-lp-header is-solid">
+    <div class="container">
+      <a class="zia-lp-logo" href="../index.html" aria-label="ZIA Integración, volver al inicio"><img src="../assets/images/logos/zia_simbolo.svg" alt="ZIA Integración" width="32" height="32"><span>ZIA</span></a>
+      <a class="zia-lp-header__tel" href="tel:6641594369"><i class="tji-phone-2"></i><span>664 159 4369</span></a>
+      <a class="tj-primary-btn" href="../index.html#diagnostico">
+        <span class="btn-text"><span class="zia-long">Diagnóstico sin costo</span><span class="zia-short">Diagnóstico</span></span>
+        <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
+      </a>
+    </div>
+  </header>
+
+  <main id="primary" class="site-main">
+    <section class="zia-sec zs">
+      <div class="container">
+        <div class="zs-cabeza">
+          <span class="zia-sec__kicker">Soporte remoto</span>
+          <h1 class="zia-sec__title">Te ayudamos <span>a distancia.</span></h1>
+          <p class="zia-sec__lead">Descarga el programa de ZIA en la computadora que necesita ayuda y dicta tu código a tu técnico. Tú autorizas la conexión desde tu pantalla y puedes cortarla cuando quieras.</p>
+        </div>
+
+        <!-- En el teléfono no sirve: el programa va en la computadora. -->
+        <div class="zs-aviso zs-movil" id="zs-movil" hidden>
+          <strong>Abre esta página en la computadora que necesita soporte.</strong>
+          <span>El programa de soporte es para Windows, macOS o Linux. Mándate el enlace:</span>
+          <button type="button" class="zs-boton zs-boton--claro" id="zs-compartir">Compartir ziacentro.mx/soporte</button>
+        </div>
+
+        <div class="zs-codigo" aria-labelledby="zs-codigo-titulo">
+          <div>
+            <span class="zs-codigo__rotulo" id="zs-codigo-titulo">Tu Código ZIA</span>
+            <output class="zs-codigo__numero" id="zs-codigo" aria-live="polite">— — —</output>
+          </div>
+          <div class="zs-codigo__lado">
+            <p>Díctaselo a tu técnico de ZIA. Va dentro del programa que descargues en esta página: así sabemos que eres tú.</p>
+            <button type="button" class="zs-boton zs-boton--claro" id="zs-copiar">Copiar código</button>
+          </div>
+        </div>
+
+        <div class="zs-opciones">
+          <article class="zs-opcion">
+            <span class="zs-etiqueta">Sin instalar</span>
+            <h2>Soporte rápido</h2>
+            <p>Para una ayuda puntual. Abres el programa, nos dictas el código y, al cerrarlo, se corta el acceso. No queda nada instalado.</p>
+            <a class="tj-primary-btn zs-descarga" id="zs-rapido" href="#" data-tipo="rapido">
+              <span class="btn-text"><span>Descargar Soporte ZIA</span></span>
+              <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
+            </a>
+            <p class="zs-nota" id="zs-rapido-nota">Para Windows.</p>
+          </article>
+
+          <article class="zs-opcion">
+            <span class="zs-etiqueta">Se instala</span>
+            <h2>Acceso permanente</h2>
+            <p>Para equipos que atendemos seguido. Queda instalado y podemos ayudarte sin que descargues nada otra vez. Aun así, te pediremos permiso en tu pantalla.</p>
+            <a class="tj-primary-btn zs-descarga" id="zs-permanente" href="#" data-tipo="permanente">
+              <span class="btn-text"><span id="zs-permanente-texto">Descargar ZIA Remote</span></span>
+              <span class="btn-icon"><i class="tji-arrow-right-long"></i></span>
+            </a>
+            <div class="zs-linux" id="zs-linux" hidden>
+              <p>En Linux, copia esto en una terminal:</p>
+              <code id="zs-linux-comando">curl -fsSL https://api.ziacentro.mx/api/soporte/linux.sh | sudo sh</code>
+              <button type="button" class="zs-boton zs-boton--claro" id="zs-copiar-linux">Copiar comando</button>
+            </div>
+            <details class="zs-otras">
+              <summary>Otras versiones</summary>
+              <ul>
+                <li><a href="#" data-tipo="permanente" data-sistema="windows">Windows (64 bits)</a></li>
+                <li><a href="#" data-tipo="permanente" data-sistema="windows-arm">Windows ARM</a></li>
+                <li><a href="#" data-tipo="permanente" data-sistema="windows-32">Windows (32 bits)</a></li>
+                <li><a href="#" data-tipo="permanente" data-sistema="macos">macOS (Intel y Apple)</a></li>
+                <li><a href="#" id="zs-ver-linux">Linux</a></li>
+              </ul>
+            </details>
+          </article>
+        </div>
+
+        <div class="zs-filas">
+          <div class="zs-bloque">
+            <h2>Cómo funciona</h2>
+            <ol class="zs-pasos">
+              <li><strong>Descarga</strong> el programa en la computadora que necesita ayuda.</li>
+              <li>
+                <strong>Ábrelo.</strong> En Windows puede aparecer «Windows protegió su PC»: pulsa <em>Más información</em> y luego <em>Ejecutar de todas formas</em>. Es nuestro programa; todavía no lleva firma comercial.
+                En macOS, da permiso a ZIA Remote en <em>Grabación de pantalla</em> y <em>Accesibilidad</em> (Configuración del Sistema → Privacidad y seguridad).
+              </li>
+              <li><strong>Dicta tu Código ZIA</strong> a tu técnico (es el que ves arriba).</li>
+              <li><strong>Autoriza.</strong> Cuando nos conectemos verás un aviso para <em>Permitir</em> o <em>Denegar</em>. Acepta solo si esperabas nuestra llamada.</li>
+            </ol>
+          </div>
+
+          <div class="zs-bloque">
+            <h2>Tú tienes el control</h2>
+            <ul class="zs-confianza">
+              <li><span class="zs-palomita" aria-hidden="true"></span><span><strong>Nadie entra sin tu permiso.</strong> Cada conexión te pide «Permitir».</span></li>
+              <li><span class="zs-palomita" aria-hidden="true"></span><span><strong>Siempre sabes cuándo estamos dentro:</strong> verás una barra en tu pantalla.</span></li>
+              <li><span class="zs-palomita" aria-hidden="true"></span><span><strong>Cortas cuando quieras:</strong> cierra el programa o pulsa «Desconectar» en la barra.</span></li>
+              <li><span class="zs-palomita" aria-hidden="true"></span><span><strong>Todo queda registrado:</strong> quién se conectó y cuándo.</span></li>
+            </ul>
+            <p class="zs-contacto">¿Dudas? Llama a la oficina Centro, Tijuana: <a href="tel:6641594369">664 159 4369</a>, o escribe a <a href="mailto:contacto@ziaintegracion.com">contacto@ziaintegracion.com</a>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="zia-lp-footer">
+    <div class="container">
+      <div class="zia-lp-footer__grid">
+        <div>
+          <a class="zia-lp-logo" href="../index.html" aria-label="ZIA Integración, inicio"><img src="../assets/images/logos/zia_simbolo.svg" alt="ZIA Integración" width="32" height="32"><span>ZIA</span></a>
+          <p style="margin:12px 0 0;max-width:320px">Su aliado estratégico en el sector gasolinero. Desde 2000.</p>
+        </div>
+        <div class="zia-lp-footer__offices">
+          <span>Tijuana</span><a href="tel:6641594369">664 159 4369</a>
+          <span>Chihuahua</span><a href="tel:6144718727">614 471 8727</a>
+          <span>Morelia</span><a href="tel:4433280991">443 328 0991</a>
+          <span>Orizaba</span><a href="tel:2722158160">272 215 8160</a>
+          <span>Culiacán</span><span>Próximamente</span>
+        </div>
+        <div>
+          <a href="mailto:contacto@ziaintegracion.com" style="color:#fff;font-weight:800;text-decoration:none">contacto@ziaintegracion.com</a>
+          <p style="margin:6px 0 0">www.ziaintegracion.com</p>
+        </div>
+      </div>
+      <div class="zia-lp-footer__bottom">
+        <span>&copy; 2026 ZIA Integración</span>
+        <a class="zia-lp-footer__legal" href="../aviso-privacidad.html">Aviso de privacidad</a>
+        <a class="zia-lp-footer__legal" href="../privacidad/" style="margin-left:16px">Privacidad de la app</a>
+        <a class="zia-lp-footer__legal" href="./" style="margin-left:16px" aria-current="page">Soporte remoto</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/soporte.js?v=20261023a"></script>
+</body>
+</html>
