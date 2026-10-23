@@ -1,7 +1,8 @@
 /* Página de soporte remoto (ziacentro.mx/soporte).
  *
- * 1. Inventa el Código ZIA del cliente (9 cifras al azar) y lo guarda 12 h en este navegador,
- *    para que recargar no lo cambie.
+ * 1. Inventa el Código ZIA del cliente (9 cifras al azar) y lo guarda en este navegador SIN
+ *    caducidad: quien instaló el acceso permanente desde aquí vuelve y ve el mismo código que
+ *    lleva su programa. (Otro navegador u otra computadora dan otro código: lo avisa la página.)
  * 2. Cada descarga va a la consola (api.ziacentro.mx/api/soporte/descargar), que redirige a
  *    MeshCentral con el grupo y el código ya puestos: el instalador lleva el código dentro
  *    (el «tag» del agente) y así el técnico encuentra el equipo con el número que ve el cliente.
@@ -12,7 +13,6 @@
 
   var API = 'https://api.ziacentro.mx/api/soporte';
   var CLAVE = 'zia-soporte-codigo';
-  var VIGENCIA_MS = 12 * 60 * 60 * 1000;
 
   function nuevoCodigo() {
     var n;
@@ -29,10 +29,11 @@
   function codigo() {
     try {
       var guardado = JSON.parse(localStorage.getItem(CLAVE) || 'null');
-      if (guardado && /^\d{9}$/.test(guardado.codigo) && guardado.hasta > Date.now()) return guardado.codigo;
+      // Los guardados antes con caducidad ({codigo, hasta}) se respetan igual.
+      if (guardado && /^\d{9}$/.test(guardado.codigo)) return guardado.codigo;
     } catch (e) { /* Sin almacenamiento (modo privado): un código por visita. */ }
     var c = nuevoCodigo();
-    try { localStorage.setItem(CLAVE, JSON.stringify({ codigo: c, hasta: Date.now() + VIGENCIA_MS })); } catch (e) { }
+    try { localStorage.setItem(CLAVE, JSON.stringify({ codigo: c, desde: Date.now() })); } catch (e) { }
     return c;
   }
 
