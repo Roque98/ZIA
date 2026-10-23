@@ -35,6 +35,8 @@
   letter-spacing: .06em; font-variant-numeric: tabular-nums; white-space: nowrap;
 }
 .zs-codigo__lado p { margin: 0 0 14px; color: rgba(255,255,255,.76); font-size: 16px; line-height: 1.6; }
+.zs-codigo__lado .zs-codigo__nota { font-size: 14px; color: rgba(255,255,255,.6); }
+.zs-codigo__nota strong { color: rgba(255,255,255,.85); }
 
 /* Las dos modalidades. */
 .zs-opciones { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 56px; }
